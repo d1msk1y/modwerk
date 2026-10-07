@@ -69,9 +69,10 @@
 
 phr_mix:
         move    x:>$205,r6              ; the level page
-        move    x:(r6+$3b),b            ; ROUTED flag
-        btst    #0,b
-        bcs     phr_rt
+        move    x:(r6+$3b),b            ; ROUTED: the word is exactly 1. Until the
+        and     #>$ffff,b               ; ColdFire's first page lands, the bank
+        cmp     #>1,b                   ; holds whatever RAM held at power-on
+        beq     phr_rt
         btst    #10,a                   ; stock: MASTER TRACK
         bcs     phr_stockm
         rts
@@ -502,7 +503,7 @@ phr_samples:
         jmp     $2d5
 
 ; One bus's ramp from its page word in a: target, step (target - current)
-; / 16; bit 0 of b set when the step is not 0.
+; / 16; bit 0 of b set when the stored step is not 0.
 phr_ramp0:
         bsr     phr_sq
         move    a,y:>$c08
@@ -510,7 +511,8 @@ phr_ramp0:
         sub     x0,a
         asr     #4,a,a
         move    a,y:>$c03
-        tst     a
+        move    y:>$c03,a             ; reloaded: a0 still holds mpy's low bits,
+        tst     a                       ; and tst sees all 56
         beq     phr_rs0
         bset    #0,b                    ; this level moves
 phr_rs0:
@@ -522,7 +524,8 @@ phr_ramp1:
         sub     x0,a
         asr     #4,a,a
         move    a,y:>$c04
-        tst     a
+        move    y:>$c04,a             ; reloaded: a0 still holds mpy's low bits,
+        tst     a                       ; and tst sees all 56
         beq     phr_rs1
         bset    #0,b                    ; this level moves
 phr_rs1:
@@ -534,7 +537,8 @@ phr_ramp2:
         sub     x0,a
         asr     #4,a,a
         move    a,y:>$c05
-        tst     a
+        move    y:>$c05,a             ; reloaded: a0 still holds mpy's low bits,
+        tst     a                       ; and tst sees all 56
         beq     phr_rs2
         bset    #0,b                    ; this level moves
 phr_rs2:
@@ -611,6 +615,12 @@ phr_codes:
         and     #>$f,b                  ; the code; b0 holds what the asr shifted out,
         move    b1,x0                   ; so reload it clean before shifting left
         move    x0,b
+        move    #>13,y0                 ; above 13 (dirty RAM, never the ColdFire):
+        cmp     y0,b                    ; OFF, so the table read stays in its 14 rows
+        ble     phr_cok
+        move    y0,b
+        move    y0,x0
+phr_cok:
         asl     #1,b,b                  ; 2c
         add     x0,b                    ; 3c
         move    b1,n2
@@ -645,9 +655,10 @@ phr_cdone:
 ; ---- hook 2: PHONES into ring words 4/5 ------------------------------
 phr_phn:
         move    x:>$205,r0              ; the displaced instruction
-        move    x:(r0+$3b),b
-        btst    #0,b
-        bcs     phr_phrouted
+        move    x:(r0+$3b),b            ; ROUTED: exactly 1, as in hook 1
+        and     #>$ffff,b
+        cmp     #>1,b
+        beq     phr_phrouted
         rts
 phr_phrouted:
         move    x:(r0+$32),a            ; the metronome at its CUE volume,

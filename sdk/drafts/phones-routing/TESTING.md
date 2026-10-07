@@ -123,6 +123,51 @@ Each check dumps the (LEVEL, cue) pairs in several places: bank 1's working Part
 | CUE + TRACK in ROUTED | read from the image | the cue toggle at `0x4007d600` returns when `0x80000037` is not 0, as in STUDIO (not driven by keys) |
 | Power cycle after switching to ROUTED and routing T3 to PHNS, unsaved | Run 1 dumps CS1 and the card; run 2 boots from them with `--cs1-in` and `--no-post` (the firmware's own power-up load) | First build: CUE CFG came back as 1 and the current bank as default bytes. The power-up check at `0x400100b8` counts a CS1 mirror above 1 as damage, and the bank's CS1 copy is then not restored. With the check widened to 0..2 (two pokes), CUE CFG comes back 2, the current bank keeps T3 = PHNS and the other banks stay converted. The stock control image restores a STUDIO edit the same way. |
 
+## Declick on a destination change
+
+**Method.** A 1 kHz tone, identical on L and R, with every level at 127. T1 starts on MAIN and switches to PHNS 100 frames in. The table gives the largest step from one sample to the next on each jack, after the switch.
+
+| Output | Without declick | With declick | The tone's own steady maximum |
+| --- | --- | --- | --- |
+| MAIN L | 754,637 (a hard cut) | 382,237 | 382,237 |
+| PHONES L | 1,112,948 (a hard start) | 405,698 (a 16-sample fade-in) | 382,237 |
+
+**How it works.** On a change, the first frame keeps the old code and sends the track's gain as 0. The next frame switches to the new code at full gain. Both moves use stock's 16-sample gain ramp.
+
+**Regression.** The full routing table still puts signal on exactly the same outputs in all 20 captures. RMS moves by up to 0.24%, because the new ColdFire code shifts load timing and so the measurement window. ROUTED MAIN is within 27 LSB of the stock path in the same build.
+
+## The gate: verify.py
+
+`modules/phones-routing/verify.py` is an image gate, run from the octabam root after `make bus` with a remix that includes the module. It uses:
+- the port, `out/emu/ot_emu` (`OT_EMU` overrides);
+- the image, `out/mainos_bus.bin` (`PHONES_IMAGE` overrides);
+- octabam's one-THRU fixture (`out/stems_fixture_thru1.json`, from `tools/verify/stems_fixture.py --thru1` in octabam; `PHONES_FIXTURE` overrides).
+
+It SKIPs without them.
+
+It replays everything above in about 30 port runs:
+- all 14 codes;
+- MAIN against the stock path, and the CUE/PHONES level law;
+- the six mono jacks with L = R;
+- the MKII swap, MASTER on, mute, DIR inputs and the declick;
+- NORMAL → ROUTED with the keys, then a power cycle from that run's CS1 and card.
+
+Last run, on the image with the code-review fixes: **PASS**, every check.
+
+## Code review (7 Oct 2026) and what it changed
+
+| Finding | Change | Check |
+| --- | --- | --- |
+| The DSP trusted the page: any word with bit 0 set meant ROUTED, and a 4-bit code could index past the 14-row table into the module's own code (dirty RAM before the first page) | ROUTED only when `$3b` is exactly 1; codes above 13 are OFF | `--dsp-dirty 7` and `--dsp-dirty 11` boots run all 200 frames, NORMAL and ROUTED. With T2-T8 OFF, ROUTED MAIN is exactly 0 under dirty RAM; the residue seen with T2-T8 on MAIN comes from their dirty effect state. |
+| The steady-level test could see a0's leftover bits | The step is tested after a clean reload | No change in practice: the targets are (v·2^16)², whose low 24 bits are 0. A peek shows steps 0 and the steady flag set. Kept as insurance, 3 instructions a frame. |
+| The declick ignored the ramp's split (4t+3) | The fade frame also sends the split as 0 | the gate's declick check |
+| A mode switch marked all 16 banks for saving | Only banks where a cue byte changed are marked (and CS1's edited flag only for the current bank when it changed) | the gate (bank 1 is marked); a bank left unchanged is not separately tested |
+| `verify.py` was the failing scaffold | Replaced by the gate above | PASS |
+| The manifest docstring and the phones.s header were stale | Rewritten | — |
+| In ROUTED the FUNC-held MAIN display drew a second bar | The bars copy the level only on the plain and CUE-held displays | LCD capture: the MAIN view is stock |
+
+Cost after the fixes, instructions per frame: every track to MAIN 1,170, T1 to ALL 2,531 (stock 825).
+
 ## Not run
 - MKI key paths.
 - Hardware.

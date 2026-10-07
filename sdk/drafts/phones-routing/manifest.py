@@ -19,17 +19,25 @@ ColdFire port; reference/phase0-notes.md in the Modwerk worktree):
   widened to 0..2. A project saved in ROUTED loads on a stock OS as STUDIO.
 - AUDIO page: draw 0x400651a8, key handler 0x40065430 (menu-state table
   0x400cbdd4), label/getter/action tables 0x400b277c..0x400b27ab.
-- CUE + LEVEL: 0x4004e98c. LEV box with CUE held: 0x4004dd64.
+- CUE + LEVEL: 0x4004e98c (in ROUTED it steps a destination code and
+  hands it to the stock store at 0x4004ea10). LEV box with CUE held:
+  0x4004dd64 (label), 0x4004ddb4 (the name), 0x4004df8c (the bars).
 - Level page builder 0x4000d1a6 (detour 0x4000d1ea, after $29 is stored): in
   ROUTED the MAIN level word ($29) is rewritten
   as unity, so each track's ramped MAIN gain is its own level x XVOL; the
   real MAIN, CUE and PHONES levels and the eight destinations go in the
   page's unused words $37..$3b.
+- Switching CUE CFG to or from ROUTED converts every Part's cue bytes (all
+  banks, working and saved, the current bank's CS1 copies, the live bytes)
+  and marks the banks it changed for the next save.
 - DSP, payload A (core 0): P:0x257, the MASTER TRACK branch in front of the
-  mixdown, becomes `jsr >ph_mix`; in ROUTED the module's mixdown writes the
-  CUE, MAIN and PHONES ring words and returns past the stock cue mix.
+  mixdown, becomes `jsr >phr_mix`; in ROUTED the module mixes CUE, MAIN and
+  the PHONES bus itself and continues at P:0x2d5. P:0x30a, the phones
+  crossfade, becomes `jsr >phr_phn`; in ROUTED it writes the PHONES bus and
+  the metronome to ring words 4/5 and continues at P:0x35a.
 
-Proof: UNTESTED. Nothing below has been built or run yet.
+Proof: under the ColdFire port only (verify.py; TESTING.md). Not run on
+hardware.
 """
 
 from remix.schema import (Category, Claims, Detour, DspHook, DspRange, DspSection, Gate, Kind,
@@ -69,7 +77,7 @@ MODULE = Module(
     doc="CUE CFG ROUTED: the headphone jack becomes a third output pair; "
         "CUE + LEVEL picks each track's outputs.",
     category=Category.BUS, author="npp1993", author_url="https://github.com/npp1993",
-    proof=Proof.UNTESTED, proof_note="Development scaffold; no module behavior has been verified.",
+    proof=Proof.UNTESTED, proof_note="verify.py under the ColdFire port; not run on hardware",
 
     linked=(Linked(UNIT, "modules/phones-routing/phones.s", dram=True),),
 
@@ -131,5 +139,5 @@ MODULE = Module(
         DspRange("y", 0xC00, 0xC1, "bus ramps, routing lists, PHONES out and y scratch (payload A)"),
     )),
 
-    gates=(Gate("modules/phones-routing/verify.py", remix_arg=False),),
+    gates=(Gate("modules/phones-routing/verify.py", remix_arg=False, venv=True, stage="image"),),
 )

@@ -79,7 +79,7 @@ The module changes nothing until you choose CUE CFG ROUTED; with NORMAL or STUDI
 2. **In ROUTED, CUE + LEVEL chooses the track's outputs instead of setting a cue level.**
    - **Why:** ROUTED has a single level per track, so the cue level has nothing to do. STUDIO already uses this gesture for the second output pair, so it stays where musicians expect it. A new gesture (FUNC + LEVEL is MAIN's) was considered, but every LEVEL combination is taken.
    - **What you see:** the LEV box shows OUT and the destination's name, and both bars show the level.
-   - **Also:** CC 47 in and out carries the destination number (0–13). CUE + TRACK does nothing, as in STUDIO.
+   - **Also:** CC 47 in and out carries the destination number (0–13). CUE + TRACK does nothing, as in STUDIO. A destination change fades the track out on its old outputs and in on the new ones over 16 samples each, so it does not click.
    - **Checked:** NORMAL and STUDIO's CUE + LEVEL store exactly what stock stores. FUNC + TRACK mute and solo silence a track on every output it uses.
 3. **In ROUTED, MIX sets the PHONES output level instead of the headphone blend.**
    - **Why:** ROUTED's PHONES bus has nothing to blend, and a level knob is what MAIN and CUE already have. The MIXER has no free knob.

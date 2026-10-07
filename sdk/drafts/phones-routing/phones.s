@@ -4,9 +4,12 @@
 | 2 ROUTED), mirrored to CS1 at 0x100b1497. Every stock reader but the
 | AUDIO page tests it nonzero, so ROUTED behaves as STUDIO there.
 |
-| Stage 1 (this file): the AUDIO page's third CUE CFG row and the project
-| load. The CUE + LEVEL, LEV box and level-page detours replay stock until
-| their ROUTED paths land.
+| This file: the AUDIO page's third CUE CFG row and its YES actions (with
+| the cue-byte conversion on a mode switch), the project load and the
+| power-up CS1 check (pokes in the manifest), CUE + LEVEL as the destination
+| chooser and its LEV box, and the level page that carries the bus levels,
+| the eight destinations and the declick to the DSP (phones_mix.asm).
+| Tested under the ColdFire port only: see TESTING.md.
 
         .equ    CUE_CFG,      0x80000037
         .equ    CUE_CFG_CS1,  0x100b1497
@@ -152,27 +155,33 @@ act_none:
         .equ    CUE_MASK,     0x80000008   | bit 16 + t: track t is cued
         .equ    CUE_DESTS,    0x066a       | codes with CUE: 1 3 5 6 9 10
 
-| d4 the direction; uses d0, d1, d3, d5-d7, a0, a2, a3.
+| d4 the direction; uses d0, d1, d3, d5-d7, a0-a3. a1 counts the cue bytes
+| a bank's conversion changed: a bank with none is not marked for saving.
 convert_all:
         movea.l #BANK0,%a2
         moveq   #16,%d5
-1:      movea.l %a2,%a0
+1:      suba.l  %a1,%a1
+        movea.l %a2,%a0
         adda.l  #WORK_LV,%a0
         bsr.s   conv_parts
         movea.l %a2,%a0
         adda.l  #SAVED_LV,%a0
         bsr.s   conv_parts
+        cmpa.l  CUR_BANK,%a2
+        bne.s   3f
+        movea.l #CS1_WORK_LV,%a0         | the current bank: its CS1 copies too
+        bsr.s   conv_parts
+        movea.l #CS1_SAVED_LV,%a0
+        bsr.s   conv_parts
+3:      move.l  %a1,%d0
+        tst.l   %d0
+        beq.s   2f                       | nothing changed in this bank
         movea.l %a2,%a0
         adda.l  #BANK_SAVE,%a0
         moveq   #1,%d0
         move.l  %d0,(%a0)                | the next project save writes this bank
         cmpa.l  CUR_BANK,%a2
         bne.s   2f
-        movea.l #CS1_WORK_LV,%a0         | the current bank: its CS1 copies too
-        bsr.s   conv_parts
-        movea.l #CS1_SAVED_LV,%a0
-        bsr.s   conv_parts
-        moveq   #1,%d0
         move.l  %d0,CS1_EDITED
 2:      adda.l  #BANK_SIZE,%a2
         subq.l  #1,%d5
@@ -208,7 +217,10 @@ conv_tracks:
         btst    %d0,%d3
         bne.s   3f
         moveq   #0,%d1
-3:      move.b  %d1,1(%a0)
+3:      cmp.b   1(%a0),%d1
+        beq.s   8f
+        move.b  %d1,1(%a0)
+        addq.l  #1,%a1
         bra.s   8f
 4:      tst.l   %d0                      | from STUDIO
         beq.s   7f                       | no cue level: MAIN
@@ -224,7 +236,10 @@ conv_tracks:
         btst    %d3,%d1
         beq.s   7f
         moveq   #3,%d0                   | cued: M+C
-7:      move.b  %d0,1(%a0)
+7:      cmp.b   1(%a0),%d0
+        beq.s   8f
+        move.b  %d0,1(%a0)
+        addq.l  #1,%a1
 8:      addq.l  #2,%a0
         addq.l  #1,%d7
         moveq   #8,%d3
@@ -314,13 +329,19 @@ lev_box_val:
 
 | ---- the LEV box bars (jmp detour, displaced: moveq #18,d0; muls.l d2,d0)
 | STUDIO draws a level bar from d2 and a cue bar from d4. In ROUTED d4 is a
-| destination code, so both bars show the level.
+| destination code, so both bars show the level; except on the MAIN display
+| (FUNC held: 0x46c7c730 set and CUE not held, 0x4004dca0), where stock has
+| cleared d4 and the second bar stays empty.
         .global lev_bars
 lev_bars:
         mvs.b   CUE_CFG,%d0
         cmpi.l  #2,%d0
         bne.s   1f
-        move.l  %d2,%d4
+        tst.l   0x460d168c               | CUE held: the destination display
+        bne.s   2f
+        tst.l   0x46c7c730               | FUNC held: MAIN, as stock
+        bne.s   1f
+2:      move.l  %d2,%d4
 1:      moveq   #18,%d0
         muls.l  %d2,%d0
         jmp     0x4004df92
@@ -339,6 +360,15 @@ lev_bars:
 |   $3b  1 in ROUTED, else 0
 | CUE stays in $28 as stock sends it. Free here: d0, d1, d4 and a0 (each is
 | written before it is read after the return); d3 is the replayed load.
+|
+| The declick: the DSP routes by the codes it is sent (sent_codes). When a
+| track's destination changes, the first frame keeps the old code and sends
+| the track's MAIN gain word (page halfword 4t+1, which 0x40004db8 wrote
+| before this point, from 0x4000d0de) as 0, and its split (4t+3, the sample
+| the ramp starts at) as 0, so the DSP's gain ramp fades
+| the track out on its old outputs; the next frame sends the new code with
+| the real gain, and the ramp fades it back in. A destination that returns
+| to the sent code before the switch just cancels the fade.
         .equ    PG_MAIN0,     0x52
         .equ    PG_MAIN,      0x6e
         .equ    PG_PHONES,    0x70
@@ -352,36 +382,56 @@ page_levels:
         cmpi.l  #2,%d0
         beq.s   1f
         clr.w   PG_ROUTED(%a2)
-        bra.s   9f
+        bra     9f
 1:      move.w  %d2,PG_MAIN(%a2)
         move.w  #64,PG_MAIN0(%a2)        | $29: unity
         mvs.b   0x80000032,%d0
         move.w  %d0,PG_PHONES(%a2)
+        lea     -8(%sp),%sp
+        movem.l %a1/%a3,(%sp)
         lea     LIVE_CUE,%a0
-        bsr.s   dest4
-        move.w  %d3,PG_DEST_LO(%a2)
-        bsr.s   dest4
-        move.w  %d3,PG_DEST_HI(%a2)
-        move.w  #1,PG_ROUTED(%a2)
-9:      move.b  0x80000032,%d3           | the displaced load
-        rts
-
-| d3 = four destinations from (a0), (a0+2), (a0+4), (a0+6), the first in
-| bits 15..12; a0 ends 8 bytes on. A byte above 13 (a cue level) is MAIN, 0.
-| Uses d0, d1, d4.
-dest4:
-        moveq   #0,%d3
-        moveq   #4,%d4
-1:      mvz.b   (%a0),%d0
+        lea     sent_codes:l,%a1         | the code the DSP routes by; +8: fading
+        lea     2(%a2),%a3               | T1's MAIN gain word on the page
+        moveq   #0,%d3                   | the codes word being built, T1 first
+        moveq   #0,%d4                   | the track
+2:      mvz.b   (%a0),%d0                | the track's destination now
         addq.l  #2,%a0
         moveq   #DEST_MAX,%d1
         cmp.l   %d1,%d0
-        bls.s   2f
-        moveq   #0,%d0
-2:      lsl.l   #4,%d3
+        bls.s   3f
+        moveq   #0,%d0                   | a cue level, not a code: MAIN
+3:      mvz.b   (%a1),%d1
+        cmp.l   %d0,%d1
+        bne.s   4f
+        clr.b   8(%a1)                   | unchanged: no fade pending
+        bra.s   6f
+4:      tst.b   8(%a1)
+        bne.s   5f
+        move.b  #1,8(%a1)                | first frame: fade out on the old code,
+        clr.w   (%a3)                    | gain 0 from sample 0 (the split, 4t+3,
+        clr.w   4(%a3)                   | is where the DSP's ramp starts)
+        move.l  %d1,%d0
+        bra.s   6f
+5:      move.b  %d0,(%a1)                | second frame: the new code, at full gain
+        clr.b   8(%a1)
+6:      lsl.l   #4,%d3
         or.l    %d0,%d3
-        subq.l  #1,%d4
-        bne.s   1b
+        addq.l  #1,%a1
+        addq.l  #8,%a3
+        addq.l  #1,%d4
+        moveq   #4,%d1
+        cmp.l   %d1,%d4
+        bne.s   7f
+        move.w  %d3,PG_DEST_LO(%a2)      | T1..T4
+        moveq   #0,%d3
+7:      moveq   #8,%d1
+        cmp.l   %d1,%d4
+        bne.s   2b
+        move.w  %d3,PG_DEST_HI(%a2)      | T5..T8
+        movem.l (%sp),%a1/%a3
+        lea     8(%sp),%sp
+        move.w  #1,PG_ROUTED(%a2)
+9:      move.b  0x80000032,%d3           | the displaced load
         rts
 
         .data
@@ -396,6 +446,8 @@ cue_actions: .long act_normal, act_studio, act_routed
 | numbering (phones_mix.asm).
 dest_names:  .long n_main, n_cue, n_phns, n_mc, n_mp, n_cp, n_all
              .long n_mnl, n_mnr, n_cul, n_cur, n_phl, n_phr, n_off
+sent_codes:  .byte 0, 0, 0, 0, 0, 0, 0, 0   | the codes the DSP routes by
+fading:      .byte 0, 0, 0, 0, 0, 0, 0, 0   | 1: faded out last frame (sent_codes + 8)
 str_blank:   .asciz ""
 str_routed:  .asciz "ROUTED"
 str_out:     .asciz "OUT"
