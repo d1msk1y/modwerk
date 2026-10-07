@@ -30,11 +30,36 @@ ColdFire port; reference/phase0-notes.md in the Modwerk worktree):
 Proof: UNTESTED. Nothing below has been built or run yet.
 """
 
-from remix.schema import (Category, Detour, DspHook, DspSection, Gate, Kind, Linked,
-                          Module, Poke, Proof, SymbolRef)
+from remix.schema import (Category, Claims, Detour, DspHook, DspRange, DspSection, Gate, Kind,
+                          Linked, Module, Poke, Proof, SymbolRef)
 from remix.stock_guard import stock_dsp_words, stock_guard
 
 UNIT = "phones"
+
+# The destination codes, in CUE + LEVEL order (phones.s dest_names), as the
+# DSP's coefficient table: per code, for CUE, MAIN and PHONES in turn, a
+# used flag and four words: L from L, R from L, L from R, R from R. A stereo
+# pair passes L to L and R to R; a mono jack takes half of each side.
+ONE, HALF = 0x7FFFFF, 0x400000
+_PAIR = {"off": (0, 0, 0, 0), "st": (ONE, 0, 0, ONE), "L": (HALF, 0, HALF, 0), "R": (0, HALF, 0, HALF)}
+_CODES = (  # (CUE, MAIN, PHONES)
+    ("off", "st", "off"),   # 0 MAIN
+    ("st", "off", "off"),   # 1 CUE
+    ("off", "off", "st"),   # 2 PHNS
+    ("st", "st", "off"),    # 3 M+C
+    ("off", "st", "st"),    # 4 M+P
+    ("st", "off", "st"),    # 5 C+P
+    ("st", "st", "st"),     # 6 ALL
+    ("off", "L", "off"),    # 7 MNL
+    ("off", "R", "off"),    # 8 MNR
+    ("L", "off", "off"),    # 9 CUL
+    ("R", "off", "off"),    # 10 CUR
+    ("off", "off", "L"),    # 11 PHL
+    ("off", "off", "R"),    # 12 PHR
+    ("off", "off", "off"),  # 13 OFF
+)
+CODE_TABLE = tuple(w for code in _CODES for pair in code
+                   for w in ((0 if pair == "off" else 1),) + _PAIR[pair])
 
 MODULE = Module(
     name="phones-routing",
@@ -88,11 +113,18 @@ MODULE = Module(
         asm="modules/phones-routing/phones_mix.asm",
         priority=21,
         payloads=frozenset({"A"}),
+        ptable=CODE_TABLE,
         hooks=(
             DspHook({"A": 0x00257}, stock_dsp_words("A", 0x00257, 2, "43a6ab9f9273577277c56b298e158b037e7b6f3c457da73cd18868c7501a9fd9"),
-                    "ph_mix", "core 0 mixdown: the MASTER TRACK branch; ROUTED takes its own path"),
+                    "phr_mix", "core 0 mixdown: the MASTER TRACK branch; ROUTED takes its own path"),
+            DspHook({"A": 0x0030A}, stock_dsp_words("A", 0x0030A, 2, "749460b0c4484ec3134e24309d29382fd6265a4eeefbd813a9d97fa485a259f0"),
+                    "phr_phn", "core 0 phones crossfade; ROUTED writes the PHONES bus"),
         ),
     ),
+
+    claims=Claims(dsp_ranges=(
+        DspRange("y", 0xC00, 0xC0, "bus ramps, routing lists, PHONES out and y scratch (payload A)"),
+    )),
 
     gates=(Gate("modules/phones-routing/verify.py", remix_arg=False),),
 )

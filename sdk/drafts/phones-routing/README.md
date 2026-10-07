@@ -54,8 +54,9 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - Tracks routed to CUE or PHONES bypass the master.
 
 **Not yet done**
-- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box and the level page words.
-- Still to build: the DSP mixdown, and rewriting cue bytes on a mode switch. Until the mixdown lands, ROUTED plays as STUDIO does, with MAIN at 0 dB whatever its setting, and each destination code (0 to 13) heard as a very low cue level.
+- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap).
+- Still to build: rewriting cue bytes on a mode switch.
+- The ROUTED mixdown costs core 0 about 170 to 190 more instructions per sample than stock, roughly 6% of its usable budget.
 
 **Conflicts**
 - The module changes core 0's mixdown on the DSP.
