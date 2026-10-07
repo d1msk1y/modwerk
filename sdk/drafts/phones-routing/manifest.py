@@ -1,0 +1,92 @@
+"""PHONES ROUTING -- the headphone jack as a third assignable output pair.
+
+PROJECT > CONTROL > AUDIO > CUE CFG gains a third choice, ROUTED, beside
+NORMAL and STUDIO. In ROUTED, LEVEL sets each audio track's level and
+CUE + LEVEL picks where the track goes: MAIN, CUE or PHONES as stereo pairs
+in any combination, or one mono jack of the six. The choice is stored in
+the track's cue-level byte of the Part, so it follows the Part and survives
+Part save, Part reload and the SRC page reset. MIXER's MIX becomes the
+PHONES output level. Inputs A/B and C/D keep stock DIR to MAIN.
+
+Stock code it changes (OS 1.40C, read from the image and confirmed under the
+ColdFire port; reference/phase0-notes.md in the Modwerk worktree):
+- CUE CFG is the byte 0x80000037 (0 NORMAL, 1 STUDIO). Every stock reader
+  but the AUDIO page tests it nonzero, so ROUTED (2) inherits STUDIO's
+  behaviour there: CUE + TRACK does nothing and both gains are always sent.
+- The project parse at 0x4008732a clamps CUE_STUDIO_MODE to 0/1; it is
+  widened to 0..2. A project saved in ROUTED loads on a stock OS as STUDIO.
+- AUDIO page: draw 0x400651a8, key handler 0x40065430 (menu-state table
+  0x400cbdd4), label/getter/action tables 0x400b277c..0x400b27ab.
+- CUE + LEVEL: 0x4004e98c. LEV box with CUE held: 0x4004dd64.
+- Level page builder 0x4000d1a6: in ROUTED the MAIN level word ($29) is sent
+  as unity, so each track's ramped MAIN gain is its own level x XVOL; the
+  real MAIN, CUE and PHONES levels and the eight destinations go in the
+  page's unused words $37..$3b.
+- DSP, payload A (core 0): P:0x257, the MASTER TRACK branch in front of the
+  mixdown, becomes `jsr >ph_mix`; in ROUTED the module's mixdown writes the
+  CUE, MAIN and PHONES ring words and returns past the stock cue mix.
+
+Proof: UNTESTED. Nothing below has been built or run yet.
+"""
+
+from remix.schema import (Category, Detour, DspHook, DspSection, Gate, Kind, Linked,
+                          Module, Poke, Proof, SymbolRef)
+from remix.stock_guard import stock_dsp_words, stock_guard
+
+UNIT = "phones"
+
+MODULE = Module(
+    name="phones-routing",
+    key="PHONES ROUTING",
+    kind=Kind.HYBRID,
+    doc="CUE CFG ROUTED: the headphone jack becomes a third output pair; "
+        "CUE + LEVEL picks each track's outputs.",
+    category=Category.BUS, author="npp1993", author_url="https://github.com/npp1993",
+    proof=Proof.UNTESTED, proof_note="Development scaffold; no module behavior has been verified.",
+
+    linked=(Linked(UNIT, "modules/phones-routing/phones.s", dram=True),),
+
+    detours=(
+        Detour(0x4008732A, stock_guard(0x4008732a, 14, "968adf63466a054aefd6609f18536e3719bbcc144b6dc0a43de49794c3bb3718"),
+               UNIT, "parse_mode", "project load: CUE_STUDIO_MODE clamps to 0..2, not 0..1",
+               kind="jsr", pad_to=14),
+        Detour(0x4004E98C, stock_guard(0x4004e98c, 8, "4c0570fc6ef0682508e64de2367e111c27f895b6b78e58c300b3f2e7b8010118"),
+               UNIT, "cue_level_enc", "CUE + LEVEL: in ROUTED, step the track's destination",
+               pad_to=8),
+        Detour(0x4004DD64, stock_guard(0x4004dd64, 6, "4a0e8b026de2be316135a324da1ec8860f198cd3d26d2c6e1477772403baa3f0"),
+               UNIT, "lev_box_cue", "LEV box with CUE held: in ROUTED, the destination's name"),
+        Detour(0x4000D1DE, stock_guard(0x4000d1de, 6, "a8b2aeabd9f8c38a62b1ae4c85906c87d14c0b54dd0a23ab75eacdd91c3e0e22"),
+               UNIT, "page_levels", "level page: unity MAIN word, real levels and destinations in $37..$3b",
+               kind="jsr"),
+    ),
+
+    symbol_refs=(
+        SymbolRef(0x40065276, 0x400B277C, UNIT, "t8_labels", "AUDIO: TRACK 8 labels, a third (blank) row"),
+        SymbolRef(0x4006527C, 0x400B2784, UNIT, "t8_getters", "AUDIO: TRACK 8 checkboxes"),
+        SymbolRef(0x4006535C, 0x400B278C, UNIT, "cue_labels", "AUDIO: CUE CFG labels + ROUTED"),
+        SymbolRef(0x40065368, 0x400B2794, UNIT, "cue_getters", "AUDIO: CUE CFG checkboxes"),
+        SymbolRef(0x400654B2, 0x400B279C, UNIT, "t8_actions", "AUDIO: TRACK 8 YES actions"),
+        SymbolRef(0x400654C0, 0x400B27A4, UNIT, "cue_actions", "AUDIO: CUE CFG YES actions"),
+        SymbolRef(0x400CBDD4, 0x40065414, UNIT, "audio_enter", "AUDIO page: three rows"),
+        SymbolRef(0x400CBDE0, 0x40065430, UNIT, "audio_keys", "AUDIO page: keep TRACK 8's cursor on its two rows"),
+    ),
+
+    pokes=(
+        Poke(0x40065332, stock_guard(0x40065332, 2, "06b6b4095e023805a3cd41879f15ba5ab2f2e33a6f53d916904496062f324995"),
+             bytes.fromhex("001d"), "AUDIO: the CUE CFG box grows by one row (22 -> 29 px)"),
+        Poke(0x4006533A, stock_guard(0x4006533a, 2, "f09a7a12954169ae595d12d870e69a4c0092003157d72523d626d2a3990241e2"),
+             bytes.fromhex("0004"), "AUDIO: ... downward: its bottom edge 11 -> 4, so the top stays put"),
+    ),
+
+    dsp=DspSection(
+        asm="modules/phones-routing/phones_mix.asm",
+        priority=21,
+        payloads=frozenset({"A"}),
+        hooks=(
+            DspHook({"A": 0x00257}, stock_dsp_words("A", 0x00257, 2, "43a6ab9f9273577277c56b298e158b037e7b6f3c457da73cd18868c7501a9fd9"),
+                    "ph_mix", "core 0 mixdown: the MASTER TRACK branch; ROUTED takes its own path"),
+        ),
+    ),
+
+    gates=(Gate("modules/phones-routing/verify.py", remix_arg=False),),
+)
