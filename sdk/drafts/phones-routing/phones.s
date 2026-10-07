@@ -85,7 +85,9 @@ cue_get:
 1:      move.l  (%sp)+,%d2
         rts
 
-| YES on a CUE CFG row. As stock: store, mirror, redraw.
+| YES on a CUE CFG row. As stock: store, mirror, redraw; and when the
+| switch enters or leaves ROUTED, convert every Part's cue bytes so the
+| routing means the same thing in the new mode (convert_all).
         .global act_normal, act_studio, act_routed, act_none
 act_normal:
         moveq   #0,%d0
@@ -96,12 +98,138 @@ act_studio:
 act_routed:
         moveq   #2,%d0
 set_mode:
-        move.b  %d0,CUE_CFG
-        move.b  %d0,CUE_CFG_CS1
+        lea     -32(%sp),%sp
+        movem.l %d2-%d7/%a2-%a3,(%sp)
+        move.l  %d0,%d2                  | the new mode
+        mvs.b   CUE_CFG,%d3              | the old one
+        cmp.l   %d2,%d3
+        beq.s   9f
+        moveq   #2,%d1
+        cmp.l   %d1,%d2
+        beq.s   1f
+        cmp.l   %d1,%d3
+        bne.s   9f                       | NORMAL <-> STUDIO: nothing to convert
+        moveq   #0,%d4                   | out of ROUTED
+        bra.s   2f
+1:      moveq   #1,%d4                   | into ROUTED from STUDIO
+        tst.l   %d3
+        bne.s   2f
+        moveq   #2,%d4                   | into ROUTED from NORMAL
+2:      bsr     convert_all
+9:      move.b  %d2,CUE_CFG
+        move.b  %d2,CUE_CFG_CS1
+        movem.l (%sp),%d2-%d7/%a2-%a3
+        lea     32(%sp),%sp
         pea     -1.w
         jsr     MENU_REDRAW
         addq.l  #4,%sp
 act_none:
+        rts
+
+| ---- the conversion on a mode switch -------------------------------------
+| Every bank is in RAM after a load (docs/firmware/PARTS.md section 1):
+| B = 0x400e21e0 + bank * 0x9b340, working Part p at B + 0x8ed80 + p *
+| 0x18b2, saved Part p at B + 0x9504a + p * 0x18b2, track t's LEVEL at
+| +0x12 + 2t and its cue byte after it. The long at B + 0x9b332 has the bank
+| written by the next project save. The current bank's working and saved
+| Parts are also in CS1 (what survives a power cycle), at 0x100a4ece and
+| 0x100ab196. The working/saved relation is kept: both copies convert, so
+| no unsaved bit changes. d4 says which way:
+|   0  out of ROUTED: a destination with CUE gives cue level = LEVEL, else 0
+|   1  into ROUTED from STUDIO: LEVEL and cue -> M+C, cue only -> CUE, else MAIN
+|   2  into ROUTED from NORMAL: a cued track -> M+C, the rest -> MAIN
+        .equ    BANK0,        0x400e21e0
+        .equ    BANK_SIZE,    0x9b340
+        .equ    PART_SIZE,    0x18b2
+        .equ    WORK_LV,      0x8ed92      | working Part 0, T1 LEVEL
+        .equ    SAVED_LV,     0x9505c      | saved Part 0, T1 LEVEL
+        .equ    BANK_SAVE,    0x9b332
+        .equ    CUR_BANK,     0x46c82456   | the current bank's B
+        .equ    CS1_WORK_LV,  0x100a4ee0
+        .equ    CS1_SAVED_LV, 0x100ab1a8
+        .equ    CS1_EDITED,   0x100f8598
+        .equ    LIVE_LV,      0x80000c50
+        .equ    CUE_MASK,     0x80000008   | bit 16 + t: track t is cued
+        .equ    CUE_DESTS,    0x066a       | codes with CUE: 1 3 5 6 9 10
+
+| d4 the direction; uses d0, d1, d3, d5-d7, a0, a2, a3.
+convert_all:
+        movea.l #BANK0,%a2
+        moveq   #16,%d5
+1:      movea.l %a2,%a0
+        adda.l  #WORK_LV,%a0
+        bsr.s   conv_parts
+        movea.l %a2,%a0
+        adda.l  #SAVED_LV,%a0
+        bsr.s   conv_parts
+        movea.l %a2,%a0
+        adda.l  #BANK_SAVE,%a0
+        moveq   #1,%d0
+        move.l  %d0,(%a0)                | the next project save writes this bank
+        cmpa.l  CUR_BANK,%a2
+        bne.s   2f
+        movea.l #CS1_WORK_LV,%a0         | the current bank: its CS1 copies too
+        bsr.s   conv_parts
+        movea.l #CS1_SAVED_LV,%a0
+        bsr.s   conv_parts
+        moveq   #1,%d0
+        move.l  %d0,CS1_EDITED
+2:      adda.l  #BANK_SIZE,%a2
+        subq.l  #1,%d5
+        bne.s   1b
+        movea.l #LIVE_LV,%a0             | and what plays now
+        bsr.s   conv_tracks
+        rts
+
+| Four Parts from a0 (T1 LEVEL of the first).
+conv_parts:
+        movea.l %a0,%a3
+        moveq   #4,%d6
+1:      movea.l %a3,%a0
+        bsr.s   conv_tracks
+        adda.l  #PART_SIZE,%a3
+        subq.l  #1,%d6
+        bne.s   1b
+        rts
+
+| Eight (LEVEL, cue) pairs from a0.
+conv_tracks:
+        moveq   #0,%d7                   | the track
+1:      mvz.b   (%a0),%d1                | LEVEL
+        mvz.b   1(%a0),%d0               | the cue byte
+        cmpi.l  #1,%d4
+        beq.s   4f
+        bgt.s   5f
+        moveq   #DEST_MAX,%d3            | out of ROUTED
+        cmp.l   %d3,%d0
+        bls.s   2f
+        moveq   #0,%d0                   | a cue level, not a code: MAIN
+2:      move.l  #CUE_DESTS,%d3
+        btst    %d0,%d3
+        bne.s   3f
+        moveq   #0,%d1
+3:      move.b  %d1,1(%a0)
+        bra.s   8f
+4:      tst.l   %d0                      | from STUDIO
+        beq.s   7f                       | no cue level: MAIN
+        moveq   #1,%d0                   | cue only: CUE
+        tst.l   %d1
+        beq.s   7f
+        moveq   #3,%d0                   | both: M+C
+        bra.s   7f
+5:      moveq   #16,%d3                  | from NORMAL
+        add.l   %d7,%d3
+        move.l  CUE_MASK,%d1
+        moveq   #0,%d0
+        btst    %d3,%d1
+        beq.s   7f
+        moveq   #3,%d0                   | cued: M+C
+7:      move.b  %d0,1(%a0)
+8:      addq.l  #2,%a0
+        addq.l  #1,%d7
+        moveq   #8,%d3
+        cmp.l   %d3,%d7
+        bne.s   1b
         rts
 
 | ---- CUE + LEVEL (jmp detour, displaced: lea -16(sp),sp; movem.l d2-d5,(sp))

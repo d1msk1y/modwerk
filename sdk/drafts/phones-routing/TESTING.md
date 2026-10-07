@@ -85,10 +85,21 @@ That is about +170 to +190 per sample on core 0. The phones hook costs 118 again
 - `move #1,x0` loads `$010000`: a short immediate into a data register lands in its top byte. With MASTER on, track 8's one-entry loop ran 65,536 times and the frame never finished.
 - `dsp_asm` refuses a backward `bsr`, and writes `brset`'s target as an absolute address.
 
+## Stage 4: converting cue bytes on a mode switch
+
+Each check dumps the (LEVEL, cue) pairs in several places: bank 1's working Parts 1 and 2, bank 1's saved Part 1, bank 16's saved Part 4, bank 10's saved Part 2, the current bank's CS1 copy, the live bytes `0x80000c50`, and the per-bank save longs (`B + 0x9b332`). The card is read back with `--card-out` and `emu_card.extract_image`.
+
+| Switch | Result |
+| --- | --- |
+| NORMAL → ROUTED (template, nothing cued) | Every cue byte becomes 0 (MAIN) in every dumped Part, the CS1 copy and the live bytes. Every bank's save long becomes 1. |
+| ROUTED → STUDIO, with T3 first set to CUE by CUE + LEVEL | T3's cue byte = its LEVEL (127); every other track 0. The saved Parts convert alongside. |
+| STUDIO → ROUTED (template with `CUE_STUDIO_MODE=1`) | Every track has a LEVEL and a cue level, so all become M+C (3): bank 1, bank 10's saved Part 2, the live bytes |
+| Card after each switch | The other banks' `.work` files are rewritten in the background with the converted bytes (bank 8: `00`, then `03`). The current bank and `project.work` stay in RAM and CS1 until the project is saved, as stock keeps any unsaved edit. |
+
 ## Not run
 
 - The metronome on PHONES.
-- Rewriting cue bytes when the mode changes.
+- A power cycle after a mode switch without saving the project.
 - MKI key paths.
 - Hardware.
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.

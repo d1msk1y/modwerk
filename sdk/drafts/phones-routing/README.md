@@ -46,16 +46,21 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 **Where the routing is stored**
 - Each track's destination is kept in that track's cue-level byte of the Part. It follows the Part and survives Part save, Part reload, project save, the SRC page reset and track clears.
 - The CUE CFG choice is saved in the project as CUE_STUDIO_MODE=2.
-- On a stock OS, a ROUTED project loads as STUDIO. Its cue levels are then the stored destination codes, 0 to 13, which are very quiet. Measured in the emulator: stock 1.40C stores 1 where this module stores 2.
+- **Switching CUE CFG converts every Part's cue bytes** (all 16 banks, working and saved Parts):
+  - **Leaving ROUTED:** a track routed to CUE gets cue level = its LEVEL; any other track gets 0.
+  - **Entering ROUTED from STUDIO:** LEVEL and cue level → M+C; cue only → CUE; otherwise MAIN.
+  - **Entering ROUTED from NORMAL:** cued tracks → M+C; the rest → MAIN.
+
+  Save the project to keep the conversion, as with any edit.
+- On a stock OS, a ROUTED project loads as STUDIO. Its cue levels are then the stored destination codes, 0 to 13, which are very quiet; switch to STUDIO on the module first, so they are converted, before opening the project on a stock OS. Measured in the emulator: stock 1.40C stores 1 where this module stores 2.
 
 **Master track**
 - With MASTER TRACK on, tracks routed to MAIN feed the master.
 - Track 8's destination picks which jacks the master plays from.
 - Tracks routed to CUE or PHONES bypass the master.
 
-**Not yet done**
-- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap).
-- Still to build: rewriting cue bytes on a mode switch.
+**Status**
+- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap) and converting cue bytes on a mode switch.
 - The ROUTED mixdown costs core 0 about 170 to 190 more instructions per sample than stock, roughly 6% of its usable budget.
 
 **Conflicts**
