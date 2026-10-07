@@ -197,10 +197,63 @@ lev_bars:
         muls.l  %d2,%d0
         jmp     0x4004df92
 
-| ---- level page (jsr detour, displaced: move.b 0x80000035,d2) -----------
+| ---- level page (jsr detour, displaced: move.b 0x80000032,d3) -----------
+| The builder at 0x4000d1a6 fills the page's fixed words from a2 (the page
+| core 0 reads at X:$205); the detour sits just after it stores d2, the MAIN
+| level sign-extended, as word $29. The level bytes run 0..127, 64 = 0 dB.
+|
+| In ROUTED, $29 is rewritten as 64, so each track's ramped MAIN gain is its
+| own level x XVOL and no bus level, and the module's mixdown applies the bus
+| levels after the sum. d2 keeps the real level: one builder branch sends it
+| again as $2c. Words the DSP reads only in ROUTED:
+|   $37  the MAIN level        $38  the PHONES level (the MIX byte)
+|   $39  T1..T4 destinations   $3a  T5..T8 (4 bits each, T1 and T5 highest)
+|   $3b  1 in ROUTED, else 0
+| CUE stays in $28 as stock sends it. Free here: d0, d1, d4 and a0 (each is
+| written before it is read after the return); d3 is the replayed load.
+        .equ    PG_MAIN0,     0x52
+        .equ    PG_MAIN,      0x6e
+        .equ    PG_PHONES,    0x70
+        .equ    PG_DEST_LO,   0x72
+        .equ    PG_DEST_HI,   0x74
+        .equ    PG_ROUTED,    0x76
+        .equ    LIVE_CUE,     0x80000c51  | + 2t: the live cue byte, here a destination
         .global page_levels
 page_levels:
-        move.b  0x80000035,%d2
+        mvs.b   CUE_CFG,%d0
+        cmpi.l  #2,%d0
+        beq.s   1f
+        clr.w   PG_ROUTED(%a2)
+        bra.s   9f
+1:      move.w  %d2,PG_MAIN(%a2)
+        move.w  #64,PG_MAIN0(%a2)        | $29: unity
+        mvs.b   0x80000032,%d0
+        move.w  %d0,PG_PHONES(%a2)
+        lea     LIVE_CUE,%a0
+        bsr.s   dest4
+        move.w  %d3,PG_DEST_LO(%a2)
+        bsr.s   dest4
+        move.w  %d3,PG_DEST_HI(%a2)
+        move.w  #1,PG_ROUTED(%a2)
+9:      move.b  0x80000032,%d3           | the displaced load
+        rts
+
+| d3 = four destinations from (a0), (a0+2), (a0+4), (a0+6), the first in
+| bits 15..12; a0 ends 8 bytes on. A byte above 13 (a cue level) is MAIN, 0.
+| Uses d0, d1, d4.
+dest4:
+        moveq   #0,%d3
+        moveq   #4,%d4
+1:      mvz.b   (%a0),%d0
+        addq.l  #2,%a0
+        moveq   #DEST_MAX,%d1
+        cmp.l   %d1,%d0
+        bls.s   2f
+        moveq   #0,%d0
+2:      lsl.l   #4,%d3
+        or.l    %d0,%d3
+        subq.l  #1,%d4
+        bne.s   1b
         rts
 
         .data

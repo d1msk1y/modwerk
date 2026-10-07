@@ -30,6 +30,15 @@ Nothing has been run on hardware. Every result below comes from the headless Col
 | LEV box with CUE held, no turn | LCD capture | label OUT |
 | NORMAL, CUE + LEVEL −5 (regression) | write watch | `0x80000c55 <- 0x67` (108 → 103) at `0x4004ea90`, the same as stock 1.40C |
 
+## Stage 2: the level page
+
+These checks read the 512-byte page ring at `0x80005460` (`--mem-dump`) and peek the copies core 0 reads (`--dsp-peek 0:X:0x4800,64;0:X:0x2800,64`).
+
+| Check | Result |
+| --- | --- |
+| ROUTED, T3 set to PHNS, template MAIN 127 and MIX 64 | All four ColdFire pages and both DSP banks: `$29 = 0040` (unity), `$37 = 007f`, `$38 = 0040`, `$39 = 0020` (T3 = 2), `$3a = 0000`, `$3b = 0001`. On the DSP each word carries the transfer's `03` tag byte. |
+| NORMAL, the same project | The first page is byte-identical to stock 1.40C's (128 bytes) |
+
 ## Not run
 
 - The DSP mixdown: stage 1 replays stock.

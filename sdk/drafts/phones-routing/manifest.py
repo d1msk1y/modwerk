@@ -18,7 +18,8 @@ ColdFire port; reference/phase0-notes.md in the Modwerk worktree):
 - AUDIO page: draw 0x400651a8, key handler 0x40065430 (menu-state table
   0x400cbdd4), label/getter/action tables 0x400b277c..0x400b27ab.
 - CUE + LEVEL: 0x4004e98c. LEV box with CUE held: 0x4004dd64.
-- Level page builder 0x4000d1a6: in ROUTED the MAIN level word ($29) is sent
+- Level page builder 0x4000d1a6 (detour 0x4000d1ea, after $29 is stored): in
+  ROUTED the MAIN level word ($29) is rewritten
   as unity, so each track's ramped MAIN gain is its own level x XVOL; the
   real MAIN, CUE and PHONES levels and the eight destinations go in the
   page's unused words $37..$3b.
@@ -60,7 +61,7 @@ MODULE = Module(
                pad_to=18),
         Detour(0x4004DF8C, stock_guard(0x4004df8c, 6, "f8f99e5fbedfdea641ce1ee91dd4b343c5f584bdbdcfdb906cc7b2ff700b81e4"),
                UNIT, "lev_bars", "LEV box bars: in ROUTED both show the level"),
-        Detour(0x4000D1DE, stock_guard(0x4000d1de, 6, "a8b2aeabd9f8c38a62b1ae4c85906c87d14c0b54dd0a23ab75eacdd91c3e0e22"),
+        Detour(0x4000D1EA, stock_guard(0x4000d1ea, 6, "84ba946536b14dc94d29f98643355d547c696eaf466a6aa97f9e4d654e1c9296"),
                UNIT, "page_levels", "level page: unity MAIN word, real levels and destinations in $37..$3b",
                kind="jsr"),
     ),
