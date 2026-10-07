@@ -25,7 +25,7 @@ The module has no effect slot and no knob of its own.
 | Any audio track | CUE + LEVEL | The track's outputs, shown in the LEV box |
 | MIXER | MIX | The PHONES output level |
 
-Destinations, in the order CUE + LEVEL steps through them: MAIN, CUE, PHNS, M+C, M+P, C+P, ALL, MN L, MN R, CU L, CU R, PH L, PH R, OFF.
+Destinations, in the order CUE + LEVEL steps through them: MAIN, CUE, PHNS, M+C, M+P, C+P, ALL, MNL, MNR, CUL, CUR, PHL, PHR, OFF.
 
 ## Usage
 
@@ -54,8 +54,8 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - Tracks routed to CUE or PHONES bypass the master.
 
 **Not yet done**
-- Stage 1 is built: the CUE CFG row and the project load.
-- Still to build: the CUE + LEVEL destination chooser, the LEV box text, the level page words, the DSP mixdown, and rewriting cue bytes on a mode switch.
+- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser and the LEV box.
+- Still to build: the level page words, the DSP mixdown, and rewriting cue bytes on a mode switch. Until they land, ROUTED plays as STUDIO does, with each destination code (0 to 13) heard as a very low cue level.
 
 **Conflicts**
 - The module changes core 0's mixdown on the DSP.

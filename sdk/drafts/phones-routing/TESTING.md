@@ -1,21 +1,39 @@
 # Phones Routing testing
 
-## Commands and exact revision
+Nothing has been run on hardware. Every result below comes from the headless ColdFire emulator (octabam's `ot_emu`) with `--mkii --dsp`.
 
-No checks have been run. Record the tested source commit and every command/result after implementation.
+## Setup
 
-## Hardware and audio quality
+**Image.** Built with Modwerk's vendored octabam tools (`make bus REMIX=phones-routing`):
+- built in a scratch copy of `sdk/octabam`, with this folder linked in as `modules/phones-routing`;
+- the remix is the stock effects plus PHONES ROUTING.
 
-Test on a real MKI or MKII. There is no minimum duration or track count: record what you actually ran. Exercise parameter extremes, LFO/p-lock/MIDI/scene modulation, mode/Part/bypass changes and the most instances you support; say why any case does not apply. Record tester, date, model, local firmware build SHA-256, native-source SHA-256, workload, duration, results and limitations. Keep emulator evidence separate from hardware results.
+**Base OS.** The developer's own OCTATRACK_OS1.40C. Its MAIN OS SHA-256 is `164f3122…0a84e`.
 
-## Resources
+**Project.** A copy of the developer's template project, staged with `stage_card.py`.
 
-Unmeasured: publication is blocked. Record worst-case cycles for every processor used, per-instance and maximum configuration, units and real-time budget, including branch/mode changes and modulation. Inventory exact code/state/table/buffer/stack/heap/padding memory by address space, word width, words, bytes and instance/shared scope. Include per-instance, shared and maximum-instance totals; compare against the native allocation/build report. Attach local text reports, never firmware or project/card dumps. Fill tests.qualification only with actual results.
+## Stage 1: CUE CFG row and project load
 
-## Hardware
+| Check | Method | Result |
+| --- | --- | --- |
+| AUDIO page draws ROUTED | PROJ, CONTROL, AUDIO, RIGHT, DOWN×2; LCD capture | Three rows inside the CUE CFG box; TRACK 8 keeps two |
+| YES on ROUTED | write watch on `0x80000037` | `<- 2` from the module's `set_mode` |
+| Project with `CUE_STUDIO_MODE=2` | load, write watch | module image stores 2; stock 1.40C stores 1 (STUDIO) |
 
-Untested. Never infer hardware safety from assembly or a green metadata check.
+## Stage 1: CUE + LEVEL and the LEV box
 
-## OT UI capture evidence
+| Check | Method | Result |
+| --- | --- | --- |
+| ROUTED, CUE + LEVEL +2 on a track whose cue level is 108 | write watch on `0x80000c51..` | `0x80000c55 <- 2` (108 counts as MAIN, then +2 = PHNS), at the stock store `0x4004ea90` |
+| Then +6 | same | `<- 8` (MNR) |
+| LEV box while turning | LCD captures | PHNS, MNR, MAIN, MNL, M+P and OFF all fit the box |
+| LEV box with CUE held, no turn | LCD capture | label OUT |
+| NORMAL, CUE + LEVEL −5 (regression) | write watch | `0x80000c55 <- 0x67` (108 → 103) at `0x4004ea90`, the same as stock 1.40C |
 
-Pending: capture the actual location and relevant control pages. Record the local image SHA-256, module version, emulator source/binary identity or hardware model, prerequisites, panel sequence and exact capture commands. Retain only screenshots and metadata; never firmware, memory dumps, cards or private logs. UI captures do not establish audio or hardware qualification.
+## Not run
+
+- The DSP mixdown: stage 1 replays stock.
+- Rewriting cue bytes when the mode changes.
+- MKI key paths.
+- Hardware.
+- Cycles and memory.
