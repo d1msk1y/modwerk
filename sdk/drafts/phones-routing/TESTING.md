@@ -119,6 +119,8 @@ Each check dumps the (LEVEL, cue) pairs in several places: bank 1's working Part
 | Check | Method | Result |
 | --- | --- | --- |
 | Metronome on PHONES | MASTER off; `0x80000060 = 1` (the byte FUNC + MIX sets) with both metronome volumes at 127; T1 set to OFF; 4,500 frames playing | ROUTED: the click peaks at 8,258,048 on CUE, MAIN and PHONES alike (PHONES takes the CUE volume), on the MKII too. NORMAL: PHONES peaks at full scale (the blend of both clicks). |
+| FUNC + TRACK mute and solo in ROUTED | T1 routed to ALL; `0x8000000a = 1` (T1 muted), or `0x8000000b = 2` (T2 soloed), 60 frames in | CUE, MAIN and PHONES all silent: a mute or solo acts on every output a track uses |
+| CUE + TRACK in ROUTED | read from the image | the cue toggle at `0x4007d600` returns when `0x80000037` is not 0, as in STUDIO (not driven by keys) |
 | Power cycle after switching to ROUTED and routing T3 to PHNS, unsaved | Run 1 dumps CS1 and the card; run 2 boots from them with `--cs1-in` and `--no-post` (the firmware's own power-up load) | First build: CUE CFG came back as 1 and the current bank as default bytes. The power-up check at `0x400100b8` counts a CS1 mirror above 1 as damage, and the bank's CS1 copy is then not restored. With the check widened to 0..2 (two pokes), CUE CFG comes back 2, the current bank keeps T3 = PHNS and the other banks stay converted. The stock control image restores a STUDIO edit the same way. |
 
 ## Not run

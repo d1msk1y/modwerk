@@ -68,6 +68,30 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - The module changes core 0's mixdown on the DSP.
 - Modules that read or change the gain path or the output ring are not yet declared as conflicts.
 
+## Changes to stock flows
+
+The module changes nothing until you choose CUE CFG ROUTED; with NORMAL or STUDIO every flow below behaves as stock. Each change is listed with the flows checked beside it ([TESTING.md](TESTING.md)).
+
+1. **PROJECT > CONTROL > AUDIO gains a third CUE CFG row, ROUTED.**
+   - **Why:** CUE CFG is where stock chooses how tracks reach the outputs, so a third choice belongs there. A separate page or menu row was considered, but it would split one setting across two places.
+   - **What you see:** the CUE CFG box is one row taller. TRACK 8 keeps its two rows, and its cursor never lands on the blank third one.
+   - **Checked:** NORMAL, STUDIO and TRACK 8 still select as stock.
+2. **In ROUTED, CUE + LEVEL chooses the track's outputs instead of setting a cue level.**
+   - **Why:** ROUTED has a single level per track, so the cue level has nothing to do. STUDIO already uses this gesture for the second output pair, so it stays where musicians expect it. A new gesture (FUNC + LEVEL is MAIN's) was considered, but every LEVEL combination is taken.
+   - **What you see:** the LEV box shows OUT and the destination's name, and both bars show the level.
+   - **Also:** CC 47 in and out carries the destination number (0–13). CUE + TRACK does nothing, as in STUDIO.
+   - **Checked:** NORMAL and STUDIO's CUE + LEVEL store exactly what stock stores. FUNC + TRACK mute and solo silence a track on every output it uses.
+3. **In ROUTED, MIX sets the PHONES output level instead of the headphone blend.**
+   - **Why:** ROUTED's PHONES bus has nothing to blend, and a level knob is what MAIN and CUE already have. The MIXER has no free knob.
+   - **Not yet done:** the MIXER still draws MIX as a blend. It should read as a level.
+4. **Changing CUE CFG to or from ROUTED rewrites every Part's cue bytes.** (See "Where the routing is stored".)
+   - **Why:** the routing lives in the cue-level byte, so the same byte means two different things in the two modes. A separate store was considered, but the shared project store doesn't exist yet, and a private file would not follow Parts and saves.
+   - **What you see:** the mapping above; saving the project keeps it.
+   - **⚠ It alters saved work, so it needs the owner's agreement.** It runs only when you pick ROUTED or leave it, and switching back undoes it. Cue levels lost on the way in come back from LEVEL, not from what they were.
+5. **The power-up check of the settings kept for a power cycle accepts CUE CFG 2.**
+   - **Why:** stock counts any value above 1 as damage and then drops the current bank's unsaved changes.
+   - **Stock is unchanged for 0 and 1.**
+
 ## Tests and measurements
 
 See [TESTING.md](TESTING.md). Nothing has been tested on hardware.
