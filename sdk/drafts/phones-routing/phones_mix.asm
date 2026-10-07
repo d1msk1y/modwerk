@@ -43,9 +43,10 @@
 ;   $c0e-$c10 the destinations and master flag the lists were built from
 ;   $c11-$c19 list lengths: CUE stereo, mono L, mono R, then MAIN, PHONES
 ;   $c1a-$c1c T8's MAIN as the master: stereo, mono L, mono R (0 or 1)
-;   $c1d $cbe, T8's y address: the list those three counts walk
+;   $c1d $cbf, T8's y address: the list those three counts walk
 ;   $c20-$c67 the nine lists, 8 y addresses each, in the order of $c11-$c19
-;   $c90-$caf PHONES out, 16 x (L, R)     $cb0-$cbf y, 8 x (L, R)
+;   $c90-$caf PHONES out, 16 x (L, R)     $cb0 the y loop's first store
+;   $cb1-$cc0 y, 8 x (L, R)
 ;
 ; Registers: X pointers r0-r3, Y pointers r4-r7 (dual moves). Everything
 ; after P:$2d5 and P:$35a reloads what it reads; m0 is put back to linear.
@@ -61,6 +62,10 @@
 ;   bit 0 CUE has mono entries   bit 1 MAIN has   bit 2 PHONES has
 ;   bit 3 CUE is used            bit 4 PHONES is used
 ;   bit 5 MASTER TRACK           bit 6 the bus levels are steady
+;   bit 7 the inputs' DIR gains are not 0 at either end of the frame
+;   bit 9 the inputs' cue gains are not 0 at either end of the frame
+;   bit 8 every track goes to MAIN in stereo and nowhere else, no master:
+;         MAIN sums straight from the blocks, as stock does
 
 phr_mix:
         move    x:>$205,r6              ; the level page
@@ -167,6 +172,7 @@ phr_f4a:
         beq     phr_f5
 phr_f4b:
         bset    #3,a
+        bset    #9,a
 phr_f5:
         move    y:>$c15,b               ; bit 1: MAIN has mono entries
         move    y:>$c16,x0
@@ -190,7 +196,33 @@ phr_f7:
         beq     phr_f8
         bset    #4,a
 phr_f8:
-        move    a1,x1
+        move    y:>$52,b                ; bit 7: the inputs' DIR gains, sample 0
+        tst     b
+        bne     phr_f9b
+        move    y:>$53,b
+        tst     b
+        bne     phr_f9b
+        move    y:>$17e,b               ; and sample 15: $4a + 20*15 + 8
+        tst     b
+        bne     phr_f9b
+        move    y:>$17f,b
+        tst     b
+        beq     phr_fdir0
+phr_f9b:
+        bset    #7,a
+phr_fdir0:
+        move    a1,x0                   ; bit 8: the fast path, when MAIN stereo
+        and     #>$3e,a                 ; holds all eight and no bit 1-5 is set
+        bne     phr_ffast
+        move    y:>$c14,b
+        move    #>8,y0
+        cmp     y0,b
+        bne     phr_ffast
+        move    x0,a
+        bset    #8,a
+        move    a1,x0
+phr_ffast:
+        move    x0,x1
 
 ; ---- the 16 samples
         move    y:>$c0c,x0
@@ -205,15 +237,32 @@ phr_f8:
         move    #>$400000,y1            ; one half, for the mono lists
         do      #16,phr_samples
 
-        move    #>$cb0,r4               ; y = g x for the eight tracks
-        do      #8,phr_ygain
+        btst    #8,x1
+        bcc     phr_general
+        clr     a                       ; the fast path: MAIN straight from the
+        clr     b                       ; blocks, CUE and PHONES silent
+        do      #8,phr_fast
         move    x:(r0)+,x0      y:(r5)+,y0
-        mpy     y0,x0,a         x:(r0)+n0,x0
-        mpy     y0,x0,b         a,y:(r4)+
-        move    b,y:(r4)+
-phr_ygain:
-        move    (r0)+                   ; the eight blocks wrapped: next sample
+        mac     y0,x0,a         x:(r0)+n0,x0
+        mac     y0,x0,b
+phr_fast:
         move    (r0)+
+        move    (r0)+
+        move    (r5)+                   ; r5 at slot 9, as the general path leaves it
+        move    #0,x0
+        move    x0,x:(r1)+              ; CUE L, R: 0 (PHONES' 0 comes from its
+        move    x0,x:(r1)+              ; own section: bit 4 is clear)
+        bra     phr_mainin
+phr_general:
+        move    #>$cb0,r4               ; y = g x for the eight tracks, pipelined:
+        move    x:(r0)+,x0      y:(r5)+,y0      ; each b lands one track later
+        do      #8,phr_ygain
+        mpy     y0,x0,a         x:(r0)+n0,x0    b,y:(r4)+
+        mpy     y0,x0,b         a,y:(r4)+
+        move    x:(r0)+,x0      y:(r5)+,y0
+phr_ygain:
+        move    b,y:(r4)+               ; T8's R
+        move    (r0)+                   ; the blocks wrapped, one read ahead: next sample
 
 ; CUE
         btst    #3,x1
@@ -255,13 +304,16 @@ phr_cml:
         mac     x0,y1,b
 phr_cmr:
 phr_cnomono:
-        move    r2,r3                   ; + the inputs at their cue gains
-        lua     (r5-10),r4
+        btst    #9,x1                   ; + the inputs at their cue gains, if any
+        bcc     phr_nocuein
+        move    r2,r3
+        lua     (r5-11),r4              ; (r5 is at MAIN slot 9: cue slot 8 is 11 back)
         move    x:(r3)+,x0      y:(r4)+,y0
         mac     y0,x0,a         x:(r3)+,x0
         mac     y0,x0,b         x:(r3)+,x0      y:(r4)+,y0
         mac     y0,x0,a         x:(r3)+,x0
         mac     y0,x0,b
+phr_nocuein:
         move    y:>$c00,y0              ; the CUE level
         asl     #2,a,a
         asl     #2,b,b
@@ -308,13 +360,17 @@ phr_mml:
         mac     x0,y1,b
 phr_mmr:
 phr_mnomono:
-        move    r2,r3                   ; + the inputs at their DIR gains
-        move    r5,r4
+phr_mainin:
+        btst    #7,x1                   ; + the inputs at their DIR gains, if any
+        bcc     phr_nodir
+        move    r2,r3
+        lua     (r5-1),r4
         move    x:(r3)+,x0      y:(r4)+,y0
         mac     y0,x0,a         x:(r3)+,x0
         mac     y0,x0,b         x:(r3)+,x0      y:(r4)+,y0
         mac     y0,x0,a         x:(r3)+,x0
         mac     y0,x0,b
+phr_nodir:
         btst    #5,x1                   ; MASTER TRACK?
         bcc     phr_mainout
         move    y:>$c07,x0              ; T1-T7 and the inputs, unscaled, into
@@ -431,7 +487,7 @@ phr_phdone:
         add     x0,a
         move    a,y:>$c02
 phr_noramp:
-        lua     (r5+$c),r5              ; next sample's MAIN gains (r5 was at slot 8)
+        lua     (r5+$b),r5              ; next sample's MAIN gains (r5 was at slot 9)
         lua     (r2+4),r2
 phr_samples:
 
@@ -509,11 +565,11 @@ phr_build:
         move    b,y:(r4)+
 phr_bclr:
         move    #>$fab1e0,r3            ; the code table: 14 codes x 3 words
-        move    #>$cb0,x1               ; T1's y address
+        move    #>$cb1,x1               ; T1's y address
         bsr     phr_codes
         move    y1,a
         bsr     phr_codes
-        move    #>$cbe,x0
+        move    #>$cbf,x0
         move    x0,y:>$c1d
         move    y:>$c06,x0              ; MASTER TRACK: T8 out of the MAIN lists
         btst    #10,x0
@@ -530,7 +586,7 @@ phr_bclr:
         sub     #1,b
         move    b1,r5
         move    y:(r5),b
-        move    #>$cbe,x0
+        move    #>$cbf,x0
         cmp     x0,b
         bne     phr_bt8next
         move    y:(r4),b                ; yes: one fewer here, T8 counted there

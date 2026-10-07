@@ -73,22 +73,31 @@ These checks read the 512-byte page ring at `0x80005460` (`--mem-dump`) and peek
 
 **Cost**, `--dsp-stopwatch 0:0x257:0x2d5`, instructions per 16-sample frame:
 
-| Case | First version | Optimised | Stock |
-| --- | --- | --- | --- |
-| ROUTED, every track to MAIN | 3,534 | 1,987 | 825 |
-| ROUTED, T1 to ALL | 3,846 | 2,752 | 825 |
+| Case | First version | Lists | Now | Stock |
+| --- | --- | --- | --- | --- |
+| ROUTED, every track to MAIN | 3,534 | 1,987 | 1,166 | 825 |
+| ROUTED, T1 to ALL, the rest MAIN | 3,846 | 2,752 | 2,527 | 825 |
 
-The optimised mixdown costs core 0 about 73 more instructions per sample than stock in the common case and about 120 with all three buses in use. The phones hook costs 118 against stock's 191.
+In the common case, where tracks go to MAIN, the module costs core 0 about 21 more instructions per sample than stock. With all three buses in use it costs about 106 more. The phones hook costs 118 against stock's 191.
 
-What the optimisation changed:
-- A stereo destination is two adds. A mono destination is two multiply-accumulates by ½ into one side.
-- Each bus has stereo, mono-left and mono-right lists, and empty mono lists are skipped.
-- CUE is skipped when no track goes there and the inputs' cue gains are 0 at both ends of the frame. PHONES is skipped when no track goes there.
-- The lists are rebuilt only when a destination or MASTER TRACK changes.
-- The bus ramps are skipped when no level moves.
-- The input and level steps are inline.
+What the optimisation does:
+- **Lists:** each bus has stereo, mono-left and mono-right lists. A stereo destination is two adds; a mono one is two multiply-accumulates by ½.
+- **Skips:** these parts are skipped when not needed:
+  - CUE when no track goes there and the inputs aren't cued;
+  - PHONES when no track goes there;
+  - the inputs' cue and DIR terms when their gains are 0 at both ends of the frame;
+  - empty mono lists;
+  - the bus ramps while no level moves.
+- **Fast path:** when every track goes to MAIN in stereo and nowhere else, with MASTER TRACK off, MAIN sums straight from the audio blocks, as stock does.
+- **Pipelining:** the per-track scaling stores one value while loading the next, at 3 instructions a track.
+- **Rebuilds:** the lists are rebuilt only when a destination or MASTER TRACK changes.
 
-The full table above was re-run on the optimised build, with the same results. A poke 20 frames after the transport start also exercises the rebuild-on-change path.
+The full routing table was re-run on each build. All 20 captures are bit-identical between the last two builds.
+
+| Extra check | Result |
+| --- | --- |
+| DIR AB 127 (`0x80000031`), fast path and general path | ROUTED MAIN 4,868,309 / 4,790,252 against the stock path's 4,868,316 / 4,790,260 in the same image |
+| MAIN level stepped 127 → 40 at frame 100 | ROUTED MAIN 790,742 / 735,284 against 790,754 / 735,295. Largest sample-to-sample step 5,208,734 against stock's 5,208,823: the ramp adds no click. |
 
 **Found on the way**
 - `move #1,x0` loads `$010000`: a short immediate into a data register lands in its top byte. With MASTER on, track 8's one-entry loop ran 65,536 times and the frame never finished.

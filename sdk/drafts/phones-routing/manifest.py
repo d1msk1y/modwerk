@@ -122,7 +122,7 @@ MODULE = Module(
     ),
 
     claims=Claims(dsp_ranges=(
-        DspRange("y", 0xC00, 0xC0, "bus ramps, routing lists, PHONES out and y scratch (payload A)"),
+        DspRange("y", 0xC00, 0xC1, "bus ramps, routing lists, PHONES out and y scratch (payload A)"),
     )),
 
     gates=(Gate("modules/phones-routing/verify.py", remix_arg=False),),
