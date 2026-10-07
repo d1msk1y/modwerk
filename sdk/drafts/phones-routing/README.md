@@ -52,6 +52,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
   - **Entering ROUTED from NORMAL:** cued tracks → M+C; the rest → MAIN.
 
   Save the project to keep the conversion, as with any edit.
+- Before flashing a stock OS, set CUE CFG to NORMAL or STUDIO and save the project. A stock OS treats ROUTED in its power-cycle memory as damage, and at the first power-up it would drop the current bank's unsaved changes.
 - On a stock OS, a ROUTED project loads as STUDIO. Its cue levels are then the stored destination codes, 0 to 13, which are very quiet; switch to STUDIO on the module first, so they are converted, before opening the project on a stock OS. Measured in the emulator: stock 1.40C stores 1 where this module stores 2.
 
 **Master track**

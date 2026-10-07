@@ -13,7 +13,9 @@ ColdFire port; reference/phase0-notes.md in the Modwerk worktree):
 - CUE CFG is the byte 0x80000037 (0 NORMAL, 1 STUDIO). Every stock reader
   but the AUDIO page tests it nonzero, so ROUTED (2) inherits STUDIO's
   behaviour there: CUE + TRACK does nothing and both gains are always sent.
-- The project parse at 0x4008732a clamps CUE_STUDIO_MODE to 0/1; it is
+- The project parse at 0x4008732a clamps CUE_STUDIO_MODE to 0/1, and the
+  power-up check of the CS1 settings at 0x400100b8 counts a CS1 mirror above
+  1 as damage (and the bank's CS1 copy is then not restored); both are
   widened to 0..2. A project saved in ROUTED loads on a stock OS as STUDIO.
 - AUDIO page: draw 0x400651a8, key handler 0x40065430 (menu-state table
   0x400cbdd4), label/getter/action tables 0x400b277c..0x400b27ab.
@@ -106,6 +108,10 @@ MODULE = Module(
              bytes.fromhex("001d"), "AUDIO: the CUE CFG box grows by one row (22 -> 29 px)"),
         Poke(0x4006533A, stock_guard(0x4006533a, 2, "f09a7a12954169ae595d12d870e69a4c0092003157d72523d626d2a3990241e2"),
              bytes.fromhex("0004"), "AUDIO: ... downward: its bottom edge 11 -> 4, so the top stays put"),
+        Poke(0x400100BE, stock_guard(0x400100be, 2, "0b14b394f74bdc2f13a4efc3e6bcec310ba2288bcf64811943a1fe443229d05b"),
+             bytes.fromhex("7402"), "power-up CS1 check: CUE CFG up to 2 is valid (1 counted 2 as damage)"),
+        Poke(0x400100C4, stock_guard(0x400100c4, 2, "1f2e6d00279b4659b6d6f1ad57e12568e4a50f80908af50d1e861001b2be2a3b"),
+             bytes.fromhex("7002"), "... and above 2 clamps to 2"),
     ),
 
     dsp=DspSection(
