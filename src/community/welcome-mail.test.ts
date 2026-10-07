@@ -58,32 +58,59 @@ describe('new member welcome email', () => {
   })
 
   it('matches the readable previews and describes signup rather than news consent', () => {
-    expect(welcomeEmail.html).toBe(readFileSync(new URL('../../docs/news/001-member-welcome.html', import.meta.url), 'utf8'))
-    const plain = readFileSync(new URL('../../docs/news/001-member-welcome.txt', import.meta.url), 'utf8')
+    expect(welcomeEmail.html).toBe(readFileSync(new URL('../../docs/news/004-member-welcome.html', import.meta.url), 'utf8'))
+    const plain = readFileSync(new URL('../../docs/news/004-member-welcome.txt', import.meta.url), 'utf8')
     expect(plain).toBe('Subject: ' + welcomeEmail.subject + '\nPreheader: More modules are coming, and the repo is open for contributions.\n\n' + welcomeEmail.text)
+    // The forum tour of modwerk-welcome-003 and -004 is gone again.
+    expect(welcomeEmail.html).not.toContain('Introductions')
+    expect(welcomeEmail.html).not.toContain('#account/notifications')
+    expect(welcomeEmail.html).toContain('href="https://modwerk.app/#submit"')
+    expect(welcomeEmail.text).toContain('Start developing:\nhttps://modwerk.app/#submit')
     expect(welcomeEmail.html).toContain('https://github.com/repeat98/modwerk')
     expect(welcomeEmail.html).toContain('href="https://discord.gg/QQxFb85m7"')
     expect(welcomeEmail.text).toContain('Join us on Discord:\nhttps://discord.gg/QQxFb85m7')
+    expect(welcomeEmail.html).toContain('https://modwerk.app/#account" style')
     expect(welcomeEmail.html).not.toMatch(/opted in|<script|<img|<iframe|<form|mailto:|—/i)
   })
 
-  it('keeps queued messages and retry keys stable while new members receive the Discord CTA', async () => {
-    const { register, run, db } = await fixture(), queued = await register('queuedmember')
-    await queued.verify()
+  it('keeps the earlier template payloads byte for byte, so queued retries resend what was first attempted', () => {
+    const discord = welcomeEmailVersions['modwerk-welcome-002']
+    expect(discord.html).toBe(readFileSync(new URL('../../docs/news/001-member-welcome.html', import.meta.url), 'utf8'))
+    expect(readFileSync(new URL('../../docs/news/001-member-welcome.txt', import.meta.url), 'utf8')).toBe('Subject: ' + discord.subject + '\nPreheader: More modules are coming, and the repo is open for contributions.\n\n' + discord.text)
+    expect(welcomeEmailVersions['modwerk-welcome-001'].html).not.toContain('discord.gg')
+    for (const version of ['modwerk-welcome-001', 'modwerk-welcome-002']) expect(welcomeEmailVersions[version].html).not.toContain('Introductions')
+    const forum = welcomeEmailVersions['modwerk-welcome-003']
+    expect(forum.html).toBe(readFileSync(new URL('../../docs/news/002-member-welcome.html', import.meta.url), 'utf8'))
+    expect(readFileSync(new URL('../../docs/news/002-member-welcome.txt', import.meta.url), 'utf8')).toBe('Subject: ' + forum.subject + '\nPreheader: Say hello in the forum and follow the modules for your machine.\n\n' + forum.text)
+    expect(forum.html).not.toContain('#submit')
+    const submit = welcomeEmailVersions['modwerk-welcome-004']
+    expect(submit.html).toBe(readFileSync(new URL('../../docs/news/003-member-welcome.html', import.meta.url), 'utf8'))
+    expect(readFileSync(new URL('../../docs/news/003-member-welcome.txt', import.meta.url), 'utf8')).toBe('Subject: ' + submit.subject + '\nPreheader: Say hello in the forum and follow the modules for your machine.\n\n' + submit.text)
+    expect(Object.keys(welcomeEmailVersions)).toEqual(['modwerk-welcome-001', 'modwerk-welcome-002', 'modwerk-welcome-003', 'modwerk-welcome-004', WELCOME_EMAIL_VERSION])
+  })
+
+  it('keeps queued messages and retry keys stable while new members receive the current welcome', async () => {
+    const { register, run, db } = await fixture(), queued = await register('queuedmember'), discord = await register('discordmember')
+    await queued.verify(); await discord.verify()
     db.prepare('INSERT INTO member_welcome_mail(user_id,template_version,first_attempt_at,attempts) VALUES(?,?,?,1)')
       .run(queued.id, 'modwerk-welcome-001', Math.floor(Date.now() / 1000))
-    expect((await run()).sent).toBe(1)
-    expect(messages.at(-1)).toMatchObject({ to: [queued.email], ...welcomeEmailVersions['modwerk-welcome-001'] })
-    expect(messages.at(-1)!.html).not.toContain('discord.gg')
-    expect(keys.at(-1)).toBe('modwerk-welcome-001-' + await digest(queued.id))
+    db.prepare('INSERT INTO member_welcome_mail(user_id,template_version,first_attempt_at,attempts) VALUES(?,?,?,1)')
+      .run(discord.id, 'modwerk-welcome-002', Math.floor(Date.now() / 1000))
+    expect((await run()).sent).toBe(2)
+    const first = messages.find(message => message.to[0] === queued.email && message.subject === welcomeEmail.subject)!, second = messages.find(message => message.to[0] === discord.email && message.subject === welcomeEmail.subject)!
+    expect(first).toMatchObject(welcomeEmailVersions['modwerk-welcome-001'])
+    expect(first.html).not.toContain('discord.gg')
+    expect(second).toMatchObject(welcomeEmailVersions['modwerk-welcome-002'])
+    expect(second.html).not.toContain('Introductions')
+    expect(keys.slice(-2).sort()).toEqual(['modwerk-welcome-001-' + await digest(queued.id), 'modwerk-welcome-002-' + await digest(discord.id)].sort())
 
-    const member = await register('discordmember')
+    const member = await register('forummember')
     await member.verify()
     expect((await run()).sent).toBe(1)
     expect(messages.at(-1)).toMatchObject({ to: [member.email], ...welcomeEmail })
     expect(keys.at(-1)).toBe(WELCOME_EMAIL_VERSION + '-' + await digest(member.id))
     expect((await run()).sent).toBe(0)
-    expect(messages).toHaveLength(4)
+    expect(messages).toHaveLength(6)
   })
 
   it('waits for social signup completion and excludes suspended members', async () => {

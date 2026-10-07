@@ -34,7 +34,7 @@ export async function markAnnouncementsRead(db: Database, memberId: string, ids:
     .bind(memberId, ...(own ?? [])).run()
 }
 
-const text = (value: unknown, label: string, minimum: number, maximum: number) => {
+export const adminText = (value: unknown, label: string, minimum: number, maximum: number) => {
   if (typeof value !== 'string') throw new HttpError(400, `${label} is required.`)
   const trimmed = value.trim()
   if (trimmed.length < minimum || trimmed.length > maximum) throw new HttpError(400, `${label} needs ${minimum} to ${maximum} characters.`)
@@ -63,14 +63,17 @@ export async function moduleReleaseAnnouncement(db: Database, release: ModuleRel
 export async function adminAnnouncements(request: Request, db: Database, path: string): Promise<Response | null> {
   if (!path.startsWith('/api/admin/announcements')) return null
   if (path === '/api/admin/announcements' && request.method === 'GET') {
-    return response((await db.prepare('SELECT a.id,a.slug,a.title,a.body,a.url,a.module_id,a.created_at,(SELECT COUNT(*) FROM announcement_reads r WHERE r.announcement_id=a.id) AS reads FROM announcements a ORDER BY a.created_at DESC,a.rowid DESC LIMIT 50').all()).results)
+    // Audience: verified members with a username who joined before it was sent and can see it now, the same people the bell shows it to.
+    return response((await db.prepare(`SELECT a.id,a.slug,a.title,a.body,a.url,a.module_id,a.created_at,(SELECT COUNT(*) FROM announcement_reads r WHERE r.announcement_id=a.id) AS reads,
+      (SELECT COUNT(*) FROM users u WHERE u.created_at<=a.created_at AND u.email_verified=1 AND u.suspended=0 AND u.username IS NOT NULL AND NOT EXISTS(SELECT 1 FROM social_pending_accounts s WHERE s.user_id=u.id)) AS audience
+      FROM announcements a ORDER BY a.created_at DESC,a.rowid DESC LIMIT 50`).all()).results)
   }
   if (path === '/api/admin/announcements' && request.method === 'POST') {
     const body = await jsonBody(request)
     await throttle(db, 'admin-announcement', 20)
-    const slug = text(body.slug, 'The key', 3, 64)
+    const slug = adminText(body.slug, 'The key', 3, 64)
     if (!/^[a-z0-9][a-z0-9-]*$/.test(slug)) throw new HttpError(400, 'The key uses lowercase letters, digits and hyphens.')
-    const title = text(body.title, 'The title', 3, 120), message = text(body.body, 'The message', 1, 400), url = announcementLink(body.url)
+    const title = adminText(body.title, 'The title', 3, 120), message = adminText(body.body, 'The message', 1, 400), url = announcementLink(body.url)
     let moduleId: string | null = null
     if (body.moduleId !== undefined && body.moduleId !== null && body.moduleId !== '') {
       if (typeof body.moduleId !== 'string' || !communityModule(body.moduleId)) throw new HttpError(400, 'Choose a module in the catalog.')

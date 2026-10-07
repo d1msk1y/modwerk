@@ -1,7 +1,8 @@
 import { pushRoutes } from './push'
 import { followReportedModule, moduleUpdateRoutes } from './module-updates'
 import { issueStatusStatements } from './issue-notifications'
-import { forum } from './forum'
+import { forum, SHARED_CONFIGURATIONS, sharedConfigurationBinds } from './forum'
+import { forumPublic } from './forum-public'
 import { forumMedia } from './forum-media'
 import { avatarRoutes } from './avatars'
 import { messageRoutes } from './messages'
@@ -19,6 +20,7 @@ import { adminInsights } from './admin-insights'
 import { adminAccounts } from './admin-accounts'
 import { adminActivity } from './admin-activity'
 import { adminAnnouncements } from './announcements'
+import { adminNews, newsUnsubscribe } from './news-mail'
 import recipes from '../src/catalog/module-sets.json'
 import type { Database, Env, Media, User } from './platform'
 import { withPrivacyDeadline } from './privacy-deadline'
@@ -49,6 +51,10 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
       if (!env.DB) throw new HttpError(503,'Community services are not connected yet.')
       return await unsubscribe(request,env,env.DB)
     }
+    if (path === '/api/news/unsubscribe' && request.method === 'POST') {
+      if (!env.DB) throw new HttpError(503,'Community services are not connected yet.')
+      return await newsUnsubscribe(request,env,env.DB)
+    }
     checkOrigin(request,env)
     const auth = await authentication(request,env,path)
     if (auth) return auth
@@ -77,6 +83,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     if(media)return media
     const messages = await messageRoutes(request,db,user)
     if(messages)return messages
+    const pages = await forumPublic(request,env,db)
+    if(pages)return pages
     const discussion = await forum(request,db,user,admin,adminId)
     if(discussion)return discussion
     const notifications = await notificationRoutes(request,env,db,user)
@@ -104,13 +112,14 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
           EXISTS(SELECT 1 FROM likes WHERE module_id=requested.module_id AND user_id=requested.user_id) AS liked,
           COALESCE((SELECT downloads FROM module_downloads WHERE module_id=requested.module_id),0) AS downloads,
           (SELECT value FROM module_download_meta WHERE key='collection_started') AS downloadsStarted,
-          (SELECT COUNT(*) FROM forum_posts p JOIN forum_threads t ON t.id=p.thread_id WHERE t.id='module-' || requested.module_id AND p.id<>t.id AND p.hidden=0 AND t.hidden=0) AS discussionCount
-          FROM requested`).bind(match[1],user?.id??null).first<{average:number|null;count:number;ownRating:number;likes:number;liked:number;downloads:number;downloadsStarted:string|null;discussionCount:number}>(),
+          (SELECT COUNT(*) FROM forum_posts p JOIN forum_threads t ON t.id=p.thread_id WHERE t.id='module-' || requested.module_id AND p.id<>t.id AND p.hidden=0 AND t.hidden=0) AS discussionCount,
+          (SELECT COUNT(*) FROM forum_threads t WHERE ${SHARED_CONFIGURATIONS}) AS sharedConfigurations
+          FROM requested`).bind(match[1],user?.id??null,...sharedConfigurationBinds(match[1])).first<{average:number|null;count:number;ownRating:number;likes:number;liked:number;downloads:number;downloadsStarted:string|null;discussionCount:number;sharedConfigurations:number}>(),
         db.prepare("SELECT m.id,m.kind,m.caption,m.capture_type FROM media m JOIN module_publications p ON p.submission_id=m.submission_id WHERE p.module_id=?").bind(match[1]).all(),
       ])
       const comments = posts.results.map(({locked,...comment}) => ({...comment,user_id:undefined,canDelete:admin || !locked && comment.user_id === user?.id}))
       if(!statistics)throw new Error('Module statistics missing.')
-      return response({comments,ratings:{average:statistics.average,count:statistics.count},ownRating:statistics.ownRating,media:media.results,likes:statistics.likes,liked:!!statistics.liked,downloads:statistics.downloads,downloadsStarted:statistics.downloadsStarted,discussionCount:statistics.discussionCount})
+      return response({comments,ratings:{average:statistics.average,count:statistics.count},ownRating:statistics.ownRating,media:media.results,likes:statistics.likes,liked:!!statistics.liked,downloads:statistics.downloads,downloadsStarted:statistics.downloadsStarted,discussionCount:statistics.discussionCount,sharedConfigurations:statistics.sharedConfigurations})
     }
     if ((match = path.match(/^\/api\/modules\/([a-z0-9-]+)\/(comments|rating|like)$/)) && request.method === 'POST') {
       await knownModule(db,match[1])
@@ -156,13 +165,14 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
       const publicReport=body.visibility==='forum'
       const title=required(body.title,'Issue title',160),steps=optional(body.steps,'Steps to reproduce',3000),expected=optional(body.expected,'Expected result',1000),actual=required(body.actual,'What happened',2000)
       const module=communityModule(match[1]),digi=module?.machine==='digitakt'||module?.machine==='digitone'
-      const context=issueInput(()=>digi?validateDigiIssueContext(body.context,module.machine):validateIssueContext(body.context))
       if(!digi && body.context && typeof body.context==='object' && (body.context as Record<string,unknown>).machine && (body.context as Record<string,unknown>).machine!=='octatrack')throw new HttpError(400,'The report belongs to a different machine.')
       if(body.maintainerSharing!==undefined&&typeof body.maintainerSharing!=='boolean')throw new HttpError(400,'Choose whether to share with verified maintainers.')
       const attached=body.log!==undefined&&body.log!==null&&body.log!==''
       if(attached&&typeof body.log!=='string')throw new HttpError(400,'Attach OCTAMOD.LOG as text.')
       if(digi && (body.log!==undefined||body.logMissing!==undefined))throw new HttpError(400,'This machine accepts structured reports only. Files and firmware are not accepted.')
       const log=attached?issueInput(()=>parseOtLog(body.log as string)):null
+      // An attached log records the configuration the device ran, so the report takes it from there; otherwise the reporter must name one.
+      const context=issueInput(()=>digi?validateDigiIssueContext(body.context,module.machine):validateIssueContext(body.context,log?.summary??null))
       // The log is optional; older clients may still say why there is none.
       const missing=digi||log||body.logMissing===undefined?null:issueInput(()=>validateLogMissing(body.logMissing,context as import('../src/community/issue-context').OctatrackIssueContext))
       await throttle(db,'issue-ip:'+(request.headers.get('CF-Connecting-IP')??'local'),10)
@@ -204,6 +214,8 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
       if((match=path.match(/^\/api\/admin\/account-requests\/([a-zA-Z0-9-]+)$/))&&request.method==='PATCH')return reviewAccountRequest(request,db,match[1])
       const announcements = await adminAnnouncements(request, db, path)
       if (announcements) return announcements
+      const news = await adminNews(request, env, db, path, adminId)
+      if (news) return news
       if (path === '/api/admin/insights' && request.method === 'GET') return response(await adminInsights(db))
       if (path === '/api/admin/activity' && request.method === 'GET') return response(await adminActivity(db,new Date(),Number(url.searchParams.get('days') ?? 30)))
       if (path === '/api/admin/accounts' && request.method === 'GET') return response(await adminAccounts(db,new Date(),Number(url.searchParams.get('days') ?? 30)))
