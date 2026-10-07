@@ -20,35 +20,47 @@
 ; carries stock's 1/4 headroom, undone by the asl #2 below, as stock does).
 ;
 ; Per sample j, per track k: y = g x (L and R). Each output pair (CUE, MAIN,
-; PHONES) sums, per track routed to it, L += c0 yL + c2 yR and R += c1 yL +
-; c3 yR with that track's four coefficients for the pair, from the code
-; table (ptable): 1.0 / 0 for a stereo pair, 0.5 + 0.5 into one side for a
-; mono jack. The inputs keep stock's gains: DIR into MAIN, their cue gain
-; into CUE. Then the bus level: out = 4 f lim(4 sum), f = (level/128)^2
-; ramped over the frame, so 64 = 0 dB and 127 = +11.9 dB, the stock law.
+; PHONES) has three lists of the tracks routed to it: stereo (L += yL,
+; R += yR), mono left (L += yL/2 + yR/2) and mono right. The inputs keep
+; stock's gains: DIR into MAIN, their cue gain into CUE. Then the bus level:
+; out = 4 f lim(4 sum), f = (level/128)^2 ramped over the frame, so 64 = 0
+; dB and 127 = +11.9 dB, the stock law.
 ;
 ; With MASTER TRACK on, T1-T7's MAIN sums and the DIR inputs go unscaled to
 ; the master's input (X:(X:$209)+$1f8, 2 words a sample, as stock writes
 ; it) and MAIN is T8's own MAIN routing; T8 may also go to CUE or PHONES.
 ;
+; Cheap paths: the lists are rebuilt only when the destinations or MASTER
+; TRACK change; CUE is skipped (written 0) when no track goes there and the
+; inputs' cue gains are 0 at both ends of the frame (the ramp is monotonic);
+; PHONES is skipped when no track goes there; the mono lists are skipped
+; when a bus has none; the bus ramps are skipped when no level moves.
+;
 ; Y memory, payload A (claimed in the manifest):
 ;   $c00-$c02 current bus factors C, M, P   $c03-$c05 per-sample steps
 ;   $c06 master flag     $c07 master send pointer   $c08-$c0a targets
-;   $c0b init marker     $c0c inputs pointer (r2 at entry)
-;   $c0d-$c0f entries in the CUE, MAIN and PHONES lists
-;   $c10-$c14 T8's MAIN entry when T8 is the master; $c15 1 when it is used
-;   $c18-$c3f, $c40-$c67, $c68-$c8f the CUE, MAIN and PHONES lists: per
-;             routed track, its y address, then L from L, R from L, L from R,
-;             R from R; a track with no part in a bus is not listed
+;   $c0b init marker     $c0c inputs pointer (r2 at entry)   $c0d 1 if a level moves
+;   $c0e-$c10 the destinations and master flag the lists were built from
+;   $c11-$c19 list lengths: CUE stereo, mono L, mono R, then MAIN, PHONES
+;   $c1a-$c1c T8's MAIN as the master: stereo, mono L, mono R (0 or 1)
+;   $c1d $cbe, T8's y address: the list those three counts walk
+;   $c20-$c67 the nine lists, 8 y addresses each, in the order of $c11-$c19
 ;   $c90-$caf PHONES out, 16 x (L, R)     $cb0-$cbf y, 8 x (L, R)
 ;
 ; Registers: X pointers r0-r3, Y pointers r4-r7 (dual moves). Everything
 ; after P:$2d5 and P:$35a reloads what it reads; m0 is put back to linear.
-; A zero `do` count skips the loop, as stock's gain ramp relies on.
-; Immediates into x0/y0 are long (#>n): a short one lands in the top byte.
-; Forms: no brset (dsp_asm writes its target absolute), no backward bsr
-; (dsp_asm refuses it), no displaced Y moves; absolute Y moves and negative
-; lua as Character (hardware) and BusDelay use them.
+; A zero `do` count skips the loop, as stock's gain ramp relies on. An
+; address register loaded by one move may address the next: stock does it
+; (A P:$564, B P:$7ac), so the chip interlocks.
+; Immediates into data registers are long (#>n): a short one lands in the
+; top byte. Forms: no brset (dsp_asm writes its target absolute), no
+; backward bsr (dsp_asm refuses it), no displaced Y moves; absolute Y moves
+; and negative lua as Character (hardware) and BusDelay use them.
+;
+; x1 holds this frame's flags through the sample loop:
+;   bit 0 CUE has mono entries   bit 1 MAIN has   bit 2 PHONES has
+;   bit 3 CUE is used            bit 4 PHONES is used
+;   bit 5 MASTER TRACK           bit 6 the bus levels are steady
 
 phr_mix:
         move    x:>$205,r6              ; the level page
@@ -76,9 +88,11 @@ phr_rt:
 ; ---- bus factors: target (level/128)^2, a ramp from the current value
         move    y:>$c0b,a               ; RAM starts dirty on the unit: first
         move    #>$5a5a5a,x0            ; time, start the ramps at the targets
-        cmp     x0,a
+        cmp     x0,a                    ; and force the lists to build
         beq     phr_inited
         move    x0,y:>$c0b
+        move    #>$ffffff,x0
+        move    x0,y:>$c0e
         move    x:(r6+$28),a
         bsr     phr_sq
         move    a,y:>$c00
@@ -89,73 +103,94 @@ phr_rt:
         bsr     phr_sq
         move    a,y:>$c02
 phr_inited:
+        clr     b                       ; b1 collects the three steps (or)
         move    x:(r6+$28),a
-        bsr     phr_sq
-        move    a,y:>$c08
-        move    y:>$c00,b
-        sub     b,a
-        asr     #4,a,a
-        move    a,y:>$c03
+        bsr     phr_ramp0
         move    x:(r6+$37),a
-        bsr     phr_sq
-        move    a,y:>$c09
-        move    y:>$c01,b
-        sub     b,a
-        asr     #4,a,a
-        move    a,y:>$c04
+        bsr     phr_ramp1
         move    x:(r6+$38),a
-        bsr     phr_sq
-        move    a,y:>$c0a
-        move    y:>$c02,b
-        sub     b,a
-        asr     #4,a,a
-        move    a,y:>$c05
+        bsr     phr_ramp2
+        move    b1,y:>$c0d              ; the lists' build uses b
 
-; ---- this frame's lists from the eight codes
-        move    x:(r6+$3a),y1           ; T5..T8 (before r6 becomes a list pointer)
-        move    x:(r6+$39),a            ; T1..T4
-        move    #>$fab1e0,r3            ; the code table: 14 codes x 3 x 5 words
-        move    #>$c18,r4               ; CUE list
-        move    #>$c40,r5               ; MAIN list
-        move    #>$c68,r6               ; PHONES list
-        move    #0,r0                   ; entries: CUE r0, MAIN r7, PHONES r1
-        move    #0,r7
-        move    #0,r1
-        move    #>$cb0,x1               ; T1's y address
-        bsr     phr_codes
-        move    y1,a
-        bsr     phr_codes
-        move    r0,x0
-        move    x0,y:>$c0d
-        move    r7,x0
-        move    x0,y:>$c0e
-        move    r1,x0
-        move    x0,y:>$c0f
-        move    #0,x0                   ; T8's MAIN entry: unused unless T8 is
-        move    x0,y:>$c15              ; the master and routed to MAIN
-        move    y:>$c06,x0
-        btst    #10,x0
-        bcc     phr_listed
-        move    r7,a
-        tst     a
-        beq     phr_listed
-        lua     (r5-5),r5               ; the last MAIN entry: is it T8's?
-        move    y:(r5)+,a
-        move    #>$cbe,x0
+; ---- the lists, when the destinations or MASTER TRACK changed
+        move    x:(r6+$39),a
+        move    y:>$c0e,x0
         cmp     x0,a
-        bne     phr_listed
-        move    #>$c10,r4
-        move    a,y:(r4)+
-        do      #4,phr_t8copy
-        move    y:(r5)+,x0
-        move    x0,y:(r4)+
-phr_t8copy:
-        move    #>1,x0                  ; long form: a short #1 lands in x0's top byte
-        move    x0,y:>$c15
-        move    (r7)-                   ; and not in the list
-        move    r7,x0
-        move    x0,y:>$c0e
-phr_listed:
+        bne     phr_rebuild
+        move    x:(r6+$3a),a
+        move    y:>$c0f,x0
+        cmp     x0,a
+        bne     phr_rebuild
+        move    y:>$c06,a
+        move    y:>$c10,x0
+        cmp     x0,a
+        beq     phr_built
+phr_rebuild:
+        bsr     phr_build
+phr_built:
+
+; ---- this frame's flags, into x1
+        clr     a
+        move    y:>$c06,x0              ; bit 5: MASTER TRACK
+        btst    #10,x0
+        bcc     phr_f1
+        bset    #5,a
+phr_f1:
+        move    y:>$c0d,b               ; bit 6: no bus level moves
+        tst     b
+        bne     phr_f2
+        bset    #6,a
+phr_f2:
+        move    y:>$c12,b               ; bit 0: CUE has mono entries
+        move    y:>$c13,x0
+        add     x0,b
+        beq     phr_f3
+        bset    #0,a
+        bset    #3,a
+phr_f3:
+        move    y:>$c11,b               ; bit 3: CUE is used: tracks, or the
+        tst     b                       ; inputs' cue gains at either end
+        beq     phr_f4a
+        bset    #3,a
+phr_f4a:
+        move    y:>$48,b
+        tst     b
+        bne     phr_f4b
+        move    y:>$49,b
+        tst     b
+        bne     phr_f4b
+        move    y:>$174,b               ; $40 + 20*15 + 8
+        tst     b
+        bne     phr_f4b
+        move    y:>$175,b
+        tst     b
+        beq     phr_f5
+phr_f4b:
+        bset    #3,a
+phr_f5:
+        move    y:>$c15,b               ; bit 1: MAIN has mono entries
+        move    y:>$c16,x0
+        add     x0,b
+        move    y:>$c1b,x0
+        add     x0,b
+        move    y:>$c1c,x0
+        add     x0,b
+        beq     phr_f6
+        bset    #1,a
+phr_f6:
+        move    y:>$c18,b               ; bit 2: PHONES has mono entries
+        move    y:>$c19,x0
+        add     x0,b
+        beq     phr_f7
+        bset    #2,a
+        bset    #4,a
+phr_f7:
+        move    y:>$c17,b               ; bit 4: PHONES is used
+        tst     b
+        beq     phr_f8
+        bset    #4,a
+phr_f8:
+        move    a1,x1
 
 ; ---- the 16 samples
         move    y:>$c0c,x0
@@ -167,6 +202,7 @@ phr_listed:
         move    #$5,n1
         move    #>$4a,r5                ; MAIN gains of sample 0
         move    #>$c90,r6               ; PHONES out
+        move    #>$400000,y1            ; one half, for the mono lists
         do      #16,phr_samples
 
         move    #>$cb0,r4               ; y = g x for the eight tracks
@@ -179,49 +215,107 @@ phr_ygain:
         move    (r0)+                   ; the eight blocks wrapped: next sample
         move    (r0)+
 
-        clr     a                       ; CUE
+; CUE
+        btst    #3,x1
+        bcs     phr_cueon
+        clr     a
+        move    a,x:(r1)+
+        move    a,x:(r1)+
+        bra     phr_cuedone
+phr_cueon:
+        clr     a
         clr     b
-        move    #>$c18,r7
-        move    y:>$c0d,x0
+        move    #>$c20,r7
+        move    y:>$c11,x0
         move    x0,n7
-        do      n7,phr_lcue
-        move    y:(r7)+,r4              ; this track's y
-        move    y:(r7)+,y0              ; L from L
-        move    y:(r4)+,x0              ; yL
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b         y:(r4)+,x0
-        move    y:(r7)+,y0              ; L from R
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b
-phr_lcue:
+        do      n7,phr_cs
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        add     x0,a            y:(r4)+,x0
+        add     x0,b
+phr_cs:
+        btst    #0,x1
+        bcc     phr_cnomono
+        move    #>$c28,r7
+        move    y:>$c12,x0
+        move    x0,n7
+        do      n7,phr_cml
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,a         y:(r4)+,x0
+        mac     x0,y1,a
+phr_cml:
+        move    #>$c30,r7
+        move    y:>$c13,x0
+        move    x0,n7
+        do      n7,phr_cmr
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,b         y:(r4)+,x0
+        mac     x0,y1,b
+phr_cmr:
+phr_cnomono:
         move    r2,r3                   ; + the inputs at their cue gains
         lua     (r5-10),r4
-        bsr     phr_inputs
-        move    y:>$c00,y0
-        bsr     phr_scale
+        move    x:(r3)+,x0      y:(r4)+,y0
+        mac     y0,x0,a         x:(r3)+,x0
+        mac     y0,x0,b         x:(r3)+,x0      y:(r4)+,y0
+        mac     y0,x0,a         x:(r3)+,x0
+        mac     y0,x0,b
+        move    y:>$c00,y0              ; the CUE level
+        asl     #2,a,a
+        asl     #2,b,b
+        move    a,x0
+        mpy     y0,x0,a
+        move    b,x0
+        mpy     y0,x0,b
+        asl     #2,a,a
+        asl     #2,b,b
         move    a,x:(r1)+               ; CUE L, R
         move    b,x:(r1)+
+phr_cuedone:
 
-        clr     a                       ; MAIN
+; MAIN
+        clr     a
         clr     b
-        move    #>$c40,r7
-        move    y:>$c0e,x0
+        move    #>$c38,r7
+        move    y:>$c14,x0
         move    x0,n7
-        do      n7,phr_lmain
+        do      n7,phr_ms
         move    y:(r7)+,r4
-        move    y:(r7)+,y0
         move    y:(r4)+,x0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b         y:(r4)+,x0
-        move    y:(r7)+,y0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b
-phr_lmain:
+        add     x0,a            y:(r4)+,x0
+        add     x0,b
+phr_ms:
+        btst    #1,x1
+        bcc     phr_mnomono
+        move    #>$c40,r7
+        move    y:>$c15,x0
+        move    x0,n7
+        do      n7,phr_mml
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,a         y:(r4)+,x0
+        mac     x0,y1,a
+phr_mml:
+        move    #>$c48,r7
+        move    y:>$c16,x0
+        move    x0,n7
+        do      n7,phr_mmr
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,b         y:(r4)+,x0
+        mac     x0,y1,b
+phr_mmr:
+phr_mnomono:
         move    r2,r3                   ; + the inputs at their DIR gains
         move    r5,r4
-        bsr     phr_inputs
-        move    y:>$c06,x0              ; MASTER TRACK? (btst on x0 keeps a and b)
-        btst    #10,x0
+        move    x:(r3)+,x0      y:(r4)+,y0
+        mac     y0,x0,a         x:(r3)+,x0
+        mac     y0,x0,b         x:(r3)+,x0      y:(r4)+,y0
+        mac     y0,x0,a         x:(r3)+,x0
+        mac     y0,x0,b
+        btst    #5,x1                   ; MASTER TRACK?
         bcc     phr_mainout
         move    y:>$c07,x0              ; T1-T7 and the inputs, unscaled, into
         move    x0,r3                   ; the master's input as stock writes it
@@ -231,46 +325,100 @@ phr_lmain:
         move    x0,y:>$c07
         clr     a                       ; MAIN is T8's own MAIN routing
         clr     b
-        move    #>$c10,r7
-        move    y:>$c15,x0
+        move    #>$c1d,r7
+        move    y:>$c1a,x0
         move    x0,n7
-        do      n7,phr_lt8
-        move    y:(r7)+,r4
-        move    y:(r7)+,y0
+        do      n7,phr_t8s
+        move    y:(r7),r4
         move    y:(r4)+,x0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b         y:(r4)+,x0
-        move    y:(r7)+,y0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b
-phr_lt8:
+        add     x0,a            y:(r4)+,x0
+        add     x0,b
+phr_t8s:
+        move    y:>$c1b,x0
+        move    x0,n7
+        do      n7,phr_t8l
+        move    y:(r7),r4
+        move    y:(r4)+,x0
+        mac     x0,y1,a         y:(r4)+,x0
+        mac     x0,y1,a
+phr_t8l:
+        move    y:>$c1c,x0
+        move    x0,n7
+        do      n7,phr_t8r
+        move    y:(r7),r4
+        move    y:(r4)+,x0
+        mac     x0,y1,b         y:(r4)+,x0
+        mac     x0,y1,b
+phr_t8r:
 phr_mainout:
-        move    y:>$c01,y0
-        bsr     phr_scale
+        move    y:>$c01,y0              ; the MAIN level
+        asl     #2,a,a
+        asl     #2,b,b
+        move    a,x0
+        mpy     y0,x0,a
+        move    b,x0
+        mpy     y0,x0,b
+        asl     #2,a,a
+        asl     #2,b,b
         move    a,x:(r1)+               ; MAIN L, R
         move    b,x:(r1)+n1             ; next sample's CUE L
 
-        clr     a                       ; PHONES
+; PHONES
+        btst    #4,x1
+        bcs     phr_phon
+        clr     a
+        move    a,y:(r6)+
+        move    a,y:(r6)+
+        bra     phr_phdone
+phr_phon:
+        clr     a
         clr     b
-        move    #>$c68,r7
-        move    y:>$c0f,x0
+        move    #>$c50,r7
+        move    y:>$c17,x0
         move    x0,n7
-        do      n7,phr_lphones
+        do      n7,phr_ps
         move    y:(r7)+,r4
-        move    y:(r7)+,y0
         move    y:(r4)+,x0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b         y:(r4)+,x0
-        move    y:(r7)+,y0
-        mac     y0,x0,a         y:(r7)+,y0
-        mac     y0,x0,b
-phr_lphones:
-        move    y:>$c02,y0
-        bsr     phr_scale
+        add     x0,a            y:(r4)+,x0
+        add     x0,b
+phr_ps:
+        btst    #2,x1
+        bcc     phr_pnomono
+        move    #>$c58,r7
+        move    y:>$c18,x0
+        move    x0,n7
+        do      n7,phr_pml
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,a         y:(r4)+,x0
+        mac     x0,y1,a
+phr_pml:
+        move    #>$c60,r7
+        move    y:>$c19,x0
+        move    x0,n7
+        do      n7,phr_pmr
+        move    y:(r7)+,r4
+        move    y:(r4)+,x0
+        mac     x0,y1,b         y:(r4)+,x0
+        mac     x0,y1,b
+phr_pmr:
+phr_pnomono:
+        move    y:>$c02,y0              ; the PHONES level
+        asl     #2,a,a
+        asl     #2,b,b
+        move    a,x0
+        mpy     y0,x0,a
+        move    b,x0
+        mpy     y0,x0,b
+        asl     #2,a,a
+        asl     #2,b,b
         move    a,y:(r6)+
         move    b,y:(r6)+
+phr_phdone:
 
-        move    y:>$c00,a               ; the bus ramps
+        btst    #6,x1                   ; the bus ramps, unless steady
+        bcs     phr_noramp
+        move    y:>$c00,a
         move    y:>$c03,x0
         add     x0,a
         move    a,y:>$c00
@@ -282,6 +430,7 @@ phr_lphones:
         move    y:>$c05,x0
         add     x0,a
         move    a,y:>$c02
+phr_noramp:
         lua     (r5+$c),r5              ; next sample's MAIN gains (r5 was at slot 8)
         lua     (r2+4),r2
 phr_samples:
@@ -296,25 +445,43 @@ phr_samples:
         move    ssh,x0                  ; drop the hook's return
         jmp     $2d5
 
-; The two input pairs into a/b: samples at x:(r3), gains at y:(r4) (AB, CD).
-phr_inputs:
-        move    x:(r3)+,x0      y:(r4)+,y0
-        mac     y0,x0,a         x:(r3)+,x0
-        mac     y0,x0,b         x:(r3)+,x0      y:(r4)+,y0
-        mac     y0,x0,a         x:(r3)+,x0
-        mac     y0,x0,b
+; One bus's ramp from its page word in a: target, step (target - current)
+; / 16; bit 0 of b set when the step is not 0.
+phr_ramp0:
+        bsr     phr_sq
+        move    a,y:>$c08
+        move    y:>$c00,x0
+        sub     x0,a
+        asr     #4,a,a
+        move    a,y:>$c03
+        tst     a
+        beq     phr_rs0
+        bset    #0,b                    ; this level moves
+phr_rs0:
         rts
-
-; a/b = 4 f lim(4 a/b), f in y0.
-phr_scale:
-        asl     #2,a,a
-        asl     #2,b,b
-        move    a,x0
-        mpy     y0,x0,a
-        move    b,x0
-        mpy     y0,x0,b
-        asl     #2,a,a
-        asl     #2,b,b
+phr_ramp1:
+        bsr     phr_sq
+        move    a,y:>$c09
+        move    y:>$c01,x0
+        sub     x0,a
+        asr     #4,a,a
+        move    a,y:>$c04
+        tst     a
+        beq     phr_rs1
+        bset    #0,b                    ; this level moves
+phr_rs1:
+        rts
+phr_ramp2:
+        bsr     phr_sq
+        move    a,y:>$c0a
+        move    y:>$c02,x0
+        sub     x0,a
+        asr     #4,a,a
+        move    a,y:>$c05
+        tst     a
+        beq     phr_rs2
+        bset    #0,b                    ; this level moves
+phr_rs2:
         rts
 
 ; a = (level/128)^2 from a page word in a (top byte: the transfer's tag).
@@ -324,9 +491,63 @@ phr_sq:
         mpy     x0,x0,a
         rts
 
-; The lists for four tracks from the codes in a (first in bits 15..12).
-; Table at r3; list pointers r4 (CUE), r5 (MAIN), r6 (PHONES) with counts
-; r0, r7, r1; x1 the track's y address, advanced by 2 a track.
+; The nine lists from the eight codes on the page at r6. Table at the
+; ptable: per code, for CUE, MAIN and PHONES, the list's number 1-9 (3 x bus
+; + kind, kind 1 stereo, 2 mono L, 3 mono R) or 0. List w's length is at
+; $c10 + w and its entries at $c18 + 8w. With MASTER TRACK on, T8 (listed
+; last) leaves the MAIN lists for $c1a-$c1c.
+phr_build:
+        move    x:(r6+$39),a            ; T1..T4
+        move    a1,y:>$c0e
+        move    x:(r6+$3a),y1           ; T5..T8
+        move    y1,y:>$c0f
+        move    y:>$c06,x0
+        move    x0,y:>$c10
+        move    #>$c11,r4               ; lengths and T8's counts: 0
+        clr     b
+        do      #12,phr_bclr
+        move    b,y:(r4)+
+phr_bclr:
+        move    #>$fab1e0,r3            ; the code table: 14 codes x 3 words
+        move    #>$cb0,x1               ; T1's y address
+        bsr     phr_codes
+        move    y1,a
+        bsr     phr_codes
+        move    #>$cbe,x0
+        move    x0,y:>$c1d
+        move    y:>$c06,x0              ; MASTER TRACK: T8 out of the MAIN lists
+        btst    #10,x0
+        bcc     phr_bdone
+        move    #>$c14,r4               ; MAIN's three lengths
+        move    #>$c1a,r6               ; T8's three counts
+        move    #>$c38,r7               ; MAIN stereo list
+        do      #3,phr_bt8end
+        move    y:(r4),b                ; this list's length
+        tst     b
+        beq     phr_bt8next
+        move    r7,x0                   ; its last entry: T8's?
+        add     x0,b
+        sub     #1,b
+        move    b1,r5
+        move    y:(r5),b
+        move    #>$cbe,x0
+        cmp     x0,b
+        bne     phr_bt8next
+        move    y:(r4),b                ; yes: one fewer here, T8 counted there
+        sub     #1,b
+        move    b1,y:(r4)
+        move    #>1,x0
+        move    x0,y:(r6)
+phr_bt8next:
+        move    (r4)+
+        move    (r6)+
+        lua     (r7+8),r7
+phr_bt8end:
+phr_bdone:
+        rts
+
+; Four tracks from the codes in a (first in bits 15..12); x1 the track's y
+; address, advanced by 2 a track; table at r3.
 phr_codes:
         do      #4,phr_cdone
         move    a1,b
@@ -334,47 +555,30 @@ phr_codes:
         and     #>$f,b                  ; the code; b0 holds what the asr shifted out,
         move    b1,x0                   ; so reload it clean before shifting left
         move    x0,b
-        asl     #4,b,b                  ; 16c
-        sub     x0,b                    ; 15c
+        asl     #1,b,b                  ; 2c
+        add     x0,b                    ; 3c
         move    b1,n2
         move    r3,r2
-        move    (r2)+n2                 ; this code: CUE, MAIN, PHONES x (used, 4 coefficients)
-        move    p:(r2)+,x0
-        btst    #0,x0
-        bcc     phr_nocue
-        move    x1,y:(r4)+
-        do      #4,phr_cpcue
-        move    p:(r2)+,x0
-        move    x0,y:(r4)+
-phr_cpcue:
-        move    (r0)+
-        bra     phr_main1
-phr_nocue:
-        lua     (r2+4),r2
-phr_main1:
-        move    p:(r2)+,x0
-        btst    #0,x0
-        bcc     phr_nomain
-        move    x1,y:(r5)+
-        do      #4,phr_cpmain
-        move    p:(r2)+,x0
-        move    x0,y:(r5)+
-phr_cpmain:
-        move    (r7)+
-        bra     phr_phones1
-phr_nomain:
-        lua     (r2+4),r2
-phr_phones1:
-        move    p:(r2)+,x0
-        btst    #0,x0
-        bcc     phr_nophones
-        move    x1,y:(r6)+
-        do      #4,phr_cpphones
-        move    p:(r2)+,x0
-        move    x0,y:(r6)+
-phr_cpphones:
-        move    (r1)+
-phr_nophones:
+        move    (r2)+n2                 ; this code: CUE, MAIN, PHONES list numbers
+        do      #3,phr_cbus
+        move    p:(r2)+,b               ; w, 0 = not routed to this bus
+        tst     b
+        beq     phr_cnext
+        move    b1,n4
+        move    #>$c10,r4
+        move    (r4)+n4                 ; its length
+        asl     #3,b,b                  ; 8w
+        add     #>$c18,b                ; the list
+        move    y:(r4),x0
+        add     x0,b                    ; + the length: the free entry
+        move    b1,r5
+        move    x1,y:(r5)
+        move    x0,b
+        add     #1,b
+        move    b1,y:(r4)
+phr_cnext:
+        nop
+phr_cbus:
         move    x1,b                    ; the next track's y address
         add     #2,b
         move    b1,x1

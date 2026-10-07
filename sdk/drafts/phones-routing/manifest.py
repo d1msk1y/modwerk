@@ -37,11 +37,10 @@ from remix.stock_guard import stock_dsp_words, stock_guard
 UNIT = "phones"
 
 # The destination codes, in CUE + LEVEL order (phones.s dest_names), as the
-# DSP's coefficient table: per code, for CUE, MAIN and PHONES in turn, a
-# used flag and four words: L from L, R from L, L from R, R from R. A stereo
-# pair passes L to L and R to R; a mono jack takes half of each side.
-ONE, HALF = 0x7FFFFF, 0x400000
-_PAIR = {"off": (0, 0, 0, 0), "st": (ONE, 0, 0, ONE), "L": (HALF, 0, HALF, 0), "R": (0, HALF, 0, HALF)}
+# DSP's code table: per code, for CUE, MAIN and PHONES in turn, the number
+# of the list the track joins, 3 x bus + kind (kind 1 stereo, 2 mono left,
+# 3 mono right), or 0 when the code does not reach that bus.
+_KIND = {"off": 0, "st": 1, "L": 2, "R": 3}
 _CODES = (  # (CUE, MAIN, PHONES)
     ("off", "st", "off"),   # 0 MAIN
     ("st", "off", "off"),   # 1 CUE
@@ -58,8 +57,8 @@ _CODES = (  # (CUE, MAIN, PHONES)
     ("off", "off", "R"),    # 12 PHR
     ("off", "off", "off"),  # 13 OFF
 )
-CODE_TABLE = tuple(w for code in _CODES for pair in code
-                   for w in ((0 if pair == "off" else 1),) + _PAIR[pair])
+CODE_TABLE = tuple(3 * bus + _KIND[k] if _KIND[k] else 0
+                   for code in _CODES for bus, k in enumerate(code))
 
 MODULE = Module(
     name="phones-routing",

@@ -61,7 +61,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 
 **Status**
 - Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap) and converting cue bytes on a mode switch.
-- The ROUTED mixdown costs core 0 about 170 to 190 more instructions per sample than stock, roughly 6% of its usable budget.
+- The ROUTED mixdown costs core 0 about 73 more instructions per sample than stock with every track on MAIN (about 2% of its usable budget), and about 120 with CUE, MAIN and PHONES all in use.
 
 **Conflicts**
 - The module changes core 0's mixdown on the DSP.

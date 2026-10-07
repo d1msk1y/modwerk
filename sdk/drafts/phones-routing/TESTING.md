@@ -73,13 +73,22 @@ These checks read the 512-byte page ring at `0x80005460` (`--mem-dump`) and peek
 
 **Cost**, `--dsp-stopwatch 0:0x257:0x2d5`, instructions per 16-sample frame:
 
-| Case | Instructions |
-| --- | --- |
-| Stock | 825 |
-| ROUTED, every track to MAIN | 3,534 |
-| ROUTED, T1 to ALL | 3,846 |
+| Case | First version | Optimised | Stock |
+| --- | --- | --- | --- |
+| ROUTED, every track to MAIN | 3,534 | 1,987 | 825 |
+| ROUTED, T1 to ALL | 3,846 | 2,752 | 825 |
 
-That is about +170 to +190 per sample on core 0. The phones hook costs 118 against stock's 191.
+The optimised mixdown costs core 0 about 73 more instructions per sample than stock in the common case and about 120 with all three buses in use. The phones hook costs 118 against stock's 191.
+
+What the optimisation changed:
+- A stereo destination is two adds. A mono destination is two multiply-accumulates by ½ into one side.
+- Each bus has stereo, mono-left and mono-right lists, and empty mono lists are skipped.
+- CUE is skipped when no track goes there and the inputs' cue gains are 0 at both ends of the frame. PHONES is skipped when no track goes there.
+- The lists are rebuilt only when a destination or MASTER TRACK changes.
+- The bus ramps are skipped when no level moves.
+- The input and level steps are inline.
+
+The full table above was re-run on the optimised build, with the same results. A poke 20 frames after the transport start also exercises the rebuild-on-change path.
 
 **Found on the way**
 - `move #1,x0` loads `$010000`: a short immediate into a data register lands in its top byte. With MASTER on, track 8's one-entry loop ran 65,536 times and the frame never finished.
