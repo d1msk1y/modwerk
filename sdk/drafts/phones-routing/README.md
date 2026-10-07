@@ -9,7 +9,7 @@ Phones Routing turns the Octatrack's headphone jack into a third assignable ster
 It adds a third choice, ROUTED, to PROJECT > CONTROL > AUDIO > CUE CFG, beside NORMAL and STUDIO. In ROUTED:
 
 - LEVEL sets the track's level, the same for every output it plays on.
-- CUE + LEVEL chooses where the track plays. The choices are MAIN, CUE and PHONES as stereo pairs in any combination, or a single mono jack: MAIN L, MAIN R, CUE L, CUE R, PHONES L or PHONES R.
+- CUE + LEVEL chooses where the track plays, stepped as stock steps a select with few choices, such as THRU's INAB: about three detents per choice when turned briskly, more when turned slowly. The choices are MAIN, CUE and PHONES as stereo pairs in any combination, or a single mono jack: MAIN L, MAIN R, CUE L, CUE R, PHONES L or PHONES R.
 - A mono destination sums the track's left and right at half each. A centred sound keeps the level it has on each side in stereo, which is how AMP BAL treats its centre. The sum never clips.
 - The MIXER's MIX knob becomes the PHONES output level, alongside MAIN and CUE.
 - Inputs A/B and C/D keep stock DIR routing to MAIN.
@@ -25,7 +25,7 @@ The module has no effect slot and no knob of its own.
 | Any audio track | CUE + LEVEL | The track's outputs, shown in the LEV box |
 | MIXER | MIX | The PHONES output level |
 
-Destinations, in the order CUE + LEVEL steps through them: MAIN, CUE, PHNS, M+C, M+P, C+P, ALL, MNL, MNR, CUL, CUR, PHL, PHR, OFF.
+Destinations, in the order CUE + LEVEL steps through them: MN, CUE, PHN, M+C, M+P, C+P, ALL, MNL, MNR, CUL, CUR, PHL, PHR, OFF.
 
 ## Usage
 
@@ -38,7 +38,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 ## Quick tutorial
 
 1. Select ROUTED in PROJECT > CONTROL > AUDIO > CUE CFG.
-2. On track 1, hold CUE and turn LEVEL until the LEV box reads PHNS. Track 1 now plays only from the headphone jack.
+2. On track 1, hold CUE and turn LEVEL until the LEV box reads PHN. Track 1 now plays only from the headphone jack.
 3. Turn MIX in the MIXER to set the headphone output's level. Select NORMAL again to hear stock routing.
 
 ## Compatibility and limitations
@@ -78,12 +78,12 @@ The module changes nothing until you choose CUE CFG ROUTED; with NORMAL or STUDI
    - **Checked:** NORMAL, STUDIO and TRACK 8 still select as stock.
 2. **In ROUTED, CUE + LEVEL chooses the track's outputs instead of setting a cue level.**
    - **Why:** ROUTED has a single level per track, so the cue level has nothing to do. STUDIO already uses this gesture for the second output pair, so it stays where musicians expect it. A new gesture (FUNC + LEVEL is MAIN's) was considered, but every LEVEL combination is taken.
-   - **What you see:** the LEV box shows OUT and the destination's name, and both bars show the level.
+   - **What you see:** holding CUE labels the LEV box with the track's destination (MN, PHN, …) in place of CUE, so you can read it without turning; both bars show the level.
    - **Also:** CC 47 in and out carries the destination number (0–13). CUE + TRACK does nothing, as in STUDIO. A destination change fades the track out on its old outputs and in on the new ones over 16 samples each, so it does not click.
    - **Checked:** NORMAL and STUDIO's CUE + LEVEL store exactly what stock stores. FUNC + TRACK mute and solo silence a track on every output it uses.
 3. **In ROUTED, MIX sets the PHONES output level instead of the headphone blend.**
    - **Why:** ROUTED's PHONES bus has nothing to blend, and a level knob is what MAIN and CUE already have. The MIXER has no free knob.
-   - **Not yet done:** the MIXER still draws MIX as a blend. It should read as a level.
+   - **What you see:** MIX is labelled PHN in ROUTED, with its slider's ends marked - and + instead of M and C. The slider is a level fader: the centre (64) is 0 dB, right is +12 dB. The value popup reads −64…+63, as MAIN and CUE do.
 4. **Changing CUE CFG to or from ROUTED rewrites every Part's cue bytes.** (See "Where the routing is stored".)
    - **Why:** the routing lives in the cue-level byte, so the same byte means two different things in the two modes. A separate store was considered, but the shared project store doesn't exist yet, and a private file would not follow Parts and saves.
    - **What you see:** the mapping above; saving the project keeps it.

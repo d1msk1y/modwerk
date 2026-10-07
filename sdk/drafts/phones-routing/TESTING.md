@@ -168,6 +168,21 @@ Last run, on the image with the code-review fixes: **PASS**, every check.
 
 Cost after the fixes, instructions per frame: every track to MAIN 1,170, T1 to ALL 2,531 (stock 825).
 
+## Hardware feedback, first look (7 Oct 2026, MKII, PHNROUTE3)
+
+**What was seen.** PHNROUTE3 flashed from the card and booted. ROUTED selects, LEVEL works, and CUE + LEVEL steps through the destinations. No outputs were checked yet. Three requests came out of it.
+
+**What changed**, checked under the port:
+
+| Request | Change | Check |
+| --- | --- | --- |
+| One detent per destination is too fine; stock selects give each choice more of the knob | Stepped as stock steps a select with few choices (3.2 detents a step: 32768 / max(choices, 40) = 819 against 256 a detent), on LEVEL's stock accumulator, push flag (×7) and display-loop decay (1/32 a frame). Kept in plain LEVEL's units (80 a detent, a step at 256), because plain LEVEL steps the same accumulator at 256: what a turn leaves behind stays under 256 | The same detent pattern on stock INAB (T1 THRU, knob A) and on CUE + LEVEL in ROUTED: six fast detents (40 ms apart) step once, at the 4th; six back step once, at the 4th; four slow ones (300 ms apart) don't step. Both runs step on the same detents. Three fast CUE + LEVEL detents (no step), CUE released, LEVEL +1 at once: the level moves by 1 |
+| Names of three letters at most | MAIN → MN, PHNS → PHN | LCD capture: PHN fits |
+| Holding CUE should show the track's routing without a turn, centred | The LEV box's label, OUT until now, is the track's destination; a two-letter name starts 2 pixels in, where stock centres it while turning | LCD captures with CUE held, no turn: MN on a fresh switch to ROUTED; PHN after routing T1 there, releasing CUE and holding it again. Pixel columns: held MN starts at x 47, as MN does while turning; PHN at 45, as LEV |
+| The MIXER's MIX still drew as a MAIN-CUE blend | In ROUTED it reads PHN, and the slider's ends read - and + | LCD capture of the MIXER |
+
+The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's rule; PHNROUTE5 has stock's rule.
+
 ## Not run
 - MKI key paths.
 - Hardware.

@@ -252,10 +252,27 @@ conv_tracks:
 | byte, adds the accelerated delta, clamps to 0..127 and from 0x4004ea10
 | writes d3 everywhere the cue level lives: the Part, its CS1 copy, the
 | dirty bits, the live byte 0x80000c51+2t, CC 47 out, then redraws. In
-| ROUTED the same tail stores a destination code 0..13 instead: the delta is
-| added unaccelerated, and a byte above 13 (a cue level from NORMAL or
+| ROUTED the same tail stores a destination code 0..13 instead, stepped as
+| stock steps a select with few choices (THRU INAB, the AUDIO page lists):
+| 0x4003240c adds 256 per detent (7 times that while the layer's push flag
+| for the knob, 0x46c7d8ee + 24 * (0x38 + encoder), is set) to the knob's
+| accumulator 0x46c7d244 + 20 * encoder, takes one step per threshold
+| crossed and keeps the rest; 0x400326d4 sets the threshold to
+| 32768 / max(choices, 40), so any select under 40 choices takes 819, a
+| step per 3.2 detents; the display loop (0x400521c0) shrinks every
+| accumulator by 1/32 a frame, so slow turns take a little more. This uses
+| LEVEL's own accumulator and push flag, but in plain LEVEL's units: plain
+| LEVEL (0x4004eb24, 0x4003249c) steps the same accumulator at 256, so a
+| step here is 256 too and a detent adds 256 * 256 / 819 = 80. The ratio,
+| 3.2 detents a step, is stock's, and what a turn leaves behind stays under
+| 256, as plain LEVEL's own does, so a LEVEL turn right after releasing CUE
+| moves the level as stock. A byte above 13 (a cue level from NORMAL or
 | STUDIO) counts as MAIN.
         .equ    DEST_MAX,     13
+        .equ    DIAL_STEP,    256          | plain LEVEL's step on the same accumulator
+        .equ    DIAL_ADD,     80           | per detent: 256 / 3.2, 0x400326d4's ratio for few choices
+        .equ    LEV_ACC,      0x46c7d2bc   | 0x46c7d244 + 20 * 6
+        .equ    LEV_PUSH,     0x46c7debe   | 0x46c7d8ee + 24 * 0x3e
         .global cue_level_enc
 cue_level_enc:
         lea     -16(%sp),%sp
@@ -267,8 +284,30 @@ cue_level_enc:
 1:      tst.l   0x80000012               | as stock: no edit while this is set
         beq.s   2f
         jmp     0x4004eb18
-2:      bsr.s   part_cue                 | d3 = the track's destination
-        add.l   24(%sp),%d3              | the encoder delta
+2:      move.l  24(%sp),%d0              | the encoder's detents
+        tst.l   LEV_PUSH                 | as 0x4003240c: pushed, 7 times
+        beq.s   5f
+        move.l  %d0,%d1
+        lsl.l   #3,%d1
+        sub.l   %d0,%d1
+        move.l  %d1,%d0
+5:      moveq   #DIAL_ADD,%d1
+        muls.l  %d1,%d0
+        lea     LEV_ACC,%a0
+        add.l   (%a0),%d0
+        move.l  %d0,%d2
+        move.l  #DIAL_STEP,%d1
+        divs.l  %d1,%d0                  | whole steps, toward zero, as stock
+        move.l  %d0,%d4
+        muls.l  %d1,%d4
+        sub.l   %d4,%d2
+        move.l  %d2,(%a0)                | the rest, same sign, as stock
+        tst.l   %d0
+        bne.s   7f
+        jmp     0x4004eb18               | no step yet: nothing to store
+7:      move.l  %d0,%d4
+        bsr.s   part_cue                 | d3 = the track's destination
+        add.l   %d4,%d3
         bpl.s   3f
         moveq   #0,%d3
 3:      moveq   #DEST_MAX,%d1
@@ -295,6 +334,12 @@ part_cue:
 1:      rts
 
 | ---- LEV box with CUE held (jmp detour, displaced: pea 0x400b7b98 "CUE")
+| ROUTED labels the box with the current track's destination, so holding
+| CUE shows it without a turn. Stock draws the label from x 45 (the
+| arguments pushed at 0x4004dd6a); a name is centred there as the value is
+| while turning: glyphs advance 4 pixels, so a two-letter name starts at
+| 47. This path pushes the same six arguments and joins at the jsr. d3 is
+| free: stock loads it after the draw.
         .global lev_box_cue
 lev_box_cue:
         mvs.b   CUE_CFG,%d0
@@ -302,8 +347,22 @@ lev_box_cue:
         beq.s   1f
         pea     0x400b7b98
         jmp     0x4004dd6a
-1:      pea     str_out
-        jmp     0x4004dd6a
+1:      bsr.s   part_cue                 | d3 = the track's destination
+        lea     dest_names:l,%a0
+        movea.l (%a0,%d3.l*4),%a0
+        move.l  %a0,-(%sp)               | the string
+        moveq   #-1,%d1
+        move.l  %d1,-(%sp)               | the limit, as stock
+        moveq   #0x38,%d1
+        move.l  %d1,-(%sp)
+        moveq   #45,%d0                  | x: three letters, as stock's
+        tst.b   2(%a0)
+        bne.s   2f
+        moveq   #47,%d0                  | two letters, centred
+2:      move.l  %d0,-(%sp)
+        pea     0x400bf10a               | the surface
+        pea     0x400ba876               | the font
+        jmp     0x4004dd82               | the stock jsr 0x40012bd8
 
 | ---- its value (jmp detour, displaced: the push of d4, "%d" and the buffer
 | and the jsr to sprintf; 0x4004ddc6 goes on to draw it). ROUTED prints the
@@ -434,6 +493,39 @@ page_levels:
 9:      move.b  0x80000032,%d3           | the displaced load
         rts
 
+| ---- MIXER: the MIX label (jmp detour, displaced: pea 0x400b7b8c "MIX")
+| In ROUTED, MIX is the PHONES level (64 = 0 dB, as MAIN and CUE), so the
+| label reads PHN and the slider's ends - and +; its value popup is stock.
+        .global mixer_mix_label
+mixer_mix_label:
+        mvs.b   CUE_CFG,%d0
+        cmpi.l  #2,%d0
+        beq.s   1f
+        pea     0x400b7b8c
+        jmp     0x4007c49e
+1:      pea     str_phn
+        jmp     0x4007c49e
+
+| The slider's ends: M and C as a blend, - and + as a level (jmp detours,
+| displaced: move.l #0x400b6040 "M",(sp) and pea 0x400b576f "C").
+        .global mixer_mix_left, mixer_mix_right
+mixer_mix_left:
+        mvs.b   CUE_CFG,%d0
+        cmpi.l  #2,%d0
+        beq.s   1f
+        move.l  #0x400b6040,(%sp)
+        jmp     0x4007c510
+1:      move.l  #str_minus,(%sp)
+        jmp     0x4007c510
+mixer_mix_right:
+        mvs.b   CUE_CFG,%d0
+        cmpi.l  #2,%d0
+        beq.s   1f
+        pea     0x400b576f
+        jmp     0x4007c532
+1:      pea     str_plus
+        jmp     0x4007c532
+
         .data
         .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions
 t8_labels:   .long 0x400b44e1, 0x400b5eb0, str_blank    | MASTER, NORMAL, (none)
@@ -450,11 +542,13 @@ sent_codes:  .byte 0, 0, 0, 0, 0, 0, 0, 0   | the codes the DSP routes by
 fading:      .byte 0, 0, 0, 0, 0, 0, 0, 0   | 1: faded out last frame (sent_codes + 8)
 str_blank:   .asciz ""
 str_routed:  .asciz "ROUTED"
-str_out:     .asciz "OUT"
+str_phn:     .asciz "PHN"
+str_minus:   .asciz "-"
+str_plus:    .asciz "+"
 str_fmt_s:   .asciz "%s"
-n_main:      .asciz "MAIN"
+n_main:      .asciz "MN"
 n_cue:       .asciz "CUE"
-n_phns:      .asciz "PHNS"
+n_phns:      .asciz "PHN"
 n_mc:        .asciz "M+C"
 n_mp:        .asciz "M+P"
 n_cp:        .asciz "C+P"

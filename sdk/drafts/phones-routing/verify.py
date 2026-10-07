@@ -198,12 +198,12 @@ def keys(*steps):
 
 def conversion_jobs(run, pool, work):
     """ROUTED selected with the keys (PROJ, CONTROL, AUDIO, CUE CFG, ROUTED),
-    then CUE + LEVEL +2 on the current track; dumps for the conversion, and a
+    then CUE + LEVEL +8 detents (two steps) on the current track; dumps for the conversion, and a
     second boot from that run's CS1 and card."""
     menu = keys((500, "0x1c"), (900, "0x20"), (1100, "0x20"), (1300, "0x31"), (1700, "0x31"), (2100, "0x21"),
                 (2300, "0x20"), (2500, "0x20"), (2700, "0x31"), (3000, "0x32"), (3300, "0x32"))
     script = work / "conv.script"
-    script.write_text("\n".join(menu + ["4000 key 0x2a down", "4300 enc 6 2", "4500 key 0x2a up", "7000 quit"]) + "\n")
+    script.write_text("\n".join(menu + ["4000 key 0x2a down", "4300 enc 6 8", "4500 key 0x2a up", "7000 quit"]) + "\n")
     card = work / "conv_card.img"; shutil.copy(run.fx["card"], card)
     dumps = {"pre_live": "0x80000c50,16", "mode": "0x80000037,1", "track": "0x80000000,1", "mask": "0x80000008,4",
              "b1": f"{B0 + WORK_LV:#x},16", "b16": f"{B0 + 15 * BANK + WORK_LV:#x},16", "live": "0x80000c50,16",
@@ -239,7 +239,7 @@ def conversion_checks(conv):
     for name in ("b1", "b16"):
         cues = list(rd(name)[1::2])
         exp = [(2 if k == t else w) for k, w in enumerate(want)] if name == "b1" else want
-        check(cues == exp, f"{name} cue bytes {cues}, expected {exp} (cued -> M+C, else MAIN; T{t + 1} then +2)")
+        check(cues == exp, f"{name} cue bytes {cues}, expected {exp} (cued -> M+C, else MAIN; T{t + 1} then two steps)")
     live = list(rd("live")[1::2])
     check(live[t] == 2 and all(live[k] == want[k] for k in range(8) if k != t), f"live cue bytes {live}")
     check(int.from_bytes(rd("save1"), "big") == 1, "bank 1 marked for the next save")
