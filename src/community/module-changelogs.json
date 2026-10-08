@@ -703,6 +703,18 @@
           "Presentation: show repeating recorder segments and tempo boundaries using the library's shared signal artwork, grid, palette and typography."
         ]
       }
+    ],
+    "phones-routing": [
+      {
+        "version": "0.1.0-experimental",
+        "date": "2026-10-08",
+        "changes": [
+          "First release: CUE CFG (titled ROUTING) gains ROUTED, which makes the headphone jack a third assignable output beside MAIN and CUE. CUE + LEVEL picks each track's outputs (any combination of MAIN, CUE and PHONES, or one of six mono jacks); the routing lives in the Part. MIX becomes the PHONES level.",
+          "Switching to or from ROUTED converts every Part's LEVEL and cue bytes by documented rules, and into NORMAL sets the project's cue settings.",
+          "Builds with the stock DSP code built in and takes SPRING REV's place on core 0: SPRING REV leaves both effect menus while the module is installed.",
+          "Author's functional MKII report (7-8 Oct 2026) covers routing, levels, everyday flows, saving and power; no timed stress run or chip timing."
+        ]
+      }
     ]
   }
 }

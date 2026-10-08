@@ -16,7 +16,6 @@ export const STANDALONE_NOTE = 'Complete custom firmware that replaces the whole
 // Library grouping can change without rewriting approved module metadata or qualification pins.
 const LIBRARY_CATEGORY_OVERRIDES: Readonly<Partial<Record<string, ModuleCategory>>> = {
   'midi-scenes': 'midi-usb',
-  'phones-routing': 'system',
   previewvol: 'system',
   quantizer: 'system',
   repitch: 'system',

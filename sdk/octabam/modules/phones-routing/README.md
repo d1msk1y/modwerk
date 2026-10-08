@@ -1,6 +1,6 @@
 # Phones Routing
 
-Version: 0.1.0 · author: @npp1993 · **in development, not released**
+Version: 0.1.0-experimental · author: @npp1993
 
 ## Overview
 
@@ -37,9 +37,9 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 
 ## Quick tutorial
 
-1. Select ROUTED in PROJECT > CONTROL > AUDIO > ROUTING.
-2. On track 1, hold CUE and turn LEVEL until the LEV box reads PHN. Track 1 now plays only from the headphone jack.
-3. Turn MIX in the MIXER to set the headphone output's level. Select NORMAL again to hear stock routing.
+1. Press PROJ, open CONTROL > AUDIO, move right into ROUTING, select ROUTED and press YES.
+2. Select track 1, hold CUE and turn LEVEL until the LEV box reads PHN: track 1 now plays only in the headphones.
+3. Open the MIXER and turn MIX (PHN) to set the headphone level; choose NORMAL again to return to stock routing.
 
 ## Compatibility and limitations
 
@@ -72,8 +72,8 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - Tracks routed to CUE or PHONES bypass the master.
 
 **Status**
-- Built and tested in the emulator: the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap) and converting cue bytes on a mode switch.
-- The ROUTED mixdown costs core 0 about 21 more instructions per sample than stock with every track on MAIN (under 1% of its usable budget), and about 106 with CUE, MAIN and PHONES all in use (about 3%).
+- Built and tested in the emulator, and on an MKII (see Tests and measurements): the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap) and converting cue bytes on a mode switch.
+- The ROUTED mixdown and headphone path cost core 0 at most about 283 instructions per sample against stock's 67, that is about 216 more (about 7% of the 3,120 a core can spend), measured with every track on ALL, MASTER on and all three bus levels moving. With every track on MAIN the extra is about 20. NORMAL and STUDIO run stock code plus a four-instruction check.
 
 **Building**
 - Build hardware images with the stock DSP code built in (a remix with `static_stock=True`). Octabam's build otherwise adds its experimental stock-effect loader, and on an MKII that image played no sound and froze the sequencer; the loader built without this module froze it the same way.
@@ -122,4 +122,14 @@ Original code by @npp1993, under the MIT licence (see [LICENSE](LICENSE)). Stock
 
 ## Screens and audio
 
-None yet: real captures come once the module is complete.
+Real emulator captures of this version (provenance in media/capture.json):
+
+![PROJECT > CONTROL > AUDIO with the ROUTING box, ROUTED checked](media/ot-routing-menu.png)
+
+![CUE held on a track: the LEV box reads MN](media/ot-cue-held.png)
+
+![CUE + LEVEL turned to PHN](media/ot-cue-level-phn.png)
+
+![The MIXER in ROUTED: MIX labelled PHN, ends - and +](media/ot-mixer-phn.png)
+
+No audio previews.

@@ -227,6 +227,32 @@ Asked on the unit and answered in the emulator:
 
 The master track's second LEV bar was shaded (stock STUDIO's mark for no cue); it is now solid in ROUTED (emulator capture: the six-pixel bar of every other track, with and without CUE held; FUNC held keeps stock's MAIN display).
 
+## Measurements for the qualification record (8 Oct 2026)
+
+Image: the static build (`static_stock=True`, SPRING REV harvested) of this source, MAIN OS SHA-256 `0b4cb651…fbc24`; the tested card image PHNSTAT9 is `0e0d1507…c40e`. Port runs of octabam's one-THRU fixture, 200 frames, sequencer running, MAIN/CUE/MIX levels changed every other frame from frame 60 to 120, and at frame 130 all eight tracks switched to PHN (list rebuild and declick for every track).
+
+**DSP core 0**, `--dsp-stopwatch 0:0x257:0x2d5` (the mixdown), executed instructions per 16-sample frame:
+
+| Routing | MASTER | Mean | Max |
+| --- | --- | --- | --- |
+| Every track ALL | off | 2,416 | 3,995 |
+| Every track ALL | on | 2,722 | **4,336** |
+| ALL, MNL, CUL, PHL, ALL, MNR, CUR, PHR | off | 2,280 | 3,552 |
+| the same | on | 2,578 | 3,888 |
+| Every track MN | off | 1,140 | 1,570 |
+| Stock (NORMAL) | off | 835 | 880 |
+| Stock (NORMAL) | on | 879 | 880 |
+
+The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in ROUTED (stock 191). Worst case: (4,336 + 192) / 16 = 283 instructions per sample against stock's (880 + 191) / 16 = 67. These are executed instructions; cycles and bus stalls are not modelled. `tools/build/cycle_count.py` and `dsp_host` measure effects run through the dispatch table and do not apply to these hooks; not run.
+
+**ColdFire**, `--watch-pc` on `page_levels` entry and its `rts`, 241 calls per run: 189 executed instructions typical, 229 at most (the frame where all eight tracks change destination). The mode conversion runs once per switch in the UI task.
+
+**Memory**, from the runtime ELF and the placement report: `.text` 1,272 B and `.data` 226 B in DRAM; DSP core 0 program 739 words at P:$127c..$155f and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,420 bytes.
+
+## Screenshots (8 Oct 2026)
+
+`scripts/capture-module-ui.py` with the static build above (`--image-sha256 0b4cb651…fbc24`), emulator SHA-256 `23ba6f6c…2b152b28`, empty disposable card, MKII panel, 150 ms keys. The plan dismisses the date prompt, opens PROJECT > CONTROL > AUDIO, selects ROUTED, then on T1 holds CUE (MN), turns LEVEL +8 (PHN), releases CUE and opens the MIXER. Each image was opened and checked; hashes in `media/capture.json`. The capture tool gained a `MIXER` key for this.
+
 ## Not run
 - MKI key paths.
 - The rewritten rules in Parts other than the current one and in other banks, on hardware (emulator only).
