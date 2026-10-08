@@ -26,6 +26,16 @@ class RequestedImports(unittest.TestCase):
                 self.assertNotIn(path.name, ['.git', 'out', 'downloads', 'vendor', '__pycache__'])
                 self.assertNotIn(path.suffix.lower(), ['.bin', '.syx', '.o', '.elf', '.exe', '.dll', '.so', '.dylib', '.zip', '.wav'])
 
+    def test_usb_layouts_match_the_separate_upstream_pin(self):
+        report = json.loads((APP / 'sdk/imports/usb-audio-outbox-7b2984c8.json').read_text())
+        self.assertEqual(report['revision'], '7b2984c859732ae6c797ae49c7d61d250b1b6519')
+        self.assertEqual(report['license'], 'MIT')
+        folder = SDK / 'modules/usb-audio-out-tracks-main-cue/layouts'
+        self.assertEqual(set(report['sources']), {p.name for p in folder.iterdir() if p.is_file()})
+        for name, digest in report['sources'].items():
+            self.assertEqual(hashlib.sha256((folder / name).read_bytes()).hexdigest(), digest, name)
+        self.assertIn('SET_CUR', (folder / 'usbaudio.s').read_text())
+
     def test_stock_expectations_are_lazy_fingerprints_not_copied_spans(self):
         declared = []
         for rel in sorted({guard['path'] for guard in REPORT['stockGuards']}):
@@ -50,14 +60,15 @@ class RequestedImports(unittest.TestCase):
         for id in REPORT['modules']:
             doc = json.loads((SDK / 'modules' / id / 'octamod.module.json').read_text())
             self.assertEqual(pins[id], doc['version'])
-            self.assertEqual(doc['source']['revision'], '4f9a89453fdcdd39a3cd57f010ffa489cac721cd' if id == 'midi-scenes' else REPORT['revision'])
+            self.assertEqual(doc['source']['revision'], '4f9a89453fdcdd39a3cd57f010ffa489cac721cd' if id == 'midi-scenes' else '6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136' if id == 'usb-audio-out-tracks-main-cue' else REPORT['revision'])
             self.assertTrue((SDK / 'modules' / id / 'LICENSE').is_file())
             if id == 'midi-scenes':
                 self.assertEqual(doc['version'], '0.2.4-experimental')
                 self.assertNotIn('build', doc)
             else:
                 self.assertNotIn('build', doc)
-                self.assertEqual(doc['version'], '0.1.2-experimental')
+                # USB Audio 0.2 retains the classic lifecycle and MIDI clock sources beside selectable layouts.
+                self.assertEqual(doc['version'], '0.2.0-experimental' if id == 'usb-audio-out-tracks-main-cue' else '0.1.3-experimental' if id == 'analog-bassdrum' else '0.1.2-experimental')
         for id, pin in REPORT['authorPins'].items():
             sources = [item for item in REPORT['files'] if item['path'].startswith('modules/' + id + '/upstream/')]
             self.assertTrue(sources)

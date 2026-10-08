@@ -1,42 +1,75 @@
-import { useState, type ReactNode } from 'react'
+import { useEffect, useState, type ReactNode } from 'react'
 import { ModuleCommunity } from '../community/ModuleCommunity'
+import { CreatorSupport } from '../community/CreatorSupport'
+import { ModuleChangelog } from '../community/ModuleChangelog'
+import { IssueCount, ModuleIssues } from '../community/ModuleIssues'
+import { useModuleIssues } from '../community/issue-tracker'
 import { ModuleUpdateButton } from '../community/ModuleUpdateButton'
+import { ModuleWorksReportButton } from '../community/ModuleWorksReportButton'
+import { ModuleFeedbackPanel } from '../community/ModuleFeedbackPanel'
+import { useModuleWorksReports } from '../community/use-module-works-reports'
 import { ShareModuleButton } from '../community/ShareModuleButton'
 import { Icon } from './Icon'
+import { catalogNeighbors, type CatalogBrowse } from '../catalog/catalog-browse'
+import { CatalogNavigation } from './CatalogNavigation'
 
-type DetailTab = 'Overview' | 'Media' | 'Discussion'
-const tabs: DetailTab[] = ['Overview', 'Media', 'Discussion']
+type DetailTab = 'Overview' | 'Media' | 'Discussion' | 'Changelog' | 'Issues'
+const tabs: DetailTab[] = ['Overview', 'Media', 'Discussion', 'Changelog', 'Issues']
+function linkedTab(): DetailTab {
+  if (typeof window === 'undefined') return 'Overview'
+  const query = new URLSearchParams(window.location.hash.split('?')[1] ?? window.location.search)
+  if (query.get('report') === '1') return 'Issues'
+  return tabs.find(value => value.toLowerCase() === query.get('tab')) ?? 'Overview'
+}
 
-export function ModuleDetailLayout({ id, title, family, detail, author, authorUrl, description, selected, onToggle, backHref, backLabel, preview, resources, notice, guide, issueReport }: {
+export function ModuleDetailLayout({ id, title, family, detail, author, authorUrl, description, selected, onToggle, backHref, backLabel, preview, resources, notice, guide, issueReport, browse, onBackToResults, titleBadge, configureTarget, overviewIntro }: {
+  browse?: CatalogBrowse | null; onBackToResults?: () => void
   id: string; title: string; family: string; detail: string; author: string; authorUrl: string; description: string
+  titleBadge?: string
+  configureTarget?: string
   selected: boolean; onToggle: () => void; backHref: string; backLabel: string
   preview: ReactNode; resources: ReactNode; notice?: ReactNode; guide: ReactNode
   issueReport: (openRequest: number) => ReactNode
+  overviewIntro?: ReactNode
 }) {
-  const [tab, setTab] = useState<DetailTab>('Overview')
+  const navigation = catalogNeighbors(browse, id)
+  const [tab, setTab] = useState<DetailTab>(linkedTab)
   const [issueOpenRequest, setIssueOpenRequest] = useState(0)
+  const issues = useModuleIssues(id)
+  const workingCount = useModuleWorksReports(id)
   const [discussionCount, setDiscussionCount] = useState<number | null>(null)
+  useEffect(() => { const navigate = () => setTab(linkedTab()); window.addEventListener('hashchange', navigate); return () => window.removeEventListener('hashchange', navigate) }, [])
+  function showConfiguration() {
+    setTab('Overview')
+    requestAnimationFrame(() => {
+      document.getElementById(configureTarget!)?.scrollIntoView({ block: 'start' })
+      document.getElementById(configureTarget!)?.focus({ preventScroll: true })
+    })
+  }
   function showDiscussion() {
     setTab('Discussion')
     document.getElementById('tab-Discussion')?.focus()
   }
-  function showIssueReport() { setTab('Overview'); setIssueOpenRequest(request => request + 1) }
-  return <div className="detail-page">
+  function showIssueReport() { setTab('Issues'); setIssueOpenRequest(request => request + 1) }
+  const discussionBadge = <span className="module-tab-count-slot"><span className="tab-count">{discussionCount ?? '—'}<span className="sr-only">{discussionCount === null ? ' comments loading' : discussionCount === 1 ? ' comment' : ' comments'}</span></span></span>
+  return <div className={'detail-page' + (navigation && navigation.total > 1 ? ' has-catalog-navigation' : '')}>
+    {navigation && navigation.total > 1 && <CatalogNavigation navigation={navigation} />}
     <div className="module-page-actions">
-      <a className="back-link" href={backHref}><Icon name="back" size={15} />{backLabel}</a>
-      <div className="module-page-buttons"><ShareModuleButton id={id} title={title} /><button type="button" className="button button-danger module-issue-action" onClick={showIssueReport}><Icon name="message" size={15} />Report an issue</button></div>
+      <div className="module-browse-context"><a className="back-link" href={navigation?.backHref ?? backHref} onClick={navigation ? onBackToResults : undefined}><Icon name="back" size={15} />{navigation ? 'Back to results' : backLabel}</a>{navigation && <span className="catalog-position" aria-label={'Module ' + navigation.position + ' of ' + navigation.total + ' results'}>{navigation.position} of {navigation.total}</span>}</div>
+      <div className="module-page-buttons"><ShareModuleButton id={id} title={title} /></div>
     </div>
     <section className="detail-hero detail-hero-with-resources" aria-labelledby="module-title">
       {preview}
       <div className="detail-intro">
         <div className="detail-tags"><span className="pill">{family}</span><span className="subtle">{detail}</span></div>
-        <h1 id="module-title">{title}</h1>
-        <a className="author-link" href={authorUrl} target="_blank" rel="noreferrer">by {author} ↗</a>
-        <p>{description}</p>
-        {notice}
-        <div className="detail-rating"><button className="text-button" onClick={showDiscussion}>Reviews & discussion{discussionCount !== null && <span className="tab-count">{discussionCount}<span className="sr-only">{discussionCount === 1 ? ' comment' : ' comments'}</span></span>}</button></div>
-        <button className={'button ' + (selected ? 'button-added' : 'button-primary')} onClick={onToggle} aria-pressed={selected}><Icon name={selected ? 'check' : 'plus'} size={16} />{selected ? 'Added to configuration' : 'Add to configuration'}</button>
-        <ModuleUpdateButton id={id} />
+        <div className="detail-title"><h1 id="module-title">{title}</h1>{titleBadge && <span className="module-compatibility-badge">{titleBadge}</span>}</div>
+        <div className="module-creator"><a className="author-link" href={authorUrl} target="_blank" rel="noreferrer">by {author} ↗</a><CreatorSupport key={id} id={id}/></div>
+        <p className="detail-description">{description}</p>
+        {notice && <div className="detail-notice">{notice}</div>}
+        <button className={'button module-configure-action ' + (selected ? 'button-added' : 'button-primary')} onClick={configureTarget && !selected ? showConfiguration : onToggle} aria-pressed={selected}><Icon name={selected ? 'check' : configureTarget ? 'sliders' : 'plus'} size={16} />{selected ? 'Added to configuration' : configureTarget ? 'Configure ' + title : 'Add to configuration'}</button>
+        <ModuleUpdateButton id={id} compact />
+        <ModuleFeedbackPanel workingCount={workingCount} workingAction={<ModuleWorksReportButton key={id} id={id}/>} onReportIssue={showIssueReport}/>
+        <div className="detail-rating"><button className="text-button" onClick={showDiscussion}>Reviews & discussion{discussionBadge}</button></div>
       </div>
       {resources}
     </section>
@@ -44,21 +77,24 @@ export function ModuleDetailLayout({ id, title, family, detail, author, authorUr
       {tabs.map(value => <button key={value} role="tab" id={'tab-' + value} aria-selected={tab === value} aria-controls="detail-content" tabIndex={tab === value ? 0 : -1} onClick={() => setTab(value)} onKeyDown={event => {
         let next: DetailTab | undefined
         if (event.key === 'ArrowRight') next = tabs[(tabs.indexOf(value) + 1) % tabs.length]
-        if (event.key === 'ArrowLeft') next = tabs[(tabs.indexOf(value) + 2) % tabs.length]
+        if (event.key === 'ArrowLeft') next = tabs[(tabs.indexOf(value) + tabs.length - 1) % tabs.length]
         if (event.key === 'Home') next = tabs[0]
-        if (event.key === 'End') next = tabs[2]
+        if (event.key === 'End') next = tabs[tabs.length - 1]
         if (next) { event.preventDefault(); setTab(next); document.getElementById('tab-' + next)?.focus() }
-      }}>{value}{value === 'Discussion' && discussionCount !== null && <span className="tab-count">{discussionCount}<span className="sr-only">{discussionCount === 1 ? ' comment' : ' comments'}</span></span>}</button>)}
+      }}>{value}{value === 'Issues' && <span className="module-tab-count-slot">{issues.data ? <IssueCount count={issues.data.openCount}/> : <span className="tab-count" aria-label={issues.error ? 'Issue count unavailable' : 'Loading issue count'}>—</span>}</span>}{value === 'Discussion' && discussionBadge}</button>)}
     </div>
     <div id="detail-content" role="tabpanel" aria-labelledby={'tab-' + tab} tabIndex={0}>
       {tab === 'Overview' && <>
+        {overviewIntro}
         <ModuleCommunity id={id} mode="overview" onDiscuss={showDiscussion} onDiscussionCount={setDiscussionCount} />
         <div className="module-guide">{guide}</div>
       </>}
       {tab === 'Media' && <ModuleCommunity id={id} mode="media" onDiscussionCount={setDiscussionCount} />}
       {tab === 'Discussion' && <ModuleCommunity id={id} mode="discussion" onReportIssue={showIssueReport} onDiscussionCount={setDiscussionCount} />}
+      {tab === 'Changelog' && <ModuleChangelog key={id} id={id} />}
+      {tab === 'Issues' && <ModuleIssues key={id} id={id} issues={issues} onReportIssue={showIssueReport} />}
       {/* Stays mounted on the other tabs so a report in progress is not lost. */}
-      <div hidden={tab !== 'Overview'}>{issueReport(issueOpenRequest)}</div>
+      <div hidden={tab !== 'Issues'}>{issueReport(issueOpenRequest)}</div>
     </div>
   </div>
 }

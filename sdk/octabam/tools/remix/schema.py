@@ -395,6 +395,7 @@ class DspSection:
     # carried as a package and uploaded when a Part selects it
     # (build_bus.LOADABLE); True keeps its code built into the image.
     resident: bool = False
+    max_per_core: int | None = None
     # Entries into this section from STOCK code (schema.DspHook). A section
     # with hooks and no MenuEntry is placed on `payloads` only and takes no
     # dispatch entry; one with a menu may carry hooks as well.
@@ -402,6 +403,8 @@ class DspSection:
     subst: Mapping[str, Mapping[str, str]] = field(default_factory=dict)
 
     def __post_init__(self):
+        if self.max_per_core is not None and not 1 <= self.max_per_core <= 4:
+            raise ValueError("max_per_core must be in 1..4")
         object.__setattr__(self, "subst", MappingProxyType(
             {pl: MappingProxyType(dict(kv)) for pl, kv in self.subst.items()}))
         for h in self.hooks:
@@ -528,6 +531,17 @@ class CavePatch:
     # address -- cc-map keeps its hand-patched legacy form for exactly this.
     # Checked on every build; a drift refuses.
     reference: object | None = None
+
+    # A source-linked pinned cave can reserve more than its reference bytes.
+    reserve: int = 0
+
+    def __post_init__(self):
+        if type(self.reserve) is not int or not 0 <= self.reserve <= 16 * 1024 * 1024:
+            raise ValueError("CavePatch.reserve must be a bounded nonnegative byte count")
+
+    @property
+    def claim_len(self) -> int:
+        return max(len(self.pinned), self.reserve)
 
 
 SHARED_WINDOW = (0x30000, 0x40000)
@@ -678,6 +692,22 @@ class Harness:
     bus_client: bool = False
 
 
+    render_r7: int | None = None
+
+
+R7_ALLOC = {1: 0, 2: 1, 4: 2, 5: 3, 7: 4, 8: 5, 10: 6, 11: 7}
+
+
+def render_slot(mod) -> tuple[int, int]:
+    """(dsp_host -r7 index, -alloc entry) a local render of `mod` uses."""
+    h = getattr(mod, "harness", None)
+    if h is not None and h.render_r7 is not None:
+        return h.render_r7, R7_ALLOC[h.render_r7]
+    c = getattr(mod, "claims", None)
+    return (1, 0) if (c is not None and c.fx1_only) else (2, 1)
+
+
+
 @dataclass(frozen=True)
 class Gate:
     """One check `make check` runs because this module is in the remix.
@@ -694,18 +724,30 @@ class Gate:
     `make bus REMIX=<name>` and the shared set gates (a gate that needs
     verify_set's staged card is an image gate). The runner exports REMIX
     and BUILD to every gate.
+
+    `once` is for a gate whose subject is the module's own code, the same
+    in every carrier (a ColdFire module's panel scenarios under the port):
+    it takes a remix name but runs once per run, in the shared half, on
+    the named remix with the fewest modules that carries the module,
+    instead of once per carrying remix (KITS: 29 port scenarios, 371 s
+    emulated, on bottleservice AND ok-ms, 6 Oct 2026).
     """
 
     script: str                      # repo-relative
     remix_arg: bool = True           # pass the remix name as argv[1]
     venv: bool = False               # prefer .venv/bin/python3 (the port's python) when present
     stage: str = "isolated"          # "isolated" | "image"
+    once: bool = False               # once per run, on one carrying remix of the selection (the shared half)
 
     def __post_init__(self):
         if self.stage not in ("isolated", "image"):
             raise ValueError(f"Gate({self.script!r}): stage must be 'isolated' or 'image', not {self.stage!r}")
+        if self.once and (not self.remix_arg or self.stage != "isolated"):
+            raise ValueError(f"Gate({self.script!r}): once=True needs remix_arg=True and the isolated stage "
+                             "(it runs in the shared half, which has no image)")
         if not self.script.startswith("tools/") and not self.script.startswith("modules/"):
             raise ValueError(f"Gate({self.script!r}): a repo-relative path under tools/ or modules/")
+
 
 
 @dataclass(frozen=True)
@@ -787,14 +829,18 @@ class Linked:
     linked it: the build links a second copy at that address every time
     and compares, so a source or toolchain drift from the bytes the author
     ratified fails loudly, even though the unit the image carries is
-    linked somewhere else.
+    linked somewhere else. The oracle links with the declared `defsyms`
+    and this remix's `remix.inc`. A unit whose bytes depend on the remix
+    (its `include`) gives a callable instead: reference(modules) ->
+    (address, sha256), given the same modules `include` gets, naming the
+    variant the author ratified for that selection.
     """
 
     label: str
     source: str                          # .s, repo-relative
     cave_addr: int | None = None         # None = floating
     cpu: str = "5407"                    # m68k-elf-as -mcpu= for the ROM-cave form; a DRAM unit is assembled for the chip (54455)
-    reference: tuple[int, str] | None = None
+    reference: object | None = None      # (address, sha256), or a callable (see above)
     # DRAM: the unit is linked into octabam's PLATFORM RUNTIME -- one image
     # of every such unit in the remix, linked together (cross-unit symbols
     # resolve in the one link), packed, appended after the OS with the
@@ -811,7 +857,41 @@ class Linked:
     # on which modules are in the image (mode-defaults' view table) is
     # otherwise unlinkable: the source cannot know the remix.
     include: object | None = None
-    stock_copies: tuple[StockCopy, ...] = ()
+    # (name, value) pairs passed to both `m68k-elf-as --defsym` (so
+    # `.ifdef NAME` sees them) and `m68k-elf-ld --defsym`, as
+    # CavePatch.defsyms. Each value resolves to a global of a unit or cave
+    # linked before this one, else the declared value; the `reference`
+    # oracle uses the declared values. A name the source itself defines is
+    # refused. DRAM units share one link, so two declaring one name must
+    # resolve it to one value.
+    stock_copies: tuple = ()
+    defsyms: tuple[tuple[str, int], ...] = ()
+
+    def __post_init__(self):
+        names = [n for n, _v in self.defsyms]
+        if len(names) != len(set(names)):
+            raise ValueError(f"Linked({self.label!r}): a defsym name declared twice")
+        if self.reference is not None and not callable(self.reference):
+            reference_shape(self.label, self.reference)
+
+    def reference_for(self, modules) -> tuple[int, str] | None:
+        """(address, sha256) of the author's build for this selection."""
+        if self.reference is None:
+            return None
+        ref = self.reference(modules) if callable(self.reference) else self.reference
+        return reference_shape(self.label, ref)
+
+
+
+def reference_shape(label: str, ref) -> tuple[int, str]:
+    """`ref` as (address, sha256), or ValueError naming the unit."""
+    if not (isinstance(ref, tuple) and len(ref) == 2 and isinstance(ref[0], int)
+            and isinstance(ref[1], str) and len(ref[1]) == 64
+            and all(c in "0123456789abcdef" for c in ref[1])):
+        raise ValueError(f"Linked({label!r}): reference must be (address, sha256 hex), "
+                         f"got {ref!r}")
+    return ref
+
 
 
 @dataclass(frozen=True)
@@ -844,6 +924,13 @@ class Detour:
     # -- and the ledger refuses the pair by name.
     subst_return: bool = False
 
+    def __post_init__(self):
+        written = self.pad_to or 6
+        if type(written) is not int or written < 6 or written % 2 or not len(self.expect):
+            raise ValueError("A detour needs an even write span of at least six bytes and a stock guard")
+        if type(self.site) is not int or self.site < 0 or self.site % 2 or self.site + max(written, len(self.expect)) > 0xffffffff:
+            raise ValueError("A detour has an invalid address span")
+
 
 @dataclass(frozen=True)
 class TableGrow:
@@ -859,6 +946,11 @@ class TableGrow:
     count: int
     symbols: tuple[tuple[str, str], ...]
     refs: tuple[tuple[int, int], ...]
+    insert_at: int | None = None
+
+    def __post_init__(self):
+        if self.insert_at is not None and (type(self.insert_at) is not int or not 0 <= self.insert_at <= self.count):
+            raise ValueError("Table insertion must lie within the stock pointer array")
 
 
 @dataclass(frozen=True)
@@ -868,6 +960,24 @@ class Poke:
     addr: int
     expect: bytes
     write: bytes
+    note: str = ""
+
+
+@dataclass(frozen=True)
+class Keep:
+    """Bytes this module relies on staying stock, claimed without writing.
+
+    The ledger refuses any other module's write that overlaps them (a
+    poke, detour, hook, cave, table or symbol ref, emit poke or runtime
+    write); two modules keeping overlapping bytes compose when their
+    `expect` agrees. The build asserts `expect` against the stock image and
+    again against the finished image, so a write the ledger cannot see --
+    a floating cave or grown table landing here, a menu clone, an arena
+    literal -- is refused too. Writes made at run time by DRAM code are
+    not in the image and are not checked."""
+
+    addr: int
+    expect: bytes
     note: str = ""
 
 
@@ -956,6 +1066,34 @@ class ArenaReserve:
 
 
 @dataclass(frozen=True)
+class DramRegion:
+    """Uninitialised DRAM a module's DRAM units name by `symbol`.
+
+    Placed by the platform build at the TOP of the platform's arena reserve
+    (arena.PLATFORM_PAGES, which any remix with DRAM units already pays
+    for), stacked downward in declaration order, and handed to the link as
+    `--defsym symbol=address`. The build refuses when the runtime, its
+    loader stage or its .bss reach the lowest region. The loader never
+    writes these bytes and nothing clears them: a region must not need
+    initial contents. STEM REC's ring (8 MiB since piece 5) and its task's
+    stack are the first users (git show 4d2d6456:docs/superpowers/specs/
+    2026-09-10-stem-rec-poc-design.md, section 5)."""
+
+    symbol: str
+    size: int
+    align: int = 16
+
+    def __post_init__(self):
+        import re
+        if self.symbol in ("_end", "_edata", "__bss_start") or not isinstance(self.symbol, str) or not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", self.symbol):
+            raise ValueError("DRAM region needs a linker symbol")
+        if type(self.size) is not int or not 0 < self.size <= 16 * 1024 * 1024:
+            raise ValueError("DRAM region size must be a positive bounded integer")
+        if type(self.align) is not int or not 0 < self.align <= 16 * 1024 * 1024 or self.align & (self.align - 1):
+            raise ValueError("DRAM region alignment must be a bounded power of two")
+
+
+@dataclass(frozen=True)
 class Override:
     """This module's own claim at `site` stands in for another module's --
     the way two mods that hook one stock instruction get to share it.
@@ -1008,6 +1146,8 @@ class Module:
     tables: tuple[TableGrow, ...] = ()
     symbol_refs: tuple[SymbolRef, ...] = ()
     pokes: tuple[Poke, ...] = ()
+    keeps: tuple[Keep, ...] = ()
+    dram_regions: tuple[DramRegion, ...] = ()
     # Pages of the audio page arena this module's DRAM lives in
     # (schema.ArenaReserve). DRAM units need none: the platform reserves
     # its own (arena.PLATFORM_PAGES) whenever a remix carries any.
@@ -1020,6 +1160,7 @@ class Module:
     # stubs stand at those sites (scenes-p2-kits). The ledger refuses a
     # remix that selects it without them.
     requires: tuple[str, ...] = ()
+    conflicts: tuple[tuple[str, str], ...] = ()
     # Which slot carries the MODE select, and what each of its positions
     # renames and re-defaults. Empty for a single-engine module.
     mode_slot: int | None = None
@@ -1060,7 +1201,46 @@ class Module:
     # (tools/experimental/dsp_dynload/runtime_catalog.SHARED).
     dynamic_stock: bool = False
 
+    def write_spans(self):
+        """Every fixed-address write this module declares, as (kind, start,
+        length, label): pinned caves (`len(pinned)`), cave hooks
+        (`len(hook_stock)`, at least the six-byte jsr), detours (the
+        larger of `expect` and `pad_to` or six), table refs and symbol refs
+        (four bytes), plain pokes. Floating caves and emit() pokes depend on
+        placement and are the ledger's to evaluate."""
+        for c in self.cf_patches:
+            if c.cave_addr is not None:
+                yield "cave", c.cave_addr, c.claim_len, c.label
+            if c.hook_addr is not None:
+                yield "hook", c.hook_addr, max(len(c.hook_stock), 6), c.label
+        for d in self.detours:
+            yield "detour", d.site, max(len(d.expect), d.pad_to or 6), d.note or d.symbol
+        for t in self.tables:
+            for addr, _old in t.refs:
+                yield "table ref", addr, 4, t.label
+        for r in self.symbol_refs:
+            yield "symbol ref", r.addr, 4, f"{r.unit}:{r.symbol} ({r.note or hex(r.addr)})"
+        for p in self.pokes:
+            yield "poke", p.addr, max(len(p.expect), len(p.write)), p.note or hex(p.addr)
+
     def __post_init__(self):
+        for need in self.requires:
+            if need in {k for k, _why in self.conflicts}:
+                raise ValueError(f"{self.name}: {need!r} is in both requires and conflicts")
+        for other, _why in self.conflicts:
+            if other == self.key:
+                raise ValueError(f"{self.name}: declares a conflict with itself")
+        for k in self.keeps:
+            for kind, start, length, label in self.write_spans():
+                if start < k.addr + len(k.expect) and k.addr < start + length:
+                    raise ValueError(
+                        f"{self.name}: keeps 0x{k.addr:08x} ({k.note or 'kept bytes'}) "
+                        f"and writes it ({kind} {label} at 0x{start:08x})")
+        if self.dram_regions and not any(unit.dram for unit in self.linked):
+            raise ValueError(f"{self.name}: DRAM regions require a DRAM linked unit")
+        symbols = [region.symbol for region in self.dram_regions]
+        if len(symbols) != len(set(symbols)):
+            raise ValueError(f"{self.name}: duplicate DRAM region symbols")
         if self.params and len(self.params) != 12:
             raise ValueError(f"{self.name}: expected 12 param slots, "
                              f"got {len(self.params)}")

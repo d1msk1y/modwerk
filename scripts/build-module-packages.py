@@ -10,10 +10,10 @@ import argparse, hashlib, importlib.util, json, os, re, shutil, struct, subproce
 APP = Path(__file__).resolve().parents[1]
 ORDER = ['spectrum', 'modulation', 'character', 'miniverb', 'tapeecho', 'euclid', 'repitch', 'tapehead']
 HOOKED = ['sidechain-compressor']
-REQUESTED = ['analog-bassdrum', 'midi-scenes', 'usb-audio-out-tracks-main-cue', 'quantizer', 'synth', 'vector']
+REQUESTED = ['analog-bassdrum', 'midi-scenes', 'usb-audio-out-tracks-main-cue', 'quantizer', 'synth', 'vector', 'playmodes', 'mute-modes', 'recorder-loop-fix']
 UTILITIES = ['previewvol', 'cc-map']
 ASSET_NAMES = ['dsp-packages.json', 'coldfire-packages.json', 'resident-dsp.json', 'rom-packages.json',
-               'bootstrap-package.json', 'menu-recipes.json', 'descriptor-recipes.json', 'platform-writes.json', 'requested-packages.json', 'utility-packages.json']
+               'bootstrap-package.json', 'menu-recipes.json', 'descriptor-recipes.json', 'platform-writes.json', 'requested-packages.json', 'utility-packages.json', 'usb-audio-packages.json']
 HASH = lambda data: hashlib.sha256(data).hexdigest()
 
 
@@ -125,7 +125,10 @@ def compile_requested(root, known, documents, versions, revision, provenance, na
             if u.include:
                 (work / 'remix.inc').write_text(u.include(selection)); extra = ['-I', work]
             obj = work / 'unit.o'; cpu = '54455' if u.dram else u.cpu
-            run(['m68k-elf-as', '-mcpu=' + cpu, *extra, '-o', obj, root / u.source], root)
+            from remix.platform_build import as_defsyms, redefined
+            run(['m68k-elf-as', '-mcpu=' + cpu, *extra, *as_defsyms(u.defsyms), '-o', obj, root / u.source], root)
+            if redefined(obj, u.defsyms):
+                raise ValueError(f'{u.label}: source redefines declared build constants')
             data = bytearray(obj.read_bytes()); copies = []
             if u.stock_copies:
                 from remix.stock_copies import object_copies
@@ -143,18 +146,43 @@ def compile_requested(root, known, documents, versions, revision, provenance, na
                     inherited = bytes(data[offset:offset+23]); data[offset:offset+23] = bytes(23)
                     copies.append(dict(section=section, offset=value+9, source=address+9, bytes=23, sha256=HASH(inherited)))
             manifest = 'platform/usb-midi/manifest.py' if m.name == 'usb-midi' else f'modules/{m.name}/manifest.py'
-            objects.append(dict(label=u.label,moduleId=m.name,version=documents[m.name]['version'] if m.name in documents else None,key=m.key,author=author,nativeAuthor=m.author,cpu=cpu,dram=u.dram,caveAddress=u.cave_addr,source=u.source,sources={q:sources[q] for q in [u.source,manifest]},bytes=len(data),code=data.hex(),sha256=HASH(data),stockCopies=copies))
+            objects.append(dict(label=u.label,moduleId=m.name,version=documents[m.name]['version'] if m.name in documents else None,key=m.key,author=author,nativeAuthor=m.author,cpu=cpu,dram=u.dram,caveAddress=u.cave_addr,source=u.source,sources={q:sources[q] for q in [u.source,manifest]},bytes=len(data),code=data.hex(),sha256=HASH(data),stockCopies=copies,placement="linked",poolBaseLiterals=0,variants=[]))
+        if m.name == 'mute-modes':
+            unit = next(u for u in m.linked if u.label == 'mm_softmute')
+            work = root / 'requested' / unit.label
+            (work / 'remix.inc').write_text(unit.include({**selection, 'SIDECHAIN_COMPRESSOR': known['SIDECHAIN_COMPRESSOR']}))
+            obj = work / 'sidechain.o'
+            run(['m68k-elf-as', '-mcpu=' + unit.cpu, '-I', work, '-o', obj, root / unit.source], root)
+            raw = obj.read_bytes()
+            pkg = next(row for row in objects if row['label'] == unit.label)
+            pkg['variants'] = [dict(whenModule='sidechain-compressor', bytes=len(raw), code=raw.hex(), sha256=HASH(raw))]
+        for index, patch in enumerate(m.cf_patches if m.name == 'recorder-loop-fix' else ()):
+            label = 'recorder_cave_' + str(index)
+            work = root / 'requested' / label; work.mkdir(parents=True)
+            text = (root / patch.source).read_text().replace('.include "modules/recorder-loop-fix/fix.inc"', (root / 'modules/recorder-loop-fix/fix.inc').read_text())
+            validate_source(text)
+            text = '.text\n.global ' + label + '_entry\n' + label + '_entry:\n' + text
+            src = work / 'source.s'; src.write_text(text)
+            obj = work / 'unit.o'
+            run(['m68k-elf-as', '-mcpu=' + patch.cpu, '-o', obj, src], root)
+            raw = obj.read_bytes()
+            manifest = 'modules/recorder-loop-fix/manifest.py'
+            objects.append(dict(label=label,moduleId=m.name,version=documents[m.name]['version'],key=m.key,author=author,nativeAuthor=m.author,cpu=patch.cpu,dram=False,caveAddress=patch.cave_addr,source=patch.source,sources={q:sources[q] for q in [patch.source,manifest,'modules/recorder-loop-fix/fix.inc']},bytes=len(raw),code=raw.hex(),sha256=HASH(raw),stockCopies=[],placement='cave',poolBaseLiterals=patch.pool_base_literals,variants=[]))
         detours, refs, pokes, tables = [], [], [], []
         for d in m.detours:
             length, digest = fingerprint(d.expect,d.site)
             detours.append(dict(address=d.site,guardLength=length,guardSha256=digest,unit=d.unit,symbol=d.symbol,target=d.target,kind=d.kind,writeLength=d.pad_to or 6,note=d.note))
+        for index, patch in enumerate(m.cf_patches if m.name == 'recorder-loop-fix' else ()):
+            length,digest=fingerprint(patch.hook_stock,patch.hook_addr)
+            label='recorder_cave_'+str(index)
+            detours.append(dict(address=patch.hook_addr,guardLength=length,guardSha256=digest,unit=label,symbol=label+'_entry',target=None,kind='jsr',writeLength=length,note=patch.label))
         for r in m.symbol_refs:
             refs.append(dict(address=r.addr,guardLength=4,guardSha256=HASH(r.expect.to_bytes(4,'big')),unit=r.unit,symbol=r.symbol,addend=r.addend,note=r.note))
         for q in m.pokes:
             length,digest=fingerprint(q.expect,q.addr)
             pokes.append(dict(address=q.addr,guardLength=length,guardSha256=digest,code=q.write.hex(),note=q.note))
         for t in m.tables:
-            tables.append(dict(label=t.label,old=t.old,count=t.count,symbols=[dict(unit=u,symbol=n) for u,n in t.symbols],refs=[dict(address=a,old=o) for a,o in t.refs]))
+            tables.append(dict(label=t.label,old=t.old,count=t.count,symbols=[dict(unit=u,symbol=n) for u,n in t.symbols],refs=[dict(address=a,old=o) for a,o in t.refs],insertAt=t.count if t.insert_at is None else t.insert_at))
         groups.append(dict(moduleId=m.name,key=m.key,author=author,nativeAuthor=m.author,detours=detours,refs=refs,pokes=pokes,tables=tables))
     import ab_image, dsp909
     ab_image.OUT = root / 'requested/analog'; dsp909.DSP_ASM=assembler; dsp909.DISASM=disassembler
@@ -167,8 +195,8 @@ def compile_requested(root, known, documents, versions, revision, provenance, na
     (work/'table.inc').write_text('        .long 1\n        .long blob0,0,0,0,0,0,0,0\n        .align 4\nblob0:\n')
     (work/'pretable.inc').write_text('        .long 2\n        .long preblob0,0,0,0,0,0,0,0\n        .long preblob1,0,0,0,0,0,0,0\n        .align 4\npreblob0:\npreblob1:\n')
     loader = (root/'tools/remix/loader.S').read_text()
-    if loader.count('pretable(%pc)') != 1: raise ValueError('Changed pre-boot pointer needs review')
-    (work/'loader.S').write_text(loader.replace('pretable(%pc)', 'octamod_pre_table(%pc)'))
+    if loader.count('lea     pretable:l,%a2') != 1: raise ValueError('Changed pre-boot pointer needs review')
+    (work/'loader.S').write_text(loader.replace('lea     pretable:l,%a2', 'lea     octamod_pre_table:l,%a2'))
     obj=work/'loader.o';run(['m68k-elf-as','-mcpu=5475','-I',work,'--defsym','PREBOOT=1','-o',obj,work/'loader.S'],root)
     raw=obj.read_bytes(); bootstrap=dict(bytes=len(raw),code=raw.hex(),sha256=HASH(raw))
     print(f'Compiled {len(objects)} requested ColdFire objects, both Analog BD engines and stock-free pre-boot skeleton.',flush=True)
@@ -486,11 +514,27 @@ def main():
             if clean(products['requested-packages.json']) != clean(baseline['requested-packages.json']): raise ValueError('Requested authored packages or placement recipes differ from the verified baseline')
         print('Every authored compiled package and receiver matches the existing browser/native baseline.', flush=True)
 
+    regions = [dict(moduleId=m.name, symbol=r.symbol, size=r.size, align=r.align)
+               for m in known.values() for r in m.dram_regions]
+    if any(m.keeps or m.conflicts or any(c.reserve for c in m.cf_patches) for m in known.values()):
+        contracts = []
+        for m in known.values():
+            contracts.append(dict(moduleId=m.name, key=m.key,
+                spans=[dict(kind=k, address=a, bytes=n, label=l) for k,a,n,l in m.write_spans()],
+                keeps=[dict(address=k.addr, bytes=fingerprint(k.expect,k.addr)[0], sha256=fingerprint(k.expect,k.addr)[1]) for k in m.keeps],
+                conflicts=[dict(key=k, reason=r) for k,r in m.conflicts]))
+        products['coldfire-packages.json']['contracts'] = contracts
+    if regions:
+        products['coldfire-packages.json']['memoryRegions'] = regions
+
     os.chdir(APP)
     if utility_ids:
         spec = importlib.util.spec_from_file_location('octamod_utility_compiler', APP / 'scripts/build-utility-packages.py')
         compiler = importlib.util.module_from_spec(spec); spec.loader.exec_module(compiler)
         products['utility-packages.json'] = compiler.compile_packages(APP, provenance=provenance)
+    spec = importlib.util.spec_from_file_location('modwerk_usb_compiler', APP / 'scripts/build-usb-audio-packages.py')
+    usb_compiler = importlib.util.module_from_spec(spec); spec.loader.exec_module(usb_compiler)
+    products['usb-audio-packages.json'] = dict(usb_compiler.build(), **provenance)
     destination.mkdir(parents=True)
     files = {}
     notice_name = 'THIRD_PARTY_NOTICES.txt'

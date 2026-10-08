@@ -1,4 +1,4 @@
-import { requestedRom, requestedTables, requestedHooks } from './requested-modules.ts'
+import { requestedRom, requestedTables, requestedHooks, requestedCaves } from './requested-modules.ts'
 import { composeUtilityRom } from './utility-modules.ts'
 import type { CfRuntimeLink } from './coldfire-link.ts'
 import descriptorRecipes from './assets/descriptor-recipes.json' with { type: 'json' }
@@ -8,6 +8,7 @@ import { composeDescriptors, placementOrder } from './descriptors.ts'
 import { emitLabelFormatter, emitModeFormatter, type ModeRenames } from './menu-formatters.ts'
 import { readRomPackage, linkRomText, createWideDial } from './rom-package.ts'
 import { applyGuardedOsWrites, type OsWrite } from './os-patches.ts'
+import { MenuSpaceError } from './placement-error.ts'
 export const MENU_CAVE_END = 0x400d7c3c, MENU_LONG_LIST = 0x400d7bbc
 const OVERFLOW_START = 0x400d24d0, OVERFLOW_END = 0x400d2ce0
 const align = (address: number, alignment: number) => Math.ceil(address / alignment) * alignment
@@ -27,7 +28,12 @@ export async function composeModuleMenus(original: Uint8Array, ids: readonly str
   const formatters: { id: string; slot: number; address: number; bytes: number; wideMaximum: number | null }[] = []
   let cursor = baseline.caveCursor, overflow = OVERFLOW_START
   async function cave(address: number, bytes: Uint8Array, note: string) {
-    if (!Number.isInteger(address) || address % 2 || !bytes.length || !((address >= baseline.caveCursor && address + bytes.length <= caveLimit) || (address >= OVERFLOW_START && address + bytes.length <= OVERFLOW_END) || (address === 0x400c45b0 && address + bytes.length <= 0x400c4702))) throw new Error('A module menu cave exceeds its reserved region.')
+    if (!Number.isInteger(address) || address % 2 || !bytes.length) throw new Error('Invalid module menu placement.')
+    const end = address >= baseline.caveCursor ? caveLimit : address >= OVERFLOW_START && address < OVERFLOW_END ? OVERFLOW_END : address === 0x400c45b0 ? 0x400c4702 : address
+    if (!((address >= baseline.caveCursor && address + bytes.length <= caveLimit) || (address >= OVERFLOW_START && address + bytes.length <= OVERFLOW_END) || (address === 0x400c45b0 && address + bytes.length <= 0x400c4702))) {
+      const owner = modules.find(module => note.startsWith(module.id + ' ') || note.startsWith(module.name + ' '))
+      throw new MenuSpaceError(owner ? owner.name + ' menu and patch code' : note, bytes.length, Math.max(0, end - address), owner ? [owner.id] : [])
+    }
     writes.push({ address, guardLength: bytes.length, guardSha256: await zeroHash(bytes.length), bytes, note }); regions.push({ address, bytes: bytes.length, note })
   }
   // ROM units a descriptor points into (raw formatter/widget words). Native places units in chooser order, so a module that leads
@@ -79,7 +85,9 @@ export async function composeModuleMenus(original: Uint8Array, ids: readonly str
   cursor = utilityUnits.cursor; overflow = utilityUnits.overflow; writes.push(...utilityUnits.writes)
   // Catalog order puts a replacing module after the requested and utility modules, so its units follow theirs unless it leads.
   for (const descriptor of baseline.descriptors) if (!leading.includes(descriptor.id)) await placeRawPointers(descriptor)
-  const requestedSymbols = new Map([...(runtime?.symbols ?? []), ...rom.symbols])
+  const lateRom = await requestedRom(ids, cursor, overflow, caveLimit, cave, true)
+  cursor = lateRom.cursor; overflow = lateRom.overflow
+  const requestedSymbols = new Map([...(runtime?.symbols ?? []), ...rom.symbols, ...lateRom.symbols])
   if (modules.some(module => module.id === 'spectrum')) {
     const descriptor = baseline.descriptors.find(descriptor => descriptor.id === 'spectrum')!
     const address = 0x400c45b0, linked = linkRomText(await readRomPackage('spectrum-shape'), address, new Map([['CLONE_SPECTRUM', descriptor.address]]))
@@ -98,6 +106,9 @@ export async function composeModuleMenus(original: Uint8Array, ids: readonly str
   }
   const utilityCaves = await composeUtilityRom(ids, cursor, overflow, caveLimit, cave, 'caves')
   cursor = utilityCaves.cursor; overflow = utilityCaves.overflow; writes.push(...utilityCaves.writes)
+  const caves = await requestedCaves(ids, cursor, overflow, caveLimit, cave, 0x40a955e0 + ((runtime as (CfRuntimeLink & { reserveBytes?: number }) | null)?.reserveBytes ?? 0))
+  cursor = caves.cursor; overflow = caves.overflow
+  for (const [name, value] of caves.symbols) requestedSymbols.set(name, value)
   const tables = await requestedTables(original, ids, cursor, cave, requestedSymbols)
   cursor = tables.cursor; writes.push(...tables.writes)
   writes.push(...await requestedHooks(original, ids, requestedSymbols, runtime))

@@ -19,7 +19,7 @@
     },
     {
       "id": "miniverb",
-      "version": "0.1.2-experimental",
+      "version": "0.2.0-experimental",
       "addedAt": "2026-10-01T06:53:41Z"
     },
     {
@@ -29,7 +29,7 @@
     },
     {
       "id": "euclid",
-      "version": "0.1.3-experimental",
+      "version": "0.1.4-experimental",
       "addedAt": "2026-10-01T06:53:41Z"
     },
     {
@@ -44,7 +44,7 @@
     },
     {
       "id": "analog-bassdrum",
-      "version": "0.1.2-experimental",
+      "version": "0.1.3-experimental",
       "addedAt": "2026-10-01T09:19:37Z"
     },
     {
@@ -54,7 +54,7 @@
     },
     {
       "id": "usb-audio-out-tracks-main-cue",
-      "version": "0.1.2-experimental",
+      "version": "0.2.0-experimental",
       "addedAt": "2026-10-01T09:19:37Z"
     },
     {
@@ -64,7 +64,7 @@
     },
     {
       "id": "synth",
-      "version": "0.1.1-experimental",
+      "version": "0.1.2-experimental",
       "addedAt": "2026-10-06T08:00:28Z"
     },
     {
@@ -86,6 +86,21 @@
       "id": "vector",
       "version": "0.2.3-experimental",
       "addedAt": "2026-10-06T08:02:00Z"
+    },
+    {
+      "id": "playmodes",
+      "version": "0.1.1-experimental",
+      "addedAt": "2026-10-07T20:00:00Z"
+    },
+    {
+      "id": "mute-modes",
+      "version": "0.1.0-experimental",
+      "addedAt": "2026-10-07T20:00:00Z"
+    },
+    {
+      "id": "recorder-loop-fix",
+      "version": "0.1.0-experimental",
+      "addedAt": "2026-10-07T20:00:00Z"
     }
   ]
 }

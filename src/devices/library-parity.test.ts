@@ -5,9 +5,10 @@ import { AVAILABLE_MODULES } from '../catalog/availability'
 import { selectionConflicts } from '../catalog/selection-conflicts'
 import { LibraryTools } from '../components/LibraryTools'
 import { ModuleComparison } from '../components/ModuleComparison'
+import { DEFAULT_MODULE_SORT } from '../community/module-statistics'
 import { DEVICES_BY_ID } from './registry'
 import { DIGI_MODS } from './digi-mods'
-import { AllMachinesLibrary, DigiLibrary } from './MachinePages'
+import { AllMachinesLibrary, DigiLibrary, MachineLibrary } from './MachinePages'
 
 const noop = () => {}
 // Likes and downloads show the number beside an icon; the word is there for screen readers only.
@@ -21,6 +22,23 @@ const props = {
   viewedModuleVersions: {}, moduleBaseline: AVAILABLE_MODULES.map(module=>module.id),
 }
 
+describe('machine switching layout', () => {
+  it.each(['octatrack', 'digitakt', 'digitone', 'syntakt'])('keeps the search tools and build action in the %s library without the local-build banner', id => {
+    const html = renderToStaticMarkup(createElement(MachineLibrary, {...props, device: DEVICES_BY_ID[id]}))
+    expect(html.indexOf('class="discovery-tools"')).toBeLessThan(html.indexOf('class="library-subheading"'))
+    expect(html).toContain('<h1>Module library</h1>')
+    expect(html).toContain('Collection order')
+    expect(html).toContain('Build firmware</a>')
+    expect(html).not.toContain('device-preview-note')
+    expect(html).not.toContain('firmware locally with your original OS file')
+    if (id === 'syntakt') {
+      expect(html).toContain('aria-disabled="true"')
+      expect(html).not.toContain('href="#syntakt/configuration"')
+      expect(html).toContain('Be the first to mod the')
+    } else expect(html).toContain('href="' + (id === 'octatrack' ? '#configuration' : '#' + id + '/configuration') + '"')
+  })
+})
+
 describe('All machines library parity', () => {
   it('keeps the Octatrack build, sort, rating, popularity and comparison controls', () => {
     const html = renderToStaticMarkup(createElement(AllMachinesLibrary, props))
@@ -28,7 +46,7 @@ describe('All machines library parity', () => {
       family: 'all', families: [], onFamilyChange: noop, sort: 'collection', onSortChange: noop,
       comparisonCount: 1, onCompare: noop,
     }))
-    for (const value of ['collection', 'recent', 'name', 'author', 'rated', 'liked', 'downloaded']) {
+    for (const value of ['updated', 'collection', 'recent', 'name', 'author', 'rated', 'liked', 'downloaded']) {
       const option = `<option value="${value}"`
       expect(html).toContain(option)
       expect(tools).toContain(option)
@@ -49,7 +67,7 @@ describe('All machines library parity', () => {
   it('shows saved Octatrack and Digitakt collisions even when filters hide their modules', () => {
     const html = renderToStaticMarkup(createElement(AllMachinesLibrary, {...props,
       query: 'no matching modules', octatrackModules: [],
-      octatrackConflicts: selectionConflicts(['miniverb', 'analog-bassdrum']),
+      octatrackConflicts: selectionConflicts(['midi-scenes', 'analog-bassdrum']),
       digiSelected: {digitakt: ['digislicer', 'digisophie'], digitone: []},
     }))
     expect(html).toContain('Octatrack: your selection needs a change')
@@ -85,6 +103,26 @@ describe('All machines library parity', () => {
 
 
 describe('Digi library parity', () => {
+  it('selects Recently updated and sorts releases consistently in both libraries without popularity data', () => {
+    const releases = new Map(DIGI_MODS.map(mod => [mod, mod.updatedAt]))
+    try {
+      for (const mod of DIGI_MODS.filter(mod => mod.device === 'digitakt')) {
+        if (mod.id === 'digisophie') mod.updatedAt = '2026-10-08T00:00:00Z'
+        if (mod.id === 'digislicer') mod.updatedAt = '2026-10-07T00:00:00Z'
+        if (mod.id === 'digihealth') mod.updatedAt = '2026-10-01T00:00:00Z'
+      }
+      const all = renderToStaticMarkup(createElement(AllMachinesLibrary, {...props, sort: DEFAULT_MODULE_SORT, statistics: null}))
+      const digitakt = renderToStaticMarkup(createElement(DigiLibrary, {...props, device: {...DEVICES_BY_ID.digitakt, id: 'digitakt'}, selectedIds: [], onToggle: noop, sort: DEFAULT_MODULE_SORT, statistics: null}))
+      for (const html of [all, digitakt]) {
+        expect(html).toContain('<option value="updated" selected="">Recently updated</option>')
+        expect(html.indexOf('View SOPHIE')).toBeLessThan(html.indexOf('View DIGISLICER'))
+        expect(html.indexOf('View DIGISLICER')).toBeLessThan(html.indexOf('View digihealth'))
+      }
+    } finally {
+      for (const [mod, date] of releases) mod.updatedAt = date
+    }
+  })
+
   const digiProps = { device: {...DEVICES_BY_ID.digitakt, id: 'digitakt' as const}, category: undefined, query: '', selectedIds: [], onToggle: noop, family: 'all', onFamilyChange: noop, sort: 'collection', onSortChange: noop, statistics: props.statistics, comparison: [], onCompare: noop, onOpenComparison: noop }
 
   it.each(['liked', 'downloaded', 'rated'])('shows and sorts %s statistics in both libraries without sharing counts across machines', sort => {

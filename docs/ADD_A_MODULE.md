@@ -2,6 +2,8 @@
 
 This page is for contributors and for the coding agents they point at this repository. Read it, then the section for your machine. The other module documents are field references; open one only when a step links to it.
 
+For an existing published module, start with [author updates](MODULE_AUTHOR_UPDATES.md). Telling a coding agent “fix issue <link>” in your fork starts the guided fix, version, hardware-test and release flow. The owner approves first releases; registered authors can publish their own later updates after checks pass.
+
 ## Read the guide for your category first
 
 Every module follows [the guide for its category](module-guides/README.md): effects, machines, playback, scenes, MIDI & USB, system or standalone. They say how a module must behave beside parameter locks, LFOs, scenes, saved projects and other modules, and anything that acts in time follows [sequencing.md](module-guides/sequencing.md): the instrument's own transport, tempo, track speed and swing, never a clock of your own. `npm run module:doctor -- <id>` checks the integration points a program can see.
@@ -19,8 +21,25 @@ Every module follows [the guide for its category](module-guides/README.md): effe
 
 - Never commit firmware, extracted stock code or tables, memory dumps, emulator cards or built images. Firmware stays on your computer. Stock code is referenced by address, length and SHA-256 and copied from each user's own OS file when they build.
 - Keep every author's credit and full licence text. Pin ported source to an exact commit.
-- Any change inside a module folder needs a higher semantic `version` in its manifest, and the same version in `sdk/catalog.json` once the module is listed there.
-- One module per pull request. The owner merging it approves that version.
+- Code or behaviour changes inside a module folder need a higher semantic `version` in its manifest, and the same version in `sdk/catalog.json` once listed. Documentation/media/prose-only edits need a version bump only when requesting automatic author publication.
+- One module per pull request. The owner approves the first release and changes beyond the registered author's scope. Later scoped updates can use automatic author publication after evidence verification and required checks.
+
+## Persistence and multiple instances
+
+For every stateful module, project saving and reload/reboot survival are
+essential acceptance checks. Always exercise multiple simultaneous instances
+with different settings: different tracks, both FX slots when supported and
+both DSP cores when applicable. Verify that editing, replacing or resetting one
+instance does not change another. Single-instance operation is insufficient.
+
+Check Part save/reload, project save/load/reload and a restart with volatile RAM
+discarded, retaining only the card and battery-backed RAM. After each operation,
+verify every instance's machine/FX assignment, sample or engine selection,
+parameters and usable audio. Include a saved baseline followed by unsaved edits
+so reload must restore the expected baseline. An emulator that explicitly loads
+the project after a fresh boot proves project loading, not power-cycle survival.
+Bind results to the exact source/image and record physical reboot evidence
+separately; failures or unavailable paths remain explicit qualification gaps.
 
 ## Setup
 
@@ -33,20 +52,45 @@ Run this after every edit. It takes about 15 seconds, never reads firmware and n
 
 ```sh
 npm run modules:generate                      # regenerate the catalog from the module folders
-npm run check                                 # lint, tests, types and the production build, as in CI
+npm run check -- --base origin/main            # scopes docs to metadata/provenance; code runs the full app suite
 npm run module:doctor -- <id>                 # does the module fit every workflow? lists each gap and the command that fixes it
 npm run modules:check -- --base origin/main   # version and publication rules for the folders you changed
 ```
 
 ## What CI runs
 
-- **Every pull request:** `npm run check` (lint, tests, types, build), about a minute.
+- **Documentation-only pull requests:** licence, generated catalogue, release-note coverage, module contract, tutorial and screenshot-provenance validation. No application test suite, bundle, Windows runner or native compiler.
+- **Application or behaviour changes:** the full `npm run check` (lint, tests, types, build).
 - **Only a pull request that changes module source, the module build or the committed packages:** the Docker compile that must reproduce the committed packages. Changes to module folders or their path handling also run the Windows check. These are the same inputs the release uses to decide whether to rebuild the modules.
 - **After the merge:** the release verifies the merge approval, re-verifies the generated files, licences and module records, then type-checks and bundles what the pull request already tested. It rebuilds the modules only if module inputs changed.
 
+## Optional creator support
+
+Once your module is in the reviewed catalog, you can link your own Ko-fi page without changing its source or publishing a new module version. On Modwerk, open **Your account → Developer account**, verify the author/maintainer GitHub identity, claim the module, and save its HTTPS Ko-fi profile URL in **Developer workspace → Your Ko-fi page**. Visitors can then click the small cup beside your name to open an embedded tip dialog. You can replace or remove the link at any time. Support links are stored per module, including separate Digitakt and Digitone IDs. See [the developer workspace](DEVELOPER_WORKSPACE.md) for ownership rules.
+
+## Release notes (required for every module version)
+
+Before publishing a new module or updating its version, add an entry under its community ID in `src/community/module-changelogs.json`. Octatrack IDs are the module ID (`euclid`); Digitakt and Digitone IDs include the machine (`digitakt-digihealth`, `digitone-digihealth`). Keep earlier entries. The module page’s Changelog tab shows these notes, including when live version history is unavailable.
+
+```json
+{
+  "version": "0.1.5-experimental",
+  "date": "2026-10-08",
+  "changes": ["Describe the user-visible fix or feature and any compatibility or saved-project limits."]
+}
+```
+
+Use the exact catalog/manifest version and the source-update date (`YYYY-MM-DD`). An optional `sourceCommit` is a full 40-character repository commit SHA; omit it until the referenced commit exists. Explain what changed, not just “updated module”. Mention changed controls, migration requirements and remaining limitations when relevant. Never imply hardware or audio testing that did not happen. Imported releases must distinguish upstream implementation changes from Modwerk packaging or documentation changes.
+
+`npm run check -- --base origin/main` and `npm run build` reject missing current-version notes, duplicate/invalid versions, malformed dates and unknown module IDs. `node scripts/module-changelogs.mjs` runs just this inexpensive metadata check. Regenerate catalogs after a manifest version changes, then validate before committing. Notes live outside module source folders so adding them does not invalidate retained qualification records or trigger native compilation.
+
+The published release inventory includes these exact version-matched notes. Update emails include every change and limitation from that entry in HTML and plain text, with a link to the module’s Changelog tab. The Worker retains the published notes for delayed digests and refuses to announce a new version without them.
+
+Documentation-only changes do not need a version bump: update the current entry with a clearly marked documentation-only note if the change belongs in its release history. A new version, including a metadata-only version when deliberately published, must always have its own entry.
+
 ## Documentation-only updates
 
-Fixing a README, a tutorial, a caption or a screenshot of a module that already has its qualification record needs none of the heavy steps: no version bump, no rebuilt packages, no fresh approval, and no Docker compile in CI when only README, Markdown, `media/`, `presentation/` or `evidence/` files change. The packages and the owner's approval bind to the module's code fingerprint (`moduleSourceFingerprint` in `scripts/module-source.mjs`), which ignores those files and the manifest's prose. Open a normal pull request; `npm run check` is the only gate. The frozen baseline modules, `cc-map`, `previewvol` and MIDI Scenes keep their older exact-folder rules (see [retained evidence](MODULE_QUALIFICATION.md#risk-based-update-checks--3-october-2026)).
+Fixing a README, a tutorial, a caption or a screenshot of a module that already has its qualification record needs none of the heavy steps: no version bump, no rebuilt packages, no fresh approval, and no Docker compile in CI when only README, Markdown, `media/`, `presentation/` or `evidence/` files change. The packages and the owner's approval bind to the module's code fingerprint (`moduleSourceFingerprint` in `scripts/module-source.mjs`), which ignores those files and the manifest's prose. Open a normal pull request and run `npm run check -- --base origin/main`. The same classifier drives PR checks and deployment: prose and media on all three machines skip native compilation, while firmware source, linking/build inputs and compiler changes retain it. The site still bundles and publishes the documentation; unchanged Worker inputs skip its deploy. The frozen baseline modules, `cc-map`, `previewvol` and MIDI Scenes keep their older exact-folder rules (see [retained evidence](MODULE_QUALIFICATION.md#risk-based-update-checks--3-october-2026)).
 
 ## What a finished module contains
 
@@ -60,7 +104,17 @@ Its folder, `sdk/<platform>/modules/<id>/`, holds:
 - `media/` with real black-and-white screenshots of where the module is selected and of its control pages, and their provenance in `capture.json`;
 - an original 320×192 SVG thumbnail: `presentation/thumbnail.svg` on the Octatrack, `media/thumbnail.svg` on Digitakt and Digitone.
 
-The checks reject missing sections, coloured screenshots and a version that did not increase. They cannot tell whether the documentation is true; the owner reviews that.
+The checks reject missing sections, coloured screenshots and a version that did not increase. They cannot tell whether the documentation is true; the owner reviews first releases and registered authors verify their scoped updates.
+
+## Screenshot walkthroughs
+
+Make the gallery a short usage tutorial for every machine: two to five
+essential images in find/enable → control example → expected result and
+stop/reset/bypass order. Captions explain the actual buttons or encoders and
+what they do; label inventories and fixture descriptions are insufficient.
+Keep alt text about the visible screen and reserve extra pages for supplementary
+screenshots. Read the complete gallery as a first-time user and follow the
+[screenshot caption standard](MODULE_UI_CAPTURES.md#write-a-short-screenshot-walkthrough).
 
 ## Octatrack
 
@@ -70,7 +124,7 @@ The checks reject missing sections, coloured screenshots and a version that did 
    - Either way, read the traps in [octabam's AGENTS.md](../sdk/octabam/AGENTS.md) before writing DSP or ColdFire code. The DSP assembler silently mis-encodes some instructions, and several of these traps assemble cleanly into the wrong machine code.
 2. **Fill in the manifest** from [the template](../public/module-repository.example.json): every control, the access steps, compatibility and conflicts. Add the resource gauges (`resources.impact`, see [gauges](MODULE_RESOURCE_GAUGES.md)) and the qualification record (`tests.qualification`, see [fields](MODULE_QUALIFICATION.md)).
 3. **Measure and test.**
-   - Record the worst-case cycles for each processor and the exact memory regions and totals.
+   - Record the worst-case cycles for each processor and the exact memory regions and totals. New FX should aim for DSP cost in the same ballpark as worst-case stock SPRING REV. Plan around that reference before implementation and compare expensive types/settings, moving controls and trigger splits under matched conditions on both cores. This is a design target without a fixed ratio or hard per-effect ceiling; substantially higher cost needs optimization and review of the remaining headroom.
    - For an effect, also check how it sounds: aliasing, clipping, DC and idle behaviour (`npm run fx:audit`, [effects guide](module-guides/effects.md#sound-quality)). Paste the table into TESTING.md, or write "not tested". No gate in CI runs it.
    - Add a hardware report from a real unit, stating its model, how long it ran, what was tested and the limitations. There is no minimum duration or track count.
    - If you could not test on hardware, say so in the pull request. Only the owner can waive this, for one exact version.

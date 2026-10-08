@@ -514,7 +514,7 @@
       "id": "miniverb",
       "key": "MINIVERB",
       "name": "Mini Verb",
-      "version": "0.1.2-experimental",
+      "version": "0.2.0-experimental",
       "category": "effects",
       "access": {
         "location": "Audio track FX2 SETUP: Mini Verb in the effect chooser.",
@@ -522,7 +522,7 @@
           "Select an audio track with its TRACK key.",
           "Hold FUNC and press FX2 to open FX2 SETUP.",
           "Turn LEVEL to Mini Verb and press YES to assign it.",
-          "Press FX2 to close SETUP, then adjust DECAY, DAMP, MIX, MOD and RATE."
+          "Press FX2 to close SETUP; DECAY, DAMP and TONE are above MOD, RATE and MIX."
         ],
         "screenshots": [
           "media/ot-location.png",
@@ -541,17 +541,17 @@
       "presentation": {
         "label": "DIFFUSED SPACE",
         "family": "Reverb",
-        "summary": "A diffused reverb with a modulated tail.",
-        "overview": "A compact diffused reverb with a modulated tail. Control its length and darkness, then use modulation depth and rate to add movement to the space.",
+        "summary": "A compact diffused reverb with wet-output tone and modulation.",
+        "overview": "Tone darkens or brightens the wet signal with one pole per stereo channel, while DAMP controls high-frequency decay inside the unchanged tank.",
         "highlights": [
           "Diffused, modulated reverb tail",
-          "Damping for darker spaces",
-          "Five dedicated controls"
+          "Independent tail damping and output tone",
+          "Mix in the lower-right slot; Tone above it"
         ],
         "usage": [
-          "Choose MINI VERB in FX2. DECAY controls the tail; higher DAMP makes the sound darker.",
-          "MOD sets modulation depth and RATE selects one of eight modulation speeds. Use MIX to place the reverb behind the dry signal.",
-          "The delay ring clears progressively on initialization. Audio stays dry until the ring is ready."
+          "Choose MINI VERB in FX2. DECAY and DAMP set the tail; TONE colors the wet output.",
+          "Turn TONE below 64 for darker reverb or above 64 for brighter reverb. At 64 the accepted voice is unchanged.",
+          "MOD and RATE add movement. MIX is now encoder F, below TONE; set MIX to 0 to bypass."
         ]
       },
       "controls": [
@@ -570,10 +570,10 @@
           "labels": null
         },
         {
-          "name": "MIX",
-          "default": 40,
+          "name": "TONE",
+          "default": 64,
           "count": 128,
-          "doc": "dry/wet, smoothed; 0 dry, 127 wet",
+          "doc": "wet color: 0 dark, 64 neutral, 127 bright; smoothed",
           "labels": null
         },
         {
@@ -598,6 +598,13 @@
             "2.36",
             "2.69"
           ]
+        },
+        {
+          "name": "MIX",
+          "default": 40,
+          "count": 128,
+          "doc": "dry/wet, smoothed; 0 dry, 127 wet",
+          "labels": null
         }
       ],
       "compatibility": {
@@ -606,59 +613,78 @@
         "location": "FX2",
         "conflicts": [],
         "limitations": [
-          "The documented sweep exercises moving controls, trigger splits and eight instances for 4,096 blocks per case. The README explicitly says it has not been flashed or verified on hardware."
+          "Stored projects, locks, scenes and LFO destinations use parameter slots: old MIX in slot C becomes TONE. Reassign Mix to slot F and set Tone to 64.",
+          "Physical hardware and power-cycle persistence remain untested; the owner explicitly waived hardware evidence for this exact update after accepting sound and stability in Octemu.",
+          "Cycle bounds use a static software model and inherited stock reserve; whole-instrument contention, maximum streaming/USB load and arbitrary companion FX are not measured."
         ]
       },
       "resources": {
-        "recorded": "20 Sep 2026",
+        "recorded": "2026-10-08",
         "storage": {
           "label": "DSP program / buffer",
-          "display": "457 words / 16K ring",
+          "display": "532 words / 16K ring",
           "value": null,
           "unit": "see display",
           "method": "static",
-          "conditions": "Per-instance Y ring allocation; 13,750 positions are occupied by the documented layout.",
-          "source": "README.md"
+          "conditions": "532 assembled program words; unchanged 16K Y ring and 32-word X scalar allocation. Four additional scalar words use previously empty slots inside that block.",
+          "source": "TESTING.md"
         },
         "processing": {
           "label": "DSP instruction peak",
-          "display": "20,296 per core/block",
+          "display": "23,360 instructions/core/block",
           "value": null,
           "unit": "see display",
           "method": "emulator",
-          "conditions": "Worst tested case with eight instances, four per core, at 44.1 kHz and 16-sample blocks. Excludes dispatcher, voice engines, other effects and hardware stalls.",
-          "source": "README.md"
+          "conditions": "Eight instances, four per core, at 44.1 kHz and 16-sample blocks; moving controls and mixed trigger splits. Executed instructions, not chip cycles or whole-instrument CPU.",
+          "source": "TESTING.md"
         },
         "impact": {
-          "conditions": "Audio modules are rated for an active instance, including expensive modes and changing controls; MIDI/USB features are rated while enabled. More tracks or instances increase demand. Shared runtime reservations and reused stock buffers are not added again per module. These rough source-backed tiers do not establish hardware headroom or qualification.",
+          "conditions": "Eight FX2 instances, four per core; source-backed relative estimates, without whole-device utilization or silicon timing claims.",
           "cpu": {
-            "level": "minimal",
+            "level": "low",
             "basis": "source-estimate",
-            "rationale": "The reverb audio engine runs on the DSP. ColdFire parameter publication and UI still cost work, but the described module does not add a continuous CPU audio engine. CPU demand is a source estimate.",
-            "source": "README.md"
+            "rationale": "Existing stock parameter publication; no new ColdFire callback or runtime.",
+            "source": "TESTING.md"
           },
           "dsp": {
-            "level": "high",
-            "basis": "measured-comparison",
-            "rationale": "The eight-instance emulator record reports a worst tested 20,296 instructions per core/block, close to stock Spring and above Plate/Dark in the same test. This supports a high relative processing tier; it excludes other processing and hardware stalls.",
-            "source": "README.md"
+            "level": "moderate",
+            "basis": "source-estimate",
+            "rationale": "411 modeled loop cycles/sample; 8,192 conservative modeled cycles/instance/block. Eight moving instances peak at 23,360 executed instructions/core/block.",
+            "source": "TESTING.md"
           },
           "memory": {
-            "level": "high",
+            "level": "moderate",
             "basis": "source-estimate",
-            "rationale": "Each active instance owns a 16K-word DSP Y ring, with 13,750 positions occupied by the documented layout, plus scalar state and code. This is the largest per-instance DSP delay footprint among these listed effects.",
-            "source": "README.md"
+            "rationale": "Existing 16K ring and X reservation unchanged; 402,936 logical bytes for eight instances including both programs and full hardware stack capacity.",
+            "source": "TESTING.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "The documented sweep exercises moving controls, trigger splits and eight instances for 4,096 blocks per case. The README explicitly says it has not been flashed or verified on hardware.",
+        "summary": "46 current-source native DSP regressions and real emulator LCD layout pass. Owner accepted sound and stability in Octemu and explicitly approved this release without physical hardware evidence. Software bounds and memory reservations are recorded in TESTING.md.",
         "hardwareStatus": "untested",
-        "evidenceRevision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
+        "evidenceRevision": "80b6b5444ab57e8eb05cecfb372557d0ed567b1d",
         "gates": [
-          "tools/verify/verify_miniverb.py"
-        ]
+          "verify.py: exact neutral and dry, endpoint spectra, eight-instance isolation, dirty-state guards and 30-second moving render",
+          "Native/browser composition parity and changed-original refusal",
+          "Reproducible source-only packages"
+        ],
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial",
+            "steps": [
+              "Select an audio track, hold FUNC and press FX2, then choose Mini Verb with LEVEL and YES.",
+              "Press FX2, turn encoder F (MIX) to 127, and compare encoder C (TONE) at 0, 64 and 127 while playing a sample.",
+              "Lower MIX to place the colored reverb behind the dry signal; set MIX to 0 to hear the exact dry signal and bypass the wet output."
+            ]
+          },
+          "screenshots": [
+            "media/ot-location.png",
+            "media/ot-controls.png"
+          ],
+          "screenshotStyle": "black-and-white"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -669,35 +695,35 @@
         {
           "path": "media/ot-location.png",
           "captureType": "emulator",
-          "caption": "Mini Verb selected in the FX2 SETUP chooser. Its five controls are on the main FX2 page.",
-          "alt": "Mini Verb selected in the FX2 SETUP chooser. Its five controls are on the main FX2 page.",
-          "credit": "Octamod contributors (headless capture)",
+          "caption": "Hold FUNC and press FX2, choose Mini Verb with LEVEL, then press YES.",
+          "alt": "Mini Verb selected in the FX2 SETUP chooser.",
+          "credit": "Modwerk contributors (headless capture)",
           "license": "LicenseRef-OT-UI-Documentation",
           "source": "original",
           "otUi": {
             "page": "FX2 SETUP",
             "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "5162680d8bc342deb623cef00307f2a343f539a90f0bfcef59b59ceb4c60bb83",
-            "setup": "ot_emu with MKII panel, original 1.40C plus the original seven source modules; empty scratch card; transport stopped; actual 128x64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.0-experimental",
+            "imageSha256": "fd42fa81ee3cf23a47381a96d2e70be3efbaab250f5c3aedb5a1e11cd4a2529e",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         },
         {
           "path": "media/ot-controls.png",
           "captureType": "emulator",
-          "caption": "Mini Verb on the main FX2 page: DECAY, DAMP, MIX, MOD and RATE.",
-          "alt": "Mini Verb on the main FX2 page: DECAY, DAMP, MIX, MOD and RATE.",
-          "credit": "Octamod contributors (headless capture)",
+          "caption": "Press FX2 and compare TONE on encoder C at 0, 64 and 127; set MIX on encoder F to 0 to bypass.",
+          "alt": "Main FX2 page with DECAY, DAMP, TONE above MOD, RATE, MIX.",
+          "credit": "Modwerk contributors (headless capture)",
           "license": "LicenseRef-OT-UI-Documentation",
           "source": "original",
           "otUi": {
             "page": "FX2 main",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "5162680d8bc342deb623cef00307f2a343f539a90f0bfcef59b59ceb4c60bb83",
-            "setup": "ot_emu with MKII panel, original 1.40C plus the original seven source modules; empty scratch card; transport stopped; actual 128x64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.0-experimental",
+            "imageSha256": "fd42fa81ee3cf23a47381a96d2e70be3efbaab250f5c3aedb5a1e11cd4a2529e",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         }
       ]
@@ -901,8 +927,13 @@
       "id": "euclid",
       "key": "EUCLID",
       "name": "Euclid",
-      "version": "0.1.3-experimental",
+      "version": "0.1.4-experimental",
       "category": "effects",
+      "source": {
+        "repository": "https://github.com/sambanks/octabam",
+        "revision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
+        "path": "modules/euclid"
+      },
       "access": {
         "location": "Audio track FX1 or FX2 SETUP: Euclid in the effect chooser. These captures use FX2.",
         "steps": [
@@ -1298,34 +1329,12 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "The source describes pattern, timing, changing-type and cutoff-sweep verification. No current hardware-load percentage or final storage measurement is claimed here.",
+        "summary": "PLAY and resume reset the clock with audio interrupts masked, restore the full prior status register, and publish initialized after every clock field. Current-build hardware and chip timing are not measured. Software verification is recorded in TESTING.md.",
         "hardwareStatus": "untested",
         "evidenceRevision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
         "gates": [
           "tools/verify/verify_euclid.py"
-        ],
-        "retainedEvidence": {
-          "commit": "cb1f0a16a41902fe874b8f307dd3d9065daf6eff",
-          "moduleVersion": "0.1.2-experimental",
-          "documentation": {
-            "tutorial": {
-              "title": "Quick tutorial: follow the track swing",
-              "steps": [
-                "Select the audio track with its TRACK key, hold FUNC and press FX1 or FX2, then select Euclid with LEVEL and confirm with YES.",
-                "Press the same FX key to return to the main page. Set STEPS to 16 and PULSE to 5; in SETUP, keep RATE at 1/16 and OUT at ENV.",
-                "Press REC to enter Grid Recording, then hold FUNC and press BANK to open TRACK TRIG EDIT. Select SWING with UP/DOWN and turn LEVEL to set the track swing amount; 50% is straight timing.",
-                "For an all-track change, hold FUNC while turning LEVEL on the SWING row. SWING ALL changes every track's amount; Euclid follows the amount and swing steps of the track it occupies.",
-                "Press NO to close the menu and REC to leave Grid Recording. Start playback on a track with audible audio: Euclid's pulses follow its track swing grid. Press STOP to return to the base cutoff or gain, or set MIX to 0 for dry audio."
-              ]
-            },
-            "screenshots": [
-              "media/ot-controls-monochrome.png",
-              "media/ot-setup-monochrome.png",
-              "media/ot-swing-track.png"
-            ],
-            "screenshotStyle": "black-and-white"
-          }
-        }
+        ]
       },
       "license": {
         "spdx": "MIT",
@@ -1866,7 +1875,7 @@
       "id": "analog-bassdrum",
       "key": "ANALOG BD",
       "name": "Analog BD",
-      "version": "0.1.2-experimental",
+      "version": "0.1.3-experimental",
       "category": "machines",
       "source": {
         "repository": "https://github.com/sambanks/octabam",
@@ -1883,11 +1892,10 @@
           "Hold FUNC and press SRC for the shared ACCNT, LPF, LOW and HIGH controls. AMP and the track FX pages remain available."
         ],
         "screenshots": [
-          "media/ot-location.png",
+          "media/ot-setup.png",
           "media/ot-engines.png",
-          "media/ot-808.png",
           "media/ot-909.png",
-          "media/ot-setup.png"
+          "media/ot-808.png"
         ]
       },
       "author": {
@@ -1903,7 +1911,7 @@
         "label": "808 / 909",
         "family": "Drum synthesis",
         "summary": "Play an original 808 or 909 bass drum as a track machine, with both effect slots available.",
-        "overview": "Analog BD adds a track machine with two circuit-informed bass drum engines. Choose 808 or 909 from its engine browser and shape the sound on the SRC page. Synthesis runs before the stock AMP stage and both track effects.",
+        "overview": "Analog BD adds a track machine with two circuit-informed bass drum engines. Choose 808 or 909 from its engine browser and shape the sound on the SRC page. Synthesis runs before the stock AMP stage and both track effects. TDEP in the 909 and SAT in both engines now smooth modulation changes while preserving fixed-control sound.",
         "highlights": [
           "808 and 909 engines without embedded recordings",
           "Independent patches on all eight tracks",
@@ -1948,14 +1956,14 @@
           "name": "SWEEP / TDEP",
           "default": 64,
           "count": 128,
-          "doc": "808 pitch excursion; 909 pitch-envelope amount.",
+          "doc": "808 pitch excursion; 909 pitch-envelope amount with sample-wise smoothing.",
           "labels": null
         },
         {
           "name": "SAT",
           "default": 0,
           "count": 128,
-          "doc": "Drive into the shared Mackie desk stage.",
+          "doc": "Drive into the shared Mackie desk stage, with smooth table interpolation during modulation.",
           "labels": null
         },
         {
@@ -1998,57 +2006,57 @@
         ],
         "limitations": [
           "SPRING REV is excluded from the upstream standalone remix; its shared DARK helper must be restored from local firmware.",
-          "The current browser and eight-track changes are not hardware-qualified. Eight 909s with DJ EQ in both slots failed with silent output.",
+          "Owner reports stable MKII 0.1.3 operation with distinct 808/909 instances and physical persistence. Maximum eight-voice FX load, worst-case chip timing and full memory bounds remain unqualified.",
           "Saving this project on stock firmware can overwrite synth settings."
         ]
       },
       "resources": {
-        "recorded": "30 Sep 2026 (upstream record)",
+        "recorded": "8 Oct 2026 (candidate source/software and owner report)",
         "storage": {
           "label": "DSP code",
-          "display": "1,000 P words",
-          "value": 1000,
+          "display": "946 P words",
+          "value": 946,
           "unit": "P words",
           "method": "static",
-          "conditions": "Original engine/glue uses 1,000 P words plus a 35-word stock helper recovered locally; this is not final firmware size.",
-          "source": "CPU.md"
+          "conditions": "Combined 808/909 glue and engines use 946 P words plus the separately preserved 35-word stock helper. Existing X allocation is unchanged; full lifetime/stack bounds remain unmeasured.",
+          "source": "TESTING.md"
         },
         "processing": {
           "label": "DSP execution",
-          "display": "808: 220.94 · 909: 326.13",
+          "display": "808: 268.38 · 909: 386.00",
           "value": null,
           "unit": "instructions/sample",
           "method": "emulator",
-          "conditions": "Standalone peak executed instructions per sample under the upstream host, not hardware cycles or utilization. Combined effects share the budget.",
-          "source": "CPU.md"
+          "conditions": "Peak executed instructions/sample in the focused modulation/retrigger workload; not worst-case chip cycles or full-chain utilization.",
+          "source": "TESTING.md"
         },
         "impact": {
-          "conditions": "Audio modules are rated for an active instance, including expensive modes and changing controls; MIDI/USB features are rated while enabled. More tracks or instances increase demand. Shared runtime reservations and reused stock buffers are not added again per module. These rough source-backed tiers do not establish hardware headroom or qualification.",
+          "conditions": "Per active Analog BD voice with both models and rapid TDEP/SAT changes considered; unchanged ColdFire control path and existing shared DSP upload/table reservations. Ratings describe relative demand, not processor utilization or whole-chip headroom.",
           "cpu": {
             "level": "low",
             "basis": "source-estimate",
-            "rationale": "ColdFire supports source selection, engine-browser controls and trigger publication while synthesis runs on the DSP. This is a rough estimate of control/dispatch work; CPU timing has not been quantified.",
-            "source": "README.md"
+            "rationale": "Existing guarded ColdFire machine/control glue publishes the same saved knob bytes; the smoothing runs entirely in DSP code and adds no ColdFire work.",
+            "source": "TESTING.md"
           },
           "dsp": {
             "level": "high",
             "basis": "measured-comparison",
-            "rationale": "The 909 peaks at 326.13 host instructions per sample and is costlier than the compared stock reverbs. Silent voices still execute most of that work, and eight-voice/effects limits are recorded. The high tier follows those comparisons rather than an exact core budget.",
+            "rationale": "Synthesis plus the desk stage and per-sample smoothing peaks at 268.375 executed instructions/sample for 808 and 386 for 909 in the focused workload, above the historical 220.9375/326.125 peaks. These are interpreter instruction counts, not chip timing.",
             "source": "CPU.md"
           },
           "memory": {
             "level": "low",
             "basis": "source-estimate",
-            "rationale": "The record lists 1,000 DSP program words plus a locally recovered shared helper. The synth uses oscillator/envelope state rather than long delay lines. Low is a rough added footprint tier, not a complete linked-code/state inventory.",
-            "source": "CPU.md"
+            "rationale": "946 P words per core and the separate 35-word helper reuse the existing donor. The 3776-word X upload per core includes tables and existing 64-word voice blocks; smoothing reuses scratch state and adds no X/Y/ColdFire allocation. Complete stack/lifetime bounds remain unmeasured.",
+            "source": "TESTING.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Upstream records exact render/state and source/AMP/effects checks on both cores. ANALOGBD1 ran on an MKI; the current engine browser, louder output and eight-track revision still await hardware qualification. Octamod native and actual-browser composition/packaging parity and rejection checks passed on 1 October 2026. The owner reported both combined test images working; this is a smoke report, not full feature/load qualification.",
-        "hardwareStatus": "historical",
-        "evidenceRevision": "363861e31ee963c478fab2b190a0fabe1d7ce37b",
+        "summary": "TDEP/SAT smoothing passes constant-audio, modulation and native instance/core isolation tests. The owner reports stable MKII operation on the exact private build, with distinct 808/909 instances and settings/audio surviving Part/project reload and normal power-off/on. Emulator control-state persistence passes separately; worst-case chip timing, complete memory bounds and maximum FX load remain unmeasured.",
+        "hardwareStatus": "reported",
+        "evidenceRevision": "207964506864dec8a71ca0bc35ca19aca46a6f48",
         "gates": [
           "tools/verify/verify_analog_bassdrum.py",
           "tools/harness/bd808.py",
@@ -2058,7 +2066,24 @@
           "tools/verify/verify_analog_bassdrum_cf.py",
           "tools/verify/verify_analog_bassdrum_port.py",
           "tools/verify/verify_analog_bassdrum_ui.py"
-        ]
+        ],
+        "documentation": {
+          "tutorial": {
+            "title": "Smooth a long 909 tail",
+            "steps": [
+              "In a disposable project, select the track, hold FUNC and press SRC for SRC SETUP, choose ANALOG BD and press YES. Double-tap its TRACK key, choose 909 with UP/DOWN or LEVEL and confirm with YES. Set LOW and HIGH to 64.",
+              "Press SRC to edit the main page. Set DECAY around 100, then trigger a hit and turn E (TDEP) and F (SAT) through the ranges that reproduced the report. Repeat with the existing modulation assignment. The update should reduce control steps while retaining the original endpoints and saturation character.",
+              "Set modulation depth to zero, return SAT to 0 and TDEP to 64, then press STOP and let the tail finish. Select 808 in the same browser to compare SAT; its knob values are retained when switching engines."
+            ]
+          },
+          "screenshots": [
+            "media/ot-setup.png",
+            "media/ot-engines.png",
+            "media/ot-909.png",
+            "media/ot-808.png"
+          ],
+          "screenshotStyle": "black-and-white"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -2067,77 +2092,9 @@
       },
       "media": [
         {
-          "path": "media/ot-location.png",
-          "captureType": "emulator",
-          "caption": "ANALOG BD selected on SRC SETUP, with its shared ACCNT, LPF, LOW and HIGH controls.",
-          "alt": "ANALOG BD selected on SRC SETUP, with its shared ACCNT, LPF, LOW and HIGH controls.",
-          "credit": "Octamod contributors (headless capture)",
-          "license": "LicenseRef-OT-UI-Documentation",
-          "source": "original",
-          "otUi": {
-            "page": "SRC SETUP",
-            "shows": "location-and-controls",
-            "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "2e5abefa1484788a6953db45e111b266a1f31d810fb45fa7155104a9780e8d3e",
-            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card; no samples or user projects."
-          }
-        },
-        {
-          "path": "media/ot-engines.png",
-          "captureType": "emulator",
-          "caption": "Analog BD’s engine browser: choose 808 or 909, then press YES.",
-          "alt": "Analog BD’s engine browser: choose 808 or 909, then press YES.",
-          "credit": "Octamod contributors (headless capture)",
-          "license": "LicenseRef-OT-UI-Documentation",
-          "source": "original",
-          "otUi": {
-            "page": "Analog BD engine browser",
-            "shows": "location",
-            "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "2e5abefa1484788a6953db45e111b266a1f31d810fb45fa7155104a9780e8d3e",
-            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card; no samples or user projects."
-          }
-        },
-        {
-          "path": "media/ot-808.png",
-          "captureType": "emulator",
-          "caption": "Analog BD 808 main controls: PITCH, DECAY, TONE, ATK, SWEEP and SAT.",
-          "alt": "Analog BD 808 main controls: PITCH, DECAY, TONE, ATK, SWEEP and SAT.",
-          "credit": "Octamod contributors (headless capture)",
-          "license": "LicenseRef-OT-UI-Documentation",
-          "source": "original",
-          "otUi": {
-            "page": "808 SRC main",
-            "shows": "controls",
-            "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "2e5abefa1484788a6953db45e111b266a1f31d810fb45fa7155104a9780e8d3e",
-            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card; no samples or user projects."
-          }
-        },
-        {
-          "path": "media/ot-909.png",
-          "captureType": "emulator",
-          "caption": "Analog BD 909 main controls: PITCH, DECAY, TUNE, ATK, TDEP and SAT.",
-          "alt": "Analog BD 909 main controls: PITCH, DECAY, TUNE, ATK, TDEP and SAT.",
-          "credit": "Octamod contributors (headless capture)",
-          "license": "LicenseRef-OT-UI-Documentation",
-          "source": "original",
-          "otUi": {
-            "page": "909 SRC main",
-            "shows": "controls",
-            "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "2e5abefa1484788a6953db45e111b266a1f31d810fb45fa7155104a9780e8d3e",
-            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card; no samples or user projects."
-          }
-        },
-        {
           "path": "media/ot-setup.png",
           "captureType": "emulator",
-          "caption": "Shared Analog BD setup controls: ACCNT, LPF, LOW and HIGH.",
+          "caption": "Hold FUNC and press SRC for SRC SETUP, select ANALOG BD and confirm. LOW and HIGH at 64 give a neutral desk starting point.",
           "alt": "Shared Analog BD setup controls: ACCNT, LPF, LOW and HIGH.",
           "credit": "Octamod contributors (headless capture)",
           "license": "LicenseRef-OT-UI-Documentation",
@@ -2146,9 +2103,60 @@
             "page": "SRC SETUP",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "2e5abefa1484788a6953db45e111b266a1f31d810fb45fa7155104a9780e8d3e",
-            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card; no samples or user projects."
+            "moduleVersion": "0.1.3-experimental",
+            "imageSha256": "87e56b38fe45a5b10fda2129193f67946b078f4d84b07a0cb1afbc2ef0ebaa54",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; controller with stand-in DSP; actual LCD at integer scale 6. Disposable OCTABAM/RIG fixture. Audio is not inferred from captures."
+          }
+        },
+        {
+          "path": "media/ot-engines.png",
+          "captureType": "emulator",
+          "caption": "Double-tap the assigned TRACK key, choose 808 or 909 with UP/DOWN or LEVEL and press YES. NO cancels.",
+          "alt": "Analog BD’s engine browser: choose 808 or 909, then press YES.",
+          "credit": "Octamod contributors (headless capture)",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "Analog BD engine browser",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.3-experimental",
+            "imageSha256": "87e56b38fe45a5b10fda2129193f67946b078f4d84b07a0cb1afbc2ef0ebaa54",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; controller with stand-in DSP; actual LCD at integer scale 6. Disposable OCTABAM/RIG fixture. Audio is not inferred from captures."
+          }
+        },
+        {
+          "path": "media/ot-909.png",
+          "captureType": "emulator",
+          "caption": "Press SRC for 909 controls; E changes TDEP and F changes SAT. After auditioning modulation, return SAT to 0 and TDEP to 64, then press STOP.",
+          "alt": "Analog BD 909 main controls: PITCH, DECAY, TUNE, ATK, TDEP and SAT.",
+          "credit": "Octamod contributors (headless capture)",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "909 SRC main",
+            "shows": "controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.3-experimental",
+            "imageSha256": "87e56b38fe45a5b10fda2129193f67946b078f4d84b07a0cb1afbc2ef0ebaa54",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; controller with stand-in DSP; actual LCD at integer scale 6. Disposable OCTABAM/RIG fixture. Audio is not inferred from captures."
+          }
+        },
+        {
+          "path": "media/ot-808.png",
+          "captureType": "emulator",
+          "caption": "Choose 808 in the engine browser, then press SRC. Compare SAT on F; changing engines retains the knob settings.",
+          "alt": "Analog BD 808 main controls: PITCH, DECAY, TONE, ATK, SWEEP and SAT.",
+          "credit": "Octamod contributors (headless capture)",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "808 SRC main",
+            "shows": "controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.3-experimental",
+            "imageSha256": "87e56b38fe45a5b10fda2129193f67946b078f4d84b07a0cb1afbc2ef0ebaa54",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; controller with stand-in DSP; actual LCD at integer scale 6. Disposable OCTABAM/RIG fixture. Audio is not inferred from captures."
           }
         }
       ]
@@ -2471,20 +2479,19 @@
       "id": "usb-audio-out-tracks-main-cue",
       "key": "USB AUDIO OUT TRACKS MAIN CUE",
       "name": "USB Audio",
-      "version": "0.1.2-experimental",
+      "version": "0.2.0-experimental",
       "category": "midi-usb",
       "source": {
         "repository": "https://github.com/sambanks/octabam",
-        "revision": "363861e31ee963c478fab2b190a0fabe1d7ce37b",
+        "revision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
         "path": "modules/usb-audio-out-tracks-main-cue"
       },
       "access": {
         "location": "The Octatrack USB port and your recording host’s audio input selector.",
         "steps": [
-          "Include USB Audio in the firmware configuration. This source import is still pending verification.",
-          "Connect the Octatrack’s USB port to your recording host using high-speed USB for all twenty channels.",
-          "Choose the Octatrack USB audio input in your recording software. Channels 1–16 are the eight track stereo pairs, 17–18 MAIN and 19–20 CUE.",
-          "Allow the stream to settle before recording; upstream reports reordered startup samples around 0.5–1.5 seconds after opening."
+          "Open USB Audio setup, choose Computer or Outbox 8, and select the audio to send. Read the signal-tap description and save the setup before adding it.",
+          "For Outbox 8, assign up to four stereo sources to the physical outputs. Match the shown USB pairs in Elektron’s Outbox app; Modwerk does not program the Outbox.",
+          "For Computer, select the Octatrack USB input in your recording software and use the shown stereo channel pairs. Full multichannel operation requires high-speed USB."
         ],
         "screenshots": [],
         "noUiReason": "This automatic USB output contribution adds no dedicated OT page, chooser entry or panel controls. Access is through the USB connection and the host’s audio input selector. The reviewer must verify this absence of OT UI against the pinned source before publication."
@@ -2495,24 +2502,26 @@
         "credits": [
           "Mark Roberts (markandrus/octemu): USB audio and MIDI implementation, MIT",
           "Bryan T (bryantysinger): MAIN/CUE channels and hardware alignment findings",
-          "Sam Banks: octabam port, layouts and stream alignment"
+          "Sam Banks: octabam port, layouts and stream alignment",
+          "allmyfriendsaresynths (@clickysteve): post-LEVEL USB track gain engine"
         ]
       },
       "nativeManifest": "manifest.py",
       "presentation": {
-        "label": "20 CHANNELS",
+        "label": "USB AUDIO",
         "family": "USB audio",
-        "summary": "Record eight stereo tracks, MAIN and CUE over USB at 44.1 kHz and 24 bits.",
-        "overview": "This is octabam’s 20-channel USB output implementation. At high speed it sends each track after its effects and before its fader, plus the final MAIN and CUE buses. At full speed it sends the tracks’ stereo sum. Required USB MIDI support is included in the SDK source.",
+        "summary": "Record stereo mixes or individual tracks over USB, or send them to Outbox 8 at 44.1 kHz and 24 bits.",
+        "overview": "Choose one USB output layout in Modwerk: Main, Main + Cue, Track 8 / Master, eight tracks before LEVEL, eight tracks following LEVEL, or eight tracks plus Main and Cue. The updated shared USB stack supports the Outbox 8 44.1 kHz handshake. Modwerk stores a routing plan; apply its USB channel pairs separately in Elektron’s Outbox app. Existing configurations without USB settings keep the classic twenty-channel implementation.",
         "highlights": [
-          "20 channels at high speed: eight tracks plus MAIN and CUE",
-          "44.1 kHz, 24-bit class-compliant UAC2 output",
-          "Recorded hardware evidence on both MKI and MKII"
+          "Six selectable stereo output layouts; 2 to 20 USB channels",
+          "Outbox 8 rate handshake and shared audio / MIDI reset handling",
+          "Saved four-pair Outbox routing plan and per-layout CPU estimates"
         ],
         "usage": [
-          "Connect the Octatrack’s USB port to your recording host and choose its USB audio input. Use high-speed USB for all twenty channels.",
-          "Channels 1–16 are track 1–8 stereo pairs, 17–18 MAIN, and 19–20 CUE. Track channels are post-effects and pre-fader; MAIN/CUE include the mixdown.",
-          "Allow the stream to settle before recording: upstream reports reordered startup samples around 0.5–1.5 seconds after opening. Full-speed USB carries a stereo track sum."
+          "Open USB Audio setup, choose Computer or Outbox 8, and select the audio to send. Read the signal-tap description and save the setup before adding it.",
+          "For Outbox 8, assign up to four stereo sources to the physical outputs. Match the shown USB pairs in Elektron’s Outbox app; Modwerk does not program the Outbox.",
+          "For Computer, select the Octatrack USB input in your recording software and use the shown stereo channel pairs. Full multichannel operation requires high-speed USB.",
+          "To return to the classic twenty-channel source, choose Computer and Use classic 20-channel setup. This removes the new settings; existing saved configurations without USB settings keep their prior code path."
         ]
       },
       "controls": [],
@@ -2527,21 +2536,23 @@
           "usb-audio-out-tracks"
         ],
         "limitations": [
-          "USB output only. Host-to-Octatrack USB input variants are outside this import.",
-          "Requires the included internal USB MIDI dependency. Only one USB output layout can be composed.",
-          "Windows and Linux hosts have not been measured in this record.",
-          "A startup sample-reordering burst remains open. Master-on MAIN remains 32 samples behind track taps; toggling master can leave up to 32 stale CUE frames."
+          "Output only, fixed 44.1 kHz / 24-bit; USB input and Crossbar variants are excluded.",
+          "One audio layout per build; shared USB MIDI is included.",
+          "Outbox assignments are a plan and must be applied in Elektron’s Outbox app.",
+          "At full speed, track feeds fall back to a stereo sum and Main + Cue to Main.",
+          "Post-LEVEL tracks exclude MAIN LEVEL and master effects on tracks 1–7. With a master track, tracks 1–7 lead track 8 by 32 samples.",
+          "Current-build Octatrack / Outbox operation, chip timing, complete memory bounds, Windows and Linux host behavior are not tested."
         ]
       },
       "resources": {
         "recorded": "29 Sep 2026 (upstream record)",
         "storage": {
           "label": "Audio rings",
-          "display": "88 KB + DMA buffers",
-          "value": 90112,
+          "display": "Depends on USB layout",
+          "value": null,
           "unit": "bytes",
-          "method": "static",
-          "conditions": "Two rings: 1,024 × 80 bytes plus 1,024 × 8 bytes = 90,112 bytes (88 KiB). Four 32-byte dTDs and four 960-byte packet buffers add 3,968 bytes, before code and MIDI state.",
+          "method": "unmeasured",
+          "conditions": "Exact linked section sizes are recorded per layout in evidence/layouts.json; the historical 88 KiB figure applies to the classic twenty-channel path. Complete stack / DMA and hardware memory bounds have not been measured.",
           "source": "README.md"
         },
         "processing": {
@@ -2558,7 +2569,7 @@
           "cpu": {
             "level": "high",
             "basis": "source-estimate",
-            "rationale": "The CPU producer continuously copies twenty audio channels into rings and services high-speed USB packet/DMA completion alongside MIDI. The high tier reflects that sustained maximum-channel workload; CPU headroom is not quantitatively established.",
+            "rationale": "Relative per-layout source estimates: Main, Main/Cue and Track 8 are low, eight pre-LEVEL tracks moderate, twenty-channel and post-LEVEL tracks high. Pinned upstream port instruction counts are not chip cycle or utilization measurements.",
             "source": "README.md"
           },
           "dsp": {
@@ -2570,20 +2581,32 @@
           "memory": {
             "level": "moderate",
             "basis": "source-estimate",
-            "rationale": "Audio rings occupy 88 KiB and DMA descriptors/packet buffers add 3,968 bytes before code and MIDI state. This is a moderate shared feature footprint relative to scalar/control modules and multi-instance reverb rings.",
+            "rationale": "The selected source determines the static audio ring footprint. Linked sections are recorded for all six layouts in evidence/layouts.json. This tier describes source allocation sizes, not a complete hardware memory bound.",
             "source": "README.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Selected for the broadest recorded hardware evidence: MKI and MKII, sustained multi-track 24-bit captures and high MIDI receive traffic. The latest source includes track/MAIN alignment and a hardware-tested master-on CUE correction; startup artifacts and unmeasured host/platform cases remain. Octamod native and actual-browser composition/packaging parity and rejection checks passed on 1 October 2026. The owner reported both combined test images working; this is a smoke report, not full feature/load qualification.",
-        "hardwareStatus": "historical",
-        "evidenceRevision": "363861e31ee963c478fab2b190a0fabe1d7ce37b",
+        "summary": "Software checks cover six source-only layouts, GNU runtime linking, guarded hooks, packaging and configuration persistence. Owner approved this experimental release without physical hardware testing. Hardware operation, real-chip timing and complete memory bounds remain unmeasured.",
+        "hardwareStatus": "untested",
+        "evidenceRevision": "7b2984c859732ae6c797ae49c7d61d250b1b6519",
         "gates": [
           "tools/verify/verify_usb.py",
           "tools/verify/verify_usb_align.py"
-        ]
+        ],
+        "documentation": {
+          "tutorial": {
+            "title": "Record a mix or send Main + Cue to Outbox",
+            "steps": [
+              "Choose and save: open USB Audio setup, choose Outbox 8 and Main + Cue mixes, then Assign in order. Save the setup to the named configuration and build locally from your own OS 1.40C file.",
+              "Connect and route: connect the Octatrack USB port to Outbox 8. In Elektron's Outbox app, match Main / USB 1/2 to physical outputs 1/2 and Cue / USB 3/4 to physical outputs 3/4. Modwerk stores this plan; it does not program the Outbox hardware.",
+              "Use and reset: Main is the final stereo mix; Cue is the separate stereo Cue bus. Outputs 5/6 and 7/8 are off. To use different signals, change and save the source and assignments, rebuild, and update the external app. Stop the stream before changing cabling."
+            ]
+          },
+          "screenshots": [],
+          "screenshotStyle": "black-and-white"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -2848,7 +2871,7 @@
       "id": "synth",
       "key": "SYNTH MACHINE",
       "name": "FM Synth",
-      "version": "0.1.1-experimental",
+      "version": "0.1.2-experimental",
       "category": "machines",
       "source": {
         "repository": "https://github.com/sambanks/octabam",
@@ -2888,7 +2911,7 @@
         "label": "Two-operator FM",
         "family": "Synth machines",
         "summary": "Two-operator FM with a dedicated track machine, one to four voices, chords and glide.",
-        "overview": "Choose FM SYNTH alongside FLEX and STATIC. Tim Hastie’s two-operator FM engine generates audio on the ColdFire CPU, with one to four paraphonic voices feeding the existing track AMP, filters and effects. The dedicated machine keeps sample slots intact and needs no marker WAV. This experimental release has emulator playback and native/browser composition evidence; hardware and worst-case chip timing remain untested/unmeasured.",
+        "overview": "FM SYNTH provides one to four paraphonic FM voices through the stock AMP and effects. Version 0.1.2 preserves the MIDI chromatic drawer stack and adds 18.06 dB source headroom. Software regression and native/browser composition checks pass. The owner approved release without current hardware validation; chip timing and complete memory bounds remain unknown. The original static symptom remains unconfirmed on hardware.",
         "highlights": [
           "Dedicated machine chooser entry; no sample required.",
           "Pitch, ratio, index, fine tuning, feedback and index decay on SRC.",
@@ -3044,12 +3067,13 @@
           "LFO3 speed/depth become VOIC/CHRD; LFO3 depth is muted. ATK/HOLD/REL remain inherited stock AMP controls and drive the synth’s own envelope.",
           "The matching quantizer is bundled privately because the engine shares its mailbox and fixed scale accessor. Do not also select the public Scale Quantizer.",
           "Cannot combine with Analog BD or the public Scale Quantizer because their native hooks overlap. Compatible mixed builds have native/browser byte-parity evidence; mixed audio loads have not been stress-tested.",
-          "Saved project/Part reloads, MIDI, chords, legato, modulation, maximum simultaneous voices and hardware timing remain unqualified.",
-          "Historical upstream marker-FLEX activation remains for compatibility; the verified route is the dedicated FM SYNTH chooser."
+          "MIDI selector recovery and one-track mono/four-voice playback are emulator-tested. External MIDI note/CC traffic, saved project/Part reloads, legato, modulation, maximum simultaneous tracks and hardware timing remain unqualified.",
+          "Historical upstream marker-FLEX activation remains for compatibility; the verified route is the dedicated FM SYNTH chooser.",
+          "Source output is 18.06 dB quieter at identical mixer settings. Added headroom mitigates gain clipping; effects, resonant filtering and summed tracks can still clip. The hardware static report has not been reproduced."
         ]
       },
       "resources": {
-        "recorded": "Build extents and source estimates; chip timing and complete memory bounds owner-waived",
+        "recorded": "Build extents and source estimates; unknown chip timing/memory under owner release exception",
         "storage": {
           "label": "Shared audio arena reservation",
           "display": "10,487,808 bytes (1,707 pages)",
@@ -3092,42 +3116,34 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Native panel/storage checks and sample-free playback passed. Shared native/browser comparison passed 94 cases (37 builds, 57 refusals); update packaging and changed-base refusals passed. Hardware is untested; worst-case chip cycles and complete stack/lifetime memory bounds are unmeasured under this exact owner-approved experimental release exception.",
+        "summary": "Owner-approved experimental 0.1.2: MIDI selector regression passes; mono and four-voice output have 18.06 dB more headroom. Current hardware remains untested; chip timing and complete memory bounds remain unmeasured. See TESTING.md and evidence/regressions.json.",
         "hardwareStatus": "untested",
-        "evidenceRevision": "5f3e27336c7e6bddfee88b6405e17c8f1fb8a7fd",
+        "evidenceRevision": "73490ef77f36bf523bc28f2b385d62e331ec7c5c",
         "gates": [
           "verify.py",
-          "verify-audio.py"
+          "verify-audio.py",
+          "verify-regressions.py"
         ],
-        "releaseWaiver": {
-          "moduleVersion": "0.1.1-experimental",
-          "sourceSha256": "bfa77029219a2d5deaa9dd1394662e18dfee01ade72b631e36fe3fab48054560",
-          "imageSha256": "c1fbc0b2eaf284e72692b7048d1dfd3693f3e3e90c71229159a619d585b52c95",
-          "approvedBy": "repeat98",
-          "approvedOn": "2026-10-06",
-          "reason": "Owner explicitly approved this experimental release without current hardware evidence, worst-case chip timing or complete stack/memory bounds. Those quantities remain unknown.",
-          "report": "evidence/software.json",
-          "documentation": {
-            "tutorial": {
-              "title": "Quick tutorial: play FM Synth",
-              "steps": [
-                "Open a disposable project with FM Synth firmware. Select an audio track, hold FUNC and press SRC, select FM SYNTH with UP/DOWN and press YES. No sample is required.",
-                "Press SRC. Set RATO to 1 and turn INDX from 0 upwards to hear a sine tone acquire FM harmonics. PTCH transposes it; FINE tunes it in cents; FDBK adds feedback; DEC shortens the modulation envelope.",
-                "Place a trig and press PLAY. Press LFO to set VOIC to 2–4 and CHRD to a chord if wanted. AMP ATK/HOLD/REL shape the gain envelope; FUNC+AMP exposes LEG.",
-                "Press STOP twice to silence the voice. To return to a sample machine, hold FUNC and press SRC, select FLEX or STATIC and press YES; assign the desired sample in the normal way."
-              ]
-            },
-            "screenshots": [
-              "media/ot-location.png",
-              "media/ot-controls.png",
-              "media/ot-voices.png",
-              "media/ot-legato.png",
-              "media/ot-scale.png",
-              "media/ot-root.png",
-              "media/ot-glide.png"
-            ],
-            "screenshotStyle": "black-and-white"
-          }
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: play FM Synth",
+            "steps": [
+              "Open a disposable project with FM Synth firmware. Select an audio track, hold FUNC and press SRC, select FM SYNTH with UP/DOWN and press YES. No sample is required.",
+              "Press SRC. Set RATO to 1 and turn INDX from 0 upwards to hear a sine tone acquire FM harmonics. PTCH transposes it; FINE tunes it in cents; FDBK adds feedback; DEC shortens the modulation envelope.",
+              "Place a trig and press PLAY. Press LFO to set VOIC to 2–4 and CHRD to a chord if wanted. AMP ATK/HOLD/REL shape the gain envelope; FUNC+AMP exposes LEG.",
+              "Press STOP twice to silence the voice. To return to a sample machine, hold FUNC and press SRC, select FLEX or STATIC and press YES; assign the desired sample in the normal way."
+            ]
+          },
+          "screenshots": [
+            "media/ot-location.png",
+            "media/ot-controls.png",
+            "media/ot-voices.png",
+            "media/ot-legato.png",
+            "media/ot-scale.png",
+            "media/ot-root.png",
+            "media/ot-glide.png"
+          ],
+          "screenshotStyle": "black-and-white"
         }
       },
       "license": {
@@ -3148,8 +3164,8 @@
             "page": "SRC SETUP",
             "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3165,8 +3181,8 @@
             "page": "FM SYNTH SRC",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3182,8 +3198,8 @@
             "page": "FM SYNTH LFO",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3199,8 +3215,8 @@
             "page": "AMP SETUP",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3216,8 +3232,8 @@
             "page": "CONTROL SEQUENCER: SCALE",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3233,8 +3249,8 @@
             "page": "CONTROL SEQUENCER: ROOT",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         },
@@ -3250,8 +3266,8 @@
             "page": "CONTROL SEQUENCER: GLIDE",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.1-experimental",
-            "imageSha256": "6b6d0ef7b076e0096a9a930c4ec65992d5eda3b9bb18865b925ed1b49e29548a",
+            "moduleVersion": "0.1.2-experimental",
+            "imageSha256": "d5464195fac0033852546fbbc8f809b64d16646309c21ab25e2f203fbf123157",
             "setup": "Headless ot_emu; MKII panel; empty 32 MiB disposable card; stopped transport; actual 128×64 LCD pixels at integer scale 6."
           }
         }
@@ -4755,6 +4771,681 @@
             "moduleVersion": "0.2.3-experimental",
             "imageSha256": "48c0ec735bc9fcc7f050b448b15b3204fa5b968812f4a2aacdf6a4a2c0b1c6e2",
             "setup": "octemu MKII panel; disposable T1 Static ~SINE440 fixture, Part ONE, A01, 120 BPM, FX NONE; actual 128×64 LCD scaled 6× with nearest-neighbor sampling. GDB observations in a separate headless session; no hardware or audio-continuity qualification."
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "playmodes",
+      "key": "PLAY MODES",
+      "name": "Play Modes",
+      "version": "0.1.1-experimental",
+      "category": "machines",
+      "source": {
+        "repository": "https://github.com/devilfish707/Octaplay",
+        "revision": "41dbdaaaf18ddea0bc18f72bc88cc1a0926b84f0",
+        "path": "playmodes"
+      },
+      "access": {
+        "location": "Automatic when included in a build: hold a TRACK key on the main screen and press UP or DOWN.",
+        "steps": [
+          "Include Play Modes in your build. It uses no effect slot and no knob.",
+          "Load a pattern and choose its SCALE MODE in PATTERN SETTINGS: NORMAL for one shared mode, PER TRACK for one mode per track.",
+          "Hold TRACK 1 (or the track to change) and press DOWN or UP; the popup shows the new mode. Press PLAY.",
+          "Hold the TRACK key and press UP until the popup shows NORMAL to return to stock playback."
+        ],
+        "screenshots": [
+          "media/ot-mode-all-reversed.png",
+          "media/ot-mode-all-pingpong2.png"
+        ]
+      },
+      "author": {
+        "github": "devilfish707",
+        "credits": [
+          "devilfish707: engine, firmware glue, investigation and documentation.",
+          "Firmware addresses cited from octabam (Sam Banks), SCALE QUANTIZER and DIRECT JUMP (Tim Hastie), the KYOTI notes (Zac-Kyoti) and OctaKit (June Kiff)."
+        ]
+      },
+      "nativeManifest": "manifest.py",
+      "presentation": {
+        "label": "PLAYHEAD DIRECTION",
+        "family": "Sequencer",
+        "summary": "Play patterns reversed, pingpong, random or shuffled: per pattern, shared by every track or set per track.",
+        "overview": "Play Modes changes which step the sequencer plays at each position: NORMAL, REVERSED, PINGPONG (end steps once), PINGPONG 2 (end steps twice), RANDOM or SHUFFLE. Each pattern keeps its own modes: one shared mode under SCALE MODE NORMAL, one per audio and MIDI track under PER TRACK. Trigs, conditions, micro-timing, swing and locks move with their step; tempo, lengths, chains and the trig LEDs stay in step. The modes are saved with the project, survive a power cycle and follow pattern copy, paste and clear.",
+        "highlights": [
+          "Six playhead modes, including two pingpongs and a shuffle that plays every step once per pass",
+          "Per pattern; per track under PER TRACK scale mode, audio and MIDI tracks",
+          "Hold a TRACK key and press UP or DOWN; a popup names the mode",
+          "Saved in the project, kept over a power cycle, carried by pattern copy and paste"
+        ],
+        "usage": [
+          "Hold a TRACK key and press DOWN to step through NORMAL, REVERSED, PINGPONG, PINGPONG 2, RANDOM and SHUFFLE; UP walks back. The popup shows ALL <mode> under SCALE MODE NORMAL, or T1..T8 / M1..M8 <mode> under PER TRACK.",
+          "Each pattern keeps its own modes; PLAY and every pattern change start the tracks from their first step again.",
+          "Under PER TRACK, MASTER LENGTH limits how far a track gets; set it to INF to let every track run its full length in every mode."
+        ]
+      },
+      "controls": [],
+      "compatibility": {
+        "firmware": "1.40C",
+        "effectId": null,
+        "location": "Project sequencer",
+        "conflicts": [],
+        "limitations": [
+          "Does not combine with octabam's PLOCKS P2 (not in this catalog): both use battery RAM 0x100f8600.. and the 20 pattern-copy memcpy sites.",
+          "Deliberate stock-flow change: TRACK held + UP / DOWN changes the mode and does not reach the stock arrow handler; project.work gains #PLAY_MODES= comment lines.",
+          "Copying a single track does not copy its mode; PROJECT > NEW may keep the previous project's modes (untested).",
+          "Played interactively on one MKII (builds 12-24); MKI, micro-timing, trig conditions, slides, live recording and MIDI tracks beyond a first check are untested.",
+          "Chip worst-case cycles are unmeasured; no stress project has been run.",
+          "Like every DRAM module, the build gives up about 10 MB of sample memory to the platform reserve.",
+          "Build-24 physical reboot, Part/project save-reload after later edits and distinct-track isolation were not rechecked; build-19 persistence results remain historical."
+        ]
+      },
+      "resources": {
+        "recorded": "8 October 2026: emulator counts and build memory (build 24); chip timing unmeasured",
+        "storage": {
+          "label": "DRAM data + battery RAM",
+          "display": "14,876 B: 12,566 B unit in DRAM + 2,310 B battery RAM",
+          "value": 14876,
+          "unit": "bytes",
+          "method": "static",
+          "conditions": "Code 7,700, read-only data 102, state and pattern table 4,764 (SDRAM platform reserve), battery table 2,310 (CS1). All shared; stack at most 120 bytes. See evidence/memory.md.",
+          "source": "evidence/memory.md"
+        },
+        "processing": {
+          "label": "ColdFire processing",
+          "display": "≤ 4,654 instructions per track step (1,884 measured)",
+          "value": 4654,
+          "unit": "instructions/event",
+          "method": "emulator",
+          "conditions": "Instruction counts of the module's own code in octabam's ColdFire core, no firmware, synthetic sequencer state; SHUFFLE's walk bounded analytically. Chip cycles: 32-cycle-per-instruction allowance, not measured.",
+          "source": "evidence/cycles.md"
+        },
+        "impact": {
+          "conditions": "16 tracks (8 audio, 8 MIDI) in SHUFFLE, the most expensive mode, at the highest tempo and finest track scale; a project load rewriting the battery table.",
+          "cpu": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "Per track per step a few byte reads, one pass test and one mapping; SHUFFLE adds a keyed permutation (about two evaluations, three multiplies each). Battery-RAM writes only on key presses, pattern copies and project loads.",
+            "source": "TESTING.md"
+          },
+          "dsp": {
+            "level": "minimal",
+            "basis": "source-estimate",
+            "rationale": "No DSP code, tables or buffers; stock DSP processing is unchanged.",
+            "source": "TESTING.md"
+          },
+          "memory": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "About 4.7 KB of DRAM data in the platform reserve plus the unit's code, and a 2,310-byte battery-RAM table; no per-instance copies.",
+            "source": "TESTING.md"
+          }
+        }
+      },
+      "tests": {
+        "report": "TESTING.md",
+        "summary": "Host suites for the engine and firmware glue pass; instruction counts in octabam's ColdFire core bound one track step at 4,654 instructions (1,884 measured); the author ran builds 12–24 on an MKII (functional report). No stress run, no chip timing.",
+        "hardwareStatus": "reported",
+        "evidenceRevision": "41dbdaaaf18ddea0bc18f72bc88cc1a0926b84f0",
+        "gates": [
+          "modules/playmodes/verify.py"
+        ],
+        "qualification": {
+          "documentation": {
+            "tutorial": {
+              "title": "Quick tutorial",
+              "steps": [
+                "Include Play Modes in your build and load a pattern with a trig on step 1 only; SCALE MODE NORMAL.",
+                "Hold TRACK 1, press DOWN once: ALL REVERSED. Press PLAY: the trig sounds on the last step of every bar, and the trig LEDs walk 16 → 1.",
+                "Hold TRACK 1, press DOWN twice more: ALL PINGPONG 2: the trig sounds twice in a row at every turn back to step 1. Hold TRACK 1 and press UP until ALL NORMAL to return to stock playback."
+              ]
+            },
+            "screenshots": [
+              "media/ot-mode-all-reversed.png",
+              "media/ot-mode-all-pingpong2.png"
+            ],
+            "screenshotStyle": "black-and-white"
+          },
+          "moduleVersion": "0.1.1-experimental",
+          "sourceSha256": "86105af37d68fcd051cab991b747c949d7813733b73a1fe6d900cf3ec239c5a6",
+          "imageSha256": "97c417e9d18c568784495bce8595140be15dd99da9e7c8704b0905bc645740c7",
+          "cycles": [
+            {
+              "processor": "coldfire",
+              "worstCase": 148928,
+              "maxConfiguration": 2382848,
+              "maxInstances": 16,
+              "budget": 6600000,
+              "unit": "cycles/event",
+              "method": "emulator",
+              "conditions": {
+                "parameterExtremes": "Every mode, track lengths 1–64, MASTER LENGTH INF and 0, all seven track scales across the 16 tracks.",
+                "parameterModulation": "No knob, LFO or p-lock reaches the module; mode changes by TRACK + UP / DOWN measured separately (674 instructions). Scenes, LFOs and locks are stock and unchanged.",
+                "modeSwitching": "Every mode and both scale modes, with a PLAY restart on every run; pattern-row reloads on pattern switches included. MASTER LENGTH restarts (14-step tracks under master 16) measured in every mode.",
+                "maxLoad": "All 16 tracks (8 audio, 8 MIDI) in one step, SHUFFLE at the longest walk (length 33), every track restarting: bounded at 74,464 instructions; budget one step at 300 BPM, 2X scale, 264 MHz.",
+                "inputConditions": "No audio path. 60 SHUFFLE seeds per length; the walk length bound (32) from the permutation's construction, its cost measured as 101 + 98 × walk."
+              },
+              "report": "evidence/performance.json"
+            }
+          ],
+          "memory": {
+            "regions": [
+              {
+                "name": "Code: C engine and glue, 35 detour stubs and entries",
+                "space": "sdram",
+                "words": 7700,
+                "wordBits": 8,
+                "bytes": 7700,
+                "scope": "shared"
+              },
+              {
+                "name": "Read-only data: mode names, project key, tables",
+                "space": "sdram",
+                "words": 102,
+                "wordBits": 8,
+                "bytes": 102,
+                "scope": "shared"
+              },
+              {
+                "name": "State, flags, popup text, project line, computed track lengths and the 256-pattern mode table",
+                "space": "sdram",
+                "words": 4764,
+                "wordBits": 8,
+                "bytes": 4764,
+                "scope": "shared"
+              },
+              {
+                "name": "Battery-RAM mode table 0x100f8600..0x100f8f06",
+                "space": "cpu-ram",
+                "words": 2310,
+                "wordBits": 8,
+                "bytes": 2310,
+                "scope": "shared"
+              }
+            ],
+            "perInstanceBytes": 0,
+            "sharedBytes": 14876,
+            "maxInstances": 16,
+            "totalBytes": 14876,
+            "conditions": "From the build-24 runtime ELF and the battery layout; one table for all tracks and patterns, no per-track copies; stack at most 120 bytes below the caller (measured); no heap, DSP memory or cave space. The platform reserve's 10 MB is shared by every DRAM module.",
+            "report": "evidence/memory.md"
+          },
+          "hardware": {
+            "kind": "functional",
+            "status": "reported",
+            "model": "MKII",
+            "testedOn": "2026-10-08",
+            "tester": "devilfish707",
+            "sourceRevision": "41dbdaaaf18ddea0bc18f72bc88cc1a0926b84f0",
+            "imageSha256": "97c417e9d18c568784495bce8595140be15dd99da9e7c8704b0905bc645740c7",
+            "summary": "On an Octatrack MKII the author ran builds 12–19 (3–7 Oct; build 19 for about 15 minutes: PINGPONG 2, per-pattern modes, save and reload, a power cycle, pattern copy and paste also to other banks, clear pattern) and builds 20–24 (this source, 8 Oct), which fix length mismatches after switching NORMAL to PER TRACK and under MASTER LENGTH, restart PINGPONG at each master loop (also for a 15-step track under master 16, checked by ear) and keep the trig LEDs on the played step there.",
+            "limitations": [
+              "A short interactive report, not a timed stress run; no audio or timing measurement.",
+              "One MKII; no MKI.",
+              "Micro-timing, trig conditions, slides, live recording, scenes and Parts during non-NORMAL playback, and MIDI tracks beyond a first check were not tested.",
+              "No combination with other modules on the unit.",
+              "Build-24 physical reboot, Part/project save-reload after later edits and distinct-track isolation were not rechecked; build-19 persistence results remain historical."
+            ],
+            "report": "evidence/hardware.md"
+          }
+        }
+      },
+      "license": {
+        "spdx": "MIT",
+        "file": "LICENSE",
+        "declaration": "Original code and thumbnail by devilfish707, MIT. Firmware addresses are cited from public module sources and read from the author's own OS; no Elektron firmware, extracted routines, tables or images are included."
+      },
+      "media": [
+        {
+          "path": "media/ot-mode-all-reversed.png",
+          "captureType": "emulator",
+          "caption": "Hold TRACK 1 and press DOWN on the main screen: the popup names the new mode, here ALL REVERSED (SCALE MODE NORMAL: one mode for every track).",
+          "alt": "Main screen of pattern A01 with a popup reading ALL REVERSED.",
+          "credit": "Modwerk (headless capture); Play Modes by devilfish707",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "Main screen, TRACK + DOWN popup",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.1-experimental",
+            "imageSha256": "edbf4e2ccd6826df856f0f85bb5a1ce61d0abadd3ba514332a675012ed1e255e",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card, pattern A01, native Modwerk 0.1.1 composition of Octaplay build-24 source 41dbdaa."
+          }
+        },
+        {
+          "path": "media/ot-mode-all-pingpong2.png",
+          "captureType": "emulator",
+          "caption": "Still holding TRACK 1, two more DOWN presses: ALL PINGPONG 2, the bounce that plays the end steps twice.",
+          "alt": "Main screen of pattern A01 with a popup reading ALL PINGPONG 2.",
+          "credit": "Modwerk (headless capture); Play Modes by devilfish707",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "Main screen, TRACK + DOWN popup",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.1-experimental",
+            "imageSha256": "edbf4e2ccd6826df856f0f85bb5a1ce61d0abadd3ba514332a675012ed1e255e",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. Empty scratch card, pattern A01, native Modwerk 0.1.1 composition of Octaplay build-24 source 41dbdaa."
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "mute-modes",
+      "key": "MUTE_MODES",
+      "name": "Mute Modes",
+      "version": "0.1.0-experimental",
+      "category": "system",
+      "source": {
+        "repository": "https://github.com/sambanks/octabam",
+        "revision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
+        "path": "modules/mute-modes"
+      },
+      "access": {
+        "location": "PROJECT > SYSTEM > PERSONALIZE > MUTE MODE",
+        "steps": [
+          "Open PROJECT > SYSTEM > PERSONALIZE and select MUTE MODE.",
+          "Choose OTFX to cut the dry signal while delay and reverb tails continue; trigs keep firing underneath.",
+          "Mute and unmute an audio track with a long delay or reverb tail, then try OTFX-T to suppress new trigs.",
+          "Choose DT-T to let the current voice finish its amp envelope, or OT to restore the stock cut."
+        ],
+        "screenshots": [
+          "media/ot-system.png",
+          "media/ot-mute-ot.png",
+          "media/ot-mute-otfx.png",
+          "media/ot-mute-otfx-t.png",
+          "media/ot-mute-dt-t.png"
+        ]
+      },
+      "author": {
+        "github": "Zac-Kyoti",
+        "credits": [
+          "Zac-Kyoti: mute runtime, PERSONALIZE menu and author byte references. Sam Banks: octabam integration.",
+          "Modwerk contributors: source import, original qualification probes, documentation and SVG thumbnail."
+        ]
+      },
+      "nativeManifest": "manifest.py",
+      "presentation": {
+        "label": "Four mute modes",
+        "family": "Track mute behavior",
+        "summary": "Choose a stock cut, FX tails, trig suppression or amp-envelope completion for muted and soloed-out audio tracks.",
+        "overview": "Choose a stock cut, FX tails, trig suppression or amp-envelope completion for muted and soloed-out audio tracks.",
+        "highlights": [
+          "OT is the default. The global PERSONALIZE setting is stored in battery SRAM; it is not a Part or project setting.",
+          "An OS upgrade resets PERSONALIZE. Saving or switching Parts/projects does not make the mode project-specific.",
+          "SIDECHAIN_COMPRESSOR requires its SC_KEY assembly variant so a muted key continues feeding the compressor."
+        ],
+        "usage": [
+          "Open PROJECT > SYSTEM > PERSONALIZE and select MUTE MODE.",
+          "Choose OTFX to cut the dry signal while delay and reverb tails continue; trigs keep firing underneath.",
+          "Mute and unmute an audio track with a long delay or reverb tail, then try OTFX-T to suppress new trigs.",
+          "Choose DT-T to let the current voice finish its amp envelope, or OT to restore the stock cut."
+        ]
+      },
+      "controls": [
+        {
+          "name": "MUTE MODE",
+          "default": 0,
+          "count": 4,
+          "doc": "Global PERSONALIZE selection; YES wraps, LEFT/RIGHT clamp.",
+          "labels": [
+            "OT",
+            "OTFX",
+            "OTFX-T",
+            "DT-T"
+          ]
+        }
+      ],
+      "compatibility": {
+        "firmware": "1.40C",
+        "effectId": null,
+        "location": "Audio tracks",
+        "conflicts": [],
+        "limitations": [
+          "OT is the default. The global PERSONALIZE setting is stored in battery SRAM; it is not a Part or project setting.",
+          "An OS upgrade resets PERSONALIZE. Saving or switching Parts/projects does not make the mode project-specific.",
+          "SIDECHAIN_COMPRESSOR requires its SC_KEY assembly variant so a muted key continues feeding the compressor.",
+          "No effect slot is consumed. Audio tracks and solo exclusions are affected; MIDI track mute behavior is unchanged."
+        ]
+      },
+      "resources": {
+        "recorded": "7 October 2026; authored-source assembly and isolated native-code probes",
+        "storage": {
+          "label": "Authored code and relocated menu tables",
+          "display": "1380 bytes before placement padding",
+          "value": 1380,
+          "unit": "bytes",
+          "method": "static",
+          "conditions": "Program bytes 1176, tables 204. This is a standalone source footprint, not a complete common-builder or stock memory inventory. Actual probe stack peaks and model timing are recorded separately.",
+          "source": "evidence/source-identity.json"
+        },
+        "processing": {
+          "label": "ColdFire native paths",
+          "display": "Measured model cycles; chip wall-clock pending",
+          "value": 382,
+          "unit": "model cycles/event",
+          "method": "emulator",
+          "conditions": "MCF5206E core-cycle model, cache-hit zero-wait; not MCF54455 chip timing. Synthetic stock callbacks exclude their actual work. Conservative V4 code-cycle path bounds exclude cache, bus and interrupt contention; see TESTING.md.",
+          "source": "evidence/probes.json"
+        },
+        "impact": {
+          "conditions": "Source estimate for eight audio tracks; no added DSP program. Complete timing and placement remain pending.",
+          "cpu": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "Finite ColdFire hook paths with bounded eight-track loops; native paths and stack peaks were measured.",
+            "source": "TESTING.md"
+          },
+          "dsp": {
+            "level": "minimal",
+            "basis": "source-estimate",
+            "rationale": "No new DSP program; existing voice and FX dispatch is retained.",
+            "source": "manifest.py"
+          },
+          "memory": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "Small authored ROM patches and reused stock state; no new audio buffer allocation.",
+            "source": "TESTING.md"
+          }
+        }
+      },
+      "tests": {
+        "report": "TESTING.md",
+        "summary": "All three author SHA-256 references match. Native mask/mode/menu/sidechain probes passed with measured instruction counts, model cycles and stack peaks. Actual LCD menu/mode captures were reviewed. Full audio, complete callback timing and current-image hardware remain pending. Published with owner approval for missing hardware evidence; historical author reports are retained. Software integration is checked separately.",
+        "hardwareStatus": "historical",
+        "evidenceRevision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
+        "gates": [
+          "qualification/probe.cpp"
+        ],
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: keep FX tails when muting",
+            "steps": [
+              "Open PROJECT > SYSTEM > PERSONALIZE and select MUTE MODE.",
+              "Choose OTFX to cut the dry signal while delay and reverb tails continue; trigs keep firing underneath.",
+              "Mute and unmute an audio track with a long delay or reverb tail, then try OTFX-T to suppress new trigs.",
+              "Choose DT-T to let the current voice finish its amp envelope, or OT to restore the stock cut."
+            ]
+          },
+          "screenshots": [
+            "media/ot-system.png",
+            "media/ot-mute-ot.png",
+            "media/ot-mute-otfx.png",
+            "media/ot-mute-otfx-t.png",
+            "media/ot-mute-dt-t.png"
+          ],
+          "screenshotStyle": "black-and-white"
+        }
+      },
+      "license": {
+        "spdx": "MIT",
+        "file": "LICENSE",
+        "declaration": "Original authored sources and upstream licence notices are retained with exact source pins. Only authored source, address/length/hash stock guards and sanitized evidence are included. No firmware, extracted stock routine/table, runtime image, card or RAM/LCD dump is included. Modwerk qualification probes are GPL-3.0-or-later; thumbnail and documentation are original Modwerk work. LCD captures, when present, retain underlying Elektron rights as declared in media/LICENSE.md."
+      },
+      "media": [
+        {
+          "path": "media/ot-system.png",
+          "captureType": "emulator",
+          "caption": "PROJECT > SYSTEM. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "PROJECT > SYSTEM on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "PROJECT / SYSTEM",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "601ba3bd042129aacecbeeee0b0e1ab928cee1f5cf9fe7577b060b81b044fb37",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        },
+        {
+          "path": "media/ot-mute-ot.png",
+          "captureType": "emulator",
+          "caption": "MUTE MODE: OT. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "MUTE MODE: OT on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "PERSONALIZE",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "601ba3bd042129aacecbeeee0b0e1ab928cee1f5cf9fe7577b060b81b044fb37",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        },
+        {
+          "path": "media/ot-mute-otfx.png",
+          "captureType": "emulator",
+          "caption": "MUTE MODE: OTFX. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "MUTE MODE: OTFX on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "PERSONALIZE",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "601ba3bd042129aacecbeeee0b0e1ab928cee1f5cf9fe7577b060b81b044fb37",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        },
+        {
+          "path": "media/ot-mute-otfx-t.png",
+          "captureType": "emulator",
+          "caption": "MUTE MODE: OTFX-T. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "MUTE MODE: OTFX-T on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "PERSONALIZE",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "601ba3bd042129aacecbeeee0b0e1ab928cee1f5cf9fe7577b060b81b044fb37",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        },
+        {
+          "path": "media/ot-mute-dt-t.png",
+          "captureType": "emulator",
+          "caption": "MUTE MODE: DT-T. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "MUTE MODE: DT-T on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "PERSONALIZE",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "601ba3bd042129aacecbeeee0b0e1ab928cee1f5cf9fe7577b060b81b044fb37",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        }
+      ]
+    },
+    {
+      "schemaVersion": 2,
+      "id": "recorder-loop-fix",
+      "key": "RECORDER LOOP FIX",
+      "name": "Recorder Loop Fix",
+      "version": "0.1.0-experimental",
+      "category": "playback",
+      "source": {
+        "repository": "https://github.com/sambanks/octabam",
+        "revision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
+        "path": "modules/recorder-loop-fix"
+      },
+      "access": {
+        "location": "Automatic on Flex recorder-buffer playback; stock SRC and recorder setup pages.",
+        "steps": [
+          "Use a disposable project and assign a Flex track to its own recorder buffer.",
+          "Set RLEN to 16 at 128 BPM and place recording and playback trigs at the start of the bar; for sound-on-sound set SRC3 to that track.",
+          "Record a sustained tone and listen across successive wraps, then repeat after stopping and restarting transport.",
+          "Compare with stock using the same project, tempo and sample. A fractional-sample loop can still repeat or skip one sample at a wrap."
+        ],
+        "screenshots": [
+          "media/ot-flex-setup.png",
+          "media/ot-recorder-setup.png"
+        ]
+      },
+      "author": {
+        "github": "sambanks",
+        "credits": [
+          "Sam Banks: all eight recorder patches, source oracles and octabam declaration.",
+          "Modwerk contributors: source import, original qualification probes, documentation and SVG thumbnail.",
+          "Modwerk: overflow-safe inverse arm phase correction; GPL-3.0-or-later. Original Sam Banks cave attribution and MIT terms retained."
+        ]
+      },
+      "nativeManifest": "manifest.py",
+      "presentation": {
+        "label": "Cleaner recorder loops",
+        "family": "Recorder buffer playback",
+        "summary": "Fix recorder-buffer voice reprime, counter resets, alternating recording lengths and sound-on-sound zero samples at the loop boundary.",
+        "overview": "Fix recorder-buffer voice reprime, counter resets, alternating recording lengths and sound-on-sound zero samples at the loop boundary.",
+        "highlights": [
+          "Automatic when included in a qualified image; there is no menu, knob or effect slot. Remove the module when building to restore stock behavior.",
+          "Applies to Flex playback of recorder buffers, including sound-on-sound. Ordinary sample playback fallback paths are retained.",
+          "Uses the stock tempo, arm sample and recorder length. It does not run a separate clock."
+        ],
+        "usage": [
+          "Use a disposable project and assign a Flex track to its own recorder buffer.",
+          "Set RLEN to 16 at 128 BPM and place recording and playback trigs at the start of the bar; for sound-on-sound set SRC3 to that track.",
+          "Record a sustained tone and listen across successive wraps, then repeat after stopping and restarting transport.",
+          "Compare with stock using the same project, tempo and sample. A fractional-sample loop can still repeat or skip one sample at a wrap."
+        ]
+      },
+      "controls": [],
+      "compatibility": {
+        "firmware": "1.40C",
+        "effectId": null,
+        "location": "Flex / Static",
+        "conflicts": [],
+        "limitations": [
+          "Automatic when included in a qualified image; there is no menu, knob or effect slot. Remove the module when building to restore stock behavior.",
+          "Applies to Flex playback of recorder buffers, including sound-on-sound. Ordinary sample playback fallback paths are retained.",
+          "Uses the stock tempo, arm sample and recorder length. It does not run a separate clock.",
+          "At fractional bar lengths, a wrap can still repeat or skip one sample; this does not guarantee a perfectly seamless loop at every tempo.",
+          "Eight hook sites and eleven pool-base literals are guarded and relocated by the native and browser builders; builds that exhaust ROM space are refused.",
+          "The corrected fixed-RLEN spacing path covers RLEN 1–64 and 30–300 BPM; outside this range it retains stock length. Non-consecutive recording arms and physical audio continuity remain untested."
+        ]
+      },
+      "resources": {
+        "recorded": "7 October 2026; authored-source assembly and isolated native-code probes",
+        "storage": {
+          "label": "Authored code and relocated menu tables",
+          "display": "858 authored code bytes before placement padding",
+          "value": 858,
+          "unit": "bytes",
+          "method": "static",
+          "conditions": "Corrected source cave footprint; measured independently at three origins. Eight aligned caves occupy 1270 bytes at the tested origin. No new DSP program, audio buffer or heap; 44-byte added probe-stack peak. Inherited callback lifetime bounds and physical canaries are unmeasured.",
+          "source": "evidence/memory-layout.json"
+        },
+        "processing": {
+          "label": "ColdFire native paths",
+          "display": "1007 model cycles/event; chip timing unmeasured",
+          "value": 1007,
+          "unit": "model cycles/event",
+          "method": "emulator",
+          "conditions": "MCF5206E core-cycle model, cache-hit zero-wait; not MCF54455 chip timing. Synthetic stock callbacks exclude their actual work. Conservative V4 code-cycle path bounds exclude cache, bus and interrupt contention; see TESTING.md.",
+          "source": "evidence/probes.json"
+        },
+        "impact": {
+          "conditions": "Source estimate for eight audio tracks; no added DSP program. Complete timing and placement remain pending.",
+          "cpu": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "Finite ColdFire hook paths with bounded eight-track loops; native paths and stack peaks were measured. The independent long-run spacing oracle has a measured failure, so low cost does not imply correct loop spacing.",
+            "source": "TESTING.md"
+          },
+          "dsp": {
+            "level": "minimal",
+            "basis": "source-estimate",
+            "rationale": "No new DSP program; existing voice and FX dispatch is retained.",
+            "source": "manifest.py"
+          },
+          "memory": {
+            "level": "low",
+            "basis": "source-estimate",
+            "rationale": "Small authored ROM patches and reused stock state; no new audio buffer allocation.",
+            "source": "TESTING.md"
+          }
+        }
+      },
+      "tests": {
+        "report": "TESTING.md",
+        "summary": "All eight source caves match their declared pins at three origins; seven retain the original author bytes. Corrected spacing passes 555,008 early cases and all 13,279 independent long-run cases, removing the original 953 mismatches. Hardware reports remain historical; current-build hardware evidence is owner-waived.",
+        "hardwareStatus": "historical",
+        "evidenceRevision": "6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136",
+        "gates": [
+          "qualification/probe.cpp"
+        ],
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: compare a self-recording loop",
+            "steps": [
+              "Use a disposable project and assign a Flex track to its own recorder buffer.",
+              "Set RLEN to 16 at 128 BPM and place recording and playback trigs at the start of the bar; for sound-on-sound set SRC3 to that track.",
+              "Record a sustained tone and listen across successive wraps, then repeat after stopping and restarting transport.",
+              "Compare with stock using the same project, tempo and sample. A fractional-sample loop can still repeat or skip one sample at a wrap."
+            ]
+          },
+          "screenshots": [
+            "media/ot-flex-setup.png",
+            "media/ot-recorder-setup.png"
+          ],
+          "screenshotStyle": "black-and-white"
+        }
+      },
+      "license": {
+        "spdx": "MIT AND GPL-3.0-or-later",
+        "file": "LICENSE",
+        "declaration": "Original authored sources and upstream licence notices are retained with exact source pins. Only authored source, address/length/hash stock guards and sanitized evidence are included. No firmware, extracted stock routine/table, runtime image, card or RAM/LCD dump is included. Modwerk qualification probes are GPL-3.0-or-later; thumbnail and documentation are original Modwerk work. LCD captures, when present, retain underlying Elektron rights as declared in media/LICENSE.md."
+      },
+      "media": [
+        {
+          "path": "media/ot-flex-setup.png",
+          "captureType": "emulator",
+          "caption": "SRC SETUP: FLEX highlighted. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "SRC SETUP: FLEX highlighted on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "SRC SETUP",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "45657a36371d7f509205ec268ca8b2499a5515d3fde214ea32ec2035e0a80847",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
+          }
+        },
+        {
+          "path": "media/ot-recorder-setup.png",
+          "captureType": "emulator",
+          "caption": "RECORDING 1 SETUP 1: RLEN 16 and SRC3 T1. Native monochrome LCD; stopped CPU-only capture.",
+          "alt": "RECORDING 1 SETUP 1: RLEN 16 and SRC3 T1 on the Octatrack LCD.",
+          "credit": "Modwerk contributors; Elektron Octatrack UI",
+          "license": "LicenseRef-OT-UI-Documentation",
+          "source": "original",
+          "otUi": {
+            "page": "RECORDING 1 SETUP 1",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.1.0-experimental",
+            "imageSha256": "45657a36371d7f509205ec268ca8b2499a5515d3fde214ea32ec2035e0a80847",
+            "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6. ColdFire UI execution with DSP host stub; no audio claim. Local standalone composition, not shared-builder parity. Empty private OCTAMOD/MEASURE SET was requested; missing-project prompts dismissed with three NO presses. Native initialized UI state, no valid saved project or recorder-slot assignment claimed."
           }
         }
       ]

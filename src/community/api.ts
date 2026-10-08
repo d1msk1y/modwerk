@@ -10,16 +10,16 @@ function savedAdmin() { try { return sessionStorage.getItem(adminKey()) ?? '' } 
 export function setAdminSession(value: string) { try { if (value) sessionStorage.setItem(adminKey(), value); else sessionStorage.removeItem(adminKey()) } catch { throw new Error('Your browser could not keep the administrator session for this tab.') } }
 export async function apiFetch(path: string, options: RequestInit = {}): Promise<Response> {
   const method=(options.method??'GET').toUpperCase()
-  const publicRead=method==='GET'&&['/catalog','/community/summary','/community/online','/forum/highlights'].includes(path.split('?')[0])
+  const publicRead=method==='GET'&&['/catalog','/community/summary','/community/online','/forum/highlights','/announcements'].includes(path.split('?')[0])
   const headers = new Headers(options.headers), session = savedSession()
   if (!publicRead&&validSession(session)) headers.set('Authorization', 'Bearer ' + session)
   const admin = savedAdmin()
   if (!publicRead&&/^[a-f0-9]{64}$/.test(admin)) headers.set('X-Octamod-Admin', admin)
   const developer=savedDeveloper()
-  if ((path.startsWith('/developer/')||path.startsWith('/issues/'))&&/^[a-f0-9]{64}$/.test(developer)) headers.set('X-Modwerk-Developer',developer)
+  if ((path.startsWith('/developer/')||path.startsWith('/issues/')||/^\/modules\/[a-z0-9-]+\/support$/.test(path))&&/^[a-f0-9]{64}$/.test(developer)) headers.set('X-Modwerk-Developer',developer)
   // Retry reads once; account handoffs and mutations must never be replayed. Marking notifications read only
   // sets them seen, so a dropped request retries like a read instead of leaving them unread.
-  const replayable=method==='GET'?!path.includes('/auth/')||path==='/auth/session'||path==='/developer/auth/session':method==='PATCH'&&path==='/notifications'
+  const replayable=method==='GET'?!path.includes('/auth/')||path==='/auth/session'||path==='/developer/auth/session':method==='PATCH'&&(path==='/notifications'||path==='/announcements/mine')
   const attempts=replayable?2:1
   const unreachable=()=>new Error('Couldn’t reach the Modwerk community service. Check your connection or content blocker, then try again. Your local workspace still works.')
   let result: Response|null=null
@@ -59,4 +59,4 @@ export type CommunityUser = { id: string; displayName: string; username: string 
 export type Session = { available: boolean; emailAvailable?: boolean; registrationAvailable?: boolean; forumMedia?: boolean; ssoProviders?: ('google' | 'github' | 'discord')[]; admin: boolean; user: CommunityUser | null }
 export type DeveloperSession = { available: boolean; user: { login: string } | null }
 export type PublicMedia = { id: string; kind: 'image' | 'audio'; caption: string; capture_type: string }
-export type PublishedModule = { module_id: string; title: string; repository_url: string; description: string; usage: string; resource_notes: string; test_report_url: string; reviewed_at: string; added_at?: string | null; author: string }
+export type PublishedModule = { module_id: string; title: string; repository_url: string; description: string; usage: string; resource_notes: string; test_report_url: string; reviewed_at: string; added_at?: string | null; updated_at?: string | null; author: string }

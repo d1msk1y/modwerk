@@ -7,7 +7,7 @@ The Statistics tab is the first tab and default view in `#admin`. It reports mem
 | Measure | Trigger | Limit |
 | --- | --- | --- |
 | Visitors today | Distinct random browser identifiers received during one UTC day | Identifiers rotate daily; this is not a count of people or period-wide unique visitors. Any supported event establishes a visit. |
-| Page views | Initial visit or navigation to a different public app view | Admin views are excluded. The route, URL and referrer are not sent. |
+| Page views | Initial visit or navigation to a different app path | Fixed page names only; admin/review views and query-only changes are excluded. Raw routes, URLs and referrers are not sent. |
 | Configurations started | First module added to an empty configuration, or a nonempty import/duplicate | Empty automatic configurations do not count. Configuration IDs are deduplicated on the device and never sent. |
 | Successful builds | Completed local builds that still belong to the current operation | Failed, rejected and cancelled builds do not count. |
 | Firmware download requests | Click on an enabled firmware download button | Does not prove that the file was saved or flashed. |
@@ -23,11 +23,23 @@ Selected-period event totals include today. Percentage changes compare the compl
 
 CSV contains only daily aggregate values, UTC dates and `uncollected`, `partial` or `complete` coverage. Uncollected metric fields are blank; a recorded zero stays zero. It contains no visitor identifiers, module/configuration grouping or private report content.
 
+## Page traffic
+
+Migration `0061_page_traffic.sql` adds `usage_page_daily(day,page,views)`, retained for 90 UTC days by the existing cleanup. The admin dashboard ranks named pages by views and share, with a selectable daily chart using the same 7/30/90-day period. These are repeatable page views, not unique visitors per page. Earlier totals cannot be split retroactively. The first named event sets `pages_started`; earlier days show unavailable and the start day and today are partial. Older clients may still send unnamed views: the dashboard shows their count separately and excludes them from named-page shares.
+
+Both `/usage/count` and `/usage/events` accept an optional `page` only for `page_view`. `usage-pages.ts` supplies a finite, server-validated catalog: site sections, libraries/configurators and public catalog module IDs. Library categories are grouped by machine. Discussions, profiles, direct messages, account screens, module-set details and community module details are grouped without their IDs. Queries, fragments, usernames, account tokens and arbitrary paths are never sent. Unknown routes use a fixed “Page not found” key. Admin/review and redirect-only routes do not count. Navigating between two distinct paths counts again even when they share a page group; query-only changes and repeated React effects do not. No new visitor identifiers, sessions or per-person page histories are stored.
+
+The existing opt-out, DNT/GPC, origin checks, omitted credentials/referrer and abuse limits apply. Opted-in event retries update global and page counts atomically and only once, even if a retry changes its page. The bilingual notice and usage-consent version are updated; existing opt-ins require a new choice for the expanded payload. Apply the migration and deploy the Worker before the frontend; older identifier-free clients can still send unnamed views, and the dashboard supports older responses.
+
+## Community invitation responses
+
+The administrator dashboard shows separate totals for the signed-in member and signed-out visitor invitations: shown, Join Discord, Create account (visitors only) and dismissed. The inline signup welcome has a separate Join Discord total; its optional Ko-fi link contributes to the existing support-link total. New signup invitation markers suppress the member popup and do not count as impressions. Dismissal includes the close button, the explicit dismissal action and Escape. Migration `0054_discord_invitation.sql` adds the daily and hourly counters and their collection boundary. These are action counts; a link click does not confirm account creation or Discord membership. Local modal and welcome previews do not count. They use the same existing reporting preferences, browser privacy signals, credential-free requests and retention as other usage counts; no account ID or Discord identity is sent with the action.
+
 ## Community insights and moderation
 
 `GET /api/admin/insights` returns current counts, open issue age buckets and per-module/set aggregate engagement. It uses the same server-side administrator check and `Cache-Control: no-store` as other private reads. No report body, comment body, reporter identity, guest ID or session material enters this response. Each data source is grouped before joining to prevent multiplication of independent ratings, comments and issues. Withdrawn modules with retained activity remain visible as history.
 
-Module download requests are cumulative from their own collection boundary; likes, ratings, retained comments and open issues are current totals. These are independent of the usage period selector. Rating averages display their sample size; unrated modules remain labelled unrated. Ranking supports downloads, likes, ratings, comments and issues, plus title/ID search. Module download totals cannot be added together to infer firmware download requests.
+Module download requests are cumulative from their own collection boundary; likes, ratings, retained comments and open issues are current totals. These are independent of the usage period selector. Rating averages display their sample size; unrated modules remain labelled unrated. Ranking supports downloads, likes, Bayesian ratings, comments and issues, plus title/ID search. Module download totals cannot be added together to infer firmware download requests.
 
 Community health shows open/resolved issues, reports waiting at least seven days, current comments and backend community publications. Issue age is elapsed time since creation, including reopened reports; there is no invented resolution timestamp. Open reports are grouped into under 7, 7–29 and 30+ days. Pending module PRs are reviewed on GitHub, so the retired website submission queue is no longer presented as a live PR count.
 
@@ -37,7 +49,7 @@ Issue links open the existing private inbox, with per-module links selecting ope
 
 The `#privacy` page lets visitors turn counts off on their device. Do Not Track and Global Privacy Control suppress reporting before an identifier is created. Storage failures also suppress reporting; network failures never block configuration or firmware work. The request omits cookies, guest/admin session headers and referrers.
 
-`POST /api/usage/events` accepts only a closed event enum and two random UUIDs (`visitor`, `eventId`), with a 512-byte limit and an exact field allowlist. It rejects firmware bodies, configuration contents, arbitrary extra fields and requests from another website origin. No accounts are created. No IP address, user agent, guest identity, route, module list or firmware is stored with these site statistics. Public module reporting is separate, as described below.
+`POST /api/usage/events` accepts a closed event enum and two random UUIDs (`visitor`, `eventId`), optionally a validated machine for build/download events or a fixed page key for page views, with a 512-byte limit and an exact field allowlist. It rejects firmware bodies, configuration contents, arbitrary extra fields and requests from another website origin. No accounts are created. No IP address, user agent, guest identity, raw route, module list or firmware is stored with these site statistics. Public module reporting is separate, as described below.
 
 The server stores only purpose-separated daily HMAC digests for duplicate suppression. Key material derives from the existing backend-only `ADMIN_KEY_SHA256`; it must never appear in frontend variables or API responses. Rotating the administrator key invalidates existing admin sessions and also changes active visitor digests, so counts around a rotation can overcount. `GET /api/admin/statistics?days=7|30|90` remains behind the existing administrator authorization boundary, including on self-hosted adapters.
 
@@ -65,6 +77,8 @@ Run `npm run check` with Node.js 24. Local UI QA uses an isolated local D1 datab
 
 Library cards and module community panels show total likes and firmware download requests for each module. The library can sort by most liked, most downloaded and highest rated; alphabetical ties are deterministic. Modules with likes but no ratings are included in the summary. Unavailable counts appear as a dash, while a successfully fetched zero is shown as zero. Public module aggregates do not grant access to administrator site statistics.
 
+Highest rated and the administrator's Rating (Bayesian) sort use the shared score `(count × average + 5 × prior) / (count + 5)`. The prior is the vote-weighted mean across rated modules in the complete statistics response, calculated before search, machine or category filtering. Public rankings use the public response; administrator rankings include all retained records in their response. Five prior votes pull small samples toward that mean while larger samples approach their own average. An empty response uses the neutral midpoint of 3 stars, but unrated or unavailable modules have no score and sort after every rated module. Equal scores sort by rating count descending, then name and module ID. Scores use full precision; the displayed averages and counts remain unweighted, and no stored ratings or API fields change.
+
 A click on an enabled firmware download button reports each unique module ID from the **completed build report**, once for that request. It does not count module selection, configuration export, build attempts, rejected builds or a confirmed file save/flash. Repeated download requests count again. Previous downloads cannot be reconstructed and are not backfilled; `0009_module_downloads.sql` records the UTC deployment coverage boundary. Counts are cumulative from that point, including through module version updates; likes remain the current total of guest likes and can decrease when unliked.
 
 `POST /api/usage/module-downloads` accepts exactly `moduleId`, `eventId` and `visitor`, at most 512 bytes, for available build-integrated modules that have passed their build approval gate. Each module request receives an independent random event ID. No configuration ID, name, version pins, list or common build/download ID is sent. The daily random visitor identifier is used only for a separately hashed 200-request/hour rate limit; deduplication hashes do not contain a visitor or module ID. Neither rate-limit nor deduplication rows retain an association between a visitor and a module. The server receives each individual module ID and stores only its cumulative total. Infrastructure request processing remains outside these application tables.
@@ -72,3 +86,17 @@ A click on an enabled firmware download button reports each unique module ID fro
 Module reporting uses the same device opt-out, Do Not Track, Global Privacy Control, omitted credentials/referrer and nonblocking failure behavior as private site statistics. Invalid modules, extra fields, firmware bodies and other website origins are rejected. A transactional batch prevents duplicate or partially failed requests from inflating totals, including retries that change the module ID. Hashed markers retain today and yesterday and expire through the existing hourly cleanup; public totals and their coverage boundary remain. Independent requests can be blocked or lost, so public module totals and private site download totals may differ.
 
 Apply additive migration `0009_module_downloads.sql` before deploying the new Worker. Keep the existing database bindings and administrator secret. The summary response remains an array and retains numeric `average` for compatibility with older clients; `count: 0` denotes an unrated module. New tests cover public unrated/zero totals, independent downloads, retry/failure atomicity, strict validation, privacy, rate limits, retention and discovery sorting. No firmware engine or module source changes are involved.
+
+### Stability grade
+
+The foot of each library card grades how far real use backs a module, so nobody mistakes untried firmware for settled firmware before a gig or a session. `moduleStability` in `src/catalog/module-stability.ts` computes it in the browser from the summary, and `STABILITY_GRADES` there holds every threshold:
+
+| Grade | Requires |
+| --- | --- |
+| Limited real-world testing | The default for every module, and whenever the summary cannot be fetched |
+| In regular use | 100 downloads, 30 days since the first download, no report for 30 days |
+| Lots of use, no recent issues | 500 downloads, 90 days since the first download, no report for 60 days |
+
+Any open issue report replaces the grade with the number of open reports, and a module whose build is still being verified says so first. Hovering the grade (or a screen reader) gives the figures behind it, the next step and the hardware record. Reports count per module, not per version, and download requests are not unique people, so the thresholds stay deliberately high.
+
+For this the summary adds `openIssues`, `lastIssueAt` (the latest report, open or closed) and `firstDownloadAt` to each module. Private reports count too, but only as a number and a date. `0052_module_first_download.sql` adds `first_download_at` to `module_downloads`; existing rows take their first retained daily count, else the start of daily or overall counting, which is never earlier than the real first download.

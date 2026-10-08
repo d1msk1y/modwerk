@@ -24,7 +24,7 @@ beforeEach(() => {
   }))
 })
 afterEach(() => { vi.unstubAllGlobals(); for (const db of databases.splice(0)) db.close() })
-const release = (id = 'miniverb', version = '10.0.0'): ModuleRelease => ({ id, version, name: communityModule(id)!.name, href: communityModule(id)!.href })
+const release = (id = 'miniverb', version = '10.0.0'): ModuleRelease => ({ id, version, name: communityModule(id)!.name, href: communityModule(id)!.href, notes: { version, date: '2026-10-08', changes: ['Correct playback behavior for ' + id + ' v' + version + '.'] } })
 const manifest = (modules: ModuleRelease[]) => ({ format: 'modwerk-module-releases-v1', modules })
 const report = { title: 'A control freezes', steps: 'Turn the control.', expected: 'A new value.', actual: 'It freezes.', context: { model: 'mk2', flash: 'flashed', os: '1.40C', modules: [{ id: 'miniverb', version: communityModule('miniverb')!.version }], keepStockFx2: true, build: '' }, logMissing: { reason: 'logger-not-in-build' } }
 
@@ -123,11 +123,93 @@ describe('module update subscriptions', () => {
     expect(await syncModuleReleases(env, adapter)).toEqual({ checked: 0, notified: 0 })
     expect(await syncModuleReleases(env, adapter)).toEqual({ checked: 1, notified: 0 })
     expect(fetch.mock.calls[0][0].href).toBe('https://example.test/modwerk/module-releases.json')
-    expect(fetch.mock.calls[0][1].redirect).toBe('error')
+    expect(fetch.mock.calls[0][1].redirect).toBe('manual')
     await expect(syncModuleReleases(env, adapter)).rejects.toThrow('Invalid module semantic version')
     expect(db.prepare('SELECT version FROM module_release_state').get()!.version).toBe('10.0.0')
     expect(() => parseModuleReleases(manifest([release(), release()]))).toThrow()
     expect(() => parseModuleReleases(manifest([{ ...release(), href: 'https://evil.example/' }]))).toThrow()
+  })
+
+  it('uses a Workers-supported fetch mode and rejects redirected inventories before recording releases', async () => {
+    const { db, adapter } = testDatabase(); databases.push(db)
+    const env = { APP_URL: 'https://example.test/' }
+    const fetch = vi.fn(async (_url: URL, options: RequestInit) => {
+      if (options.redirect === 'error') throw new TypeError('Invalid redirect value: Workers supports only follow/manual')
+      if (options.redirect === 'follow') return Response.json(manifest([release()]))
+      return new Response(null, { status: 302, headers: { Location: 'https://other.example/module-releases.json' } })
+    })
+    vi.stubGlobal('fetch', fetch)
+    await expect(syncModuleReleases(env, adapter)).rejects.toThrow('Published module versions could not be checked.')
+    expect(db.prepare('SELECT COUNT(*) AS count FROM module_releases').get()!.count).toBe(0)
+    expect(db.prepare('SELECT COUNT(*) AS count FROM module_release_inventory').get()!.count).toBe(0)
+    fetch.mockImplementation(async (_url: URL, options: RequestInit) => {
+      if (options.redirect === 'error') throw new TypeError('Invalid redirect value: Workers supports only follow/manual')
+      return Response.json(manifest([release()]))
+    })
+    expect(await syncModuleReleases(env, adapter)).toEqual({ checked: 1, notified: 0 })
+  })
+
+  it('requires valid, version-matched notes before recording any update or advancing followers', async () => {
+    const { db, adapter } = testDatabase(); databases.push(db)
+    await recordModuleReleases(adapter, [release('miniverb', '9.0.0')])
+    db.prepare("INSERT INTO users(id,display_name,username,email_verified) VALUES('fan','Fan','fan',1)").run()
+    db.prepare("INSERT INTO auth_users(id,name,email,emailVerified,createdAt,updatedAt) VALUES('fan','Fan','fan@example.test',1,0,0)").run()
+    db.prepare("INSERT INTO module_update_subscriptions(user_id,module_id,after_version) VALUES('fan','miniverb','9.0.0')").run()
+    const missingNotes = release(); delete missingNotes.notes
+    // Legacy inventory is readable and equal versions remain quiet during deployment.
+    expect(parseModuleReleases(manifest([missingNotes]))[0].notes).toBeUndefined()
+    await expect(recordModuleReleases(adapter, [release('tapeecho'), missingNotes])).rejects.toThrow('Missing release notes for miniverb v10.0.0')
+    expect(db.prepare('SELECT version FROM module_release_state').all()).toEqual([{ version: '9.0.0' }])
+    expect(db.prepare('SELECT COUNT(*) AS count FROM notifications').get()!.count).toBe(0)
+    expect(db.prepare('SELECT after_version FROM module_update_subscriptions').get()!.after_version).toBe('9.0.0')
+    const previous = { ...missingNotes, version: '9.0.0' }
+    expect(await recordModuleReleases(adapter, [previous])).toEqual({ checked: 1, notified: 0 })
+    const notes = release().notes!
+    for (const invalid of [{ ...notes, version: '11.0.0' }, { ...notes, changes: [] }, { ...notes, changes: ['Updated'] }, { ...notes, date: '2026-02-30' }]) {
+      await expect(recordModuleReleases(adapter, [{ ...release(), notes: invalid }])).rejects.toThrow()
+    }
+    expect(db.prepare('SELECT version FROM module_release_state').all()).toEqual([{ version: '9.0.0' }])
+  })
+
+  it('backfills legacy current-version notes without replaying alerts or overwriting a saved changelog', async () => {
+    const { db, adapter } = testDatabase(); databases.push(db)
+    db.prepare('INSERT INTO module_release_state(module_id,version) VALUES(?,?)').run('miniverb', '10.0.0')
+    db.prepare('INSERT INTO module_releases(module_id,version,name,href) VALUES(?,?,?,?)').run('miniverb', '10.0.0', 'Mini Verb', '#module/miniverb')
+    expect(await recordModuleReleases(adapter, [release()])).toEqual({ checked: 1, notified: 0 })
+    await recordModuleReleases(adapter, [{ ...release(), notes: { ...release().notes!, changes: ['A later edit must not replace the published changelog.'] } }])
+    expect(JSON.parse(String(db.prepare('SELECT notes FROM module_releases').get()!.notes))).toEqual(release().notes)
+    expect(db.prepare('SELECT COUNT(*) AS count FROM notifications').get()!.count).toBe(0)
+  })
+
+  it('mails each queued version’s saved changes even after another release, and escapes HTML', async () => {
+    const f = await fixture(), owner = await f.member('changelogfan')
+    await f.call('/modules/miniverb/updates', 'PATCH', { enabled: true }, owner.session)
+    const first = { ...release(), notes: { ...release().notes!, changes: ['Fix the <script>alert(1)</script> control & retain playback.', 'Known limitation: hardware reboot persistence is unverified.', 'Retain the complete authored release note, including longer explanations of playback behavior and the exact conditions needed to reproduce a problem, without reducing it to a short notification excerpt.'] } }
+    const second = release('miniverb', '11.0.0')
+    await f.publish(first); await f.publish(second)
+    // A retry with edited notes cannot relabel the older queued release.
+    await f.publish({ ...first, notes: { ...first.notes, changes: ['These later changes must not appear in the old update email.'] } })
+    expect(await f.digests()).toEqual({ sent: 1 })
+    for (const entry of [first, second]) for (const change of entry.notes!.changes) expect(sent[0].text).toContain('  - ' + change)
+    expect(sent[0].text).toContain('Mini Verb 10.0.0 is now available')
+    expect(sent[0].text).toContain('Mini Verb 11.0.0 is now available')
+    expect(sent[0].html).toContain('Fix the &lt;script&gt;alert(1)&lt;/script&gt; control &amp; retain playback.')
+    expect(sent[0].html).toContain('<li>Known limitation: hardware reboot persistence is unverified.</li>')
+    expect(sent[0].html).not.toContain('<script>')
+    expect(sent[0].text).not.toContain('These later changes')
+    expect(sent[0].text).not.toContain('Open the module to review the update.')
+    expect(sent[0].text).toContain('https://octamod.test/#module/miniverb?tab=changelog')
+  })
+
+  it.each(['digitakt-digihealth', 'digitone-digihealth'])('includes the version-matched changelog and instrument link for %s', async id => {
+    const f = await fixture(), owner = await f.member('digifan')
+    await f.call('/modules/' + id + '/updates', 'PATCH', { enabled: true }, owner.session)
+    const published = release(id)
+    await f.publish(published)
+    expect(await f.digests()).toEqual({ sent: 1 })
+    expect(sent[0].text).toContain(published.notes!.changes[0])
+    expect(sent[0].html).toContain('<li>' + published.notes!.changes[0] + '</li>')
+    expect(sent[0].text).toContain('https://octamod.test/' + published.href + '?tab=changelog')
   })
 
   it('includes the published version in bell and email, respects the update topic, and exports/deletes follows', async () => {
@@ -135,16 +217,20 @@ describe('module update subscriptions', () => {
     for (const user of [owner, silent]) await f.call('/modules/miniverb/updates', 'PATCH', { enabled: true }, user.session)
     await f.call('/notifications/preferences', 'PATCH', { updates: false }, silent.session)
     await f.publish(release())
-    expect(notificationLines(await f.items(owner.session))[0]).toMatchObject({ text: 'Mini Verb 10.0.0 is now available', href: '#module/miniverb' })
+    expect(notificationLines(await f.items(owner.session))[0]).toMatchObject({ text: 'Mini Verb 10.0.0 is now available', href: '#module/miniverb?tab=changelog' })
     expect(await f.digests()).toEqual({ sent: 1 })
     expect(sent[0].to).toEqual([owner.email]); expect(sent[0].text).toContain('Mini Verb 10.0.0 is now available'); expect(sent[0].text).toContain('https://octamod.test/#module/miniverb')
+    expect(sent[0].text).toContain(release().notes!.changes[0]); expect(sent[0].html).toContain('<li>' + release().notes!.changes[0] + '</li>')
     expect(await f.items(silent.session)).toHaveLength(1)
     expect(await (await f.call('/modules/miniverb/updates', 'GET', undefined, silent.session)).json()).toMatchObject({ enabled: true, emailEnabled: false })
+    await f.call('/modules/tapeecho/updates', 'PATCH', { enabled: false }, owner.session)
     const exported = await (await f.call('/auth/data-export', 'POST', { password }, owner.session)).json()
+    expect(exported.data.moduleUpdateOptOuts).toEqual([{ module_id: 'tapeecho', created_at: expect.any(String) }])
     expect(exported.data.moduleUpdateSubscriptions).toEqual([{ module_id: 'miniverb', after_version: '10.0.0', created_at: expect.any(String) }])
     expect(exported.data.notifications[0]).toMatchObject({ kind: 'module_update', module_version: '10.0.0' })
     expect((await f.call('/auth/account', 'DELETE', { password, confirm: 'DELETE' }, owner.session)).status).toBe(200)
     expect(f.db.prepare('SELECT COUNT(*) AS count FROM module_update_subscriptions WHERE user_id=?').get(owner.id)!.count).toBe(0)
+    expect(f.db.prepare('SELECT COUNT(*) AS count FROM module_update_opt_outs WHERE user_id=?').get(owner.id)!.count).toBe(0)
     expect(f.db.prepare('SELECT COUNT(*) AS count FROM module_update_subscriptions WHERE user_id=?').get(silent.id)!.count).toBe(1)
   })
 })
@@ -165,29 +251,35 @@ describe('new module release announcements', () => {
     expect(db.prepare('SELECT module_id FROM announcements').all()).toEqual([{ module_id: 'vector' }])
   })
 
-  it('baselines the library, then reaches non-followers through the bell with private read state and no email or push', async () => {
+  it('baselines the library, then announces new modules publicly with private acknowledgements and no bell, email or push', async () => {
     const f = await fixture(), one = await f.member('releaseone'), two = await f.member('releasetwo')
     await f.publish(release('miniverb'), release('tapeecho'))
     expect(await f.items(one.session)).toEqual([])
     await f.publish(release('vector', '0.2.3-experimental'), release('synth', '0.1.1-experimental'))
-    const items = await f.items(one.session)
+    const publicItems = async (session: string) => (await (await f.call('/announcements/mine', 'GET', undefined, session)).json()).items as BellItem[]
+    const items = await publicItems(one.session)
     expect(items).toHaveLength(2)
     expect(items.map(item => item.kind)).toEqual(['announcement', 'announcement'])
     expect(notificationLines(items)).toEqual(expect.arrayContaining([
-      expect.objectContaining({ text: 'Modwerk: VECTOR is now available', href: '#module/vector' }),
-      expect.objectContaining({ text: 'Modwerk: FM Synth is now available', href: '#module/fm-synth' }),
+      expect.objectContaining({ text: 'VECTOR is now available', href: '#module/vector' }),
+      expect.objectContaining({ text: 'FM Synth is now available', href: '#module/fm-synth' }),
     ]))
-    expect(await (await f.call('/notifications/unread', 'GET', undefined, two.session)).json()).toEqual({ unread: 2 })
-    await f.call('/notifications', 'PATCH', { ids: [items[0].id] }, one.session)
-    expect((await f.items(one.session)).filter(item => item.seen)).toHaveLength(1)
-    expect((await f.items(two.session)).every(item => !item.seen)).toBe(true)
+    expect(await f.items(one.session)).toEqual([])
+    expect(await (await f.call('/notifications/unread', 'GET', undefined, two.session)).json()).toEqual({ unread: 0 })
+    await f.call('/announcements/mine', 'PATCH', { ids: [items[0].id] }, one.session)
+    expect((await publicItems(one.session)).filter(item => item.seen)).toHaveLength(1)
+    expect((await publicItems(two.session)).every(item => !item.seen)).toBe(true)
     expect(await f.digests()).toEqual({ sent: 0 })
     expect(f.db.prepare('SELECT COUNT(*) AS count FROM notifications').get()!.count).toBe(0)
     expect(f.db.prepare('SELECT COUNT(*) AS count FROM push_deliveries').get()!.count).toBe(0)
-    // New accounts do not receive release history; existing accounts retain their notices.
+    // Public release history remains readable by visitors and members who join later.
     f.db.prepare("UPDATE announcements SET created_at=datetime('now','-1 minute')").run()
     const late = await f.member('releaselate')
     expect(await f.items(late.session)).toEqual([])
+    expect(await publicItems(late.session)).toHaveLength(2)
+    const publicBell = await f.call('/announcements')
+    expect(publicBell.status).toBe(200)
+    expect((await publicBell.json()).items).toHaveLength(2)
   })
 
   it('announces each module once despite retries, newer versions and reintroduction, including across instruments', async () => {

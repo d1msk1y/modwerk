@@ -1,3 +1,5 @@
+import { isDocumentationChange } from './change-scope.mjs'
+import { requireModwerkDocumentation } from './module-documentation.mjs'
 import { readFileSync } from 'node:fs'
 import { readFile, readdir, mkdir, writeFile, copyFile, rm } from 'node:fs/promises'
 import { resolve, dirname } from 'node:path'
@@ -30,14 +32,17 @@ async function walk(folder){const paths=[];for(const entry of await readdir(fold
 const documents=new Map()
 for(const entry of await readdir(modules,{withFileTypes:true})){
  if(entry.name.startsWith('_')||!entry.isDirectory())continue
- const folder=resolve(modules,entry.name);let document
+ const folder=resolve(modules,entry.name);let document,needsPublicationUi=false
  try{document=parseModuleDocument(await json(resolve(folder,'octamod.module.json')))}catch(error){throw new Error(entry.name+': '+error.message,{cause:error})}
  if(document.id!==entry.name)throw new Error('Module ID must match its folder: '+entry.name)
  for(const path of [document.nativeManifest,'README.md',document.tests.report,document.license.file,document.resources.storage.source,document.resources.processing.source,...qualificationReports(document)])await file(folder,path)
  for(const path of await walk(folder))if(/\.(bin|syx|exe|dll|so|dylib|zip)$/i.test(path))throw new Error('Prohibited firmware/binary file: '+document.id+'/'+path)
  for(const item of document.media){const target=await file(folder,item.path),bytes=await readFile(target),max=(item.captureType==='audio'?12:5)*1024*1024;if(bytes.length<12||bytes.length>max)throw new Error(item.path+': invalid media size');const image=(bytes.subarray(0,8).equals(Buffer.from([137,80,78,71,13,10,26,10]))||bytes[0]===255&&bytes[1]===216&&bytes[2]===255||bytes.toString('ascii',0,4)==='RIFF'&&bytes.toString('ascii',8,12)==='WEBP');const audio=(bytes.toString('ascii',0,4)==='RIFF'&&bytes.toString('ascii',8,12)==='WAVE'||bytes.toString('ascii',0,4)==='OggS'||bytes.toString('ascii',0,3)==='ID3'||bytes[0]===255&&(bytes[1]&224)===224);if(item.captureType==='audio'?!audio:!image)throw new Error(item.path+': media signature/type differs')}
- if(baseCommit){const prefix='sdk/octabam/modules/'+entry.name+'/';const oldPath=prefix+'octamod.module.json';const existed=git('ls-tree','--name-only',baseCommit,'--',oldPath).trim()===oldPath;const old=existed?parseModuleDocument(JSON.parse(git('show',baseCommit+':'+oldPath))):null;const changedPaths=(git('diff','--name-only',baseCommit,'--',prefix)+git('ls-files','--others','--exclude-standard','--',prefix)).split('\n').filter(Boolean),changed=changedPaths.length>0;const codeChanged=changedPaths.some(path=>path===oldPath?!old||manifestBuildFields(git('show',baseCommit+':'+oldPath))!==manifestBuildFields(readFileSync(resolve(folder,'octamod.module.json'),'utf8')):!isDocumentationPath('modules/'+entry.name+'/'+path.slice(prefix.length)));if(old&&codeChanged&&compareModuleVersions(document.version,old.version)<=0)throw new Error(document.id+': every code change (source, native manifest, build fields) requires a greater module version than '+old.version+'; documentation and media edits do not');if((!old||changed)&&!document.tests.retainedEvidence)requireModuleUiForPublication(document)}
- const qualification=await requireFolderQualification(folder,document,baseline,waivers,{root,...(baseCommit?{approvedRef:baseCommit}:{})})
+ if(baseCommit){const prefix='sdk/octabam/modules/'+entry.name+'/';const oldPath=prefix+'octamod.module.json';const existed=git('ls-tree','--name-only',baseCommit,'--',oldPath).trim()===oldPath;const old=existed?parseModuleDocument(JSON.parse(git('show',baseCommit+':'+oldPath))):null;const changedPaths=(git('diff','--name-only',baseCommit,'--',prefix)+git('ls-files','--others','--exclude-standard','--',prefix)).split('\n').filter(Boolean),changed=changedPaths.length>0;const codeChanged=changedPaths.some(path=>path===oldPath?!old||manifestBuildFields(git('show',baseCommit+':'+oldPath))!==manifestBuildFields(readFileSync(resolve(folder,'octamod.module.json'),'utf8')):!isDocumentationPath('modules/'+entry.name+'/'+path.slice(prefix.length)));if(old&&codeChanged&&compareModuleVersions(document.version,old.version)<=0)throw new Error(document.id+': every code change (source, native manifest, build fields) requires a greater module version than '+old.version+'; documentation and media edits do not');needsPublicationUi=(!old||changed)&&!document.tests.retainedEvidence}
+ let qualification
+ try {qualification=await requireFolderQualification(folder,document,baseline,waivers,{root,...(baseCommit?{approvedRef:baseCommit}:{})})}
+ catch(error){if(needsPublicationUi)requireModuleUiForPublication(document);throw error}
+ if(needsPublicationUi&&qualification!=='owner-approved-update')requireModuleUiForPublication(document)
  const impact=requireModuleResourceImpact(document,['retained','retained-evidence'].includes(qualification)?impacts:undefined,qualification==='retained-evidence'?document.tests.retainedEvidence.moduleVersion:undefined)
  if(qualification==='retained-evidence')console.log(document.id+': retained evidence from '+document.tests.retainedEvidence.moduleVersion+'; runtime and resource inputs unchanged; no new native/hardware qualification required')
  for(const key of ['cpu','dsp','memory'])if(!(await readFile(await file(folder,impact[key].source),'utf8')).trim())throw new Error(document.id+': resource estimate source must be a nonempty local text record')
@@ -68,7 +73,12 @@ for(const machine of machineProfiles.filter(profile=>profile.sdk?.platform==='el
   const folder=resolve(folderRoot,entry.name),label=machine.id+'/'+entry.name;let document
   try{document=parseModwerkModule(await json(resolve(folder,'modwerk.module.json')),machineProfiles)}catch(error){throw new Error(label+': '+error.message,{cause:error})}
   if(document.id!==entry.name||document.machine!==machine.id)throw new Error(label+': module id and machine must match its folder')
-  if(baseCommit){const prefix=machine.sdk.modules+'/'+entry.name+'/',oldPath=prefix+'modwerk.module.json';if(git('ls-tree','--name-only',baseCommit,'--',oldPath).trim()===oldPath){const old=JSON.parse(git('show',baseCommit+':'+oldPath)),changed=(git('diff','--name-only',baseCommit,'--',prefix)+git('ls-files','--others','--exclude-standard','--',prefix)).trim();if(changed&&compareModuleVersions(document.version,old.version)<=0)throw new Error(label+': every source, documentation or media update requires a greater module version than '+old.version)}}
+  if(baseCommit){
+   const prefix=machine.sdk.modules+'/'+entry.name+'/',oldPath=prefix+'modwerk.module.json'
+   const changedPaths=(git('diff','--name-only',baseCommit,'--',prefix)+git('ls-files','--others','--exclude-standard','--',prefix)).trim().split('\n').filter(Boolean),changed=changedPaths.length>0
+   if(changed&&!document.tests.documentation)throw new Error(label+': new and updated modules require complete documentation, tutorial and capture provenance')
+   if(git('ls-tree','--name-only',baseCommit,'--',oldPath).trim()===oldPath){const old=JSON.parse(git('show',baseCommit+':'+oldPath));const codeChanged=changedPaths.some(path=>!isDocumentationChange({path,before:path===oldPath?JSON.stringify(old):'',after:path===oldPath?readFileSync(resolve(folder,'modwerk.module.json'),'utf8'):''}));if(codeChanged&&compareModuleVersions(document.version,old.version)<=0)throw new Error(label+': every code or behaviour update requires a greater module version than '+old.version+'; documentation and media edits do not')}
+  }
   const build=parseElemodBuild(await json(await file(folder,document.platform.build)),document)
   // Modules may use only what their machine's core interface provides.
   if(core){const events=new Set(core.events.map(event=>event.name)),tables=new Set([...core.tables.map(table=>table.name),...Object.keys(build.collections)])
@@ -76,8 +86,10 @@ for(const machine of machineProfiles.filter(profile=>profile.sdk?.platform==='el
    for(const entry of build.contribute)if(!events.has(entry.to)&&!tables.has(entry.to))throw new Error(label+': '+entry.to+' is not a table of the '+machine.name+' core interface '+core.interface)}
   const media=document.media.map(item=>item.path),reports=document.evidence.reports
   for(const path of ['README.md',document.tests.report,document.license.file,...build.sources,...media,...reports])await readFile(await file(folder,path)).catch(()=>{throw new Error(label+': missing '+path)})
+  await requireModwerkDocumentation(folder,document)
   for(const path of await walk(folder))if(/\.(bin|syx|elemod|exe|dll|so|dylib|zip|img|hex)$/i.test(path))throw new Error('Prohibited firmware/binary file: '+label+'/'+path)
   if(published.some(item=>item.id===document.id)){try{requireModwerkPublication(document)}catch(error){throw new Error(label+': '+error.message,{cause:error})}}
+  if(write)for(const item of document.media){const destination=resolve(root,'public/module-media',machine.id+'-'+document.id,document.version,item.path);await mkdir(dirname(destination),{recursive:true});await copyFile(await file(folder,item.path),destination)}
   // Only addresses and lengths are needed by the planner; never include stock bytes.
   const patchSites=Object.fromEntries(Object.entries(build.releases).map(([release,value])=>[release,[...value.sites,...(build.derive?.releases.includes(release)?build.derive.callSites:[])].map(({addr,len})=>({addr,len}))]))
   machineDocuments.push({...document,patchSites});machineModules++

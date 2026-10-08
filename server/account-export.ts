@@ -2,6 +2,7 @@ import { confirmAccount } from './account-confirmation'
 import type { Database, User } from './platform'
 import { HttpError, jsonBody, response } from './security'
 import { throttle } from './auth'
+import { backfillWorkingReports } from './working-reports'
 
 /** Only the verified owner, after reauthentication. Never export credentials or another member's text. */
 export async function accountExport(request:Request,db:Database,owner:User|null,sessionCreatedAt?:Date|string){
@@ -10,16 +11,19 @@ export async function accountExport(request:Request,db:Database,owner:User|null,
   await throttle(db,'account-export:'+owner.id,5,900)
   const body=await jsonBody(request)
   await confirmAccount(db,owner.id,body,sessionCreatedAt)
+  await backfillWorkingReports(db)
   // Explicit field lists keep operator notes, access/session tokens and password hashes out.
   const queries={
     account:'SELECT id,name,email,emailVerified,createdAt,updatedAt,username,displayUsername FROM auth_users WHERE id=?',
     identities:'SELECT providerId,accountId,createdAt,updatedAt FROM auth_accounts WHERE userId=?',
     policyAcceptances:'SELECT version,accepted_at FROM account_policy_acceptances WHERE user_id=?',
+    discordInvitation:'SELECT shown_at FROM member_discord_invites WHERE user_id=?',
     welcomeEmail:'SELECT state,template_version,accepted_at,first_attempt_at,attempts FROM member_welcome_mail WHERE user_id=?',
     newsPreferences:'SELECT enabled,consent_version,changed_at FROM account_news_preferences WHERE user_id=?',
     newsEmails:'SELECT campaign_id,status,attempted_at,attempts FROM news_deliveries WHERE member_id=?',
     configurations:'SELECT id,name,modules_json,revision,updated_at,keep_stock_fx2,module_versions_json FROM configurations WHERE user_id=?',
     comments:"SELECT p.id,t.module_id,p.body,p.created_at FROM forum_posts p JOIN forum_threads t ON t.id=p.thread_id WHERE p.user_id=? AND p.hidden<2 AND t.id='module-' || t.module_id AND p.id<>t.id",
+    workingReports:'SELECT module_id,machine,os,module_version,build_json,source_post_id,created_at FROM module_working_reports WHERE user_id=?',
     ratings:'SELECT module_id,value FROM ratings WHERE user_id=?',
     likes:'SELECT module_id FROM likes WHERE user_id=?',
     threads:'SELECT id,title,COALESCE(section,category) AS category,machine,module_id,configuration_json,issue_json,status,locked,hidden,created_at,updated_at FROM forum_threads WHERE user_id=?',
@@ -40,6 +44,8 @@ export async function accountExport(request:Request,db:Database,owner:User|null,
     threadReads:'SELECT thread_id,last_read_at,last_read_post_id FROM forum_thread_reads WHERE member_id=?',
     forumVisits:'SELECT seen_at,last_visit_at,all_read_at FROM forum_visits WHERE member_id=?',
     notifications:'SELECT id,kind,thread_id,post_id,module_id,module_version,issue_id,github_actor,excerpt,seen,emailed,created_at FROM notifications WHERE user_id=?',
+    creatorSupport:'SELECT module_id,ko_fi_url,updated_at FROM module_creator_support WHERE user_id=?',
+    moduleUpdateOptOuts:'SELECT module_id,created_at FROM module_update_opt_outs WHERE user_id=?',
     moduleUpdateSubscriptions:'SELECT module_id,after_version,created_at FROM module_update_subscriptions WHERE user_id=?',
     pushDevices:'SELECT activity,signups,created_at FROM push_subscriptions WHERE user_id=?',
     signupEvent:'SELECT username,created_at FROM signup_events WHERE user_id=?',

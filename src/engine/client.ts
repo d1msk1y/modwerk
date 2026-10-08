@@ -1,5 +1,11 @@
+import type { UsbAudioConfiguration } from '../config/usb-audio'
 import { BASE_FIRMWARE, type FirmwareInspection } from './base'
 import type { BuildProgress, EngineRequest, EngineResponse } from './protocol'
+import type { SelectionConflict } from '../catalog/selection-conflicts'
+export class FirmwareBuildError extends Error {
+  readonly conflict?: SelectionConflict
+  constructor(message: string, conflict?: SelectionConflict) { super(message); this.name = 'FirmwareBuildError'; this.conflict = conflict }
+}
 export function createFirmwareClient() {
   let nextId = 0, generation = 0, disposed = false
   let rememberedFile: File | null = null, recovering: Promise<void> = Promise.resolve()
@@ -15,7 +21,7 @@ export function createFirmwareClient() {
       if (!task) return
       if (response.type === 'progress') { task.progress?.(response.phase); return }
       pending.delete(response.id)
-      if (response.type === 'error') task.reject(new Error(response.message)); else task.resolve(response)
+      if (response.type === 'error') task.reject(new FirmwareBuildError(response.message, response.conflict)); else task.resolve(response)
     }
     worker.onerror = () => rejectPending('The local firmware worker stopped. Choose your file again or reload the page.')
     return worker
@@ -45,15 +51,15 @@ export function createFirmwareClient() {
   }
   return {
     inspect,
-    async validate(moduleIds: string[], keepStockFx2: boolean) {
+    async validate(moduleIds: string[], keepStockFx2: boolean, usbAudio?: UsbAudioConfiguration) {
       await recovering
-      const response = await send({ id: ++nextId, type: 'validate', moduleIds, keepStockFx2 })
+      const response = await send({ id: ++nextId, type: 'validate', moduleIds, keepStockFx2, usbAudio })
       if (response.type !== 'validated') throw new Error('The local firmware worker returned an unexpected result.')
       return response.report
     },
-    async build(moduleIds: string[], keepStockFx2: boolean, progress: (phase: BuildProgress) => void) {
+    async build(moduleIds: string[], keepStockFx2: boolean, progress: (phase: BuildProgress) => void, usbAudio?: UsbAudioConfiguration) {
       await recovering
-      const response = await send({ id: ++nextId, type: 'build', moduleIds, keepStockFx2 }, [], progress)
+      const response = await send({ id: ++nextId, type: 'build', moduleIds, keepStockFx2, usbAudio }, [], progress)
       if (response.type !== 'built') throw new Error('The local firmware worker returned an unexpected result.')
       return response
     },

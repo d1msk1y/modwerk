@@ -1,0 +1,35 @@
+{
+  "schema": 1,
+  "module": "playmodes",
+  "version": "0.1.1-experimental",
+  "kind": "coldfire",
+  "cycles": {
+    "unit": "cycles/event",
+    "static": 148928,
+    "measured": 60288,
+    "budget": 6600000,
+    "method": "Author's build-24 ColdFire-core maximum: 1,884 instructions measured, 4,654 bounded, with a 32 cycles/instruction allowance; not measured chip timing. See evidence/cycles.md. Sixteen-track envelope: 2,382,848 cycles."
+  },
+  "load": {
+    "frameUs": 362.8,
+    "stockLongestUs": null,
+    "moduleLongestUs": null,
+    "stockIdlePercent": null,
+    "moduleIdlePercent": null,
+    "method": "Missing hardware load capture; no model values substituted."
+  },
+  "stress": {
+    "floodMessagesPerSecond": null,
+    "clockBpm": null,
+    "seconds": null,
+    "stuckNotes": null,
+    "hangs": null,
+    "dropped": null,
+    "droppedExplanation": "No physical flood/audio stress evidence. Existing native fixtures and historical author reports are retained."
+  },
+  "hardwareEvidence": {
+    "status": "owner-waived-where-missing",
+    "approval": "sdk/playmodes-build-approval.json",
+    "existingReport": "evidence/hardware.md"
+  }
+}

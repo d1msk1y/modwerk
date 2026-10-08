@@ -2,7 +2,8 @@ import { MemberPrompt } from './MemberPrompt'
 import { useEffect, useState } from 'react'
 import { api, apiFetch, post } from './api'
 import { apiUrl, assetUrl } from '../hosting'
-import { MODULE_DOCUMENTS_BY_ID } from '../catalog/documents'
+import { moduleMediaDocument } from './module-media'
+import { moduleMediaGuide } from '../catalog/module-media-guides'
 import type { PublicMedia } from './api'
 import { useCommunity } from './context'
 import { Icon } from '../components/Icon'
@@ -10,7 +11,8 @@ import { ModulePopularity } from './ModulePopularity'
 import { modulePageHref, moduleThreadId } from './modules'
 import { useLoginPrompt } from './LoginPromptDialog'
 import { ForumThreadView } from './ForumThreadView'
-type Data = {ratings:{average:number|null;count:number};ownRating:number;likes:number;liked:boolean;downloads?:number;downloadsStarted?:string|null;discussionCount?:number;sharedConfigurations?:number;media:PublicMedia[]}
+import { MODULE_STATISTICS_CHANGED } from './module-statistics'
+type Data = {ratings:{average:number|null;count:number};ownRating:number;likes:number;liked:boolean;downloads?:number;downloadsStarted?:string|null;discussionCount?:number;sharedConfigurations?:number;worksReports?:number;media:PublicMedia[]}
 function MediaPreview({item,privatePreview}:{item:PublicMedia;privatePreview:boolean}) {
   const [preview,setPreview]=useState<{id:string;url:string}|null>(null),[error,setError]=useState('')
   useEffect(()=>{
@@ -30,17 +32,34 @@ function MediaPreview({item,privatePreview}:{item:PublicMedia;privatePreview:boo
 export function MediaGallery({media,privatePreview=false}:{media:PublicMedia[];privatePreview?:boolean}) {
   return <div className="media-gallery">{media.map(item=><MediaPreview key={item.id} item={item} privatePreview={privatePreview}/>)}</div>
 }
+type ModuleMedia = NonNullable<ReturnType<typeof moduleMediaDocument>>['media'][number]
+function ModuleMediaGallery({id,version,media}:{id:string;version:string;media:readonly ModuleMedia[]}) {
+  return <div className="media-gallery">{media.map(item=>{
+    const url=assetUrl('module-media/'+id+'/'+version+'/'+item.path)
+    return <figure key={item.path}>
+      {item.captureType==='audio'?<audio controls preload="none" src={url}>Audio preview</audio>:<a href={url} target="_blank" rel="noreferrer"><img className={item.lcd ? 'ot-ui-capture' : undefined} src={url} alt={item.alt} loading="lazy"/></a>}
+      <figcaption>{item.caption}<span>{item.captureType==='hardware'?'Hardware capture':item.captureType==='emulator'?'Emulator capture':item.captureType==='audio'?'Audio preview':'LCD capture'} · {item.credit} · {item.license}</span>{item.source!=='original'&&<a href={item.source} target="_blank" rel="noreferrer">Original source ↗</a>}</figcaption>
+    </figure>
+  })}</div>
+}
 export function ModuleCommunity({id,mode='all',onDiscuss,onReportIssue,onDiscussionCount}:{id:string;mode?:'all'|'media'|'discussion'|'overview'|'ratings';onDiscuss?:()=>void;onReportIssue?:()=>void;onDiscussionCount?:(count:number)=>void}) {
   const {session,refresh} = useCommunity()
   // Visitors see live buttons; pressing one opens the sign-in prompt and brings them back to this page.
   const {dialog,gate}=useLoginPrompt(modulePageHref(id).slice(1))
-  const document=MODULE_DOCUMENTS_BY_ID[id],sourceMedia=document?.media??[]
+  const document=moduleMediaDocument(id),sourceMedia=document?.media??[]
+  const mediaGuide=moduleMediaGuide<ModuleMedia>(id,document?.version??'',sourceMedia)
   const [data,setData] = useState<Data | null>(null), [rating,setRating] = useState(0), [error,setError] = useState(''), [busy,setBusy] = useState(false), [notice,setNotice] = useState('')
   useEffect(() => {
-    let cancelled=false
-    // A successful load clears an earlier failure, so a passing network blip does not leave a stale error.
-    if (session.available) void api<Data>('/modules/' + id).then(value => {if (!cancelled) {setData(value);setRating(value.ownRating);setError('')}}).catch(error => {if(!cancelled)setError(error.message)})
-    return () => {cancelled=true}
+    let cancelled=false, latest=0
+    // Also refresh when a feedback report is posted elsewhere on this page.
+    function load() {
+      if (!session.available) return
+      const request=++latest
+      void api<Data>('/modules/' + id).then(value => {if (!cancelled&&request===latest) {setData(value);setRating(value.ownRating);setError('')}}).catch(error => {if(!cancelled&&request===latest)setError(error.message)})
+    }
+    load()
+    window.addEventListener(MODULE_STATISTICS_CHANGED,load)
+    return () => {cancelled=true;window.removeEventListener(MODULE_STATISTICS_CHANGED,load)}
   },[id,session.available,session.user?.id])
   const discussionCount=data?.discussionCount
   useEffect(()=>{if(discussionCount!==undefined)onDiscussionCount?.(discussionCount)},[discussionCount,onDiscussionCount])
@@ -52,7 +71,16 @@ export function ModuleCommunity({id,mode='all',onDiscuss,onReportIssue,onDiscuss
       setNotice(kind==='like'?(data?.liked?'Like removed.':'Liked.'):'Rating saved.')
     } catch(error){setError(error instanceof Error?error.message:'Unable to save.')} finally{setBusy(false)}
   }
-  const mediaSection = <section className="detail-section"><div className="section-title"><h2>Screenshots & audio</h2><a className="text-button" href={'#submit/' + id}>Add media <Icon name="plus" size={15}/></a></div>{sourceMedia.length ? <div className="media-gallery">{sourceMedia.map(item=>{const url=assetUrl('module-media/'+id+'/'+document.version+'/'+item.path);return <figure key={item.path}>{item.captureType==='audio'?<audio controls preload="none" src={url}>Audio preview</audio>:<a href={url} target="_blank" rel="noreferrer"><img className={item.otUi ? 'ot-ui-capture' : undefined} src={url} alt={item.alt} loading="lazy"/></a>}<figcaption>{item.caption}<span>{item.captureType==='hardware'?'Hardware capture':item.captureType==='emulator'?'Emulator capture':'Audio preview'} · {item.credit} · {item.license}</span>{item.source!=='original'&&<a href={item.source} target="_blank" rel="noreferrer">Original source ↗</a>}</figcaption></figure>})}</div> : null}{!!data?.media.length && <MediaGallery media={data.media}/>} {!sourceMedia.length && !data?.media.length && <div className="media-empty"><Icon name="file" size={24}/><div><strong>No media yet</strong><p>Share a screenshot or audio preview via PR.</p></div></div>}</section>
+  const mediaSection = <section className="detail-section">
+    <div className="section-title"><h2>Screenshots & audio</h2><a className="text-button" href={'#submit/' + id}>Add media <Icon name="plus" size={15}/></a></div>
+    {!!mediaGuide.primary.length && <ModuleMediaGallery id={id} version={document!.version} media={mediaGuide.primary}/>}
+    {!!mediaGuide.additional.length && <details key={id} className="module-disclosure">
+      <summary><span>More screenshots<small>{mediaGuide.additional.length} additional {mediaGuide.additional.length===1?'page':'pages'}</small></span><Icon name="plus" size={16}/></summary>
+      <div className="disclosure-content"><ModuleMediaGallery id={id} version={document!.version} media={mediaGuide.additional}/></div>
+    </details>}
+    {!!data?.media.length && <MediaGallery media={data.media}/>}
+    {!sourceMedia.length && !data?.media.length && <div className="media-empty"><Icon name="file" size={24}/><div><strong>No media yet</strong><p>Share a screenshot or audio preview via PR.</p></div></div>}
+  </section>
   if(mode==='overview')return <>
     <div className="module-showcase">
       {mediaSection}

@@ -6,22 +6,27 @@ import { LoginPromptDialog } from './LoginPromptDialog'
 import { modulePageHref } from './modules'
 import type { ModuleUpdateSubscription } from './module-release-contract'
 
-export function ModuleUpdateButton({ id }: { id: string }) {
+function UpdateDeliveryNote({ id, compact = false }: { id?: string; compact?: boolean }) {
+  if (compact) return <span id={id} className="sr-only">Downloads automatically follow module updates. Choose email delivery in your account's notification settings.</span>
+  return <p id={id} className="service-note">Get new releases in your bell. Choose email delivery in <a href="#account/notifications">notification settings</a>.</p>
+}
+
+export function ModuleUpdateButton({ id, compact = false }: { id: string; compact?: boolean }) {
   const { session, loading } = useCommunity()
-  // Every state renders the same block wrapper, so the button does not sit beside "Add to configuration" first and drop below it once the session arrives.
-  if (loading) return <div className="module-update-subscription"><button className="button button-quiet" disabled><Icon name="bell" size={16} />Get update notifications</button></div>
-  if (!session.user) return <VisitorInvitation id={id} />
-  if (!session.user.verified) return <div className="module-update-subscription"><a className="button button-quiet" href="#account"><Icon name="bell" size={16} />Verify email to follow updates</a></div>
-  return <Subscription key={id + ':' + session.user.id} id={id} />
+  const className = 'module-update-subscription' + (compact ? ' module-update-compact' : '')
+  if (loading) return <div className={className}><button className="button button-quiet" disabled><Icon name="bell" size={16} />{compact ? 'Follow updates' : 'Get update notifications'}</button><UpdateDeliveryNote compact={compact}/></div>
+  if (!session.user) return <VisitorInvitation id={id} compact={compact} />
+  if (!session.user.verified) return <div className={className}><a className="button button-quiet" href="#account"><Icon name="bell" size={16} />Verify email to follow</a><UpdateDeliveryNote compact={compact}/></div>
+  return <Subscription key={id + ':' + session.user.id} id={id} compact={compact} />
 }
 
 /** The same button for visitors; pressing it opens the sign-in prompt and brings them back to this module. */
-function VisitorInvitation({ id }: { id: string }) {
+function VisitorInvitation({ id, compact }: { id: string; compact: boolean }) {
   const [open, setOpen] = useState(false)
-  return <div className="module-update-subscription"><button type="button" className="button button-quiet" aria-haspopup="dialog" onClick={() => setOpen(true)}><Icon name="bell" size={16} />Get update notifications</button>{open && <LoginPromptDialog action="Sign in to get update notifications" next={modulePageHref(id).slice(1)} onClose={() => setOpen(false)} />}</div>
+  return <div className={'module-update-subscription' + (compact ? ' module-update-compact' : '')}><button type="button" className="button button-quiet" aria-haspopup="dialog" onClick={() => setOpen(true)}><Icon name="bell" size={16} />{compact ? 'Follow updates' : 'Get update notifications'}</button><UpdateDeliveryNote compact={compact}/>{open && <LoginPromptDialog action="Sign in to get update notifications" next={modulePageHref(id).slice(1)} onClose={() => setOpen(false)} />}</div>
 }
 
-function Subscription({ id }: { id: string }) {
+function Subscription({ id, compact }: { id: string; compact: boolean }) {
   const [value, setValue] = useState<ModuleUpdateSubscription | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState('')
   const request = useRef(0), mutating = useRef(false), description = useId()
   useEffect(() => {
@@ -44,9 +49,9 @@ function Subscription({ id }: { id: string }) {
     } catch (error) { if (version === request.current) setError(error instanceof Error ? error.message : 'Unable to save update notifications.') }
     finally { mutating.current = false; setBusy(false) }
   }
-  return <div className="module-update-subscription">
-    <button type="button" className={'button ' + (value?.enabled ? 'button-added' : 'button-quiet')} aria-pressed={!!value?.enabled} aria-describedby={description} disabled={busy || !value && !error} onClick={() => void change()}><Icon name="bell" size={16} />{busy ? 'Saving…' : value?.enabled ? 'Following updates · Unfollow' : 'Get update notifications'}</button>
-    <p id={description} className="service-note" role="status">{value?.enabled ? <>New releases appear in your bell. {value.emailEnabled && value.emailAvailable ? 'Unread updates are included in your activity emails.' : <>For email too, {value.emailAvailable ? 'enable module updates in' : 'check delivery availability in'} <a href="#account/notifications">email settings</a>.</>}</> : 'Get new releases in your bell and activity emails.'}</p>
+  return <div className={'module-update-subscription' + (compact ? ' module-update-compact' : '')}>
+    <button type="button" className={'button ' + (value?.enabled ? 'button-added' : 'button-quiet')} aria-label={value?.enabled ? 'Unfollow updates' : 'Follow module updates'} aria-pressed={!!value?.enabled} aria-describedby={description} disabled={busy || !value && !error} onClick={() => void change()}><Icon name="bell" size={16} />{busy ? 'Saving…' : value?.enabled ? compact ? 'Following' : 'Unfollow updates' : compact ? 'Follow updates' : 'Get update notifications'}</button>
+    <UpdateDeliveryNote id={description} compact={compact}/>
     {error && <p className="file-error" role="alert">{error}</p>}
   </div>
 }

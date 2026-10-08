@@ -149,6 +149,20 @@
       "fx1Only": false
     },
     {
+      "id": "analog-bassdrum",
+      "key": "ANALOG BD",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
+      "id": "usb-audio-out-tracks-main-cue",
+      "key": "USB AUDIO OUT TRACKS MAIN CUE",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
       "id": "synth",
       "key": "SYNTH MACHINE",
       "fxId": null,
@@ -166,6 +180,27 @@
     {
       "id": "vector",
       "key": "VECTOR",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
+      "id": "playmodes",
+      "key": "PLAY MODES",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
+      "id": "mute-modes",
+      "key": "MUTE_MODES",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
+      "id": "recorder-loop-fix",
+      "key": "RECORDER LOOP FIX",
       "fxId": null,
       "fx1": false,
       "fx1Only": false

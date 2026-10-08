@@ -1,5 +1,39 @@
 # OT UI screenshots for module publication
 
+## Write a short screenshot walkthrough
+
+Every module gallery, on every machine, should teach a first useful task in
+two to five essential screenshots. Order them as the user would work: find or
+enable the module, adjust its controls, then check the expected result and
+stop, reset or bypass it. Use extra screenshots only when needed for a
+different route or control page; keep those under **More screenshots** on the
+site so the main walkthrough stays short. All required capture evidence must
+still be supplied, even when some pages are supplementary in the gallery.
+
+Write two or three short sentences per caption, naming the button/menu/encoder
+to use and what the change does. Include a small concrete example when it
+helps, such as “Try STEPS 16 and PULSE 5 for five evenly spaced pulses per
+cycle.” A list such as “FREQ, RES, DEPTH, DEC, STEPS and PULSE” does not teach
+usage. Neither does a description of the capture fixture. Keep capture
+metadata in its evidence record and provenance line; mention a limitation in
+the caption when it affects how the pictured step should be understood.
+
+Describe only what the actual screen shows in alt text. Check visible labels
+against the image, and distinguish a suggested control change from a value
+already pictured. Explain OFF/inactive controls when users need to enable
+them. Do not claim a stopped emulator image proves the resulting audio or
+hardware behavior. The caption may explain the source-documented expected
+result without presenting it as a new test result.
+
+Before finishing, read the captions in gallery order with the screenshots
+open. A first-time user should understand where to start, what to change and
+what to expect without opening the README. Synchronize new release captions
+with the module tutorial and control documentation. For website-only copy
+improvements to retained releases, edit `src/catalog/module-media-guides.ts`;
+bind each guide to the exact version and real declared paths, preserve media
+credits/licences and evidence, and review the guide when that version changes.
+
+
 The steps for a whole module are in [Add or port a module](ADD_A_MODULE.md); this document defines the capture contract.
 
 Every new module and update needs actual OT UI captures that explain where it
@@ -134,6 +168,15 @@ When actual project state is required, pass `--card`, `--set-name` and
 project and refuses captures unless LOAD PROJECT completed. Never use an
 empty-card session as evidence of a project-dependent menu. The record includes
 only its card fingerprint and neutral fixture names; keep the actual card local.
+On Linux, the two DSP cores need 104 MiB of shared-memory backing before
+project/audio work. Docker's default `/dev/shm` is only 64 MiB: memory mapping
+succeeds, then touching the second core's buffer raises SIGBUS before DSP setup
+finishes. Start the existing isolated container with `--shm-size 256m`, retaining
+its read-only source mount, private output mount, disabled network and dropped
+capabilities. This changes the shared-memory allowance within the container's
+overall memory limit. The capture script checks for at least 128 MiB free before
+starting the emulator and reports the required setting if space is insufficient.
+
 On macOS the emulator needs shared-memory access. Do not capture a failed load
 as a successful control page or bypass selection guards to manufacture it.
 
@@ -169,3 +212,45 @@ hardware qualification, and never authorizes uploading firmware.
 ## Release documentation gate — 2 October 2026
 
 New modules and updates must include complete documentation and a short practical tutorial, with real screenshots in the same black-and-white/gray style as the online modules. Yellow or colored captures do not qualify. Declare PNG screenshot paths and `screenshotStyle: "black-and-white"` under `tests.qualification.documentation`; release validation inspects actual pixels, requires the tutorial and complete README sections, and checks the OT location/control evidence even without `--base`. Preserve actual captured labels and controls; never replace them with a reconstruction. The owner verifies page coverage, exact access steps, tutorial usefulness and provenance. Automatic no-OT-UI modules still need real host setup/routing screenshots and a tutorial. See [the full qualification and documentation gates](MODULE_QUALIFICATION.md).
+
+An owner-approved experimental update may retain an earlier version's UI captures when its exact-source approval explicitly names `retainedUiVersion` and waives release documentation. The screenshots retain their original capture version, date and image hashes; this grants no current hardware evidence. Other updates still require current-version UI evidence.
+
+## Digitakt and Digitone
+
+The Digi modules use the same seven README sections, a matching short tutorial,
+real monochrome selection/control captures, and `media/capture.json`. Declare
+`tests.documentation` in `modwerk.module.json`: `tutorial` has `title` and at
+least three `steps` matching `presentation.usage`, `screenshots` lists the
+module-relative PNGs, and `captureRecord` points to the provenance JSON. Each
+screenshot's `media.capture.type` identifies `emulator` or `hardware`.
+`modules:check -- --base origin/main` requires this record for new or updated Digi modules; existing unchanged imports remain readable during migration.
+`modules:check` checks those links, current module version, firmware/build
+identity, PNG hashes and monochrome pixels. UI documentation does not upgrade
+the module's hardware/audio/timing qualification.
+
+For local emulator captures, use digiemu revision
+`c1b5735835923e328f8b4950d6ba927875e5b669` with its six pinned Unicorn patches.
+Build the author's pinned catalog release with the unchanged vendored elekloader
+kit and your own supported stock OS file, then run the capture script in an
+isolated sandbox with network and user credentials denied:
+
+```sh
+python3 scripts/capture-digi-module-ui.py \
+  --emulator /path/to/reviewed/digiemu \
+  --firmware /private/capture/custom.syx \
+  --plan sdk/digitakt/modules/digislicer/media/capture-plan.txt \
+  --out /private/capture/new-session --fixture-loop
+```
+
+Use a new private output directory. `--fixture-loop` seeds an original synthetic
+`DOC_LOOP` on the disposable +Drive before boot; the plan still has to load it
+through the instrument's sample browser. It does not write RAM, menu selection
+or parameter state. The script runs firmware-native drawing (`hle=False`),
+collects the firmware-rendered LCD buffer at flushes and selects one complete
+unmodified frame from the final 250 ms after the last panel action at each `snap`. It scales the 128×64
+pixels by six without interpolation. Open every PNG and keep only complete,
+correct pages. Retain the panel-input plan, capture timestamps and PNG hashes,
+built-image/stock/catalog/kit/emulator identities, module source pin and
+conditions in `media/capture.json`. Keep firmware, cards, extracted sections,
+raw frames and snapshots in private storage. Credit the capture contribution
+separately from Elektron's underlying interface rights, as for the OT captures.

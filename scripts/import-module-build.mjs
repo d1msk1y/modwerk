@@ -5,7 +5,7 @@ import { execFileSync } from 'node:child_process'
 import { isDeepStrictEqual } from 'node:util'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { fetchOwnerApproval } from '../src/release/approval.ts'
+import { fetchReleaseApproval } from './release-approval.mjs'
 import { parseModuleDocument } from '../src/catalog/module-contract.ts'
 import { parseColdFireObject } from '../src/engine/coldfire-elf.ts'
 import { PACKAGE_FILES as expected, moduleSourcePaths, sourceEntryHash, compiledModuleVersions } from './module-source.mjs'
@@ -28,7 +28,7 @@ if (!development) {
   const head = execFileSync('git', ['rev-parse','HEAD'], { cwd: root, encoding: 'utf8' }).trim()
   if (head !== report.sourceCommit) throw new Error('Artifact source commit differs from this checkout')
   // The compiler output is untrusted. Fetch approval independently from GitHub.
-  approval = await fetchOwnerApproval(process.env.GITHUB_REPOSITORY ?? '', report.sourceCommit, Number(process.env.OCTAMOD_APPROVER_ID), process.env.GITHUB_TOKEN ?? '')
+  approval = await fetchReleaseApproval(process.env.GITHUB_REPOSITORY ?? '', report.sourceCommit, Number(process.env.OCTAMOD_APPROVER_ID), process.env.GITHUB_TOKEN ?? '')
 }
 const versions = await compiledModuleVersions(root, catalog)
 if (JSON.stringify(Object.keys(report.moduleVersions).sort()) !== JSON.stringify(Object.keys(versions).sort())) throw new Error('Compiled module scope differs from the catalog')
@@ -75,6 +75,19 @@ for (const pkg of requested.objects) {
     if (pkg.label !== 'usbmidi_cfg' && !group?.detours.some(hook => hook.address === copy.source && hook.guardLength === copy.bytes && hook.guardSha256 === copy.sha256)) throw new Error('Inherited replay span must match its declared native detour guard')
   }
 }
+const usb = packages.get('usb-audio-packages.json')
+if (usb.schema !== 1 || usb.version !== versions['usb-audio-out-tracks-main-cue'] || usb.upstreamRevision !== '7b2984c859732ae6c797ae49c7d61d250b1b6519' || usb.layouts.length !== 6 || new Set(usb.layouts.map(row => row.id)).size !== 6 || usb.common.length !== 3) throw new Error('Invalid USB layout scope or release identity')
+for (const [path, hash] of Object.entries(usb.sources)) if (report.sources['modules/usb-audio-out-tracks-main-cue/layouts/' + path] !== hash) throw new Error('USB layout source differs from the complete inventory')
+for (const layout of usb.layouts) for (const pkg of [...usb.common, ...layout.objects]) {
+  if (!hash(pkg.sha256) || !Number.isSafeInteger(pkg.bytes) || pkg.bytes < 52 || pkg.bytes > 1024 * 1024 || !/^[a-f0-9]+$/.test(pkg.code) || pkg.code.length !== pkg.bytes * 2 || sha(Buffer.from(pkg.code, 'hex')) !== pkg.sha256 || !(pkg.source in usb.sources)) throw new Error('Invalid USB authored object')
+  const object = parseColdFireObject(new Uint8Array(Buffer.from(pkg.code, 'hex')))
+  validateStockCopies(object, pkg.stockCopies)
+  if (pkg.stockCopies.length !== (pkg.label === 'usbmidi_cfg' ? 4 : 0) || pkg.stockCopies.some(copy => copy.bytes !== 23)) throw new Error('Invalid masked USB descriptor inventory')
+  if (pkg.curve) {
+    const { section, offset, words, address } = pkg.curve
+    if (layout.id !== 'tracks-post' || words !== 256 || address !== 0x6c00 || !object.sections[section] || offset < 0 || offset + 1024 > object.sections[section].data.length || object.sections[section].data.slice(offset, offset + 1024).some(byte => byte)) throw new Error('USB post-level curve must remain a zero placeholder')
+  }
+}
 const utility = packages.get('utility-packages.json')
 if(utility.stockRead!==false||utility.kind!=='authored-utility-packages'||utility.compilerSha256!==sha(await readFile(resolve(root,'scripts/build-utility-packages.py')))||JSON.stringify(utility.packages.map(p=>p.id).sort())!==JSON.stringify(['cc-map','previewvol'])) throw new Error('Invalid utility source compiler or scope')
 for(const pkg of utility.packages) {
@@ -95,4 +108,4 @@ if(checkOnly){console.log('All source-package artifacts, complete source invento
 for (const name of expected) await copyFile(resolve(folder,name),resolve(root,'src/engine/assets',name))
 const frontend = { schemaVersion:1, kind:'source-packages', sourceCommit:report.sourceCommit, nativeRevision:report.nativeRevision, sourceTreeSha256:report.sourceTreeSha256, compilerSha256:report.compilerSha256, moduleVersions:report.moduleVersions, files:report.files, approval, qualification:report.qualification }
 await writeFile(resolve(root,'src/engine/assets/module-build.json'), JSON.stringify(frontend,null,2)+'\n')
-console.log('Imported source-built artifacts at exact module versions (' + (development ? 'local development; no release approval' : 'owner-approved PR #' + approval.pullRequest) + ').')
+console.log('Imported source-built artifacts at exact module versions (' + (development ? 'local development; no release approval' : 'authorized PR #' + approval.pullRequest) + ').')

@@ -5,7 +5,7 @@
       "schemaVersion": 3,
       "id": "digichain",
       "name": "digichain",
-      "version": "1.6.0-experimental",
+      "version": "1.6.1-experimental",
       "machine": "digitakt",
       "category": "system",
       "exclusive": false,
@@ -31,8 +31,10 @@
           "Adds no sound, page or control, and changes nothing on its own."
         ],
         "usage": [
-          "Build it with Digi Mono or Digi Poly: both require it.",
-          "Press FUNC + SRC on an audio track to see each added machine with its own icon."
+          "Build digichain together with Digi Poly, which requires it, for a supported original Digitakt OS.",
+          "On an audio track press FUNC + SRC, select POLY, confirm with YES.",
+          "On TRIG set NOT1, then add NOT2 at +4 and NOT3 at +7. Trigger the track to hear the chord using the available voice pool.",
+          "Stop playback. Return the track to ONESHOT to stop using POLY; digichain has no independent page or bypass control."
         ]
       },
       "access": {
@@ -42,7 +44,9 @@
           "On an audio track, press FUNC + SRC: every added machine shows its own icon in the list.",
           "Choose a Digi Mono machine or POLY: its SRC page, and for Digi Mono its LFO page’s DEST names, come through digichain."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [],
       "compatibility": {
@@ -94,7 +98,23 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s vendored elekloader builder linked and verified a build of digichain 1.6 with core 2.1 for OS 1.53 and 1.54; nothing was flashed, and the evidence tier is none."
+        "summary": "Modwerk’s vendored elekloader builder linked and verified a build of digichain 1.6 with core 2.1 for OS 1.53 and 1.54; nothing was flashed, and the evidence tier is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: use a dependent machine",
+            "steps": [
+              "Build digichain together with Digi Poly, which requires it, for a supported original Digitakt OS.",
+              "On an audio track press FUNC + SRC, select POLY, confirm with YES.",
+              "On TRIG set NOT1, then add NOT2 at +4 and NOT3 at +7. Trigger the track to hear the chord using the available voice pool.",
+              "Stop playback. Return the track to ONESHOT to stop using POLY; digichain has no independent page or bypass control."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/chord.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -110,6 +130,38 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "Dependent POLY machine supplied through digichain",
+          "alt": "Dependent POLY machine supplied through digichain on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.6.1-experimental",
+            "imageSha256": "9cd7b202f12fe141fa7451bd61d2c750d8d75395ac10d58b1cc2efd252b7a627",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/chord.png",
+          "kind": "screenshot",
+          "caption": "POLY consumer controls; digichain has no page of its own",
+          "alt": "POLY consumer controls; digichain has no page of its own on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.6.1-experimental",
+            "imageSha256": "9cd7b202f12fe141fa7451bd61d2c750d8d75395ac10d58b1cc2efd252b7a627",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -272,7 +324,7 @@
       "schemaVersion": 3,
       "id": "digieq",
       "name": "Digi EQ",
-      "version": "1.0.0-experimental",
+      "version": "1.0.1-experimental",
       "machine": "digitakt",
       "category": "effects",
       "exclusive": false,
@@ -299,11 +351,10 @@
           "Bell and shelf bands at 0 dB cost nothing."
         ],
         "usage": [
-          "Give each pattern its own master tone: the EQ is saved with the pattern’s kit, and loading a sound onto a track leaves it as it is.",
-          "Turn on MASTER EQ in SETTINGS > GLOBAL FX/MIX to carry one EQ across every pattern, and save the project to keep it in those patterns.",
-          "If you hear clicks in a busy project, set bands back to 0 dB and away from the filter types, or turn on digihealth’s FAST AUDIO for headroom.",
-          "When boosting, lower the master volume or cut elsewhere: the output is limited to full scale.",
-          "On the unit, check once after a power cycle that a pattern’s EQ came back."
+          "Use a build containing Digi EQ. Press FUNC + LFO twice to reach Master EQ (2/4). Start a pattern with audio already loaded.",
+          "Turn band 1 level with A and its frequency with E to compare a small low-frequency cut with the initial 0 dB setting.",
+          "Press A to edit the band’s Q and E to edit its type; press them again to return to level and frequency.",
+          "Return every band to 0 dB and use the original shelf/bell types for the starting response, then stop playback. A zero-level HP, LP, BP or notch still filters."
         ]
       },
       "access": {
@@ -314,7 +365,9 @@
           "Press a knob to switch it to its band’s Q (A-D) or type (E-H); press it again to go back.",
           "For one EQ on every pattern, turn on SETTINGS > GLOBAL FX/MIX > MASTER EQ."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/eq.png"
+        ]
       },
       "controls": [
         {
@@ -406,7 +459,23 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s elekloader builder linked and verified a build of Digi EQ 1.0b with core 2.1 for OS 1.53 and 1.54; nothing was flashed or tested on hardware, and the evidence tier is none."
+        "summary": "Modwerk’s elekloader builder linked and verified a build of Digi EQ 1.0b with core 2.1 for OS 1.53 and 1.54; nothing was flashed or tested on hardware, and the evidence tier is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: shape the master mix",
+            "steps": [
+              "Use a build containing Digi EQ. Press FUNC + LFO twice to reach Master EQ (2/4). Start a pattern with audio already loaded.",
+              "Turn band 1 level with A and its frequency with E to compare a small low-frequency cut with the initial 0 dB setting.",
+              "Press A to edit the band’s Q and E to edit its type; press them again to return to level and frequency.",
+              "Return every band to 0 dB and use the original shelf/bell types for the starting response, then stop playback. A zero-level HP, LP, BP or notch still filters."
+            ]
+          },
+          "screenshots": [
+            "media/eq.png",
+            "media/q-type.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -422,6 +491,38 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/eq.png",
+          "kind": "screenshot",
+          "caption": "Master EQ (2/4): band levels and frequencies",
+          "alt": "Master EQ (2/4): band levels and frequencies on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.1-experimental",
+            "imageSha256": "4542b2464429b97b77205ed7c793d39c94a5b3bce2116896411369f0e2a07e80",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/q-type.png",
+          "kind": "screenshot",
+          "caption": "Master EQ: pressed knobs show Q and filter type",
+          "alt": "Master EQ: pressed knobs show Q and filter type on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.1-experimental",
+            "imageSha256": "4542b2464429b97b77205ed7c793d39c94a5b3bce2116896411369f0e2a07e80",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -480,7 +581,7 @@
       "schemaVersion": 3,
       "id": "digihealth",
       "name": "digihealth",
-      "version": "1.0.1-experimental",
+      "version": "1.0.2-experimental",
       "machine": "digitakt",
       "category": "system",
       "exclusive": false,
@@ -497,36 +598,41 @@
         "label": "DIGIHEALTH",
         "family": "Performance",
         "summary": "FAST AUDIO lowers the DSP load; SYSTEM INFO shows CPU, DSP and memory in the top bar.",
-        "overview": "Two SETTINGS rows. FAST AUDIO (on by default) runs the audio render’s hot code from the free on-chip SRAM: the same code, so the audio is identical and the DSP load lower; a watchdog goes back to the stock code if the copy is ever overwritten. SYSTEM INFO shows CPU, DSP, RAM and free sample memory in the top bar, and a read-only USB diagnostics channel (SysEx device 0x7D) answers its desktop tool.",
+        "overview": "digihealth adds FAST AUDIO and SYSTEM INFO to SETTINGS on the original Digitakt. FAST AUDIO runs the audio renderer’s existing hot code from on-chip SRAM; it changes where the code runs, rather than the sound. It normally starts about two seconds after the screen appears. SYSTEM INFO alternates CPU/audio-render load and free RAM/sample memory in the top bar. Its DSP figure describes the audio render, not the cost of a single module. A read-only USB SysEx diagnostics channel uses device byte 0x7D.",
         "highlights": [
-          "FAST AUDIO: the render’s hot code runs from on-chip SRAM for a lower DSP load.",
-          "A watchdog falls back to the stock code if the copy is overwritten.",
-          "SYSTEM INFO: CPU, DSP, RAM and free sample memory in the top bar."
+          "FAST AUDIO uses the existing render code in SRAM, with a checksum watchdog and fallback to stock code.",
+          "SYSTEM INFO alternates load and memory pages every two seconds, including the last second’s DSP peak.",
+          "The optional USB diagnostics channel reads status without changing settings or memory."
         ],
         "usage": [
-          "Turn FAST AUDIO on to make room for heavier machines such as SOPHIE.",
-          "Watch DSP peaks with SYSTEM INFO while building a pattern."
+          "Open SETTINGS, tick SYSTEM INFO, then return to a pattern with samples already loaded.",
+          "Play the pattern. Watch CPU and DSP current/peak load, then wait for the free RAM and sample-memory page; the pages alternate every two seconds.",
+          "Keep the pattern unchanged and untick FAST AUDIO in SETTINGS. Compare several readouts of the same passage; any difference depends on the workload.",
+          "Stop playback and untick SYSTEM INFO to hide the readout. FAST AUDIO stays disabled until the next power-on; its watchdog may also refuse or undo the SRAM copy."
         ]
       },
       "access": {
         "location": "SETTINGS",
         "steps": [
-          "Open SETTINGS.",
-          "Tick FAST AUDIO or SYSTEM INFO."
+          "Use a build containing digihealth for the original Digitakt on OS 1.53 or 1.54.",
+          "Open SETTINGS and tick SYSTEM INFO to show the readout in the top bar.",
+          "FAST AUDIO normally starts automatically after boot; untick its SETTINGS row to disable it for this power-on."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/settings.png"
+        ]
       },
       "controls": [
         {
           "name": "FAST AUDIO",
           "default": null,
-          "doc": "Runs the render from SRAM; untick to stop until the next power-on",
+          "doc": "Runs the existing audio-render code from SRAM. Normally starts about two seconds after boot; unticking disables it until the next power-on. It refuses a nonempty SRAM area, and its checksum watchdog returns to stock code if the copy is overwritten.",
           "labels": null
         },
         {
           "name": "SYSTEM INFO",
           "default": null,
-          "doc": "Shows CPU, DSP and memory in the top bar",
+          "doc": "Shows alternating two-second top-bar pages: CPU load and audio-render DSP current/last-second peak, then free heap RAM and sample memory. Untick to hide the display; these are whole-workload readings, not a per-module benchmark.",
           "labels": null
         }
       ],
@@ -577,7 +683,25 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Imported from the author’s v1.1 source; not yet built or tested in Modwerk."
+        "summary": "Imported from the author’s v1.1 source; Modwerk linked and verified the pinned catalog release for the UI documentation run. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: compare a pattern’s render load",
+            "steps": [
+              "Open SETTINGS, tick SYSTEM INFO, then return to a pattern with samples already loaded.",
+              "Play the pattern. Watch CPU and DSP current/peak load, then wait for the free RAM and sample-memory page; the pages alternate every two seconds.",
+              "Keep the pattern unchanged and untick FAST AUDIO in SETTINGS. Compare several readouts of the same passage; any difference depends on the workload.",
+              "Stop playback and untick SYSTEM INFO to hide the readout. FAST AUDIO stays disabled until the next power-on; its watchdog may also refuse or undo the SRAM copy."
+            ]
+          },
+          "screenshots": [
+            "media/settings.png",
+            "media/fast-audio.png",
+            "media/status-a.png",
+            "media/status-b.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "GPL-2.0-or-later",
@@ -593,6 +717,70 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/settings.png",
+          "kind": "screenshot",
+          "caption": "SYS INFO in Settings",
+          "alt": "SYS INFO in Settings on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.2-experimental",
+            "imageSha256": "4709095234ef5d94cfa2cceeac07040d6356e6570a69649cf6ed72b698594968",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/fast-audio.png",
+          "kind": "screenshot",
+          "caption": "FAST AUDIO setting with the memory overlay",
+          "alt": "FAST AUDIO setting with the memory overlay on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.2-experimental",
+            "imageSha256": "4709095234ef5d94cfa2cceeac07040d6356e6570a69649cf6ed72b698594968",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/status-a.png",
+          "kind": "screenshot",
+          "caption": "Load overlay on AMP; timing counters unavailable",
+          "alt": "Load overlay on AMP; timing counters unavailable on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.2-experimental",
+            "imageSha256": "4709095234ef5d94cfa2cceeac07040d6356e6570a69649cf6ed72b698594968",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/status-b.png",
+          "kind": "screenshot",
+          "caption": "Load overlay on SRC; timing counters unavailable",
+          "alt": "Load overlay on SRC; timing counters unavailable on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.2-experimental",
+            "imageSha256": "4709095234ef5d94cfa2cceeac07040d6356e6570a69649cf6ed72b698594968",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -747,7 +935,7 @@
       "schemaVersion": 3,
       "id": "digimatrix",
       "name": "Digi Matrix",
-      "version": "1.0.0-experimental",
+      "version": "1.0.1-experimental",
       "machine": "digitakt",
       "category": "playback",
       "exclusive": false,
@@ -774,12 +962,10 @@
           "The author measured the whole matrix at about 0.4 % of the audio time, even with all 8 slots on."
         ],
         "usage": [
-          "Send one LFO to several parameters on several tracks, each by a different amount.",
-          "Route one track’s LFO to another track’s filter, as in the author’s example T1 L2 > T4 FLT.FREQ.",
-          "Let one LFO modulate the other one’s speed or depth with the L1.* and L2.* destinations.",
-          "Set X under OWN to use an LFO only through the matrix, not on its own track.",
-          "Shape the source LFO as usual on its own track’s LFO page: SPD, MULT, WAVE, PHAS, FADE and trig MODE.",
-          "Give each pattern its own routings; changing pattern changes the matrix."
+          "Use a build containing Digi Matrix and a pattern with a sounding sample on T4. Set T1’s LFO1 to a slow wave on its normal LFO page.",
+          "Open SETTINGS > MOD MATRIX, press YES to enter, select the first slot and press YES to enable it.",
+          "Set A to source T1, B to L1, C to destination T4, D to FLT.FREQ and E to a positive depth. Play the pattern and hear T4’s filter move.",
+          "Press YES on the routing slot to turn it off, press NO to leave the matrix, and stop playback."
         ]
       },
       "access": {
@@ -790,7 +976,9 @@
           "Choose a slot with UP/DOWN or the LEVEL knob and press YES to turn it on.",
           "Set the slot with knobs A–F; NO leaves the page."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/settings.png"
+        ]
       },
       "controls": [
         {
@@ -900,7 +1088,24 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s vendored elekloader builder linked and verified a build with core 2.1 for OS 1.53 and 1.54; nothing was flashed and the evidence tier is none."
+        "summary": "Modwerk’s vendored elekloader builder linked and verified a build with core 2.1 for OS 1.53 and 1.54; nothing was flashed and the evidence tier is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: route an LFO to another track",
+            "steps": [
+              "Use a build containing Digi Matrix and a pattern with a sounding sample on T4. Set T1’s LFO1 to a slow wave on its normal LFO page.",
+              "Open SETTINGS > MOD MATRIX, press YES to enter, select the first slot and press YES to enable it.",
+              "Set A to source T1, B to L1, C to destination T4, D to FLT.FREQ and E to a positive depth. Play the pattern and hear T4’s filter move.",
+              "Press YES on the routing slot to turn it off, press NO to leave the matrix, and stop playback."
+            ]
+          },
+          "screenshots": [
+            "media/settings.png",
+            "media/slots-off.png",
+            "media/route.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -916,6 +1121,54 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/settings.png",
+          "kind": "screenshot",
+          "caption": "MOD MATRIX in Settings",
+          "alt": "MOD MATRIX in Settings on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.1-experimental",
+            "imageSha256": "d4294009b411885a2c02262859daa3b53e3cb3f2c6ed5fe6507b889b645e6069",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/slots-off.png",
+          "kind": "screenshot",
+          "caption": "Eight matrix slots, initially disabled",
+          "alt": "Eight matrix slots, initially disabled on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.1-experimental",
+            "imageSha256": "d4294009b411885a2c02262859daa3b53e3cb3f2c6ed5fe6507b889b645e6069",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/route.png",
+          "kind": "screenshot",
+          "caption": "Enabled T1 LFO1 route and its depth",
+          "alt": "Enabled T1 LFO1 route and its depth on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.0.1-experimental",
+            "imageSha256": "d4294009b411885a2c02262859daa3b53e3cb3f2c6ed5fe6507b889b645e6069",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -950,7 +1203,7 @@
       "schemaVersion": 3,
       "id": "digimono",
       "name": "Digi Mono",
-      "version": "0.13.0-experimental",
+      "version": "0.13.1-experimental",
       "machine": "digitakt",
       "category": "machines",
       "exclusive": false,
@@ -979,12 +1232,10 @@
           "A clean-room engine: no Monomachine code or data."
         ],
         "usage": [
-          "Pick a machine with FUNC+SRC on an audio track, scrolling past SLICE and any other mod’s machines; YES confirms.",
-          "Play it from trigs, the track key, the keyboard (FUNC+TRK) or MIDI, like a sample track; the note and TUNE set the pitch.",
-          "Set the volume with the track’s LEVEL, the AMP page and VOL.",
-          "Keep to a few playing Digi Mono tracks; VO, ENS and PULSE cost the most. Check the load with digihealth’s SYSTEM INFO.",
-          "MONO ENS starts with its chorus off (CHRL 0) and MONO VO without a consonant; turning them on costs more.",
-          "The author’s load test in docs/USAGE.md adds one playing track at a time while watching DSP and its peak."
+          "Use a build containing Digi Mono and its digichain dependency. On an audio track select MONO SIN with FUNC + SRC, then confirm with YES.",
+          "Set pitch with SRC knob A, then shape MONO SIN with its labelled SRC controls. Use AMP to give the note a short decay.",
+          "Enable the keyboard with FUNC + TRK and play the voice from trig keys; change TUNE to hear its pitch move.",
+          "Stop playback and leave keyboard mode. Select ONESHOT to return the track to sample playback."
         ]
       },
       "access": {
@@ -995,7 +1246,9 @@
           "On the SRC page, knob A is TUNE and B to H are the machine’s own parameters; a knob the machine does not have is blank.",
           "Play it from trigs, the track key, the keyboard (FUNC + TRK) or MIDI."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [
         {
@@ -1108,7 +1361,28 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s builder linked and verified a build with core 2.1 and DIGICHAIN 1.6 on OS 1.53 and 1.54; nothing was flashed or tested on hardware, and the evidence tier is none."
+        "summary": "Modwerk’s builder linked and verified a build with core 2.1 and DIGICHAIN 1.6 on OS 1.53 and 1.54; nothing was flashed or tested on hardware, and the evidence tier is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: play a MONO SIN voice",
+            "steps": [
+              "Use a build containing Digi Mono and its digichain dependency. On an audio track select MONO SIN with FUNC + SRC, then confirm with YES.",
+              "Set pitch with SRC knob A, then shape MONO SIN with its labelled SRC controls. Use AMP to give the note a short decay.",
+              "Enable the keyboard with FUNC + TRK and play the voice from trig keys; change TUNE to hear its pitch move.",
+              "Stop playback and leave keyboard mode. Select ONESHOT to return the track to sample playback."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/sin.png",
+            "media/noise.png",
+            "media/saw.png",
+            "media/pulse.png",
+            "media/ens.png",
+            "media/vo.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -1124,6 +1398,118 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "MONO SIN in the machine chooser",
+          "alt": "MONO SIN in the machine chooser on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/sin.png",
+          "kind": "screenshot",
+          "caption": "MONO SIN controls",
+          "alt": "MONO SIN controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/noise.png",
+          "kind": "screenshot",
+          "caption": "MONO NOISE controls",
+          "alt": "MONO NOISE controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/saw.png",
+          "kind": "screenshot",
+          "caption": "MONO SAW controls",
+          "alt": "MONO SAW controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/pulse.png",
+          "kind": "screenshot",
+          "caption": "MONO PULSE controls",
+          "alt": "MONO PULSE controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/ens.png",
+          "kind": "screenshot",
+          "caption": "MONO ENS controls",
+          "alt": "MONO ENS controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/vo.png",
+          "kind": "screenshot",
+          "caption": "MONO VO controls",
+          "alt": "MONO VO controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.13.1-experimental",
+            "imageSha256": "734d97eee93237736fbeea07a756ed04af28ad6840b2e6fb9953e69423b8274e",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -1238,7 +1624,7 @@
       "schemaVersion": 3,
       "id": "digineighbor",
       "name": "NEIGHBOR",
-      "version": "0.6.0-experimental",
+      "version": "0.6.1-experimental",
       "machine": "digitakt",
       "category": "machines",
       "exclusive": false,
@@ -1255,54 +1641,61 @@
         "label": "NEIGHBOR",
         "family": "Sampling",
         "summary": "A NEIGHBOR machine like the Octatrack’s: a track plays another track’s audio through its own chain. A prototype.",
-        "overview": "NEIGHBOR is a fifth SRC machine, like the Octatrack’s neighbor machine. The track plays another track’s audio (post-filter) through its own overdrive, level, filter, volume, pan and sends, one block (0.67 ms) late. Its SRC page has TUNE (a pitch shifter that follows the trig’s note), BR, SLOT (the source track, 1–8), GAIN (0 to +31.5 dB after its own chain) and LEV. A prototype.",
+        "overview": "NEIGHBOR replaces a sample source with another audio track’s post-filter signal on the original Digitakt. Choose the receiving track with FUNC + SRC, set SLOT to the source track, and trigger the receiving track so its AMP envelope opens. The incoming signal passes through the receiving track’s overdrive, bit reduction, filter, envelope, volume, pan and sends. The source is tapped before its volume, so lowering the source’s AMP VOL removes the dry mix without cutting the routed signal. Routing adds one 32-sample block (about 0.67 ms); nonzero pitch shifting adds further latency. This remains an upstream prototype.",
         "highlights": [
-          "Route one track’s audio through another track’s filter, effects and sends.",
-          "A pitch shifter (TUNE) that follows the trig’s note.",
-          "Up to +31.5 dB of GAIN after its own chain."
+          "SLOT selects source track 1–8; zero or the receiving track itself produces silence.",
+          "TUNE shifts up to two octaves either way and follows trig notes; neutral pitch bypasses the shifter.",
+          "LEV drives the receiving chain; GAIN adds up to +31.5 dB after that chain and before its volume.",
+          "Receiving-track trigs and AMP settings gate the source; the original track can remain in the dry mix."
         ],
         "usage": [
-          "Run a drum track through a second filter and delay setting on another track.",
-          "Pitch-shift a pad track in key with trigs on the NEIGHBOR track."
+          "Put a drum sample and a few trigs on T1. On T2 choose NEIGHBOR with FUNC + SRC, then set SLOT to 1.",
+          "Set T2 TUNE to 0 with no trig-note transpose, GAIN to 0 dB and LEV to 100. Add a T2 trig and use a long AMP HOLD or DECAY so its envelope lets T1 through.",
+          "Play the pattern and adjust T2’s filter or delay send. Lower T1’s AMP VOL to hear only T2’s processed signal; the source tap is before T1’s volume.",
+          "Try T2 TUNE at +12 semitones, or lock T2’s trig notes, to pitch-shift the routed audio. The shifter adds latency beyond the routing block.",
+          "Stop playback, restore T1’s AMP VOL and set T2 SLOT to 0 to silence the route. Return T2 TUNE to 0 and GAIN to 0 dB for a neutral starting point."
         ]
       },
       "access": {
         "location": "SRC machine list",
         "steps": [
-          "Select a track, press FUNC + SRC and choose NEIGHBOR.",
-          "Set SLOT to the source track on the SRC page."
+          "Use a build containing NEIGHBOR for the original Digitakt on OS 1.53 or 1.54, and load a sample on the source track.",
+          "Select a different audio track, press FUNC + SRC, scroll below SLICE to NEIGHBOR, and confirm with YES.",
+          "On the receiving track’s SRC page set SLOT (knob E) to the source track number, then add a receiving-track trig."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [
         {
           "name": "TUNE",
           "default": null,
-          "doc": "Pitch shift that follows the trig’s note",
+          "doc": "SRC knob A: pitch shift from -24 to +24 semitones, also transposed by the receiving trig’s note. At 0.00 with no note transpose the shifter is bypassed. Nonzero shifting adds approximately 3–27 ms beyond the routing delay.",
           "labels": null
         },
         {
           "name": "BR",
           "default": null,
-          "doc": "Bit reduction",
+          "doc": "SRC knob C: stock-style bit reduction applied to the routed signal in the receiving track’s chain.",
           "labels": null
         },
         {
           "name": "SLOT",
           "default": null,
-          "doc": "Source track, 1–8",
+          "doc": "SRC knob E: source audio track 1–8. Zero or this receiving track’s own number produces silence. The source is tapped after its filter and before its volume.",
           "labels": null
         },
         {
           "name": "GAIN",
           "default": null,
-          "doc": "0 to +31.5 dB after its own chain",
+          "doc": "SRC knob F: amplification from 0 to +31.5 dB in 0.5 dB steps after the receiving chain and before its volume. Clips at full scale. Unlike LEV, it does not increase drive into the receiving overdrive.",
           "labels": null
         },
         {
           "name": "LEV",
           "default": null,
-          "doc": "Level",
+          "doc": "SRC knob H: level entering the receiving chain, scaled by trig velocity. LEV 100 with velocity 100 passes the source at its own level before the receiving processing; higher values drive its overdrive harder.",
           "labels": null
         }
       ],
@@ -1345,7 +1738,26 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Imported from the author’s v0.6 source; not yet built or tested in Modwerk."
+        "summary": "Imported from the author’s v0.6 source; Modwerk linked and verified the pinned catalog release for the UI documentation run. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: filter a drum track through T2",
+            "steps": [
+              "Put a drum sample and a few trigs on T1. On T2 choose NEIGHBOR with FUNC + SRC, then set SLOT to 1.",
+              "Set T2 TUNE to 0 with no trig-note transpose, GAIN to 0 dB and LEV to 100. Add a T2 trig and use a long AMP HOLD or DECAY so its envelope lets T1 through.",
+              "Play the pattern and adjust T2’s filter or delay send. Lower T1’s AMP VOL to hear only T2’s processed signal; the source tap is before T1’s volume.",
+              "Try T2 TUNE at +12 semitones, or lock T2’s trig notes, to pitch-shift the routed audio. The shifter adds latency beyond the routing block.",
+              "Stop playback, restore T1’s AMP VOL and set T2 SLOT to 0 to silence the route. Return T2 TUNE to 0 and GAIN to 0 dB for a neutral starting point."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/src.png",
+            "media/filter.png",
+            "media/amp.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "GPL-2.0-or-later",
@@ -1361,6 +1773,70 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "NEIGHBOR in the machine chooser",
+          "alt": "NEIGHBOR in the machine chooser on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.6.1-experimental",
+            "imageSha256": "f518879a5f79a5d38325e4423e48a2dc9521936cc4cdef98f5cfd15d66b36f09",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/src.png",
+          "kind": "screenshot",
+          "caption": "NEIGHBOR source controls",
+          "alt": "NEIGHBOR source controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.6.1-experimental",
+            "imageSha256": "f518879a5f79a5d38325e4423e48a2dc9521936cc4cdef98f5cfd15d66b36f09",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/filter.png",
+          "kind": "screenshot",
+          "caption": "Track filter controls",
+          "alt": "Track filter controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.6.1-experimental",
+            "imageSha256": "f518879a5f79a5d38325e4423e48a2dc9521936cc4cdef98f5cfd15d66b36f09",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/amp.png",
+          "kind": "screenshot",
+          "caption": "Track amplifier controls",
+          "alt": "Track amplifier controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "0.6.1-experimental",
+            "imageSha256": "f518879a5f79a5d38325e4423e48a2dc9521936cc4cdef98f5cfd15d66b36f09",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -1451,7 +1927,7 @@
       "schemaVersion": 3,
       "id": "digipoly",
       "name": "Digi Poly",
-      "version": "2.0.0-experimental",
+      "version": "2.0.1-experimental",
       "machine": "digitakt",
       "category": "machines",
       "exclusive": false,
@@ -1479,10 +1955,10 @@
           "Several tracks can be POLY; each plays its own chords."
         ],
         "usage": [
-          "Play chords from one audio track: set NOT2-NOT4 on its TRIG page and let the extra notes borrow other tracks’ voices.",
-          "Lock a step’s own chord: hold its trig in grid recording and turn a knob.",
-          "Play or record chords from a MIDI keyboard on the POLY track’s own channel; up to four notes land in the step’s NOT1-NOT4.",
-          "Take tracks that must never be cut out of the pool in SETTINGS > POLY. Drum tracks that trig often are borrowed last."
+          "Use a build containing Digi Poly and digichain, and load a sample into the project. Select POLY with FUNC + SRC, then confirm with YES.",
+          "On TRIG choose NOT1, set NOT2 to +4 and NOT3 to +7, and leave NOT4 off for a three-note major chord.",
+          "Check SETTINGS > POLY and leave enough other audio tracks in the voice pool. Trigger the POLY track to hear its sample across the chord.",
+          "Stop playback. Turn NOT2 and NOT3 off, or select ONESHOT, to return to single-note playback."
         ]
       },
       "access": {
@@ -1492,7 +1968,9 @@
           "Set the chord on the track’s TRIG page: NOT1 and NOT2-NOT4.",
           "Choose which tracks lend their voice in SETTINGS > POLY."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [
         {
@@ -1603,7 +2081,24 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s builder linked and verified a build of the author’s 2.0 source with core 2.1 and DIGICHAIN 1.6 on OS 1.53 and 1.54. Nothing was flashed; evidence is none."
+        "summary": "Modwerk’s builder linked and verified a build of the author’s 2.0 source with core 2.1 and DIGICHAIN 1.6 on OS 1.53 and 1.54. Nothing was flashed; evidence is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: play a three-note sample chord",
+            "steps": [
+              "Use a build containing Digi Poly and digichain, and load a sample into the project. Select POLY with FUNC + SRC, then confirm with YES.",
+              "On TRIG choose NOT1, set NOT2 to +4 and NOT3 to +7, and leave NOT4 off for a three-note major chord.",
+              "Check SETTINGS > POLY and leave enough other audio tracks in the voice pool. Trigger the POLY track to hear its sample across the chord.",
+              "Stop playback. Turn NOT2 and NOT3 off, or select ONESHOT, to return to single-note playback."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/chord.png",
+            "media/settings.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -1619,6 +2114,54 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "POLY in the machine chooser",
+          "alt": "POLY in the machine chooser on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.0.1-experimental",
+            "imageSha256": "9cd7b202f12fe141fa7451bd61d2c750d8d75395ac10d58b1cc2efd252b7a627",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/chord.png",
+          "kind": "screenshot",
+          "caption": "POLY chord controls on TRIG",
+          "alt": "POLY chord controls on TRIG on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.0.1-experimental",
+            "imageSha256": "9cd7b202f12fe141fa7451bd61d2c750d8d75395ac10d58b1cc2efd252b7a627",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/settings.png",
+          "kind": "screenshot",
+          "caption": "POLY voice pool in Settings",
+          "alt": "POLY voice pool in Settings on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.0.1-experimental",
+            "imageSha256": "9cd7b202f12fe141fa7451bd61d2c750d8d75395ac10d58b1cc2efd252b7a627",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -1717,7 +2260,7 @@
       "schemaVersion": 3,
       "id": "digislicer",
       "name": "DIGISLICER",
-      "version": "2.1.0-experimental",
+      "version": "2.1.1-experimental",
       "machine": "digitakt",
       "category": "machines",
       "exclusive": false,
@@ -1734,73 +2277,148 @@
         "label": "DIGISLICER",
         "family": "Sampling",
         "summary": "A slicing machine with a slice editor: cut a sample where you want, and play the slices from the trig keys and the keyboard.",
-        "overview": "DIGISLICER is the SLICE machine with a slice editor. Its SRC page is SLICE’s; press SRC again for a waveform view where you add, split, delete and move slices, auto-slice on transients or use equal grids, watch them play and play them from the trig keys. A sample’s own slices play on every DIGISLICER track and are kept per sample on the +Drive. GRID gains AUTO (slices on the transients) and PLAY gains PIPO (ping-pong loops). With the keyboard on, the trig keys play the slices one per key, as the Octatrack’s trig slice mode, and live recording records them as slice locks. The stock SLICE machine is left as it is.",
+        "overview": "DIGISLICER adds a separate SRC machine with a waveform slice editor to the original Digitakt. Select it below SLICE, choose a sample and press SRC again to edit starts, create a grid or slice on transients. Custom slices belong to the sample and take precedence over GRID on every DIGISLICER track using it; they are saved to the +Drive after closing the editor. GRID adds AUTO and PLAY adds PIPO for forward/backward looping across the slices covered by LEN. With FUNC + TRK keyboard mode enabled, trig keys play slices at the track’s pitch and can record slice locks. The stock SLICE machine retains its normal behavior.",
         "highlights": [
-          "A slice editor on the track’s sample, opened by pressing SRC twice.",
-          "Your slices are saved per sample on the +Drive and play on every DIGISLICER track.",
-          "GRID = AUTO slices on transients; PLAY = PIPO ping-pong loops.",
-          "Trig keys play slices one per key, with live recording as slice locks."
+          "Edit up to 64 slices with coarse/fine start adjustment, a cursor and horizontal/vertical waveform zoom.",
+          "Use transient AUTO slicing or 4/8/16/32/64-slice grids with starts moved to zero crossings.",
+          "Custom slices follow the sample across projects and override GRID on DIGISLICER tracks.",
+          "Keyboard mode plays one slice per trig key, with four pages and live recording of slice locks.",
+          "PIPO ping-pongs for the note’s duration, including spans of multiple slices set with LEN."
         ],
         "usage": [
-          "Chop a break by hand in the editor, then play the slices from the trig keys.",
-          "Use AUTO on drum loops that have no slices of their own."
+          "Choose DIGISLICER with FUNC + SRC, assign a drum loop with SAMP, then press SRC again to open its waveform editor.",
+          "Press YES for the slice menu, select CREATE GRID with UP / DOWN, choose 16 with LEFT / RIGHT and confirm with YES. This replaces the sample’s existing slice layout.",
+          "Select a slice with knob A. Adjust its start with B and fine-tune with C; use D to zoom around the cursor and H to enlarge quiet waveform details.",
+          "Close the editor with SRC or NO and wait at least a second for the slices to save. They now play on every DIGISLICER track using this sample, regardless of GRID.",
+          "Enable keyboard mode with FUNC + TRK and play the slices from trig keys 1–16. UP / DOWN select later slice pages; REC + PLAY records the played keys as slice locks.",
+          "Press STOP and leave recording/keyboard mode when finished. To remove the custom layout, reopen the editor and choose YES → DELETE ALL; playback returns to the SRC page’s GRID setting."
         ]
       },
       "access": {
         "location": "SRC machine list, below SLICE",
         "steps": [
-          "Select a track, press FUNC + SRC and choose DIGISLICER below SLICE.",
-          "Press SRC again to open the slice editor; SRC, NO or another page key closes it."
+          "Use a build containing DIGISLICER for the original Digitakt on OS 1.53 or 1.54.",
+          "Select an audio track, press FUNC + SRC, choose DIGISLICER below SLICE and select a sample with SAMP.",
+          "From the SRC parameter page press SRC again to open the slice editor. SRC or NO closes it; another page key closes it and opens that page.",
+          "For slice performance outside the editor, enable keyboard mode with FUNC + TRK. UP / DOWN select groups of 16 slices."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [
         {
           "name": "Knob A",
           "default": null,
-          "doc": "Select a slice in the editor",
+          "doc": "In the editor, select a slice one per notch; the cursor jumps to its start. In the slice menu, choose an action, then press YES to apply it.",
           "labels": null
         },
         {
           "name": "Knob B",
           "default": null,
-          "doc": "Move the slice start",
+          "doc": "In the editor, move the selected slice’s start. This edits the shared slice layout for the sample, not only this track.",
           "labels": null
         },
         {
           "name": "Knob C",
           "default": null,
-          "doc": "Move the start by single samples",
+          "doc": "In the editor, fine-adjust the selected start one sample at a time.",
           "labels": null
         },
         {
           "name": "Knob D",
           "default": null,
-          "doc": "Zoom horizontally around the cursor",
+          "doc": "In the editor, zoom horizontally around the cursor. Faster turns zoom faster; move the cursor with LEVEL to focus on another region.",
           "labels": null
         },
         {
           "name": "Knob H",
           "default": null,
-          "doc": "Zoom vertically, up to 64 times",
+          "doc": "In the editor, enlarge the waveform vertically up to 64 times to inspect quiet material; this changes the view, not the audio level.",
           "labels": null
         },
         {
           "name": "LEVEL",
           "default": null,
-          "doc": "Move the cursor; the waveform scrolls with it",
+          "doc": "In the editor, move the waveform cursor; the view scrolls to keep it visible. YES then offers ADD SLICE HERE when a new start is allowed at that position.",
           "labels": null
         },
         {
           "name": "FUNC + YES",
           "default": null,
-          "doc": "AUTO SLICE",
+          "doc": "In the editor, run AUTO SLICE on the sample’s transients. This replaces the sample’s existing custom slice layout.",
           "labels": null
         },
         {
           "name": "YES",
           "default": null,
-          "doc": "Open the slice menu",
+          "doc": "Open the slice menu. UP / DOWN or knob A choose ADD SLICE HERE, SPLIT SLICE, DELETE SLICE, AUTO SLICE, CREATE GRID or DELETE ALL; YES applies the action and NO cancels the menu.",
+          "labels": null
+        },
+        {
+          "name": "SAMP",
+          "default": null,
+          "doc": "On the SRC page, choose the track’s sample. In the editor, FUNC + LEFT / RIGHT changes the sample slot and updates the track’s SAMP selection.",
+          "labels": null
+        },
+        {
+          "name": "GRID",
+          "default": null,
+          "doc": "On the SRC page, select an equal slice grid or AUTO, one step past 64, for transient slices. A sample’s custom slices override this setting; DELETE ALL in the editor restores GRID-based playback.",
+          "labels": null
+        },
+        {
+          "name": "SLICE",
+          "default": null,
+          "doc": "On the SRC page, choose the played slice; slice locks sequence different slices. In keyboard mode each trig key chooses its own slice at the track’s pitch, regardless of the current SLICE value.",
+          "labels": null
+        },
+        {
+          "name": "LEN",
+          "default": null,
+          "doc": "On the SRC page, choose how many slices a note spans. In PIPO mode the voice turns at the end of the last slice covered by LEN and returns to the first slice’s start.",
+          "labels": null
+        },
+        {
+          "name": "PLAY",
+          "default": null,
+          "doc": "On the SRC page, retain the stock playback modes or choose PIPO, one step past FWD, for ping-pong looping while the note lasts. Each new note starts forward; the page shows a bidirectional loop icon.",
+          "labels": null
+        },
+        {
+          "name": "TUNE / BR / LEV",
+          "default": null,
+          "doc": "On the SRC page, the stock SLICE-style pitch, bit reduction and source-level controls still apply. Keyboard slice keys keep the track’s pitch; they select slices rather than transpose notes.",
+          "labels": null
+        },
+        {
+          "name": "LEFT / RIGHT",
+          "default": null,
+          "doc": "In the editor, select the previous or next slice and audition it while the key is held. In CREATE GRID, choose 4, 8, 16, 32 or 64 slices.",
+          "labels": null
+        },
+        {
+          "name": "Trig keys / UP / DOWN",
+          "default": null,
+          "doc": "In the editor, trig keys select and audition slices 1–16 while held; UP / DOWN select later groups up to slice 64. Outside the editor, FUNC + TRK keyboard mode uses the same slice pages; keys beyond the slice count stay dark and silent.",
+          "labels": null
+        },
+        {
+          "name": "FUNC + NO",
+          "default": null,
+          "doc": "In the editor, delete the selected slice; its start merges into the preceding slice. Use NO without FUNC to leave the editor and keep the layout.",
+          "labels": null
+        },
+        {
+          "name": "SRC / NO / page keys",
+          "default": null,
+          "doc": "SRC or NO closes the editor and keeps the slices; TRIG, FLTR, AMP or LFO closes it and opens that page. Slices are saved to the +Drive about a second later. PLAY and STOP keep their normal transport functions.",
+          "labels": null
+        },
+        {
+          "name": "FUNC + TRK / recording",
+          "default": null,
+          "doc": "Outside the editor, FUNC + TRK enables slice keyboard mode. REC + PLAY records played slices as locks. In STEP REC (REC + STOP), FUNC + a trig key writes that slice at the cursor.",
           "labels": null
         }
       ],
@@ -1854,7 +2472,26 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Imported from the author’s v2.1 source; not yet built or tested in Modwerk."
+        "summary": "Imported from the author’s v2.1 source; Modwerk linked and verified the pinned catalog release for the UI documentation run. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: chop and play a drum loop",
+            "steps": [
+              "Choose DIGISLICER with FUNC + SRC, assign a drum loop with SAMP, then press SRC again to open its waveform editor.",
+              "Press YES for the slice menu, select CREATE GRID with UP / DOWN, choose 16 with LEFT / RIGHT and confirm with YES. This replaces the sample’s existing slice layout.",
+              "Select a slice with knob A. Adjust its start with B and fine-tune with C; use D to zoom around the cursor and H to enlarge quiet waveform details.",
+              "Close the editor with SRC or NO and wait at least a second for the slices to save. They now play on every DIGISLICER track using this sample, regardless of GRID.",
+              "Enable keyboard mode with FUNC + TRK and play the slices from trig keys 1–16. UP / DOWN select later slice pages; REC + PLAY records the played keys as slice locks.",
+              "Press STOP and leave recording/keyboard mode when finished. To remove the custom layout, reopen the editor and choose YES → DELETE ALL; playback returns to the SRC page’s GRID setting."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/src.png",
+            "media/editor.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "GPL-2.0-or-later",
@@ -1870,6 +2507,54 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "DIGISLICER in the machine chooser",
+          "alt": "DIGISLICER in the machine chooser on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.1.1-experimental",
+            "imageSha256": "41891fa6d359fb495f3883854eb478a07a37f81289b666160a47aab33cd782fe",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. Original DOC_LOOP loaded through the sample browser."
+          }
+        },
+        {
+          "path": "media/src.png",
+          "kind": "screenshot",
+          "caption": "DIGISLICER SRC controls before assigning the loop",
+          "alt": "DIGISLICER SRC controls before assigning the loop on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.1.1-experimental",
+            "imageSha256": "41891fa6d359fb495f3883854eb478a07a37f81289b666160a47aab33cd782fe",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. Original DOC_LOOP loaded through the sample browser."
+          }
+        },
+        {
+          "path": "media/editor.png",
+          "kind": "screenshot",
+          "caption": "Waveform editor with the original DOC_LOOP fixture",
+          "alt": "Waveform editor with the original DOC_LOOP fixture on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "2.1.1-experimental",
+            "imageSha256": "41891fa6d359fb495f3883854eb478a07a37f81289b666160a47aab33cd782fe",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. Original DOC_LOOP loaded through the sample browser."
+          }
         }
       ],
       "source": {
@@ -2072,7 +2757,7 @@
       "schemaVersion": 3,
       "id": "digisophie",
       "name": "SOPHIE",
-      "version": "1.1.13-experimental.1",
+      "version": "1.1.13-experimental.2",
       "machine": "digitakt",
       "category": "machines",
       "exclusive": false,
@@ -2091,72 +2776,79 @@
         "label": "SOPHIE",
         "family": "Synthesis",
         "summary": "A metallic percussion machine with four models: FUSE, BOOM, PIPE and SHARD.",
-        "overview": "Sophie is a metallic percussion synth machine for the original Digitakt. It began as a fixed-point adaptation of Sophie for Schwung by Matt Estela and evolved into four models: FUSE, BOOM, PIPE and SHARD. Its audio enters the normal Digitakt AMP, filter, mixer and sends; the custom controls can be parameter-locked.",
+        "overview": "SOPHIE is a metallic percussion synth SRC machine for the original Digitakt on OS 1.53. Sjoerd (Soejrd) adapted Matt Estela’s Sophie for Schwung into four models: FUSE’s bright clang, BOOM’s rounded low body, PIPE’s inharmonic ring and SHARD’s grainy tone/noise attack. TUNE and trig notes set pitch; SWEEP shapes the pitch attack, METAL and COLOR set the metallic character, FBK adds oscillator feedback and FOLD folds the output. The synth feeds the normal AMP, filter, mixer and sends without needing a sample. AMP controls note duration, and custom SRC controls accept parameter locks. Start with one SOPHIE track; the author’s earlier hardware test found two practical with FAST AUDIO, without claiming eight-track operation.",
         "highlights": [
-          "Four metallic percussion models: FUSE, BOOM, PIPE and SHARD.",
-          "FOLD wavefolder with output level compensation.",
-          "Uses the Digitakt’s own AMP, filter, mixer and effects."
+          "Four source models: FUSE, BOOM, PIPE and SHARD, with lockable synthesis controls.",
+          "Bipolar SWEEP starts above or below the played pitch; zero removes the pitch sweep.",
+          "FOLD adds compensated wavefolding; zero bypasses it. The stock SAMP slot is unused by the synth.",
+          "AMP HOLD = NOTE follows TRIG LEN; a finite DEC gives a release, while DEC = INF can sustain indefinitely."
         ],
         "usage": [
-          "Program metallic hits and bells with parameter-locked MODEL and METAL.",
-          "Use AMP HOLD = NOTE so TRIG LEN sets when the release begins."
+          "On one audio track choose SOPHIE with FUNC + SRC. No sample is needed; choose FUSE with MODEL for this example.",
+          "Set SWEEP to 0 and FOLD to 0. On AMP set HOLD to NOTE and choose a finite DEC, so TRIG LEN determines when the release begins.",
+          "Add a few trigs and play the pattern. Adjust TUNE for pitch, then raise METAL and turn COLOR to explore the clang’s harmonics; add FBK gradually.",
+          "Parameter-lock MODEL on a trig to compare BOOM, PIPE and SHARD, or lock SWEEP above/below zero for a descending/ascending pitch attack. Try FOLD, then return it to 0 to bypass wavefolding.",
+          "Press STOP and let the finite AMP release finish. Remove the example locks and return SWEEP and FOLD to 0 for the starting sound; avoid DEC = INF if you want notes to finish."
         ]
       },
       "access": {
         "location": "SRC machine list",
         "steps": [
-          "Select a track, press FUNC + SRC and choose SOPHIE.",
-          "Set the machine’s controls on the SRC page; AMP shapes the note envelope."
+          "Use a build containing SOPHIE for the original Digitakt on OS 1.53; digihealth is optional.",
+          "Select an audio track, press FUNC + SRC and choose SOPHIE from the machine list.",
+          "Adjust TUNE through COLOR on the SRC page. Set note duration and release on AMP, then trigger the track from the sequencer or keyboard."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/chooser.png"
+        ]
       },
       "controls": [
         {
           "name": "TUNE",
           "default": null,
-          "doc": "Pitch",
+          "doc": "SRC knob A: pitch, combined with the trig’s note. The normal Digitakt AMP, filter and effects process the resulting synth voice.",
           "labels": null
         },
         {
           "name": "MODEL",
           "default": null,
-          "doc": "FUSE / BOOM / PIPE / SHARD",
+          "doc": "SRC knob B: choose FUSE (bright clang), BOOM (rounded sine body and FM attack), PIPE (inharmonic ring) or SHARD (grainy tone with a short noise attack). Each track has one voice; retriggering replaces it.",
           "labels": null
         },
         {
           "name": "FOLD",
           "default": null,
-          "doc": "Wavefolder with output level compensation; zero bypasses it",
+          "doc": "SRC knob C: output wavefolder, 0–127. Zero bypasses it; increasing it adds folds with level compensation before the stock AMP/filter chain. It replaces this machine’s BR control.",
           "labels": null
         },
         {
           "name": "SAMP",
           "default": null,
-          "doc": "Stock sample selector; Sophie does not use the sample",
+          "doc": "SRC knob D: retained stock sample selector. SOPHIE generates its own audio and does not use the selected sample.",
           "labels": null
         },
         {
           "name": "SWEEP",
           "default": null,
-          "doc": "Bipolar pitch sweep toward the played note",
+          "doc": "SRC knob E: bipolar pitch attack, -64 to +63, centered at 0. Positive starts above the played pitch and falls; negative starts below and rises. FUNC + turning uses stock TUNE octave steps (-60 to +24).",
           "labels": null
         },
         {
           "name": "METAL",
           "default": null,
-          "doc": "FM/ring intensity",
+          "doc": "SRC knob F: FM/ring intensity, 0–127. Higher settings increase metallic modulation; its interaction with COLOR and FBK depends on MODEL.",
           "labels": null
         },
         {
           "name": "FBK",
           "default": null,
-          "doc": "Oscillator feedback",
+          "doc": "SRC knob G: oscillator feedback, 0–127. Increase gradually to change the model’s edge and harmonics; this is synthesis feedback, not the delay send’s feedback.",
           "labels": null
         },
         {
           "name": "COLOR",
           "default": null,
-          "doc": "Inharmonic character",
+          "doc": "SRC knob H: inharmonic character, 0–127. Moves through different oscillator-ratio bands for each model; on SHARD it also shapes the noise character.",
           "labels": null
         }
       ],
@@ -2199,7 +2891,26 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Imported from the author’s v1.1.13 source; not yet built or tested in Modwerk."
+        "summary": "Imported from the author’s v1.1.13 source; Modwerk linked and verified the pinned catalog release for the UI documentation run. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: sequence a metallic percussion voice",
+            "steps": [
+              "On one audio track choose SOPHIE with FUNC + SRC. No sample is needed; choose FUSE with MODEL for this example.",
+              "Set SWEEP to 0 and FOLD to 0. On AMP set HOLD to NOTE and choose a finite DEC, so TRIG LEN determines when the release begins.",
+              "Add a few trigs and play the pattern. Adjust TUNE for pitch, then raise METAL and turn COLOR to explore the clang’s harmonics; add FBK gradually.",
+              "Parameter-lock MODEL on a trig to compare BOOM, PIPE and SHARD, or lock SWEEP above/below zero for a descending/ascending pitch attack. Try FOLD, then return it to 0 to bypass wavefolding.",
+              "Press STOP and let the finite AMP release finish. Remove the example locks and return SWEEP and FOLD to 0 for the starting sound; avoid DEC = INF if you want notes to finish."
+            ]
+          },
+          "screenshots": [
+            "media/chooser.png",
+            "media/fuse.png",
+            "media/boom.png",
+            "media/amp.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -2215,6 +2926,70 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/chooser.png",
+          "kind": "screenshot",
+          "caption": "SOPHIE in the machine chooser",
+          "alt": "SOPHIE in the machine chooser on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; soejrd module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.1.13-experimental.2",
+            "imageSha256": "54799123bedb06852bc925340e4edbb0dd8496070b188df4c0d3cc900e5040a1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/fuse.png",
+          "kind": "screenshot",
+          "caption": "FUSE model source controls",
+          "alt": "FUSE model source controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; soejrd module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.1.13-experimental.2",
+            "imageSha256": "54799123bedb06852bc925340e4edbb0dd8496070b188df4c0d3cc900e5040a1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/boom.png",
+          "kind": "screenshot",
+          "caption": "BOOM model source controls",
+          "alt": "BOOM model source controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; soejrd module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.1.13-experimental.2",
+            "imageSha256": "54799123bedb06852bc925340e4edbb0dd8496070b188df4c0d3cc900e5040a1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/amp.png",
+          "kind": "screenshot",
+          "caption": "Track amplifier controls",
+          "alt": "Track amplifier controls on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; soejrd module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.1.13-experimental.2",
+            "imageSha256": "54799123bedb06852bc925340e4edbb0dd8496070b188df4c0d3cc900e5040a1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -2299,7 +3074,7 @@
       "schemaVersion": 3,
       "id": "digiutils",
       "name": "Digi utilities",
-      "version": "1.9.0-experimental",
+      "version": "1.9.1-experimental",
       "machine": "digitakt",
       "category": "system",
       "exclusive": false,
@@ -2326,9 +3101,10 @@
           "Song mode works as stock: a short press of \"...\" is the SONG MODE popup."
         ],
         "usage": [
-          "Solo a track and hold \"...\" to tune it: the tuner hears the main output, and a chord shows its common root.",
-          "Turn a track’s knobs with the page open and watch the waveform or the spectrum change.",
-          "Check stereo width and phase on the X-Y view: mono is a vertical line, left only \"\\\", right only \"/\", out of phase horizontal and wide a cloud."
+          "Use a build containing digiutils and start a pattern with audio already loaded. Hold the three-dots SONG key for about half a second to open the waveform.",
+          "Press the three-dots key again to view the spectrum, then again for the X-Y view. Compare the plots while the same passage plays.",
+          "Press YES for fullscreen. Change an audio track’s level on its usual page to compare the resulting signal.",
+          "Press NO to close the utility page and stop playback. A short three-dots press outside the page keeps the stock SONG popup."
         ]
       },
       "access": {
@@ -2338,7 +3114,9 @@
           "Press \"...\" again to go from the waveform to the spectrum and to X-Y; the next press closes the page.",
           "Press YES for fullscreen; NO closes the page."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/waveform.png"
+        ]
       },
       "controls": [
         {
@@ -2429,7 +3207,25 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s builder linked and verified a build with core 2.1 for OS 1.53 and 1.54; nothing was flashed and the evidence tier is none."
+        "summary": "Modwerk’s builder linked and verified a build with core 2.1 for OS 1.53 and 1.54; nothing was flashed and the evidence tier is none. Documentation captures verify the listed UI pages on OS 1.53; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: inspect the master signal",
+            "steps": [
+              "Use a build containing digiutils and start a pattern with audio already loaded. Hold the three-dots SONG key for about half a second to open the waveform.",
+              "Press the three-dots key again to view the spectrum, then again for the X-Y view. Compare the plots while the same passage plays.",
+              "Press YES for fullscreen. Change an audio track’s level on its usual page to compare the resulting signal.",
+              "Press NO to close the utility page and stop playback. A short three-dots press outside the page keeps the stock SONG popup."
+            ]
+          },
+          "screenshots": [
+            "media/waveform.png",
+            "media/spectrum.png",
+            "media/xy.png",
+            "media/fullscreen.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "MIT",
@@ -2445,6 +3241,70 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/waveform.png",
+          "kind": "screenshot",
+          "caption": "Waveform view with silent input",
+          "alt": "Waveform view with silent input on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.9.1-experimental",
+            "imageSha256": "1dfbe7befb73574fc26c68d43d3de107b2732e85b0c686551d2a51ebdefc84f1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/spectrum.png",
+          "kind": "screenshot",
+          "caption": "Spectrum view with silent input",
+          "alt": "Spectrum view with silent input on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.9.1-experimental",
+            "imageSha256": "1dfbe7befb73574fc26c68d43d3de107b2732e85b0c686551d2a51ebdefc84f1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/xy.png",
+          "kind": "screenshot",
+          "caption": "Stereo X-Y view with silent input",
+          "alt": "Stereo X-Y view with silent input on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.9.1-experimental",
+            "imageSha256": "1dfbe7befb73574fc26c68d43d3de107b2732e85b0c686551d2a51ebdefc84f1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/fullscreen.png",
+          "kind": "screenshot",
+          "caption": "Fullscreen X-Y view",
+          "alt": "Fullscreen X-Y view on the Digitakt monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; gdeo607 module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.53",
+            "moduleVersion": "1.9.1-experimental",
+            "imageSha256": "1dfbe7befb73574fc26c68d43d3de107b2732e85b0c686551d2a51ebdefc84f1",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -2511,7 +3371,7 @@
       "schemaVersion": 3,
       "id": "digihealth",
       "name": "digihealth",
-      "version": "1.1.1-experimental",
+      "version": "1.1.2-experimental",
       "machine": "digitone",
       "category": "system",
       "exclusive": false,
@@ -2528,28 +3388,35 @@
         "label": "DIGIHEALTH",
         "family": "Performance",
         "summary": "SYSTEM INFO shows CPU, DSP and free RAM in the top bar.",
-        "overview": "A SETTINGS row, SYSTEM INFO: CPU load, the audio render’s load (the main CPU’s effects and mix; the FM voices run on the second CPU) and free RAM in the top bar, and a read-only USB diagnostics channel (SysEx device 0x7D). FAST AUDIO is Digitakt only.",
+        "overview": "digihealth adds SYSTEM INFO to SETTINGS on the original Digitone and Digitone Keys running OS 1.43. The top bar alternates main-CPU load and audio-render current/peak load with free heap RAM. The DSP label measures effects and mixing on the main CPU; the FM voices run on the second CPU and their load is not shown. Digitone has no sample-memory readout, and this port has no FAST AUDIO setting. A read-only USB SysEx diagnostics channel uses device byte 0x7D.",
         "highlights": [
-          "CPU, render load and free RAM in the top bar.",
-          "A read-only USB diagnostics channel."
+          "SYSTEM INFO alternates load and free-RAM pages every two seconds.",
+          "DSP shows effects/mix render load and its last-second peak, rather than the second CPU’s FM voice load.",
+          "Read-only USB diagnostics are available; FAST AUDIO is a Digitakt-only feature."
         ],
         "usage": [
-          "Watch the render load while layering FM tracks."
+          "Open SETTINGS, tick SYSTEM INFO and return to a pattern with a few FM tracks.",
+          "Play the pattern. Read CPU and DSP current/peak figures, then wait for free RAM; the top-bar pages alternate every two seconds.",
+          "Keep the notes unchanged and adjust a delay or reverb send to observe the effects/mix workload. DSP does not show the separate FM voice CPU’s load.",
+          "Stop playback, restore the example send settings and untick SYSTEM INFO in SETTINGS to return to the normal top bar. There is no FAST AUDIO toggle on this port."
         ]
       },
       "access": {
         "location": "SETTINGS",
         "steps": [
-          "Open SETTINGS.",
-          "Tick SYSTEM INFO."
+          "Use a build containing the Digitone port of digihealth on an original Digitone or Digitone Keys with OS 1.43.",
+          "Open SETTINGS and tick SYSTEM INFO.",
+          "Return to a pattern to view the alternating load and free-RAM figures in the top bar; untick SYSTEM INFO to hide them."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/settings.png"
+        ]
       },
       "controls": [
         {
           "name": "SYSTEM INFO",
           "default": null,
-          "doc": "Shows CPU, render load and free RAM in the top bar",
+          "doc": "Tick in SETTINGS to alternate CPU and audio-render DSP current/last-second peak with free heap RAM every two seconds. DSP covers the main CPU’s effects and mix; the separate FM voice CPU is not measured. Untick to hide the readout.",
           "labels": null
         }
       ],
@@ -2598,7 +3465,24 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Imported from the author’s v1.1 source; not yet built or tested in Modwerk."
+        "summary": "Imported from the author’s v1.1 source; Modwerk linked and verified the pinned catalog release for the UI documentation run. Documentation captures verify the listed UI pages on OS 1.43; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: watch the effects and mix workload",
+            "steps": [
+              "Open SETTINGS, tick SYSTEM INFO and return to a pattern with a few FM tracks.",
+              "Play the pattern. Read CPU and DSP current/peak figures, then wait for free RAM; the top-bar pages alternate every two seconds.",
+              "Keep the notes unchanged and adjust a delay or reverb send to observe the effects/mix workload. DSP does not show the separate FM voice CPU’s load.",
+              "Stop playback, restore the example send settings and untick SYSTEM INFO in SETTINGS to return to the normal top bar. There is no FAST AUDIO toggle on this port."
+            ]
+          },
+          "screenshots": [
+            "media/settings.png",
+            "media/memory.png",
+            "media/load.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "GPL-2.0-or-later",
@@ -2614,6 +3498,54 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/settings.png",
+          "kind": "screenshot",
+          "caption": "SYS INFO in Settings",
+          "alt": "SYS INFO in Settings on the Digitone monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.43",
+            "moduleVersion": "1.1.2-experimental",
+            "imageSha256": "f0fdfa3403130914a485d2791cbd859367da3405d23ae217191ae8b8b8e885fb",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/memory.png",
+          "kind": "screenshot",
+          "caption": "Memory overlay on AMP",
+          "alt": "Memory overlay on AMP on the Digitone monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.43",
+            "moduleVersion": "1.1.2-experimental",
+            "imageSha256": "f0fdfa3403130914a485d2791cbd859367da3405d23ae217191ae8b8b8e885fb",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/load.png",
+          "kind": "screenshot",
+          "caption": "Load overlay on SYN1; timing counters unavailable",
+          "alt": "Load overlay on SYN1; timing counters unavailable on the Digitone monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.43",
+            "moduleVersion": "1.1.2-experimental",
+            "imageSha256": "f0fdfa3403130914a485d2791cbd859367da3405d23ae217191ae8b8b8e885fb",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {
@@ -2638,7 +3570,7 @@
       "schemaVersion": 3,
       "id": "digitables",
       "name": "digitables",
-      "version": "1.3.0-experimental",
+      "version": "1.3.1-experimental",
       "machine": "digitone",
       "category": "playback",
       "exclusive": false,
@@ -2665,11 +3597,10 @@
           "A project saved with digitables loads on the stock OS, which ignores the tables and keeps them through a save."
         ],
         "usage": [
-          "A C64 chord: in table 2, steps 0, +4, +7, length 3, loop 1; TBL 2 and SPD 1 on a bright sound with a short release, and hold a long note. Minor: 0, +3, +7.",
-          "A strum: in table 3, steps 0, +4, +7, +12 with ADD on steps 2–4, length 4, loop OFF; TBL 3 and SPD 1 or 1/2 on a plucky sound. Every note becomes a major chord strummed upward.",
-          "Strum down by starting high and adding downward: +12, +7 ADD, +4 ADD, 0 ADD.",
-          "At SPD 1/16 to MAX, small offsets (0, +1, or 0, +12) turn into vibrato and FM-like buzz.",
-          "P-lock TBL or SPD on a trig to play another table, none, or another speed."
+          "Use a build containing digitables and Digitone core 2.2 on OS 1.43. Hold T1 for about half a second and choose TABLES, or cycle AMP to its third page.",
+          "Select table 2 with TBL, then hold T1 to open its editor. Set three steps to 0, +4 and +7 semitones, length 3 and loop point 1.",
+          "Press NO to return to TBL and set SPD to 1. Hold a long note on a bright sound to hear the table cycle through a major chord.",
+          "Release the note and stop playback. Set TBL to OFF to restore ordinary pitch playback for that sound."
         ]
       },
       "access": {
@@ -2679,7 +3610,9 @@
           "Or press AMP until its third page, TBL, shows.",
           "On the TBL page, hold a track key to open the table editor; NO, or holding a track key again, goes back to the TBL page."
         ],
-        "screenshots": []
+        "screenshots": [
+          "media/tbl.png"
+        ]
       },
       "controls": [
         {
@@ -2817,7 +3750,23 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Modwerk’s builder linked and verified a build of the author’s v1.3 source with core 2.2 for OS 1.43; nothing was flashed or tested on hardware in Modwerk, and evidence is none."
+        "summary": "Modwerk’s builder linked and verified a build of the author’s v1.3 source with core 2.2 for OS 1.43; nothing was flashed or tested on hardware in Modwerk, and evidence is none. Documentation captures verify the listed UI pages on OS 1.43; audio, timing and hardware remain unqualified.",
+        "documentation": {
+          "tutorial": {
+            "title": "Quick tutorial: play a three-step pitch table",
+            "steps": [
+              "Use a build containing digitables and Digitone core 2.2 on OS 1.43. Hold T1 for about half a second and choose TABLES, or cycle AMP to its third page.",
+              "Select table 2 with TBL, then hold T1 to open its editor. Set three steps to 0, +4 and +7 semitones, length 3 and loop point 1.",
+              "Press NO to return to TBL and set SPD to 1. Hold a long note on a bright sound to hear the table cycle through a major chord.",
+              "Release the note and stop playback. Set TBL to OFF to restore ordinary pitch playback for that sound."
+            ]
+          },
+          "screenshots": [
+            "media/tbl.png",
+            "media/editor-step.png"
+          ],
+          "captureRecord": "media/capture.json"
+        }
       },
       "license": {
         "spdx": "GPL-2.0-or-later",
@@ -2833,6 +3782,38 @@
           "credit": "Modwerk",
           "license": "GPL-3.0-or-later",
           "source": "Original Modwerk illustration"
+        },
+        {
+          "path": "media/tbl.png",
+          "kind": "screenshot",
+          "caption": "Third AMP page: TBL and SPD",
+          "alt": "Third AMP page: TBL and SPD on the Digitone monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.43",
+            "moduleVersion": "1.3.1-experimental",
+            "imageSha256": "1d614a5c85878781cd55b3d9ee261f34345fc95ab14908863b1932f87fa44bb6",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
+        },
+        {
+          "path": "media/editor-step.png",
+          "kind": "screenshot",
+          "caption": "Table editor with step 1 NOTE at +04",
+          "alt": "Table editor with step 1 NOTE at +04 on the Digitone monochrome LCD",
+          "credit": "Modwerk documentation capture; Elektron interface; irpina module",
+          "license": "LicenseRef-Digi-UI-Documentation",
+          "source": "original",
+          "capture": {
+            "type": "emulator",
+            "release": "1.43",
+            "moduleVersion": "1.3.1-experimental",
+            "imageSha256": "1d614a5c85878781cd55b3d9ee261f34345fc95ab14908863b1932f87fa44bb6",
+            "setup": "Pinned digiemu, firmware-native drawing, disposable first-boot project. No audio or cycle-timing qualification."
+          }
         }
       ],
       "source": {

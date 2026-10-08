@@ -2,20 +2,28 @@ import { BackLink } from '../components/BackLink'
 import { useState } from 'react'
 import { CopyButton, StarterPrompts } from './StarterPrompts'
 import { cloneCommands } from './starter-prompts'
-import { sourceRepository } from '../hosting'
+import { assetUrl, sourceRepository } from '../hosting'
 import { communityModule } from './modules'
 import { DEVICES_BY_ID } from '../devices/registry'
+import { DEVELOPMENT_DISCORD_URL } from '../config/development-discord'
 export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
   const repository=sourceRepository()
   const module=communityModule(moduleId)
   const moduleRepository=repository||'https://github.com/repeat98/modwerk'
   const [login,setLogin]=useState('')
   const clone=cloneCommands(moduleRepository,login)
+  const creatorSupport=<section className="configuration-section">
+    <h2>Get support for your modules</h2>
+    <p>Once your module is published, you can add your own Ko-fi support link. <a href="#account/developer">Verify your developer account with GitHub</a>, claim your module, then save your Ko-fi page in the Developer workspace. A small cup beside your name lets visitors open a tip panel. You can change or remove the link at any time.</p>
+  </section>
+  const releaseSteps=<section className="configuration-section"><h2>Fix an issue with your coding agent</h2><p>Open your fork in your agent and tell it <code>{'Fix issue <link>'}</code>. It prepares the fix and a version bump, tells you what to test on hardware, and opens the release PR after you report the results.</p><p>Pushing a commit does not bump the version or update the website by itself. After the required checks pass, an opted-in author PR merges and starts publication. Wait for the site deployment to succeed, verify the new version and download, then use “Resolve report and notify followers” in the Developer workspace. It closes the linked GitHub and Modwerk report with the released version and queues follower updates.</p><a href={moduleRepository+'/blob/main/docs/MODULE_AUTHOR_UPDATES.md'} target="_blank" rel="noreferrer">Author release steps ↗</a></section>
   if(module&&module.machine!=='octatrack')return <div className="community-page contribution-page"><BackLink href={moduleId?'#developer':'#library'}>{moduleId?'Developer workspace':'Module library'}</BackLink>
-    <div className="page-heading"><div><p className="page-kicker">MODWERK / DEVELOPERS</p><h1>Update {module.name}</h1><p>{DEVICES_BY_ID[module.machine].name} · Current version {module.version}. Prepare source, documentation and media together in a GitHub pull request.</p></div><span className="pill">Owner review required</span></div>
-    <section className="configuration-section"><h2>Start from the reviewed module</h2><p>Keep its licence, attribution and pinned source provenance. Increase the module’s semantic version for every code change (documentation and media edits need none), and keep the manifest, README, tutorial and test evidence synchronized.</p><div className="forum-actions"><a className="button button-primary" href={moduleRepository+'/tree/main/'+module.sourcePath} target="_blank" rel="noreferrer">Open module source ↗</a><a className="button button-quiet" href={moduleRepository+'/compare'} target="_blank" rel="noreferrer">Open a pull request ↗</a><a href={moduleRepository+'/blob/main/docs/SDK.md'} target="_blank" rel="noreferrer">Machine SDK & evidence rules ↗</a></div></section>
-    <section className="configuration-section"><h2>Include the update evidence</h2><p>Use the machine’s v3 <code>modwerk.module.json</code> contract: source/build identity, compatibility, memory and load measurements, hardware coverage and actual UI captures where applicable. State the evidence tier and remaining limitations honestly. Documentation, tutorial, screenshots and credits must match this version.</p><p>Submit only original or properly licensed sources and reviewed media. Keep firmware, stock bytes, dumps and generated firmware builds local. Passing checks does not publish an update; owner merge approves that exact version. Pending or rejected updates keep the existing approved release available.</p></section>
+    <div className="page-heading"><div><p className="page-kicker">MODWERK / DEVELOPERS</p><h1>Update {module.name}</h1><p>{DEVICES_BY_ID[module.machine].name} · Current version {module.version}. Prepare source, documentation and media together in a GitHub pull request.</p></div><span className="pill">Author updates</span></div>
+    <section className="configuration-section"><h2>Start from the reviewed module</h2><p>Keep its licence, attribution and pinned source provenance. Increase the module’s semantic version for every code change and every automatic author release, and keep the manifest, README, tutorial and test evidence synchronized.</p><div className="forum-actions"><a className="button button-primary" href={moduleRepository+'/tree/main/'+module.sourcePath} target="_blank" rel="noreferrer">Open module source ↗</a><a className="button button-quiet" href={moduleRepository+'/compare'} target="_blank" rel="noreferrer">Open a pull request ↗</a><a href={moduleRepository+'/blob/main/docs/SDK.md'} target="_blank" rel="noreferrer">Machine SDK & evidence rules ↗</a></div></section>
+    <section className="configuration-section"><h2>Include the update evidence</h2><p><a href={moduleRepository+'/blob/main/docs/MODULE_AUTHOR_UPDATES.md'} target="_blank" rel="noreferrer">Automatic author publication guide ↗</a></p><p>Use the machine’s v3 <code>modwerk.module.json</code> contract: source/build identity, compatibility, memory and load measurements, hardware coverage and actual UI captures where applicable. State the evidence tier and remaining limitations honestly. Documentation, tutorial, screenshots and credits must match this version.</p><p>Submit only original or properly licensed sources and reviewed media. Keep firmware, stock bytes, dumps and generated firmware builds local. Registered module authors can request automatic merge and publication in the PR after verifying their evidence and passing the required checks. Changes beyond their own modules need owner review. Pending or rejected updates keep the existing approved release available.</p><p>Questions about developing or submitting a module? <a href={DEVELOPMENT_DISCORD_URL} target="_blank" rel="noreferrer">Join the development Discord ↗</a></p></section>
 
+    {module&&releaseSteps}
+    {creatorSupport}
   </div>
   const guide=(path:string)=>moduleRepository+'/blob/main/'+path
   return <div className="community-page contribution-page start-developing"><BackLink href={moduleId?'#developer':'#library'}>{moduleId?'Developer workspace':'Module library'}</BackLink>
@@ -27,7 +35,13 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
       <li>
         <h2>Fork the repository</h2>
         <p>Your own copy of Modwerk on GitHub, with every SDK, guide and check.</p>
-        <a className="button button-primary" href={moduleRepository+'/fork'} target="_blank" rel="noreferrer">Fork on GitHub ↗</a>
+        <div className="start-step-actions">
+          <a className="button button-primary" href={moduleRepository+'/fork'} target="_blank" rel="noreferrer">Fork on GitHub ↗</a>
+          <a className="button development-discord-button" href={DEVELOPMENT_DISCORD_URL} target="_blank" rel="noreferrer" aria-label="Join Discord for module development (opens in a new tab)">
+            <img src={assetUrl('auth/discord.svg')} width={20} height={15} alt="" aria-hidden="true" />
+            <span>Join Discord</span><span aria-hidden="true">↗</span>
+          </a>
+        </div>
       </li>
       <li>
         <h2>Clone and install</h2>
@@ -40,10 +54,12 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
       </li>
       <li>
         <h2>Test and open a pull request</h2>
-        <p>Flash the build on your own unit, tell your agent what you saw and open a pull request. The owner reviews it and merging publishes that version.</p>
+        <p>Flash the build on your own unit, tell your agent what you saw and open a pull request. New modules need owner review. Registered authors can request automatic publication for updates to their own modules after the required checks pass.</p>
         <a className="button button-quiet" href={moduleRepository+'/compare'} target="_blank" rel="noreferrer">Open a pull request ↗</a>
       </li>
     </ol>
+    {module&&releaseSteps}
+    {creatorSupport}
     <section className="configuration-section">
       <h2>Starter prompts</h2>
       <p className="start-lead">Choose your machine and what you want to build. Add your idea and copy the prompt into your agent, opened in your fork.</p>
@@ -75,7 +91,7 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
     <div className="start-columns">
       <section className="configuration-section">
         <h2>How review works</h2>
-        <p>Every pull request runs the same checks as CI. Passing them does not publish a module: the owner reads the reports, rights and screenshots, and merging approves that exact version. Increase the version for every code change; documentation and media edits need none.</p>
+        <p>Every pull request runs the same checks as CI. New modules need owner review of the reports, rights and screenshots. For an existing module, its registered author can verify that evidence and request automatic merge and publication after the required checks pass. Changes to shared code, ownership or licences need owner review. Increase the version for every code change and every automatic author release.</p>
         <p>A module must fit the unit’s own UI flows, with stock gestures and style, and by default leaves every stock firmware flow as it is. Minor, well thought out changes to a stock flow are allowed when the README documents each one: what changes, why, what a musician sees differently, how to turn it off and which neighbouring flows you checked. The owner approves each at review. TESTING.md lists the stock flows you compared with and without the module.</p>
         <p>State honestly what you tested. Octatrack modules need a hardware report from a real unit; Digitakt and Digitone record their evidence tier. Digitakt and Digitone are in preview, so agree the scope with the owner first.</p>
       </section>
@@ -95,7 +111,6 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
         <a href={guide('sdk/machines/digitakt/README.md')} target="_blank" rel="noreferrer"><strong>Digitakt guide ↗</strong><span>Core events and budgets</span></a>
         <a href={guide('sdk/machines/digitone/README.md')} target="_blank" rel="noreferrer"><strong>Digitone guide ↗</strong><span>Core events and budgets</span></a>
         <a href={guide('CONTRIBUTING.md')} target="_blank" rel="noreferrer"><strong>Contribution rules ↗</strong><span>What every pull request agrees to</span></a>
-        <a href="https://discord.gg/mb7B2N7A7" target="_blank" rel="noreferrer"><strong>Discord ↗</strong><span>Ask other developers</span></a>
       </div>
       <p className="service-note">Octatrack development builds on <a href="https://github.com/sambanks/octabam" target="_blank" rel="noreferrer">octabam ↗</a>; Digitakt and Digitone on the public research of <a href="https://github.com/irpina/elekloader" target="_blank" rel="noreferrer">elekloader ↗</a> and <a href="https://github.com/m-dwyer/digikit" target="_blank" rel="noreferrer">digikit ↗</a>. You need no Modwerk account to contribute, only GitHub.</p>
     </section>

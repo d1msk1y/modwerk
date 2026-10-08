@@ -2,6 +2,53 @@
 
 **Owner-approved logger release (3 October 2026):** the owner explicitly lifted the logger addition’s qualification restrictions, authorized local firmware/DSP checks, approved the current module versions and logger for release, and waived hardware testing. Downloads are enabled with the logger included. This exception does not claim measured chip timing, complete stress qualification or new hardware evidence. Existing firmware isolation, original-source provenance, compatibility checks, stock fingerprint guards and packaging integrity remain in force. MIDI Scenes keeps its pinned standalone code and 12-page reservation; the logger occupies the top 16 pages of the arena, and a one-page guard separates it from the sample arena; guarded arena updates reserve all 29 pages. Mixed MIDI Scenes configurations remain incompatible. The earlier full-image proofs below predate logger integration; local verification of this change is recorded separately. See [logger evidence and limitations](../sdk/runtime/logging/TESTING.md).
 
+## USB Audio 0.2 / Outbox 8 — 8 October 2026
+
+Version `0.2.0-experimental` adds six selectable USB output layouts and an
+Outbox routing-plan configurator to the existing module page. The owner
+approved release without hardware testing; hardware behavior, real-chip
+cycles, complete stack / DMA bounds and canaries remain unmeasured. The
+source-bound approval is in
+`sdk/usb-audio-out-tracks-main-cue-build-approval.json`. No inherited result
+is presented as current hardware qualification.
+
+The shared stock-free pipeline built and imported all source-only packages
+in the isolated toolchain container. Descriptor MSC spans and the post-LEVEL
+curve remain zero placeholders in distributed artifacts. All six layouts
+passed complete GNU runtime byte/symbol comparison alone, with Quantizer,
+and with Tape Echo + Euclid (18 cases). Every case passed guarded hooks,
+combined-ISR checks, immutable stock and full packaging round trips. Public
+composition matched each case; the public worker inspected the original and
+produced complete packaged firmware for all six standalone layouts. Altered
+stock was refused. Only hashes/linked-section data are committed in
+[sanitized layout evidence](../sdk/octabam/modules/usb-audio-out-tracks-main-cue/evidence/layouts.json).
+
+Configurations without USB settings retain the classic source path. Its
+current native comparison covers 110 selections: 50 builds matching outside
+the shared platform writes, 60 matching refusals, zero mismatches. The
+existing Analog BD interaction matrix was regenerated: all 136 native
+identities/refusals equal the earlier outputs. Its browser/GNU bootstrap
+verification passed 130 builds, six refusals and five complete packaging
+round trips. No firmware or stock-derived binary was committed.
+
+The GUI keeps the existing page structure, distinguishes physical Outbox
+outputs from USB source pairs, explains estimated CPU tiers and requires an
+explicit setup before adding USB Audio. Source integrity, backup/share
+persistence, configure-first navigation, routing feedback and compact
+responsive layout were checked. See the module's
+[testing record](../sdk/octabam/modules/usb-audio-out-tracks-main-cue/TESTING.md)
+for scope and the preserved historical evidence.
+
+The required full check passed 1,169 tests in 177 files, 49 SDK tests,
+licence/catalog/source checks, lint, type checks and the production bundle.
+The broader `module:verify -- --all --check` still reports old companion
+records for Euclid (8), Mute Modes (2), Playmodes (2), Recorder Loop Fix (4)
+and Sidechain Compressor (10). A clean archive of main at `11fa6d5` produces
+exactly the same failures, relating to the earlier Synth / Analog BD updates;
+this release introduces none. The updated USB record also removes main's
+four stale Synth companion comparisons. Those unrelated records were not
+relabelled as passing or refreshed as part of this USB release.
+
 ## One command for the native comparison — 5 October 2026
 
 `npm run module:verify -- <id> --os <your 1.40C update>` replaces the per-module suites and verifier scripts for new modules (owner decision in [DECISIONS.md](DECISIONS.md#5-october-2026--a-faster-module-workflow)).
@@ -835,3 +882,112 @@ The import of digichain, Digi EQ, Digi Matrix, Digi Mono, Digi Poly, Digi utilit
 - **Not run:**
   - no hardware test, and no build in CI's container;
   - stock files and builds stayed local and temporary.
+
+## Digi module documentation — 7 October 2026
+
+Prepared documentation updates for all 12 Digitakt/Digitone modules, following the seven-section module layout, with matching practical tutorials and 41 visually reviewed monochrome LCD captures. The unchanged vendored elekloader kit linked and verified the pinned author releases on private stock Digitakt 1.53 and Digitone 1.43 firmware. Pinned digiemu ran native UI drawing in a sandbox with network and user files denied. Every module keeps its source revision, build identity, exact panel plan, capture timestamps, PNG hashes and limitations in `media/capture.json` and TESTING.md. Firmware, cards, snapshots and built images remain outside the repository.
+
+The frontend support shows committed Digi captures on Overview and Media, identifies the emulator provenance, and links the complete guide beside the matching tutorial. DIGISLICER’s selection, SRC and sample-backed waveform editor assets loaded at 768×384 in the local browser; its tutorial and guide link rendered correctly. Digichain’s screenshots show the dependent POLY machine and explicitly credit its controls. Silent plots and unavailable load counters are labelled; audio, hardware, persistence, timing and stress qualification remain unchanged.
+
+Passed on Node 24: `npm run check` (996 tests), `module:doctor -- --all`, and `modules:check -- --base origin/main`. Native module code, build declarations, source pins, upstream files and author licences are unchanged.
+
+## Analog BD with custom effects — 7 October 2026
+
+The native and browser builders now reserve Analog BD's 1,000-word engine and its relocated 35-word stock reverb helper on each DSP core. A smallest-fit allocation uses the remaining 28-word gap for Tape Echo's five-word DSP stub. Larger inserts use separate Plate/Dark Reverb regions. Donor selection still minimizes the number of lost stock effects, and all stock FX1 effects remain available. When Dark Reverb is a donor, the builder retargets only surviving stock helper calls, leaving custom code untouched. The shared helper called by a retained Plate Reverb remains protected.
+
+Analog BD now composes with Mini Verb, Tape Echo, Euclid, TapeHead and Sidechain Compressor. Each larger companion needs one additional reverb region; Mini Verb and Euclid together share Dark's region while retaining Plate. Tape Echo needs no additional donor beyond Analog BD's Spring region. Four larger companions together still exceed the available separate runs. Crowded-menu checks, MIDI Scenes' standalone restriction, paused modules, original-firmware fingerprints and boot staging limits remain enforced.
+
+Analog BD plus Tape Echo also exposed a bootloader limitation: the packed ColdFire runtime can move the DSP upload table beyond a signed 16-bit PC-relative address. The preboot loader now uses an explicitly absolute 32-bit address. Source packages were rebuilt in the network-disabled toolchain; module algorithm packages are unchanged. Only the preboot template and source provenance changed. The non-preboot loader's instruction bytes are unchanged.
+
+`scripts/export-composition-proofs.py --suite analog-bd --static-stock --vendored-sdk` covers 136 profiles: every subset of the five DSP companions with Analog BD, each individual DSP companion with each utility, and each individual DSP companion with the five utilities together, all with retained and compact FX2 menus. Native accepts 130 and rejects six for real DSP or menu limits. The current native fingerprints are in `src/engine/assets/analog-bd-composition-proofs.json`; older Analog BD refusals remain historical evidence.
+
+Reproduce the browser/native comparison locally with Node 24, GNU m68k tools, and the owner's original firmware:
+
+```sh
+node scripts/verify-analog-bd-native.mjs /local/original-1.40C.bin src/engine/assets/analog-bd-composition-proofs.json
+```
+
+The verifier compares module-owned OS bytes with native outside runtime-dependent platform fields, checks the logger/platform do not overlap module writes, independently assembles and links each actual logger-bearing bootloader, round-trips the DSP uploads, and tests full upgrade packaging for the five individual DSP companions. It also rejects modified original firmware. Temporary bootloader inputs are removed; only hashes and placement facts belong in the repository. These are composition and packaging checks; no new physical-device, audio, cycle or stress qualification is asserted for the combinations.
+
+The compatibility change was moved onto current `main` in an isolated worktree before opening its PR. Source packages were compiled again against that tree in a network-disabled container, preserving every module algorithm and version. The native comparison matrix and application checks are recorded on that same tree. The library collision fixture uses MIDI Scenes with Analog BD, since Mini Verb with Analog BD is supported.
+
+On the PR branch, `npm run check -- --base origin/main` passed 1,082 application tests in 168 files, 48 SDK checks, lint, TypeScript, catalogue/licence validation and the production build. `node scripts/import-module-build.mjs <packages> --development --check-only --verify-existing` verified the complete rebuilt source inventory and every committed package. Only the requested preboot template and source fingerprints differ from current main; all other compiled package payloads are identical.
+
+The refreshed native matrix accepted 130 configurations and rejected six. `scripts/verify-analog-bd-native.mjs` passed all 130 native module-owned OS and GNU bootloader comparisons, six matching refusals and five complete firmware round trips. The shared `scripts/native-comparison.mjs` path also passed for those five individual companions and six refusals. Original firmware was unchanged, and temporary bootloader inputs were removed. No new hardware, audio, cycle or stress qualification was performed.
+
+## Reported new-module placement warning — 8 October 2026
+
+The reported configuration is Euclid, Vector, Sidechain Compressor, TapeHead, Tape Echo, Mini Verb, Preview Vol and Repitch. With the owner's fingerprint-verified original OS 1.40C, the current `composeSelection` accepts those eight modules, nine with USB Audio, and ten with USB Audio and CC Map. Play Modes added to the eight also composes. Adding Mute Modes or Recorder Loop Fix separately refuses with `A module menu cave exceeds its reserved region.` The real `createEngineSession` inspection/validation path reproduces the same outcomes for the eight-module selection and the three new additions. The reported Play Modes refusal remains unconfirmed.
+
+Every new module composes alone. Removing one of Euclid, Sidechain Compressor, TapeHead, Tape Echo, Mini Verb or Repitch allows Recorder Loop Fix in the reported selection. No single removal from the eight allows Mute Modes; removing Euclid and TapeHead, TapeHead and Sidechain Compressor, or Mini Verb and Tape Echo allows it. These are local placement checks, not new native parity or hardware qualification. No firmware was written or uploaded, and the original firmware remained unchanged.
+
+The compatibility panel now displays the worker's error under “Configuration needs attention” and a checking message while placement validation is running. Menu/patch-space refusals are labelled separately from effect-memory refusals. Previously the panel asked for base firmware even after a successful inspection and a placement refusal. Firmware source, compiled packages, placement rules and public download gates are unchanged.
+
+Node 24 `npm run check -- --base origin/main` passed 1,153 application tests in 175 files, 48 SDK checks, TypeScript, lint, catalogue/licence validation and the production build. The six new panel regressions cover the two reported placement failures, worker-error propagation and fallback, checking status, pre-check/success states and declared-conflict precedence.
+
+## Actionable composition failures — 8 October 2026
+
+The reported eleven-module selection is Mini Verb, Tape Echo, Euclid, Repitch, TapeHead, Analog BD, Preview Vol, Sidechain Compressor, Play Modes, Mute Modes and Recorder Loop Fix. Its declarations pass, but both actual chooser profiles fail menu placement. The compact profile attempts to place Mute Modes' 208-byte menu unit with only 60 bytes remaining in its reserved region. No single-module removal succeeds. Checking all 55 two-module removals finds four builds: Mute Modes together with Mini Verb, Euclid, TapeHead or Sidechain Compressor. The existing Recorder Loop Fix native record already refuses the nine-module subset without Analog BD and Play Modes for the same Mute Modes placement.
+
+The application now carries the failing module and required/remaining byte counts through the worker to the compatibility card. It verifies complete candidate compositions, including declaration checks and the existing compact-menu fallback, before offering removal buttons. Singles precede pairs; diagnostics stop after four working choices or 128 checks, and unavailable choices remain explicit. Firmware-generation changes stop stale diagnostics. USB settings are omitted when a candidate removes USB Audio. The unsupported promise of an upcoming DSP memory optimization was removed from the stock-effect summary.
+
+`node scripts/verify-placement-diagnostics.mjs /local/OCTATRACK_OS1.40C.bin` runs the real application engine with the owner's original firmware. It reproduces the named overflow, verifies all four fixes, builds and hashes the complete upgrade for the Euclid/Mute Modes removal, checks unchanged input and rejects validation after clearing the base. The actual browser worker and compatibility components show the four buttons; selecting Euclid/Mute Modes changes the selection to nine modules and reaches “Configuration fits”. Firmware remains local and the verifier writes no firmware files. No firmware instructions, module versions, compiled packages, allocation rules or qualification claims changed; no hardware/audio/persistence test was performed.
+
+The complete recorded native comparison replay covers 844 profiles: 327 built identities match, 491 refusals match, and 26 historical mismatches remain. Replaying unchanged main at `8b6bcaafa72a5fb8b8b3183898d2726c1c9b2634` produces the same results and mismatches: old Analog BD admission/menus and earlier FM Synth image identities in companion records. This diagnostic update adds no native mismatch and does not relabel those stale records as passes.
+
+Node 24 `VITEST_MAX_WORKERS=1 npm run check -- --base origin/main` passed all 1,258 application/tooling tests in 187 files, 48 SDK checks, lint, TypeScript, catalogue/licence validation and the production build. The one-worker override avoids existing wall-clock test timeouts under local CPU contention; test timeout thresholds and the repository configuration are unchanged. Added regressions cover the full-context two-removal search, single-removal preference, bounded work, stale results, DSP/menu messages, worker payload preservation and actionable panel rendering.
+
+Mini Verb 0.2.0-experimental: 46 current-source DSP regressions passed, including
+exact neutral/dry behavior, endpoint spectra, eight-instance isolation and a
+30-second guarded moving-control render. Native/browser parity passed all 110
+selections (52 builds, 58 matching refusals, zero mismatches). Tone occupies C;
+Mix moves to F. Owner accepted the sound and stability in Octemu and explicitly
+waived physical hardware evidence for this exact version/source; hardware and
+physical reboot persistence remain untested. See the module TESTING.md and
+`sdk/miniverb-build-approval.json`.
+
+
+### Analog BD 0.1.3 modulation smoothing — 8 October 2026
+
+Promoted the exact owner-tested TDEP/SAT DSP update. The MKII owner reports stable
+operation with distinct 808/909 instances and settings/audio retained after Part,
+project and normal power-off/on. The hardware update/MAIN hashes and the separate
+emulator/native results are recorded in the module's TESTING.md. Worst-case chip
+cycles, full memory bounds and eight-voice maximum FX load remain unmeasured or
+untested under the exact source-bound owner-approved experimental update.
+
+On current main with Mini Verb 0.2.0, stock-free compilation passed. Required
+coverage: 112 selections, 36 matching builds and 76 matching refusals. Broader
+Analog BD matrix: 136 profiles, 130 native/browser MAIN and GNU bootloader matches,
+six expected refusals, five full browser update round trips. Four representative
+full native updates match browser encoding byte-for-byte, with checksum/MAIN/tail
+verification and changed-stock rejection. Other generated module code is unchanged.
+The standalone native MAIN differs from the hardware test only by relocation of
+the identical stock FX1 chooser table; the public worker retains the approved
+logger/startup additions. Private firmware, projects, cards and dumps stay local.
+
+## Play Modes 0.1.1 — 8 October 2026
+
+Import devilfish707's Octaplay build-24 source `41dbdaa` without modifying
+the authored runtime. Host engine/glue tests and ColdFire generation pass.
+The prior adapter fails 360 assertions in the updated regression suite;
+the update passes. Native/browser comparison covers 110 configurations:
+54 builds match outside the existing platform writes, 56 refusals match,
+zero mismatches. Altered stock input is refused. Current native-composition
+LCD captures show ALL REVERSED and ALL PINGPONG 2; hashes and actions are
+retained in the module's `media/capture.json`. No firmware is committed.
+
+Retain the author's attributed MKII build-20–24 functional reports.
+Build-19 save/reload and physical reboot evidence remains historical;
+current physical reboot, Part/project restore after unsaved edits, distinct
+track isolation, MKI operation, chip timing and stock/flood benchmarks
+remain unverified. The owner approved the missing current-build hardware checks for exactly
+0.1.1 and native source `86105af3` on 8 October 2026, separately from the
+historical 0.1.0 approval. No missing behavior is recorded as verified.
+
+Owner exception, 8 October 2026: “Approve scoped exception and release.”
+Applies only to Play Modes 0.1.1-experimental and native source
+`86105af37d68fcd051cab991b747c949d7813733b73a1fe6d900cf3ec239c5a6`.
+Waives fresh physical reboot, Part/project restore after unsaved edits,
+distinct-track isolation and stock/flood performance tests. Retain the
+author's MKII functional report; missing checks stay unverified.

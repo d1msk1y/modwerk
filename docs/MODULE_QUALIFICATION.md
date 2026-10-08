@@ -1,5 +1,7 @@
 # Module qualification gates
 
+Existing published module authors may use the [automatic author-update workflow](MODULE_AUTHOR_UPDATES.md): verified ownership, changes confined to their modules, explicit evidence review and successful checks on the exact source/base permit bot merge and publication. Other changes retain owner review. Existing qualification gates and exact-version owner exceptions are unchanged.
+
 **In short.** A new Octatrack module, or a change to how one runs, records the following in `tests.qualification`:
 
 - the worst-case cycles for each processor it uses;
@@ -11,15 +13,61 @@ All of it is bound to the module version, its native-source SHA-256 and the SHA-
 
 From 2 October 2026, new modules and updates affecting runtime behavior, stability, cycles, memory or load must provide **worst-case cycle counts, exact memory accounting, attributed real-hardware test evidence and complete documentation**. These are publication requirements. Missing measurements, nominal/average CPU percentages, emulator-only evidence, historical evidence for another source and failed detailed hardware checks cannot qualify a submission. On 2 October 2026 the owner removed the mandatory 60-minute, eight-track stress run. A clearly labelled functional hardware report is accepted alongside the cycle, memory, source, UI and integration evidence below.
 
-`npm run modules:check`, `npm run modules:generate`, PR CI and release validation enforce the record. PR CI also checks version increases against the exact base commit. Configure `module-contract` as a required status check on protected main. The owner verifies the actual reports and merges the PR to approve the version; there is no extra website approval. Metadata checks do not run submitted source or perform physical hardware tests. A contributor declaration cannot replace reviewer verification.
+`npm run modules:check`, `npm run modules:generate`, PR CI and release validation enforce the record. PR CI also checks version increases against the exact base commit. Configure `module-contract` as a required status check on protected main. The reviewer verifies the actual reports: the owner for a first release or changes beyond author scope, the registered module author for a scoped automatic update. Owner merge or the verified author-release workflow approves the version; there is no extra website approval. Metadata checks do not run submitted source or perform physical hardware tests. An unchecked contributor declaration cannot replace actual evidence verification; automatic author releases require the registered author to verify the reports and explicitly attest to the required acceptance checks.
 
 Every release also requires populated CPU, DSP core and memory gauges. These use [source-backed relative estimates](MODULE_RESOURCE_GAUGES.md), do not need exact whole-chip capacity percentages, and do not replace the qualification evidence below.
+
+## Essential persistence and instance checks — 8 October 2026
+
+The owner requires project saving and reload/reboot survival for stateful
+modules, and multiple-instance checks for every instantiable FX, machine or
+similar module. Always run at least two simultaneous instances with distinct
+settings, across tracks, both supported FX slots and both DSP cores where
+applicable. Check assignments, sample/engine choice, parameters, working audio
+and isolation when one instance is edited, reset or replaced.
+
+Exercise Part save/reload, project save/load/reload and reboot with only saved
+card data and battery-backed RAM retained. Confirm that reload restores a saved
+baseline after later edits. A fresh emulator process followed by an explicit
+project load does not establish hardware power-cycle survival. Reports must
+distinguish those paths, bind results to tested source/image identities and keep
+untested or failed cases visible. Existing evidence is not retroactively upgraded
+to a persistence or multiple-instance pass.
+
+## Persistence audit — 8 October 2026
+
+[The control-state audit](persistence-check-2026-10-08.json) binds the results to
+exact firmware image hashes. The tested images include local development
+compositions; the results apply only to those hashes. Analog BD and eight FX
+modules (MiniVerb, Tape Echo, Euclid, Tapehead, Sidechain Compressor, Spectrum,
+Modulation and Character)
+passed native Part save/reload, panel-driven project save/reload, fresh project
+load and battery-RAM-only restart checks. Each profile used T1 and T5 with
+different settings and sample selections; Analog BD included both 808 and 909.
+Both FX slots were occupied, with four custom FX instances where supported.
+Editing one track or FX2 preserved the other tracks and FX1. The comparisons
+include assignments, source/sample/engine settings and both FX parameter pages.
+
+The private POLY32T01 image failed actual machine assignment followed by reboot:
+its live `PL/1` marker was copied one byte too far forward in battery RAM.
+PROJECT SAVE preserved the wrong battery marker. A [source correction](poly-marker-copy-2026-10-08.patch)
+reads all three bytes before writing the mirror. The corrected private build
+passed the same two-track assignment/reboot check and the full save/reload
+matrix. POLY is outside the current public module catalog; this patch records a
+private fix and does not publish or qualify a new module.
+
+These are **emulator control-state passes**. No physical device was rebooted or
+flashed, and usable audio after these transitions remains unverified: DSP-enabled
+runs failed with SIGBUS in the local emulator environment. Maximum audio load
+and instance reset/replacement were not exercised. The audit does not upgrade
+existing hardware qualification. Private firmware, cards, screenshots and raw
+memory dumps remain outside the repository.
 
 ## Existing modules
 
 The eleven module folders present when this policy was requested remain included at their current versions, with their existing measurements and historical/status labels intact. [The frozen baseline](../sdk/module-qualification-baseline.json) records each exact version and complete folder SHA-256. This preserves the owner's acceptance of the existing tests without inventing cycle counts or changing earlier qualification claims. Existing availability, build and download restrictions remain intact.
 
-The original baseline exemption applies only while **every file in that module folder and its version are unchanged**. Runtime-impacting updates require a new qualification record. Editorial updates can retain the original evidence through the separate, checked path below; they still need a semantic version increase, complete documentation, actual UI/media provenance and owner PR approval. New IDs cannot inherit an exemption. PR checks reject changes to the baseline once it exists on the base branch. Do not add modules to it or regenerate it as a way of making a failed gate pass.
+The original baseline exemption applies only while **every file in that module folder and its version are unchanged**. Runtime-impacting updates require a new qualification record. Editorial updates can retain the original evidence through the separate, checked path below; they still need a semantic version increase, complete documentation, actual UI/media provenance and owner or scoped registered-author approval. New IDs cannot inherit an exemption. PR checks reject changes to the baseline once it exists on the base branch. Do not add modules to it or regenerate it as a way of making a failed gate pass.
 
 ## Risk-based update checks — 3 October 2026
 
@@ -53,11 +101,11 @@ PR validation anchors approval to the exact `--base` commit. Local generation/re
 
 ## Complete documentation and screenshot style
 
-Release validation also requires a complete README, TESTING report, licence/attribution, descriptions of every control, compatibility/limitations, a short practical tutorial and real documentation screenshots. Draft placeholders do not qualify; the owner verifies factual completeness and usability alongside the source. The release build runs the same gate as PR/local validation, including OT UI access/capture validation even without a Git base.
+Release validation also requires a complete README, TESTING report, licence/attribution, descriptions of every control, compatibility/limitations, a short practical tutorial and real documentation screenshots. Draft placeholders do not qualify; the reviewer verifies factual completeness and usability alongside the source. The release build runs the same gate as PR/local validation, including OT UI access/capture validation even without a Git base.
 
 Record `documentation` inside `tests.qualification`: `tutorial.title`, at least three ordered `tutorial.steps`, nonempty `screenshots` paths and `screenshotStyle: "black-and-white"`. The tutorial covers setup and selection/enable, a useful control example, and the expected result plus stop/reset/bypass. Its heading and steps must appear in the same order in README. Module pages display these steps under the access instructions.
 
-README must have populated Overview, Controls, Usage, Compatibility and limitations, Tests and measurements, Authorship and licences, and Screens and audio sections. Link or embed each declared documentation screenshot. Explain inactive controls and known limitations explicitly; cross-reference the measured costs and TESTING results. Synchronize the public manifest, README, tutorial, native controls, captions and version/build provenance. The owner verifies that the complete documentation covers the real behavior, including all relevant pages and controls.
+README must have populated Overview, Controls, Usage, Compatibility and limitations, Tests and measurements, Authorship and licences, and Screens and audio sections. Link or embed each declared documentation screenshot. Explain inactive controls and known limitations explicitly; cross-reference the measured costs and TESTING results. Synchronize the public manifest, README, tutorial, native controls, captions and version/build provenance. The reviewer verifies that the complete documentation covers the real behavior, including all relevant pages and controls.
 
 Use the same **black-and-white/gray style as the online modules**, with readable integer scaling. Release validation decodes the actual PNG pixels and rejects yellow or colored captures; it accepts ordinary noninterlaced PNGs up to 2048×2048. Preserve real captured LCD content. Capture with a monochrome display/renderer rather than drawing replacement labels or substituting illustrations. Every referenced OT UI capture must still show the actual selection/enable location and relevant controls with exact button/menu steps and version/build/setup provenance. Screenshots must be declared hardware/emulator PNG media with captions, alt text, credits and rights.
 
@@ -89,6 +137,8 @@ For this command, fill all fields with actual results first, including a valid t
 
 ## Worst-case cycle counts
 
+New FX should aim for DSP cost in the same ballpark as stock SPRING REV at its worst settings. Plan around that reference before implementation and retain matched benchmarks covering expensive Spring types/settings, endpoints, moving controls and trigger splits on both cores. This is a design target without a fixed ratio or hard per-effect ceiling; substantially higher cost needs optimization and explicit review of the remaining headroom. The full supported configuration must still meet its actual real-time budget. Keep static modeled cycles, executed instruction counts and hardware timing distinct.
+
 `cycles` has one record for **each processor used** (`dsp` and/or `coldfire`). Record integer `worstCase` cycles for one instance, `maxConfiguration` cycles at the supported maximum load, `maxInstances`, the available real-time `budget`, `unit`, `method`, `conditions` and a local text `report`. A maximum configuration exceeding its budget fails. Units are `cycles/sample`, `cycles/block` or `cycles/event`; the report must state sample rate, block size or event period/deadline so counts and budget have the same basis. Record each core's load and the worst core, and include stock processing, scheduling, transport overhead and headroom in the budget calculation. Shared work need not scale linearly with the instance count; show how the maximum configuration was priced.
 
 The five required condition fields, separately for cycle measurements and hardware testing, describe:
@@ -115,7 +165,7 @@ sharedBytes      = sum(shared regions)
 totalBytes       = perInstanceBytes × maxInstances + sharedBytes
 ```
 
-The report must reconcile the inventory with native allocation/build maps, exact ranges and claims, build options, lifetime/peak overlap and supported instance limits. Explain zero or absent allocation classes and reused stock memory. Show stack/heap upper bounds and applicable memory-bound/guard evidence; state explicitly when hardware canaries were not measured. Estimates, an assembly-file length alone, unbounded dynamic allocation or a percentage of firmware size cannot substitute for exact memory. The owner checks for omitted allocations, unsafe overlaps and capacity overruns; a mathematically consistent table alone does not prove completeness.
+The report must reconcile the inventory with native allocation/build maps, exact ranges and claims, build options, lifetime/peak overlap and supported instance limits. Explain zero or absent allocation classes and reused stock memory. Show stack/heap upper bounds and applicable memory-bound/guard evidence; state explicitly when hardware canaries were not measured. Estimates, an assembly-file length alone, unbounded dynamic allocation or a percentage of firmware size cannot substitute for exact memory. The reviewer checks for omitted allocations, unsafe overlaps and capacity overruns; a mathematically consistent table alone does not prove completeness.
 
 ## Hardware evidence
 
@@ -131,7 +181,7 @@ null when unreported), `testedOn`, credited `tester`, exact `sourceRevision`,
 `imageSha256`, `summary`, nonempty `limitations`, and a local `report` path.
 Set `tests.hardwareStatus: "reported"`. Source and image must agree with the
 qualification identities; retain the actual contributor statement and how the
-owner verified it. Describe unreported duration, track/instance counts, model
+reviewer verified it (the owner on first release, the registered author on a scoped update). Describe unreported duration, track/instance counts, model
 and untested cases explicitly. Do not fill them with guesses or upgrade an
 author report to a measured stress pass. A reproduced image must match the
 reported hardware image hash; packaging-only version changes are separate.
@@ -140,8 +190,8 @@ Detailed hardware records remain supported. Their project fingerprint, actual
 duration, track counts, maximum instance count, conditions and continuity,
 transport, controls, memory-integrity and recovery checks must describe the
 test actually performed. Pending/failed checks still block that form. There is
-no minimum duration or eight-active-track requirement. The owner reviews the
-evidence and approves publication by merging the PR.
+no minimum duration or eight-active-track requirement. The owner reviews first releases and exceptions. For a scoped update the registered author verifies the
+evidence, explicitly requests publication and passes the author-release checks.
 
 DSP static counts must include expensive branches, parameter updates, trigger
 splits and initialization. State explicitly which counts model instruction
