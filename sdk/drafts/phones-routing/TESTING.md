@@ -216,6 +216,8 @@ On PHNSTAT8, by the user, ✅ unless noted:
 | Everyday flows | Mute and solo; CUE + TRACK does nothing; SRC page resets keep routing; Parts carry routing; Part reload restores it (an unsaved Part has nothing to reload, as stock); patterns follow their Part; XVOL on MN, CUE, PHN; metronome on CUE and PHONES; DIR on MAIN, CUE + REC on CUE; master track |
 | Saving and power | Saved project, unsaved changes over a power cycle, project reload |
 | Leaving ROUTED | ROUTED → STUDIO as the first rules said; STUDIO → ROUTED turned a CUE-only track into M+C, which led to the rewrite above (not yet re-run on hardware) |
+| Leaving ROUTED, PHNSTAT9 (rewritten rules) | T1 MN, T2 CUE, T3 PHN, T4 M+C at different levels: into STUDIO T2 on CUE only (LEVEL 0, cue level = its level), T3 on MAIN, T4 on both; back to ROUTED as MN, CUE, MN, M+C with the levels kept; into NORMAL T2 and T4 cued, T2 on CUE only; back to ROUTED T2 is CUE. With the user's CUE MUTES TRACK on, T4 played on CUE only in NORMAL: stock mutes every cued track on MAIN, as the rules expect |
+| The AUDIO page and the LEV box, PHNSTAT9 | The box reads ROUTING; the master track's LEV bar is solid in ROUTED |
 
 Asked on the unit and answered in the emulator:
 - **AMP BAL artifacts:** a BAL sweep by MIDI (CC 8, 64 → 0 → 127 → 64, a value a frame) on stock and on ROUTED MN gives the same per-64-sample envelope steps (median 18,880 against 18,943) and envelopes within 0.6%: BAL is stock's, ahead of the mixdown.
@@ -227,7 +229,7 @@ The master track's second LEV bar was shaded (stock STUDIO's mark for no cue); i
 
 ## Not run
 - MKI key paths.
-- The rewritten conversion rules, the ROUTING title and the solid master bar on hardware.
+- The rewritten rules in Parts other than the current one and in other banks, on hardware (emulator only).
 - PHNCTRL7 (the loader alone) on hardware.
 - A stress run of core 0 at its limit (heavy effects on T5–T8 with every bus in use).
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.
