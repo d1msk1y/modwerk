@@ -136,6 +136,22 @@ Each check dumps the (LEVEL, cue) pairs in several places: bank 1's working Part
 
 **Regression.** The full routing table still puts signal on exactly the same outputs in all 20 captures. RMS moves by up to 0.24%, because the new ColdFire code shifts load timing and so the measurement window. ROUTED MAIN is within 27 LSB of the stock path in the same build.
 
+### The rules rewritten (8 Oct 2026)
+
+The first rules lost a CUE-only track on a round trip (hardware: ROUTED → STUDIO → ROUTED turned CUE into M+C) and ignored NORMAL's cue settings. The rules now in README.md "Where the routing is stored" were agreed with the user: PHONES-only stays on MAIN outside ROUTED; M+C takes LEVEL. The gate checks each rule with the keys (the cursor on the CUE CFG box starts on NORMAL; the PROJECT menu reopens on CONTROL's list, so a second visit takes one YES), against a Python model of the rules, in bank 1's working Parts 1 and 2, its saved Part 1, bank 16's Part 1 and the live bytes:
+
+| Run | Fixture | Result |
+| --- | --- | --- |
+| ROUTED → STUDIO | Part 1 codes 0–7, Part 2 codes 8–13, a stray cue level 100, MAIN at 0; levels 40 + code | Every pair as the table; e.g. CUE (0, 41), PHN (42, 0), ALL (46, 46), OFF (0, 0) |
+| ROUTED → NORMAL | the same | The same pairs; NORMAL's cue bits (and their CS1 copy `0x100b14d4`) are `01101010`, Part 1's destinations with CUE |
+| ROUTED → STUDIO → ROUTED | the same | Part 1 back as (40, MN), (41, CUE), (42, MN), (43, M+C), (44, MN), (45, CUE), (46, M+C), (47, MN) |
+| ROUTED → NORMAL → ROUTED | the same | Part 1 as above; Part 2's CUR on T3 (not cued by Part 1) comes back as MAIN at 0, the limit NORMAL's single set of cue settings sets |
+| STUDIO → ROUTED | (50, 0), (0, 60), (50, 60), (0, 0), (70, 30), (0, 127), (127, 0), (5, 5) | (50, MN), (60, CUE), (50, M+C), (0, MN), (70, M+C), (127, CUE), (127, MN), (5, M+C) |
+| NORMAL → ROUTED | five tracks cued, CUE MUTES TRACK off | Not cued → MN; cued with both levels → M+C; cued at LEVEL 0 → CUE at the cue level |
+| NORMAL → ROUTED | the same, CUE MUTES TRACK on | Cued with a cue level → CUE at it; cued at cue level 0 → OFF, LEVEL kept |
+
+Stock's level builder (`0x40004db8`) confirms the NORMAL model: with `0x8000009c` set it adds the cue bits to the mute bits, so cued tracks leave MAIN; the cue level is independent of LEVEL.
+
 ## The gate: verify.py
 
 `modules/phones-routing/verify.py` is an image gate, run from the octabam root after `make bus` with a remix that includes the module. It uses:
@@ -150,9 +166,10 @@ It replays everything above in about 30 port runs:
 - MAIN against the stock path, and the CUE/PHONES level law;
 - the six mono jacks with L = R;
 - the MKII swap, MASTER on, mute, DIR inputs and the declick;
-- NORMAL → ROUTED with the keys, then a power cycle from that run's CS1 and card.
+- NORMAL → ROUTED with the keys, then a power cycle from that run's CS1 and card;
+- every conversion rule (above), seven keyed runs.
 
-Last run, on the image with the code-review fixes: **PASS**, every check.
+Last run, 8 Oct 2026, on the build with the stock DSP code built in (below): **PASS**, 76 checks.
 
 ## Code review (7 Oct 2026) and what it changed
 
@@ -183,7 +200,34 @@ Cost after the fixes, instructions per frame: every track to MAIN 1,170, T1 to A
 
 The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's rule; PHNROUTE5 has stock's rule.
 
+## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
+
+**PHNROUTE6 froze; PHNSTAT8 runs.** PHNROUTE6 booted with no sound and the sequencer stuck on trig 1 in every project, sync off; the stock OS ran the same project. Octabam's build adds its experimental stock-effect loader (DSP DYNLOAD STOCK, whose README says it is for the emulator only) to every remix unless the remix keeps the stock code built in (`static_stock`). PHNSTAT8 is the same module built with `static_stock=True`, SPRING REV off both choosers to give core 0 room: it plays. The emulator ran PHNROUTE6 normally, so it does not model this freeze. The loader without the module (PHNCTRL7) has not been flashed.
+
+On PHNSTAT8, by the user, ✅ unless noted:
+
+| Area | Checks |
+| --- | --- |
+| Stock (NORMAL, STUDIO) | MIX blends MAIN and CUE; CUE + TRACK cues; CUE + LEVEL sets the cue level; STUDIO's LEVEL and CUE + LEVEL |
+| The AUDIO page | ROUTED selects; the TRACK 8 cursor stays on its rows |
+| Routing | Tracks reach the separate outputs; MAIN and CUE sides as named; PHL/PHR land where stock puts BAL hard left (and PHN with BAL hard left agrees) |
+| Levels | Mono level on MAIN; LEVEL on every output; MIXER MAIN, CUE and PHN; the headphone knob; no zipper noise |
+| Load | A semi-busy project with tracks on PHONES: no dropouts heard |
+| Everyday flows | Mute and solo; CUE + TRACK does nothing; SRC page resets keep routing; Parts carry routing; Part reload restores it (an unsaved Part has nothing to reload, as stock); patterns follow their Part; XVOL on MN, CUE, PHN; metronome on CUE and PHONES; DIR on MAIN, CUE + REC on CUE; master track |
+| Saving and power | Saved project, unsaved changes over a power cycle, project reload |
+| Leaving ROUTED | ROUTED → STUDIO as the first rules said; STUDIO → ROUTED turned a CUE-only track into M+C, which led to the rewrite above (not yet re-run on hardware) |
+
+Asked on the unit and answered in the emulator:
+- **AMP BAL artifacts:** a BAL sweep by MIDI (CC 8, 64 → 0 → 127 → 64, a value a frame) on stock and on ROUTED MN gives the same per-64-sample envelope steps (median 18,880 against 18,943) and envelopes within 0.6%: BAL is stock's, ahead of the mixdown.
+- **Clicks on a destination change:** stock's mute ramps over 14 samples (0.32 ms), the destination change over 15 out and 15 in; stock smooths LEVEL over about 11 ms. The switch is stock's on/off ramp, so it stays.
+- **Track copy:** FUNC + REC, FUNC + STOP in grid recording copies LEVEL and the cue byte, so the routing travels with it.
+- **A flashing "!" on track 3:** also in NORMAL, so not the module; it cleared after macOS's `._` files were removed from the card.
+
+The master track's second LEV bar was shaded (stock STUDIO's mark for no cue); it is now solid in ROUTED (emulator capture: the six-pixel bar of every other track, with and without CUE held; FUNC held keeps stock's MAIN display).
+
 ## Not run
 - MKI key paths.
-- Hardware.
+- The rewritten conversion rules, the ROUTING title and the solid master bar on hardware.
+- PHNCTRL7 (the loader alone) on hardware.
+- A stress run of core 0 at its limit (heavy effects on T5–T8 with every bus in use).
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.

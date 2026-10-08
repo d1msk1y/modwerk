@@ -23,10 +23,15 @@ CUE, 2/3 MAIN, 4/5 PHONES):
   8. DIR inputs reach MAIN in ROUTED as in the stock path (0.05%);
   9. declick: switching MAIN -> PHNS mid-tone adds no step larger than the
      tone's own (MAIN) and no more than 10% over it (PHONES, the fade-in);
- 10. the mode switch (keys, MKII): NORMAL -> ROUTED converts the cue bytes
-     (cued -> 3, else 0) in bank 1 and bank 16, the live bytes, and marks
-     changed banks for saving; a power cycle (CS1 and card of that run, the
-     firmware's own power-up load) keeps ROUTED and the current track's code.
+ 10. the mode switch (keys, MKII): NORMAL -> ROUTED converts bank 1, bank 16
+     and the live bytes by the rules (MODEL below), and marks changed banks
+     for saving; a power cycle (CS1 and card of that run, the firmware's own
+     power-up load) keeps ROUTED and the current track's code;
+ 11. every conversion rule, by the keys: ROUTED -> STUDIO and -> NORMAL for
+     all 14 codes and a stray cue level (two Parts, bank 16, the saved Part,
+     the live bytes, NORMAL's cue bits from the current Part), both round
+     trips back, STUDIO -> ROUTED for the four level cases, and NORMAL ->
+     ROUTED with and without CUE MUTES TRACK.
 What it cannot see: hardware timing, the analogue jacks, other modules.
 """
 import json
@@ -72,6 +77,31 @@ def expected_words(code):
         if kind in ("st", "R"):
             words.add(2 * bus + 1)
     return words
+
+
+# The conversion rules (phones.s convert_all), as the gate expects them.
+CUE_DESTS = {1, 3, 5, 6, 9, 10}
+LEVEL_DESTS = {0, 3, 4, 6, 7, 8, 2, 11, 12}          # MAIN, or PHONES only (kept on MAIN)
+
+
+def out_of_routed(level, code):
+    """ROUTED (level, code) -> STUDIO or NORMAL (LEVEL, cue level)."""
+    code = code if code <= 13 else 0
+    return (level if code in LEVEL_DESTS else 0, level if code in CUE_DESTS else 0)
+
+
+def from_studio(main, cue):
+    if cue == 0:
+        return main, 0
+    return (main, 3) if main else (cue, 1)
+
+
+def from_normal(level, cue, cued, mutes):
+    if not cued:
+        return level, 0
+    if cue == 0:
+        return level, (13 if mutes else 0)
+    return (cue, 1) if (level == 0 or mutes) else (level, 3)
 
 
 def tone4(path, seconds=8):
@@ -144,6 +174,7 @@ def main():
         go("declick", ["--poke", routed + levels, "--step", "20:poke:0x80000c51=0", "--step", "100:poke:0x80000c51=2"],
            frames=160, audio=tone)
         conv = conversion_jobs(run, pool, work)
+        mx = matrix_jobs(run, pool, work)
     res = {t: j.result() for t, j in jobs.items()}
 
     print("verify phones-routing: routing")
@@ -184,6 +215,7 @@ def main():
         check(after <= limit * tone_step, f"word {word}: largest step after the switch {after}, the tone's own {tone_step}")
 
     conversion_checks(conv)
+    matrix_checks(mx)
     shutil.rmtree(work, ignore_errors=True)
     print(f"verify phones-routing: {'FAIL (' + str(len(FAILS)) + ')' if FAILS else 'PASS'}")
     return 1 if FAILS else 0
@@ -211,12 +243,113 @@ def conversion_jobs(run, pool, work):
     spec = ";".join(f"{a}={work / ('conv_' + k + '.bin')}" for k, a in ((k, v) for k, v in dumps.items() if k != "pre_live"))
     pre = work / "pre.script"; pre.write_text("300 quit\n")
     jobs = {"pre": pool.submit(run.emu, "conv_pre", ["--mkii", "--live-script", str(pre), "--mem-dump",
-                                                    f"0x80000c50,16={work / 'conv_pre_live.bin'};0x80000008,4={work / 'conv_pre_mask.bin'}"],
+                                                    f"0x80000c50,16={work / 'conv_pre_live.bin'};0x80000008,4={work / 'conv_pre_mask.bin'};"
+                                                    f"{B0 + WORK_LV:#x},16={work / 'conv_pre_b1.bin'};"
+                                                    f"{B0 + 15 * BANK + WORK_LV:#x},16={work / 'conv_pre_b16.bin'};"
+                                                    f"0x8000009c,4={work / 'conv_pre_mutes.bin'}"],
                                audio=False, card=card)}
     jobs["conv"] = pool.submit(lambda: (run.emu("conv", ["--mkii", "--live-script", str(script), "--card-out",
                                                          str(work / "conv_out.img"), "--mem-dump", spec], audio=False,
                                                 card=card), power_cycle(run, work))[1])
     return work, jobs
+
+
+# The CUE CFG rows: the cursor starts on NORMAL, so 0, 1 or 2 DOWNs. The
+# PROJECT menu reopens on CONTROL's list, so a second visit takes one YES.
+def menu_to(row, at, first=True):
+    steps = [(at, "0x1c")]
+    steps += [(at + 400, "0x20"), (at + 600, "0x20"), (at + 800, "0x31")] if first else []
+    steps += [(at + 1200, "0x31"), (at + 1600, "0x21")]
+    steps += [(at + 1800 + 200 * k, "0x20") for k in range(row)]
+    steps += [(at + 2400, "0x31"), (at + 2700, "0x32"), (at + 3000, "0x32")]
+    return keys(*steps)
+
+
+def part_lv(bank, part, saved=False):
+    return B0 + bank * BANK + (0x9505c if saved else WORK_LV) + part * 0x18b2
+
+
+# ROUTED fixtures: Part 1 codes 0..7, Part 2 codes 8..13, a stray cue level
+# (100, read as MAIN) and MAIN at level 0; levels 40 + code, all distinct.
+R_PAIRS = ([(40 + c, c) for c in range(8)], [(40 + c, c) for c in range(8, 14)] + [(90, 100), (0, 0)])
+# STUDIO and NORMAL fixtures, one Part: (LEVEL, cue level) on T1..T8.
+S_PAIRS = [(50, 0), (0, 60), (50, 60), (0, 0), (70, 30), (0, 127), (127, 0), (5, 5)]
+N_PAIRS = [(50, 0), (50, 60), (0, 60), (50, 0), (0, 0), (50, 60), (0, 60), (50, 0)]
+N_CUED = 0b01101110                                   # T2, T3, T4, T6, T7 cued
+
+
+def pokes(pairs_by_part, extra=""):
+    out = []
+    for part, pairs in enumerate(pairs_by_part):
+        for t, (lv, cue) in enumerate(pairs):
+            for bank, saved in ((0, False), (0, True), (15, False)):
+                a = part_lv(bank, part, saved) + 2 * t
+                out += [f"{a:#x}={lv}", f"{a + 1:#x}={cue}"]
+            if part == 0:
+                out += [f"{0x80000c50 + 2 * t:#x}={lv}", f"{0x80000c51 + 2 * t:#x}={cue}"]
+    return ";".join(out) + extra
+
+
+MATRIX = {  # tag: (mode, pairs by Part, extra pokes, rows chosen in order)
+    "rs": (2, R_PAIRS, "", (1,)), "rs_r": (2, R_PAIRS, "", (1, 2)),
+    "rn": (2, R_PAIRS, ";0x80000009=0;0x8000009f=0", (0,)),
+    "rn_r": (2, R_PAIRS, ";0x80000009=0;0x8000009f=0", (0, 2)),
+    "sr": (1, (S_PAIRS,), "", (2,)),
+    "nr": (0, (N_PAIRS,), f";0x80000009={N_CUED};0x8000009f=0", (2,)),
+    "nr_m": (0, (N_PAIRS,), f";0x80000009={N_CUED};0x8000009f=1", (2,)),
+}
+
+
+def matrix_jobs(run, pool, work):
+    jobs = {}
+    for tag, (mode, pairs, extra, rows) in MATRIX.items():
+        lines = []
+        for k, row in enumerate(rows):
+            lines += menu_to(row, 500 + 4000 * k, first=k == 0)
+        script = work / f"m_{tag}.script"
+        script.write_text("\n".join(lines + [f"{500 + 4000 * len(rows)} quit"]) + "\n")
+        dumps = {f"p{p}": f"{part_lv(0, p):#x},16" for p in range(2)}
+        dumps.update(s0=f"{part_lv(0, 0, True):#x},16", b16=f"{part_lv(15, 0):#x},16", live="0x80000c50,16",
+                     mask="0x80000008,4", maskcs1="0x100b14d4,4", mode="0x80000037,1")
+        spec = ";".join(f"{a}={work / f'm_{tag}_{k}.bin'}" for k, a in dumps.items())
+        jobs[tag] = pool.submit(run.emu, f"m_{tag}", ["--mkii", "--poke", f"0x80000037={mode};" + pokes(pairs, extra),
+                                                      "--live-script", str(script), "--mem-dump", spec], audio=False)
+    return work, jobs
+
+
+def matrix_checks(mx):
+    work, jobs = mx
+    for j in jobs.values():
+        j.result()
+    print("verify phones-routing: conversion rules")
+    rd = lambda tag, k: (work / f"m_{tag}_{k}.bin").read_bytes()
+    pairs = lambda b: [(b[2 * t], b[2 * t + 1]) for t in range(8)]
+    for tag, (mode, parts, extra, rows) in MATRIX.items():
+        final = (0, 1, 2)[rows[-1]]
+        check(rd(tag, "mode")[0] == final, f"{tag}: CUE CFG {rd(tag, 'mode')[0]}, expected {final}")
+        for p, src in enumerate(parts):
+            want = list(src)
+            cued = [N_CUED >> t & 1 for t in range(8)] if mode == 0 else [0] * 8
+            if mode == 2:                              # ROUTED -> STUDIO or NORMAL
+                want = [out_of_routed(*x) for x in want]
+                if len(rows) > 1:                      # and back
+                    cued = [int(c in CUE_DESTS) for _, c in R_PAIRS[0]]
+                    want = [from_studio(*x) for x in want] if rows[0] == 1 else \
+                           [from_normal(*x, cued[t], 0) for t, x in enumerate(want)]
+            elif mode == 1:
+                want = [from_studio(*x) for x in want]
+            else:
+                want = [from_normal(*x, cued[t], extra.endswith("=1")) for t, x in enumerate(want)]
+            got = pairs(rd(tag, f"p{p}"))
+            check(got == want, f"{tag} Part {p + 1}: {got}, expected {want}")
+            if p == 0:
+                for k in ("s0", "b16", "live"):
+                    check(pairs(rd(tag, k)) == want, f"{tag} {k} matches Part 1: {pairs(rd(tag, k))}")
+        if tag == "rn":
+            bits = sum(1 << t for t, (_, c) in enumerate(R_PAIRS[0]) if c in CUE_DESTS)
+            for k in ("mask", "maskcs1"):
+                got = rd(tag, k)[1]
+                check(got == bits, f"rn: NORMAL cue bits ({k}) {got:08b}, expected {bits:08b} (the current Part's CUE destinations)")
 
 
 def power_cycle(run, work):
@@ -233,15 +366,20 @@ def conversion_checks(conv):
     rd = lambda k: (work / f"conv_{k}.bin").read_bytes()
     print("verify phones-routing: mode switch and power cycle")
     mask = int.from_bytes((work / "conv_pre_mask.bin").read_bytes(), "big")
+    mutes = int.from_bytes((work / "conv_pre_mutes.bin").read_bytes(), "big")
     t = rd("track")[0]
-    want = [3 if mask >> (16 + k) & 1 else 0 for k in range(8)]
+    pre = lambda k: (work / f"conv_pre_{k}.bin").read_bytes()
+    conv = lambda b: [from_normal(b[2 * k], b[2 * k + 1], mask >> (16 + k) & 1, mutes) for k in range(8)]
     check(rd("mode")[0] == 2, f"CUE CFG after YES on ROUTED: {rd('mode')[0]}")
     for name in ("b1", "b16"):
-        cues = list(rd(name)[1::2])
-        exp = [(2 if k == t else w) for k, w in enumerate(want)] if name == "b1" else want
-        check(cues == exp, f"{name} cue bytes {cues}, expected {exp} (cued -> M+C, else MAIN; T{t + 1} then two steps)")
-    live = list(rd("live")[1::2])
-    check(live[t] == 2 and all(live[k] == want[k] for k in range(8) if k != t), f"live cue bytes {live}")
+        got = [(rd(name)[2 * k], rd(name)[2 * k + 1]) for k in range(8)]
+        exp = conv(pre(name))
+        if name == "b1":
+            exp[t] = (exp[t][0], min(13, exp[t][1] + 2))
+        check(got == exp, f"{name} (LEVEL, code) {got}, expected {exp} (the NORMAL rules; T{t + 1} then two steps)")
+    live = [(rd("live")[2 * k], rd("live")[2 * k + 1]) for k in range(8)]
+    exp = conv(pre("live")); exp[t] = (exp[t][0], min(13, exp[t][1] + 2))
+    check(live == exp, f"live (LEVEL, code) {live}, expected {exp}")
     check(int.from_bytes(rd("save1"), "big") == 1, "bank 1 marked for the next save")
     mode = (work / "cyc_mode.bin").read_bytes()[0]; cyc = list((work / "cyc_live.bin").read_bytes()[1::2])
     check(mode == 2 and cyc[t] == 2, f"after a power cycle: CUE CFG {mode}, T{t + 1} code {cyc[t]}")

@@ -112,13 +112,19 @@ set_mode:
         beq.s   1f
         cmp.l   %d1,%d3
         bne.s   9f                       | NORMAL <-> STUDIO: nothing to convert
-        moveq   #0,%d4                   | out of ROUTED
+        moveq   #0,%d4                   | out of ROUTED into STUDIO
+        tst.l   %d2
+        bne.s   2f
+        moveq   #3,%d4                   | out of ROUTED into NORMAL
+        bsr     cue_mask_from_live
         bra.s   2f
 1:      moveq   #1,%d4                   | into ROUTED from STUDIO
         tst.l   %d3
         bne.s   2f
         moveq   #2,%d4                   | into ROUTED from NORMAL
-2:      bsr     convert_all
+2:      move.l  %d2,-(%sp)
+        bsr     convert_all
+        move.l  (%sp)+,%d2
 9:      move.b  %d2,CUE_CFG
         move.b  %d2,CUE_CFG_CS1
         movem.l (%sp),%d2-%d7/%a2-%a3
@@ -137,10 +143,22 @@ act_none:
 | written by the next project save. The current bank's working and saved
 | Parts are also in CS1 (what survives a power cycle), at 0x100a4ece and
 | 0x100ab196. The working/saved relation is kept: both copies convert, so
-| no unsaved bit changes. d4 says which way:
-|   0  out of ROUTED: a destination with CUE gives cue level = LEVEL, else 0
-|   1  into ROUTED from STUDIO: LEVEL and cue -> M+C, cue only -> CUE, else MAIN
-|   2  into ROUTED from NORMAL: a cued track -> M+C, the rest -> MAIN
+| no unsaved bit changes. Each mode keeps what the other can express, no
+| level is lost, and a round trip comes back as it was. L is ROUTED's level;
+| STUDIO has LEVEL (MAIN) and a cue level; NORMAL has LEVEL, a cue level and
+| one project-wide cue bit per track (CUE + TRACK, 0x80000008 bit 16 + t),
+| with CUE MUTES TRACK (0x8000009c) taking cued tracks off MAIN. d4:
+|   0  ROUTED into STUDIO, 3 into NORMAL: LEVEL = L where the destination
+|      has MAIN, or only PHONES (which neither mode can isolate: it stays
+|      audible on MAIN), else 0; cue level = L where it has CUE, else 0.
+|      OFF gives 0 and 0. Into NORMAL, the current Part's destinations with
+|      CUE also set the cue bits (cue_mask_from_live): NORMAL has one set.
+|   1  STUDIO into ROUTED: LEVEL and cue -> M+C at LEVEL; LEVEL only -> MAIN;
+|      cue only -> CUE at the cue level; neither -> MAIN at 0.
+|   2  NORMAL into ROUTED: not cued -> MAIN; cued with a cue level -> M+C
+|      at LEVEL, or CUE at the cue level when LEVEL is 0 or CUE MUTES TRACK
+|      is on; cued at cue level 0 -> MAIN, or OFF (LEVEL kept) when CUE
+|      MUTES TRACK silenced it.
         .equ    BANK0,        0x400e21e0
         .equ    BANK_SIZE,    0x9b340
         .equ    PART_SIZE,    0x18b2
@@ -154,9 +172,13 @@ act_none:
         .equ    LIVE_LV,      0x80000c50
         .equ    CUE_MASK,     0x80000008   | bit 16 + t: track t is cued
         .equ    CUE_DESTS,    0x066a       | codes with CUE: 1 3 5 6 9 10
+        .equ    LEVEL_DESTS,  0x19dd       | codes kept on MAIN: 0 3 4 6 7 8, and PHONES only 2 11 12
+        .equ    CUE_MUTES,    0x8000009c   | CUE MUTES TRACK
+        .equ    CUE_MASK_CS1, 0x100b14d4   | 0x80000008's power-cycle copy, as CUE + TRACK writes it
+        .equ    D_OFF,        13
 
-| d4 the direction; uses d0, d1, d3, d5-d7, a0-a3. a1 counts the cue bytes
-| a bank's conversion changed: a bank with none is not marked for saving.
+| d4 the direction; uses d0-d3, d5-d7, a0-a3. a1 counts the bytes a bank's
+| conversion changed: a bank with none is not marked for saving.
 convert_all:
         movea.l #BANK0,%a2
         moveq   #16,%d5
@@ -201,42 +223,59 @@ conv_parts:
         bne.s   1b
         rts
 
-| Eight (LEVEL, cue) pairs from a0.
+| Eight (LEVEL, cue) pairs from a0; d4 the direction. Uses d0-d3, d7.
 conv_tracks:
         moveq   #0,%d7                   | the track
 1:      mvz.b   (%a0),%d1                | LEVEL
         mvz.b   1(%a0),%d0               | the cue byte
         cmpi.l  #1,%d4
-        beq.s   4f
-        bgt.s   5f
+        beq.s   20f
+        cmpi.l  #2,%d4
+        beq.s   30f
         moveq   #DEST_MAX,%d3            | out of ROUTED
         cmp.l   %d3,%d0
-        bls.s   2f
+        bls.s   10f
         moveq   #0,%d0                   | a cue level, not a code: MAIN
-2:      move.l  #CUE_DESTS,%d3
-        btst    %d0,%d3
-        bne.s   3f
-        moveq   #0,%d1
-3:      cmp.b   1(%a0),%d1
-        beq.s   8f
-        move.b  %d1,1(%a0)
-        addq.l  #1,%a1
-        bra.s   8f
-4:      tst.l   %d0                      | from STUDIO
-        beq.s   7f                       | no cue level: MAIN
-        moveq   #1,%d0                   | cue only: CUE
-        tst.l   %d1
-        beq.s   7f
-        moveq   #3,%d0                   | both: M+C
+10:     move.l  %d1,%d3                  | L
+        move.l  #LEVEL_DESTS,%d2
+        btst    %d0,%d2
+        bne.s   11f
+        moveq   #0,%d1                   | no MAIN side: LEVEL 0
+11:     move.l  #CUE_DESTS,%d2
+        btst    %d0,%d2
+        bne.s   12f
+        moveq   #0,%d3                   | no CUE side: cue level 0
+12:     move.l  %d3,%d0
         bra.s   7f
-5:      moveq   #16,%d3                  | from NORMAL
-        add.l   %d7,%d3
-        move.l  CUE_MASK,%d1
-        moveq   #0,%d0
-        btst    %d3,%d1
-        beq.s   7f
-        moveq   #3,%d0                   | cued: M+C
-7:      cmp.b   1(%a0),%d0
+20:     tst.l   %d0                      | from STUDIO
+        beq.s   40f                      | no cue level: MAIN
+        tst.l   %d1
+        beq.s   41f                      | cue only: CUE at the cue level
+        moveq   #3,%d0                   | both: M+C at LEVEL
+        bra.s   7f
+30:     btst    %d7,0x80000009           | from NORMAL: cue bit 16 + t
+        beq.s   40f                      | not cued: MAIN
+        tst.l   %d0
+        bne.s   31f
+        tst.l   CUE_MUTES                | cued at cue level 0
+        beq.s   40f
+        moveq   #D_OFF,%d0               | and off MAIN too: silent, LEVEL kept
+        bra.s   7f
+31:     tst.l   %d1
+        beq.s   41f                      | LEVEL 0: CUE only
+        tst.l   CUE_MUTES
+        bne.s   41f                      | off MAIN: CUE only
+        moveq   #3,%d0                   | M+C at LEVEL
+        bra.s   7f
+40:     moveq   #0,%d0                   | MAIN, LEVEL as it is
+        bra.s   7f
+41:     move.l  %d0,%d1                  | CUE at the cue level
+        moveq   #1,%d0
+7:      cmp.b   (%a0),%d1
+        beq.s   71f
+        move.b  %d1,(%a0)
+        addq.l  #1,%a1
+71:     cmp.b   1(%a0),%d0
         beq.s   8f
         move.b  %d0,1(%a0)
         addq.l  #1,%a1
@@ -244,7 +283,36 @@ conv_tracks:
         addq.l  #1,%d7
         moveq   #8,%d3
         cmp.l   %d3,%d7
+        bne     1b
+        rts
+
+| Into NORMAL: the cue bits (0x80000008 bits 16..23 and its CS1 copy) from
+| the current Part's destinations, read from the live cue bytes before
+| convert_all rewrites them. Uses d0, d1, d5-d7, a0.
+cue_mask_from_live:
+        moveq   #0,%d5                   | the new cue bits
+        moveq   #0,%d7
+        movea.l #LIVE_LV+1,%a0
+1:      mvz.b   (%a0),%d0
+        moveq   #DEST_MAX,%d1
+        cmp.l   %d1,%d0
+        bhi.s   2f                       | not a code: not cued
+        move.l  #CUE_DESTS,%d1
+        btst    %d0,%d1
+        beq.s   2f
+        moveq   #16,%d6
+        add.l   %d7,%d6
+        bset    %d6,%d5
+2:      addq.l  #2,%a0
+        addq.l  #1,%d7
+        moveq   #8,%d1
+        cmp.l   %d1,%d7
         bne.s   1b
+        move.l  CUE_MASK,%d0
+        andi.l  #0xff00ffff,%d0
+        or.l    %d5,%d0
+        move.l  %d0,CUE_MASK
+        move.l  %d0,CUE_MASK_CS1
         rts
 
 | ---- CUE + LEVEL (jmp detour, displaced: lea -16(sp),sp; movem.l d2-d5,(sp))
@@ -387,10 +455,13 @@ lev_box_val:
         jmp     0x4004ddc6
 
 | ---- the LEV box bars (jmp detour, displaced: moveq #18,d0; muls.l d2,d0)
-| STUDIO draws a level bar from d2 and a cue bar from d4. In ROUTED d4 is a
-| destination code, so both bars show the level; except on the MAIN display
-| (FUNC held: 0x46c7c730 set and CUE not held, 0x4004dca0), where stock has
-| cleared d4 and the second bar stays empty.
+| STUDIO draws a level bar from d2 and a cue bar from d4, the cue bar shaded
+| (0x40012368) when d5 is set: the master track, which has no cue in
+| STUDIO. In ROUTED d4 is a destination code, so both bars show the level,
+| solid on every track (the master may go to CUE or PHONES there): the
+| path joins stock's solid drawing at 0x4004df9c, past its d5 test. On the
+| MAIN display (FUNC held: 0x46c7c730 set and CUE not held, 0x4004dca0)
+| stock has cleared d4, and the stock path draws it as STUDIO does.
         .global lev_bars
 lev_bars:
         mvs.b   CUE_CFG,%d0
@@ -401,6 +472,11 @@ lev_bars:
         tst.l   0x46c7c730               | FUNC held: MAIN, as stock
         bne.s   1f
 2:      move.l  %d2,%d4
+        moveq   #18,%d0                  | as stock to 0x4004df9a
+        muls.l  %d2,%d0
+        moveq   #18,%d2
+        muls.l  %d4,%d2
+        jmp     0x4004df9c               | both bars solid
 1:      moveq   #18,%d0
         muls.l  %d2,%d0
         jmp     0x4004df92
@@ -527,7 +603,7 @@ mixer_mix_right:
         jmp     0x4007c532
 
         .data
-        .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions
+        .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions, str_routing
 t8_labels:   .long 0x400b44e1, 0x400b5eb0, str_blank    | MASTER, NORMAL, (none)
 t8_getters:  .long 0x40065138, 0x40065154, 0
 t8_actions:  .long 0x40065554, 0x40065514, act_none
@@ -542,6 +618,7 @@ sent_codes:  .byte 0, 0, 0, 0, 0, 0, 0, 0   | the codes the DSP routes by
 fading:      .byte 0, 0, 0, 0, 0, 0, 0, 0   | 1: faded out last frame (sent_codes + 8)
 str_blank:   .asciz ""
 str_routed:  .asciz "ROUTED"
+str_routing: .asciz "ROUTING"              | the box title, stock "CUE CFG"
 str_phn:     .asciz "PHN"
 str_minus:   .asciz "-"
 str_plus:    .asciz "+"

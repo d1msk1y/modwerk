@@ -94,7 +94,7 @@ MODULE = Module(
                UNIT, "lev_box_val", "LEV box with CUE held: in ROUTED, the destination's name",
                pad_to=18),
         Detour(0x4004DF8C, stock_guard(0x4004df8c, 6, "f8f99e5fbedfdea641ce1ee91dd4b343c5f584bdbdcfdb906cc7b2ff700b81e4"),
-               UNIT, "lev_bars", "LEV box bars: in ROUTED both show the level"),
+               UNIT, "lev_bars", "LEV box bars: in ROUTED both show the level, solid on every track"),
         Detour(0x4007C498, stock_guard(0x4007c498, 6, "44ed799109c451f24e666752e6cbb64d01b2569a031747ca70862d4e993655c9"),
                UNIT, "mixer_mix_label", "MIXER: in ROUTED, MIX is labelled PHN (the PHONES level)"),
         Detour(0x4007C50A, stock_guard(0x4007c50a, 6, "8094ae1fc8f6652016413873ceeff62f4c61f3626e4cd0d1aea9eb7365b2e681"),
@@ -109,6 +109,7 @@ MODULE = Module(
     symbol_refs=(
         SymbolRef(0x40065276, 0x400B277C, UNIT, "t8_labels", "AUDIO: TRACK 8 labels, a third (blank) row"),
         SymbolRef(0x4006527C, 0x400B2784, UNIT, "t8_getters", "AUDIO: TRACK 8 checkboxes"),
+        SymbolRef(0x4006532C, 0x400B5EA8, UNIT, "str_routing", "AUDIO: the CUE CFG box is titled ROUTING"),
         SymbolRef(0x4006535C, 0x400B278C, UNIT, "cue_labels", "AUDIO: CUE CFG labels + ROUTED"),
         SymbolRef(0x40065368, 0x400B2794, UNIT, "cue_getters", "AUDIO: CUE CFG checkboxes"),
         SymbolRef(0x400654B2, 0x400B279C, UNIT, "t8_actions", "AUDIO: TRACK 8 YES actions"),
