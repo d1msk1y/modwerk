@@ -76,7 +76,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - The ROUTED mixdown costs core 0 about 21 more instructions per sample than stock with every track on MAIN (under 1% of its usable budget), and about 106 with CUE, MAIN and PHONES all in use (about 3%).
 
 **Building**
-- Build hardware images with the stock DSP code built in (a remix with `static_stock=True`). Octabam's build otherwise adds its experimental stock-effect loader, and on an MKII that image played no sound and froze the sequencer.
+- Build hardware images with the stock DSP code built in (a remix with `static_stock=True`). Octabam's build otherwise adds its experimental stock-effect loader, and on an MKII that image played no sound and froze the sequencer; the loader built without this module froze it the same way.
 - Built that way, the module needs one stock effect's room on core 0: SPRING REV (1,063 words), DARK REV (1,067), or LO-FI and DJ EQ together (882), taken off both effect menus. The test images give up SPRING REV; which one a release gives up is still open.
 
 **Conflicts**

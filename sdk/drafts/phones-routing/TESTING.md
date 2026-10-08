@@ -202,7 +202,7 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 
 ## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
 
-**PHNROUTE6 froze; PHNSTAT8 runs.** PHNROUTE6 booted with no sound and the sequencer stuck on trig 1 in every project, sync off; the stock OS ran the same project. Octabam's build adds its experimental stock-effect loader (DSP DYNLOAD STOCK, whose README says it is for the emulator only) to every remix unless the remix keeps the stock code built in (`static_stock`). PHNSTAT8 is the same module built with `static_stock=True`, SPRING REV off both choosers to give core 0 room: it plays. The emulator ran PHNROUTE6 normally, so it does not model this freeze. The loader without the module (PHNCTRL7) has not been flashed.
+**PHNROUTE6 froze; PHNSTAT8 runs.** PHNROUTE6 booted with no sound and the sequencer stuck on trig 1 in every project, sync off; the stock OS ran the same project. Octabam's build adds its experimental stock-effect loader (DSP DYNLOAD STOCK, whose README says it is for the emulator only) to every remix unless the remix keeps the stock code built in (`static_stock`). PHNSTAT8 is the same module built with `static_stock=True`, SPRING REV off both choosers to give core 0 room: it plays. The emulator ran PHNROUTE6 normally, so it does not model this freeze. PHNCTRL7, the same remix without the module (the stock effects and the loader only), froze the same way on 8 Oct 2026: the loader alone causes it.
 
 On PHNSTAT8, by the user, ✅ unless noted:
 
@@ -230,6 +230,5 @@ The master track's second LEV bar was shaded (stock STUDIO's mark for no cue); i
 ## Not run
 - MKI key paths.
 - The rewritten rules in Parts other than the current one and in other banks, on hardware (emulator only).
-- PHNCTRL7 (the loader alone) on hardware.
 - A stress run of core 0 at its limit (heavy effects on T5–T8 with every bus in use).
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.
