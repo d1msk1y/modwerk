@@ -320,5 +320,12 @@ Modwerk's packager and browser builder had no path for DSP code reached only thr
 - **The table move.** The first comparison matched native in every DSP word and ColdFire detour but not in seven stock pointers: the AUDIO page's label, getter and action tables and the OUT CFG title were in `.data`, and the browser's runtime places `.data` after the logger it links, so they landed 0x4b8 bytes from native's. They are constants, so they moved into `.text`, which starts at the same address in both. `sent_codes` and `fading` stay in `.data`.
 - **Native comparison** (`sdk/native-comparisons/output-matrix.json`): 126 selections, 44 builds matching native outside the platform writes, 82 matching refusals, 0 mismatches. Beside Analog BD it is refused in both, as for every DSP module not on Analog BD's companion list.
 - **Gate.** `verify.py` on the OUTMTX13 build: 117/117.
-- **Not done.** `evidence/performance.json` has no stress run: `dsp_host -guard -dirty` renders dispatched effect instances on their own and does not run the mixdown these hooks are in.
+
+## Stress run (9 Oct 2026, emulator)
+
+`dsp_host -guard -dirty` renders dispatched effect instances on their own and does not run the core-0 mixdown these hooks are in, so the stress run is the whole image under the ColdFire port (`stress.harness: "ot_emu"` in `evidence/performance.json`; `perf-audit` accepts that only for code reached through stock hooks).
+
+- **Project.** octabam's `tools/harness/stress_project.py`, with DJ EQ on every FX1 and LO-FI on every FX2 (the dearest stock effects left in the image; the generator places custom effects only, so a local driver supplied that layout): eight FLEX tracks, three active LFOs per track, 15 locked slots per step (14 on the probed tracks), 1,024 trigs and 20,944 lock bytes in bank A, 120 BPM.
+- **Run.** `ot_emu --dsp` on the OUTMTX13 MAIN OS (`eca1152f…ae16`): CUE CFG = MATRIX, MASTER TRACK on, every track on ALL (re-poked every 1,000 frames, since each pattern loads its Part). The firmware's pattern select queued A01 → A02 → A03 → A04 → A01; the playing-pattern byte, dumped every 5,000 frames, shows each.
+- **Result.** 90,000 frames (32.65 s): run ended REACHED; 0 of 69,120,000 DSP read-back words late; MAIN, CUE and PHONES ring words all carry audio; the mixdown at most 4,240 instructions per 16-sample frame, the qualification worst case.
 

@@ -8,7 +8,7 @@ Output Matrix is the first module whose DSP code is reached only through stock-c
 
 - **Other modules unchanged.** Every compiled package is byte-identical outside provenance labels; the only additions are Output Matrix's DSP package, ColdFire object and patch group. `npm run module:verify -- --all --check` gives the same results for every other module on this branch as on untouched main.
 - **Native comparison.** 126 selections: 44 builds match native outside the platform writes, 82 refusals match, 0 mismatches. The first run differed in seven stock pointers to the module's constant AUDIO page tables, which were in `.data`, where the browser runtime's logger moves them; the tables moved into `.text`.
-- **Gate and hardware.** The module's `verify.py` passes 117 checks on the native image of the final source, which the author also ran on an MKII (OUTMTX13; [TESTING.md](../sdk/octabam/modules/output-matrix/TESTING.md)). The performance record has no stress run: `dsp_host -guard -dirty` runs dispatched effects, not the mixdown these hooks are in.
+- **Gate and hardware.** The module's `verify.py` passes 117 checks on the native image of the final source, which the author also ran on an MKII (OUTMTX13; [TESTING.md](../sdk/octabam/modules/output-matrix/TESTING.md)). `dsp_host -guard -dirty` runs dispatched effects, not the mixdown these hooks are in, so the stress run is the whole image under `ot_emu` with the stress project playing A01–A04 for 32.65 s: no hang, no late DSP read-back. `perf-audit` accepts such a run (`stress.harness: "ot_emu"`, `guard`/`dirty` null) only for code reached through stock hooks, and `module:doctor` only for a module without an effect id.
 
 ## elekloader kit 0.5.0 — 9 October 2026
 

@@ -19,15 +19,17 @@
     "justification": "No stock effect does this: the module replaces core 0's final mix while MATRIX is selected, so the comparator is the stock code it takes over. The extra 210 instructions per sample buy a third stereo bus (PHONES), per-track routing to any combination of MAIN, CUE and PHONES or one of six mono jacks, and stock-mute-length declicks. With every track on MAIN the extra is about 20 per sample. NORMAL and STUDIO run stock code."
   },
   "stress": {
-    "instancesPerCore": null,
+    "harness": "ot_emu",
+    "instancesPerCore": 1,
     "tracks": 8,
-    "lfosPerTrack": null,
-    "lockedSlots": null,
-    "seconds": null,
+    "lfosPerTrack": 3,
+    "lockedSlots": 14,
+    "seconds": 32.65,
     "guard": null,
     "dirty": null,
-    "clobbers": null,
-    "hangs": null
+    "lateReadbacks": 0,
+    "hangs": 0,
+    "method": "ot_emu --dsp on the OUTMTX13 MAIN OS (eca1152f…ae16, SPRING REV given up), octabam's stress_project.py output with DJ EQ on every FX1 and LO-FI on every FX2 (the two dearest stock effects left in the image; its generator places custom effects only, so a local driver supplied that layout): eight FLEX tracks, three active LFOs per track, 15 locked slots per step (14 on the probed tracks), 120 BPM. CUE CFG = MATRIX, MASTER TRACK on, every track routed to ALL (re-poked every 1,000 frames, as each pattern loads its Part). The firmware's own pattern select queued A01 → A02 → A03 → A04 → A01; the playing-pattern byte was dumped every 5,000 frames to confirm each played. 90,000 frames (32.65 s): run ended REACHED, 0 of 69,120,000 DSP read-back words late, MAIN, CUE and PHONES ring words all carrying audio, mixdown at most 4,240 instructions per 16-sample frame."
   },
-  "scope": "Not run: dsp_host -guard -dirty renders dispatched effect instances on their own and does not run the mixdown these hooks sit in. In its place: the emulator worst case above, and the author's functional MKII report (7 to 9 October 2026), including a semi-busy project with no dropouts heard. No timed stress run, chip timing or bus-stall model."
+  "scope": "ot_emu run of the whole image, not dsp_host: dsp_host -guard -dirty renders dispatched effect instances and does not run the core-0 mixdown these hooks are in, so there is no guard or dirty-state result. Plus the emulator worst case above and the author's functional MKII report (7 to 9 October 2026), including a semi-busy project with no dropouts heard. No timed hardware stress run, chip timing or bus-stall model."
 }
