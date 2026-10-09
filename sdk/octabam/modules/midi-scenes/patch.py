@@ -10,6 +10,47 @@ from pathlib import Path
 
 PIN = '4f9a89453fdcdd39a3cd57f010ffa489cac721cd'
 RECIPE_SHA256 = '45a22136433a817c853ed44a53ba9d84c600024bb85b008d0dcbe507220902ef'
+BASE_ADDRESS = 0x40000400
+RELEASE_MAIN_SHA256 = 'c7fb7d5b4d0a961d4035d31a8f78d24cdcc54262ba59e72744f7d02dc2a8000d'
+
+# Issue #329: stock FUNC+SCENE A/B sets 0x80000006/0x80000007 to 1 and the
+# stock morph then ignores that side; MIDISC2.0 never read either flag. The
+# crossfader mix, endpoint snapshot and XF cache key now load a muted side's
+# scene as unassigned (0xff), so a mute behaves like a blank scene: the
+# unlocked side falls back to the trig lock or track value, and with both
+# muted every scened CC returns to its base value. The mix's null scene
+# pointer paths loaded -1 rather than the 0xff "no lock" marker; their
+# branches now reach stubs that load 0xff. Scene-held edits still read the
+# real assignment, as stock does. Helpers and stubs occupy 114 of 116
+# unreferenced 0xff bytes inside the author's main cave.
+# (address, author bytes, replacement)
+SCENE_MUTE = (
+    (0x400d2928, '779073a80001', '4eb9400d738c'),  # crossfader mix: jsr ab_d1
+    (0x400d2984, '6700000c', '67004a64'),          # mix, no Scene A pointer: beq null_a
+    (0x400d299e, '6700000c', '67004a54'),          # mix, no Scene B pointer: beq null_b
+    (0x400d6884, '71d0b0ba00cc', '4eb9400d73c4'),  # XF cache key: jsr ab_key
+    (0x400d7092, '779079a80001', '4eb9400d73a8'),  # crossfader endpoint snapshot: jsr ab_d4
+    (0x400d738c, 'ff' * 116,
+     '779073a800014a3980000006670250c34a3980000007670250c14e75'                       # ab_d1
+     '779079a800014a3980000006670250c34a3980000007670250c44e75'                       # ab_d4
+     '71d04a3980000006670600800000ff004a398000000767060080000000ffb0b9400d69544e75'  # ab_key
+     '760050c34ef9400d2994'                                                           # null_a
+     '780050c44ef9400d29ae'),                                                         # null_b
+)
+
+
+def scene_mute(data, offset):
+    """Apply the scene-mute rows that fall inside author bytes at file offset."""
+    value = bytearray(data)
+    for address, author, replacement in SCENE_MUTE:
+        at = address - BASE_ADDRESS - offset
+        if at < 0 or at >= len(value):
+            continue
+        author, replacement = bytes.fromhex(author), bytes.fromhex(replacement)
+        if at + len(author) > len(value) or value[at:at + len(author)] != author or len(replacement) > len(author):
+            raise ValueError('MIDISC2.0 scene-mute site differs from the author image')
+        value[at:at + len(replacement)] = replacement
+    return bytes(value)
 
 
 def recipe():
@@ -55,7 +96,10 @@ def apply(stock):
         end = row['offset'] + len(data)
     if sha256(result).hexdigest() != spec['mainSha256']:
         raise ValueError('MIDISC2.0 output differs from the author image')
-    return bytes(result)
+    result = scene_mute(result, 0)
+    if sha256(result).hexdigest() != RELEASE_MAIN_SHA256:
+        raise ValueError('MIDISC2.0 scene-mute output differs from the release image')
+    return result
 
 
 class LocalPatchWrite:
@@ -68,7 +112,7 @@ class LocalPatchWrite:
 
     def read(self):
         from remix.stock_guard import _verified_image
-        return materialize(_verified_image(), self.row)
+        return scene_mute(materialize(_verified_image(), self.row), self.row['offset'])
 
     def __iter__(self):
         return iter(self.read())

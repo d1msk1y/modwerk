@@ -1,6 +1,6 @@
 # MIDISC2.0 build verification
 
-Version `0.2.4-experimental`; source `bkkbrls-del/midisc`
+Version `0.2.5-experimental`; source `bkkbrls-del/midisc`
 `4f9a89453fdcdd39a3cd57f010ffa489cac721cd`, `tools/midisc/release20.json`.
 The native remixer still pins the old 8.2 author dependency; this release
 cannot inherit that port's acceptance, relocation or selection matrix.
@@ -105,6 +105,47 @@ No firmware-dependent command was added to application checks.
 The promoted version `0.2.4-experimental` retains the identical author MAIN and
 screenshot pixels. The unchanged emulator reports retain their historical
 `0.2.3-experimental` identity; the new build approval binds this release.
+
+## Scene mute fix (0.2.5)
+
+Issue #329: stock FUNC + SCENE A/B sets the bytes `0x80000006` / `0x80000007`
+to 1, and the stock scene morph then ignores that side. MIDISC2.0 never read
+either byte. `patch.py` (`SCENE_MUTE`) and `src/engine/midi-scenes-patch.ts`
+(`MIDI_SCENES_SCENE_MUTE`) apply the same guarded rows after the author MAIN
+is verified (`debb2409…`), producing release MAIN `c7fb7d5b…`:
+
+- The crossfader mix (`0x400d2928`), endpoint snapshot (`0x400d7092`) and XF
+  cache key (`0x400d6884`) call helpers that load a muted side's scene as
+  unassigned, so a mute toggle also invalidates the cached context.
+- The mix's null scene pointer paths (`0x400d2984`, `0x400d299e`) loaded -1
+  rather than the 0xff "no lock" marker, so an unassigned side mixed as an
+  out-of-range lock. Their branches now reach stubs that load 0xff.
+- Scene-held edit paths are unchanged.
+
+The helpers and stubs occupy 114 of 116 bytes of an unreferenced 0xff run at
+`0x400d738c` inside the author's main cave. Nothing in the patched image refers
+into that run, and stock leaves the area unused.
+
+Checks run on 9 October 2026 with a local original 1.40C (no firmware kept):
+
+- Native `patch.apply()` and the browser `reconstructMidiScenes()` both give
+  `c7fb7d5b…`; the per-region native pokes match the whole image.
+- The full standalone browser composition (logger, platform and startup
+  writes) keeps every scene-mute row and reports no overlapping guard.
+- The crossfader entry (`0x400d28c8`) was run in `ot_emu` with one CC lock
+  (Scene A 100, Scene B 20, base 50) at crossfader 0, 64 and 127. With no
+  mute the output equals 0.2.4. For each of the four mute combinations, the
+  output equals the author image with that scene blank (no locks): one
+  muted side morphs against base 50, and both muted hold 50 everywhere. On
+  0.2.4 the mute flags changed nothing, reproducing the report.
+- The retained 360-case `probe.cpp` passes on both images with identical
+  results. The focused crossfader maximum rises by 40 modeled cycles
+  (47,642 → 47,682); observed stack stays 156 bytes.
+
+The local emulator libraries were not checked against `native-inputs.json`.
+Its 0.2.4 baseline matches the recorded 47,642-cycle and 156-byte figures.
+These are emulator observations, not hardware timing. No physical unit has
+run 0.2.5.
 
 ## Hardware report
 
