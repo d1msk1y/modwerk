@@ -11,11 +11,11 @@
 ; 00 allocator, 01 FX1 guard, 02 ring cursor, 03 phase high, 04 flip,
 ; 05 seeded, 06..08 targets, 09..0b final smoothed high words,
 ; 0c..0e smoothed low words, 10 tap offset, 11 fraction, 12 age,
-; 13 dry input, 14 interpolated wet, 15 L previous,16/17 L even hi/lo,
+; 15 L previous,16/17 L even hi/lo,
 ; 18/19 L odd hi/lo,1a R previous,1b/1c R even,1d/1e R odd,
-; 20/21 RANGE first slew stage,22/23 MIX first stage,28/29 tap scratch,
-; 2a sine scratch,30 table base,31 sine scratch,32 phase low,
-; 33 speed-target low,34/35 air delta hi/lo,36 selected air factor.
+; 20/21 RANGE first slew stage,22/23 MIX first stage,
+; 30 table base,32 phase low,
+; 33 speed-target low,35 dry coefficient. Other offsets are reserved.
 ; 37 count of valid ring history (0..8192); initial history is logically zero.
 ; Init clears the complete 56-word state span, including reserved gaps.
 ; init preserves r1/n1/m1. Proc never reads the allocator pointer again.
@@ -39,7 +39,7 @@ ac_zero:
         tst     a
         tmi     x0,b
         move    b,x:(r7+$01)
- ; Unwritten history reads as zero until each ring position has been filled.
+; Unwritten history reads as zero until each ring position has been filled.
 ; This avoids a 16384-word clear inside the effect-change dispatcher block.
         move    #>$200000,x0
         move    x0,x:(r7+$03)
@@ -51,6 +51,10 @@ proc:
         move    #>$ffffff,m5
         move    #>$ffffff,m4
         move    #>$ffffff,m3
+; Keep MIX addressable by an indirect move so arithmetic can load it in
+; parallel. n1 reaches the shared dry coefficient. Init still preserves r1.
+        lua     (r7+$0b),r1
+        move    #>$2a,n1
 ; Warm rings use the original tap body. Choose once per processing call;
 ; a call that finishes filling history keeps the masked path until next call.
         move    #>ac_maskedread,r2
@@ -127,6 +131,13 @@ ac_sample:
         add     b,a
         move    a1,x:(r7+$20)
         move    a0,x:(r7+$21)
+        move    x:(r7+$0a),b
+        move    x:(r7+$0d),b0
+        sub     b,a
+        asr     #10,a,a
+        add     b,a
+        move    a1,x:(r7+$0a)
+        move    a0,x:(r7+$0d)
         move    x:(r7+$08),a
         move    x:(r7+$22),b
         move    x:(r7+$23),b0
@@ -135,6 +146,13 @@ ac_sample:
         add     b,a
         move    a1,x:(r7+$22)
         move    a0,x:(r7+$23)
+        move    x:(r1),b
+        move    x:(r7+$0e),b0
+        sub     b,a
+        asr     #10,a,a
+        add     b,a
+        move    a1,x:(r7+$0b)
+        move    a0,x:(r7+$0e)
         move    x:(r7+$06),a
         move    x:(r7+$33),a0
         move    x:(r7+$09),b
@@ -144,33 +162,19 @@ ac_sample:
         add     b,a
         move    a1,x:(r7+$09)
         move    a0,x:(r7+$0c)
-        move    x:(r7+$20),a
-        move    x:(r7+$21),a0
-        move    x:(r7+$0a),b
-        move    x:(r7+$0d),b0
-        sub     b,a
-        asr     #10,a,a
-        add     b,a
-        move    a1,x:(r7+$0a)
-        move    a0,x:(r7+$0d)
-        move    x:(r7+$22),a
-        move    x:(r7+$23),a0
-        move    x:(r7+$0b),b
-        move    x:(r7+$0e),b0
-        sub     b,a
-        asr     #10,a,a
-        add     b,a
-        move    a1,x:(r7+$0b)
-        move    a0,x:(r7+$0e)
+; The dry coefficient is shared by both channels.
+        move    x:(r1),b
+        neg     b
+        add     #>$7fffff,b
+        move    b,y0
+        move    y0,x:(r7+$35)
 ; Sine of shared L/R phase, from a linearly interpolated 1025-point quarter.
         move    x:(r7+$03),a
         bsr     ac_sine
-        move    a,x:(r7+$2a)
         move    a,y1
         move    x:(r7+$0a),x0
-        mpy     x0,y1,a
+        mpy     x0,y1,a    x:(r1),y1
         move    a,x0
-        move    x:(r7+$0b),y1
         mpy     x0,y1,a
         move    x:(r7+$0a),x0
         add     x0,a
@@ -234,10 +238,7 @@ ac_sine:
         move    a1,b
         and     #>$1fffff,b
         move    b1,y0
-        move    x:(r7+$03),b
-        and     #>$200000,b
-        tst     b
-        beq     ac_unfold
+        jclr    #21,a1,ac_unfold
         move    #>$200000,b
         move    y0,x0
         sub     x0,b
@@ -256,124 +257,79 @@ ac_unfold:
         and     #>$7ff,a
         asl     #12,a,a
         move    a1,y0
-        move    x0,x:(r7+$31)
+        move    x0,x1
         move    y0,x0
         mpy     x0,y1,a
-        move    x:(r7+$31),x0
-        add     x0,a
+        add     x1,a
         move    a,x0
+        move    x0,a
         move    x:(r7+$03),b
-        and     #>$400000,b
-        tst     b
-        beq     ac_positive
-        move    x0,a
+        jclr    #22,b1,ac_positive
         neg     a
-        move    a,x0
 ac_positive:
-        move    x0,a
         rts
 
 ac_channel:
 ; Previous is full Q23; even/odd states are Q23 + a 24-bit low word, with
 ; eight guard bits. Rounding never accumulates inside the air recurrences.
-        move    a,x:(r7+$13)
         move    a,x1
         move    x:(r3),b
-        move    x1,x:(r3)+
-        sub     x1,b
+        sub     x1,b      x1,x:(r3)+
         asr     #8,b,b
-        move    b1,x:(r7+$34)
-        move    b0,x:(r7+$35)
+; Sign the air delta once; the even and odd updates use opposite signs.
+        move    x:(r7+$04),a
+        tst     a
+        beq     ac_deltaready
+        neg     b
+ac_deltaready:
         move    x:(r3),a
         move    x:(r3+1),a0
-        move    x:(r7+$04),x0
-        move    x0,b
-        tst     b
-        bne     ac_evenminus
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
         add     b,a
-        bra     ac_evenstore
-ac_evenminus:
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
-        sub     b,a
-ac_evenstore:
         move    a1,x:(r3)
         move    a0,x:(r3+1)
-        move    x:(r7+$04),b
-        tst     b
-        bne     ac_notfactor
-        move    a1,x:(r7+$36)
-ac_notfactor:
+        move    a1,y0
         move    x:(r3+2),a
         move    x:(r3+3),a0
-        move    x:(r7+$04),b
-        tst     b
-        bne     ac_oddplus
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
         sub     b,a
-        bra     ac_oddstore
-ac_oddplus:
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
-        add     b,a
-ac_oddstore:
         move    a1,x:(r3+2)
         move    a0,x:(r3+3)
+        move    a1,x0
         move    x:(r7+$04),b
         tst     b
-        beq     ac_factorready
-        move    a1,x:(r7+$36)
-ac_factorready:
-; odd -= (odd-even)/256 in the full accumulator.
-        move    x:(r3+2),a
-        move    x:(r3+3),a0
+        move    y0,b
+        tne     x0,b
+        move    b1,y0
+; Keep the 48-bit recurrences in the accumulators instead of spilling
+; each difference and loading it back. Arithmetic order/rounding is unchanged.
         move    x:(r3),b
         move    x:(r3+1),b0
         sub     b,a
         asr     #8,a,a
-        move    a1,x:(r7+$34)
-        move    a0,x:(r7+$35)
-        move    x:(r3+2),a
-        move    x:(r3+3),a0
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
-        sub     b,a
-; A -= A.high * (1 - 1/1.0001). The neglected low-word contribution
-; to the leak is < 1.2e-11 in guarded units. Preserve the entire result.
-        move    a1,x0
+        move    x:(r3+2),b
+        move    x:(r3+3),b0
+        sub     a,b
+        move    b1,x0
         move    #>839,y1
-        mpy     x0,y1,b
-        sub     b,a
-        move    a1,x:(r3+2)
-        move    a0,x:(r3+3)
+        mpy     x0,y1,a
+        sub     a,b
+        move    b1,x:(r3+2)
+        move    b0,x:(r3+3)
 ; even -= (even-updatedOdd)/256, then the same full-precision leak.
         move    x:(r3),a
         move    x:(r3+1),a0
-        move    x:(r3+2),b
-        move    x:(r3+3),b0
         sub     b,a
         asr     #8,a,a
-        move    a1,x:(r7+$34)
-        move    a0,x:(r7+$35)
-        move    x:(r3),a
-        move    x:(r3+1),a0
-        move    x:(r7+$34),b
-        move    x:(r7+$35),b0
-        sub     b,a
-        move    a1,x0
-        move    #>839,y1
-        mpy     x0,y1,b
-        sub     b,a
-        move    a1,x:(r3)
-        move    a0,x:(r3+1)
-; The selected factor is captured BEFORE either state decays, as upstream.
-        move    x:(r7+$36),x0
-        move    x:(r7+$0b),y1
+        move    x:(r3),b
+        move    x:(r3+1),b0
+        sub     a,b
+        move    b1,x0
         mpy     x0,y1,a
-        move    x1,b
+        sub     a,b
+        move    b1,x:(r3)
+        move    b0,x:(r3+1)
+; The selected factor is captured BEFORE either state decays, as upstream.
+        move    x:(r1),x0
+        mpy     y0,x0,a    x1,b
         asr     #8,b,b
         add     b,a
         rnd     a
@@ -381,86 +337,78 @@ ac_factorready:
         move    r4,r5
         move    (r5)+n5
         move    a,y:(r5)
-; read at write + age, wrapping the OFFSET, not the allocator address.
-        move    x:(r7+$02),a
-        move    x:(r7+$12),x0
-        add     x0,a
-        and     #>$1fff,a
-        move    a1,n5
+; Advance from the write address to age with the hardware modulo AGU.
+; Allocator bases are 8192-word aligned. Restore linear mode for the sine.
+        move    x:(r7+$12),n5
+        move    #>8191,m5
+        move    (r5)+n5
         jsr     (r2)
-        move    a,x:(r7+$28)
-        move    n5,a
-        add     #>1,a
-        and     #>$1fff,a
-        move    a1,n5
-        jsr     (r2)
-        move    a,x:(r7+$29)
-        move    n5,a
-        add     #>1,a
-        and     #>$1fff,a
-        move    a1,n5
-        jsr     (r2)
-        move    a,y1
-        move    x:(r7+$28),x0
+        move    #>$ffffff,m5
+; Preserve the three tap words in registers through interpolation and
+; correction, keeping the original truncations at the same arithmetic points.
+        move    y1,b
+        move    y1,a
         sub     x0,a
+        move    x0,x1
         move    a,x0
         move    x:(r7+$11),y1
         mpy     x0,y1,a
-        move    x:(r7+$28),x0
-        add     x0,a
-        move    x:(r7+$29),x0
-        add     x0,a
+        add     x1,a
+        add     x1,b
+        add     y0,a
         asr     #1,a,a
-        move    a,x:(r7+$14)
+        move    a,x1
 ; Correction -0.01 * (s0 - 2*s1 + s2), after the 0.5 normalization.
-        jsr     (r2)
-        move    a,b
-        move    x:(r7+$28),x0
-        add     x0,b
-        move    x:(r7+$29),a
+        move    y0,a
         asl     #1,a,a
         sub     a,b
         move    b,y1
         move    #>83886,x0
         mpy     x0,y1,a
         move    a,b
-        move    x:(r7+$14),a
+        move    x1,a
         sub     b,a
 ; Blend in the full accumulator: no intermediate clipping of wet.
         move    a,x0
-        move    x:(r7+$0b),y1
-        mpy     x0,y1,a
+        move    x:(r1),y1
+        mpy     x0,y1,a    x:(r0),x0
         asl     #8,a,a
-        move    x:(r7+$13),x0
-        move    x:(r7+$0b),b
-        neg     b
-        add     #>$7fffff,b
-        move    b,y1
-        mac     x0,y1,a
+        move    x:(r1+n1),y1
+        mac     x0,y1,a    x:(r1),b
 ; MIX 0 preserves every original input bit.
-        move    x:(r7+$0b),b
         tst     b
         teq     x0,a
         rts
 
 ac_maskedread:
-; Read only written history. Offset subtraction is wrapped within this ring;
-; at 8192 valid samples every position is live. MOVE preserves the CMP flags.
-        move    n5,a
-        move    x:(r7+$02),x0
-        sub     x0,a
-        and     #>$1fff,a
-        move    a1,b
-        move    x:(r7+$37),x0
-        cmp     x0,b
-        move    r4,r5
-        move    (r5)+n5
-        move    y:(r5),a
+; Return s0/s1/s2 in x0/y0/y1. The valid count includes the new sample.
+; age+2 <= 8161, so only the last zero, one or two taps can be unwritten.
+; Fully valid triplets use the same three reads even before the ring fills.
+        move    x:(r7+$12),b
+        move    x:(r7+$37),a
+        sub     b,a
+        cmp     #>2,a
+        bgt     ac_warmread
+        tst     a
+        ble     ac_emptyread
+        cmp     #>1,a
+        beq     ac_oneread
+        move    y:(r5)+,x0
+        move    y:(r5)+,y0
+        move    #>0,y1
+        rts
+ac_emptyread:
         move    #>0,x0
-        tge     x0,a
+        move    #>0,y0
+        move    #>0,y1
+        rts
+ac_oneread:
+        move    y:(r5)+,x0
+        move    #>0,y0
+        move    #>0,y1
         rts
 ac_warmread:
-        move    r4,r5
-        move    (r5)+n5
-        move    y:(r5),a
+        move    y:(r5)+,x0
+        move    y:(r5)+,y0
+        move    y:(r5)+,y1
         rts

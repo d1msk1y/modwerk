@@ -85,3 +85,7 @@ publication; the 0.1.0 waiver must not be extended silently.
 
 Chris Johnson / Airwindows authored the original Chorus (MIT). Jannik Assfalg
 ported it; these optimizations retain the same attribution and [MIT licence](LICENSE).
+
+## Promoted to beta
+
+On 9 October 2026 the owner authorized this candidate as Air Chorus 0.1.1 for the beta tester class, waiving current hardware evidence for the exact published source. The release module is now `sdk/octabam/modules/airwindows-chorus`; this draft retains the original investigation evidence. The T3/T4 hardware symptom remains unconfirmed.

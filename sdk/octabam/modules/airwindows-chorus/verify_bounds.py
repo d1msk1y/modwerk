@@ -29,10 +29,10 @@ def main():
         calls=lambda text:re.findall(r"^\s*bsr\s+(\w+)",text,re.M)
         assert calls(spans['sample'])==['ac_sine','ac_channel','ac_channel']
         assert not calls(spans['channel'])
-        assert len(re.findall(r'^\s*jsr\s+\(r2\)',spans['channel'],re.M))==4
+        assert len(re.findall(r'^\s*jsr\s+\(r2\)',spans['channel'],re.M))==1
         assert re.findall(r'^\s*move\s+#>(\w+),r2',source,re.M)==['ac_maskedread','ac_warmread']
         assert not re.search(r'\br2\b',spans['sample']+spans['sine']+spans['tap'])
-        assert len(re.findall(r'\br2\b',spans['channel']))==4
+        assert len(re.findall(r'\br2\b',spans['channel']))==1
         assert not calls(spans['sine']) and not calls(spans['tap'])
         for text in spans.values():
             labels={m.group(1):m.start() for m in re.finditer(r"^(\w+):",text,re.M)}
@@ -40,9 +40,11 @@ def main():
                 assert labels[m.group(1)]>m.start(), 'Non-forward branch needs a new bound'
             assert not re.search(r"^\s*(?:do|rep|jmp)\b",text,re.M)
             assert not re.search(r"^\s*jsr\b",re.sub(r"^\s*jsr\s+\(r2\).*?$","",text,flags=re.M),re.M)
-        branch_cost=lambda text:4*len(re.findall(r"^\s*b(?:ra|cc|cs|eq|ne|ge|lt|gt|le|mi|pl)\b",text,re.M))
-        tap=max(s['ac_warmread']-s['ac_maskedread'],verify.ORG+words-s['ac_warmread'])
-        channel=s['ac_maskedread']-s['ac_channel']+4*(tap+4)+branch_cost(spans['channel'])
+        for m in re.finditer(r'^\s*jclr\s+#[^,]+,[^,]+,(\w+)',spans['sine'],re.M):
+            assert spans['sine'].index(m.group(1)+':') > m.start(), 'Non-forward bit branch needs a new bound'
+        branch_cost=lambda text:4*len(re.findall(r"^\s*(?:b(?:ra|cc|cs|eq|ne|ge|lt|gt|le|mi|pl)|jclr)\b",text,re.M))
+        tap=verify.ORG+words-s['ac_maskedread']+branch_cost(spans['tap'])
+        channel=s['ac_maskedread']-s['ac_channel']+(tap+4)+branch_cost(spans['channel'])
         sine=s['ac_channel']-s['ac_sine']+branch_cost(spans['sine'])
         sample=s['ac_frameend']+1-s['ac_sample']+(sine+4)+2*(channel+4)+branch_cost(spans['sample'])
         # Include endpoint helpers, first-call seeding, loop entry and return.
@@ -53,7 +55,7 @@ def main():
         init=s['proc']-s['init']+56+16
         bound=sample+(control+15)//16
         split_bound=sample+(2*control+15)//16
-        record={'version':'0.1.0-experimental','programWords':words,'tableWords':1026,
+        record={'version':json.loads((HERE/'octamod.module.json').read_text())['version'],'programWords':words,'tableWords':1026,
                 'model':'instruction words plus conservative call/branch surcharge; no contention stalls',
                 'perSampleLoopUpperBound':sample,'perCallSetupUpperBound':control,
                 'perSampleAt16FramesUpperBound':bound,'perSampleAt16FramesWithSplitUpperBound':split_bound,
