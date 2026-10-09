@@ -6,7 +6,7 @@ import { communityModule } from '../src/community/modules'
 import { needMember, throttle } from './auth'
 import { emailReady } from './email'
 import { moduleReleaseAnnouncement } from './announcements'
-import { HttpError, jsonBody, response } from './security'
+import { digest, HttpError, jsonBody, response } from './security'
 
 /** A new report follows module releases unless its reporter declines this in the form. */
 export function followReportedModule(db: Database, moduleId: string, userId: string) {
@@ -107,17 +107,24 @@ export async function recordModuleReleases(db: Database, releases: ModuleRelease
 }
 
 /** Read the live site's published inventory, rather than the Worker's independently deployed source catalog. */
-export async function publishedModuleReleases(env: Env) {
-  if (!env.APP_URL) return []
+export async function publishedModuleReleases(env: Env, expectedSha256?: string) {
+  if (!env.APP_URL) {
+    if (expectedSha256) throw new HttpError(503, 'The published release inventory is not configured.')
+    return []
+  }
   const app = new URL(env.APP_URL)
   app.pathname = app.pathname.replace(/\/?$/, '/'); app.search = ''; app.hash = ''
   const url = new URL('module-releases.json', app)
   // Workers supports only follow/manual; a redirect remains a failed check through result.ok below.
   const result = await fetch(url, { redirect: 'manual', signal: AbortSignal.timeout(10000), headers: { Accept: 'application/json', 'Cache-Control': 'no-cache' } })
-  if (result.status === 404) return [] // The previous site can still be live during rollout.
+  if (result.status === 404) {
+    if (expectedSha256) throw new HttpError(409, 'The published release inventory is not live yet.')
+    return [] // The previous site can still be live during rollout.
+  }
   if (!result.ok) throw new Error('Published module versions could not be checked.')
   const body = await result.text()
   if (body.length > 256 * 1024) throw new Error('Module release inventory is too large.')
+  if (expectedSha256 && await digest(body) !== expectedSha256) throw new HttpError(409, 'The published release inventory does not match this deployment yet.')
   return parseModuleReleases(JSON.parse(body))
 }
 

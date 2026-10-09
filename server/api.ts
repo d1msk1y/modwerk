@@ -1,4 +1,5 @@
 import { pushRoutes } from './push'
+import { publishedReleaseRoute } from './release-publish'
 import { followReportedModule, moduleChangelogRoute, moduleDownloadRoute, moduleUpdateRoutes } from './module-updates'
 import { issueStatusStatements } from './issue-notifications'
 import { forum, SHARED_CONFIGURATIONS, sharedConfigurationBinds } from './forum'
@@ -49,6 +50,11 @@ export async function handleApi(request: Request, env: Env): Promise<Response> {
     if (path === '/api/github/webhook' && request.method === 'POST') {
       if (!env.DB) throw new HttpError(503,'Community services are not connected yet.')
       return response(await handleGithubWebhook(request,env,env.DB,await boundedBody(request,1024*1024)))
+    }
+    // The Pages job authenticates server-to-server with GitHub OIDC after its approved deployment.
+    if (path === '/api/module-releases/sync') {
+      if (!env.DB) throw new HttpError(503,'Community services are not connected yet.')
+      return await publishedReleaseRoute(request,env,env.DB)
     }
     // Mail clients post one-click unsubscribes (RFC 8058) without an Origin or session; a signed token authorizes them.
     if (path === '/api/notifications/unsubscribe' && request.method === 'POST') {
