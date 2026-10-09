@@ -12,6 +12,7 @@ import { CardStats } from '../components/ModuleCard'
 import { ModulePreview } from '../components/ModulePreview'
 import type { ModuleStatistics } from './module-statistics'
 import { memberStanding, POINTS, TIERS } from './member-standing'
+import { ProfileLinksView } from './ProfileLinksView'
 
 const memberSince = (value: string) => new Date(value.includes('T') ? value : value.replace(' ', 'T') + 'Z').toLocaleDateString(undefined, { month: 'long', year: 'numeric' })
 export function ForumProfile({ username, onLoad }: { username: string; onLoad?: (profile: MemberProfile) => void }) {
@@ -23,6 +24,7 @@ export function ForumProfile({ username, onLoad }: { username: string; onLoad?: 
     <h2>{profile.displayName}<ForumRoleBadge role={profile.role} />{profile.maintains.length > 0 && <ForumMaintainerBadge profile />}</h2>
     <p className="forum-profile-since">@{profile.username} · Member since {memberSince(profile.memberSince)}</p>
     {profile.bio && <p className="profile-bio">{profile.bio}</p>}
+    <ProfileLinksView key={profile.username} profile={profile} />
     <dl className="forum-profile-stats"><div><dt>Threads</dt><dd>{profile.threads}</dd></div><div><dt>Replies</dt><dd>{profile.replies}</dd></div><div><dt>Likes received</dt><dd>{profile.likesReceived}</dd></div><div><dt>Bug reports</dt><dd>{profile.reports}</dd></div><div><dt>Modules</dt><dd>{profile.maintains.length}</dd></div></dl>
     <ForumStanding profile={profile} />
     {canMessage && <a className="button button-quiet forum-profile-message" href={'#forum/messages/' + encodeURIComponent(username)}><Icon name="mail" size={15} />Send a message</a>}

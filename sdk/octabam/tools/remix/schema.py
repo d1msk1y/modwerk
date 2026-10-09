@@ -865,9 +865,13 @@ class Linked:
     # refused. DRAM units share one link, so two declaring one name must
     # resolve it to one value.
     stock_copies: tuple = ()
+    exports: tuple[str, ...] = ()  # explicit existing local symbols shared by a composition
     defsyms: tuple[tuple[str, int], ...] = ()
 
     def __post_init__(self):
+        import re
+        if not isinstance(self.exports, tuple) or any(not isinstance(name,str) for name in self.exports) or len(self.exports) != len(set(self.exports)) or any(not re.fullmatch(r"[A-Za-z_][A-Za-z0-9_]*", name) or name in ("_end", "_edata", "__bss_start") for name in self.exports):
+            raise ValueError(f"Linked({self.label!r}): invalid explicit local exports")
         names = [n for n, _v in self.defsyms]
         if len(names) != len(set(names)):
             raise ValueError(f"Linked({self.label!r}): a defsym name declared twice")

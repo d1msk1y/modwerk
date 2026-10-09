@@ -5,6 +5,8 @@ import { useRef, useState, type ReactNode } from 'react'
 import { createPortal } from 'react-dom'
 import { downloadDigiSelection, parseDigiSelection } from '../config/digi-selection'
 import { Icon } from '../components/Icon'
+import { assetUrl } from '../hosting'
+import { projectMachineForDevice } from '../projects/projects'
 import { issueRepository } from '../community/report-context'
 import type { Configuration } from '../config/workspace'
 import { LIBRARY_CATEGORY_LABELS, STANDALONE_NOTE, type FirmwareModule, type ModuleCategory } from '../catalog/modules'
@@ -26,6 +28,8 @@ import { MemberGate } from '../community/MemberGate'
 import { useDigiFirmware } from '../hooks/useDigiFirmware'
 import { DigiFirmwarePanel } from '../components/DigiFirmwarePanel'
 import { DigiBuildPanel } from '../components/DigiBuildPanel'
+import { ModuleAuthors } from '../components/ModuleAuthors'
+import { contributorSearchText } from '../catalog/module-authors'
 
 type DigiDevice = DeviceProfile & { id: DigiMod['device'] }
 const STEP_LABELS = { done: 'Done', started: 'Started', open: 'Open' } as const
@@ -42,7 +46,7 @@ function DigiModCard({ mod, selected, statistics, compared, canCompare, onToggle
         <div className="module-card-heading"><a href={href} onClick={onBrowse} onAuxClick={onBrowse}>{mod.title}</a><div className="card-release"><span className="card-version">v{mod.version}</span></div></div>
         <AddButton name={mod.title} selected={selected} onToggle={onToggle} />
       </div>
-      <div className="card-credit"><a href={mod.repository} target="_blank" rel="noreferrer">{mod.author}</a><span>{mod.license}</span></div>
+      <div className="card-credit"><ModuleAuthors name={mod.author} url={mod.repository} contributors={mod.contributors}/><span>{mod.license}</span></div>
       <p className="card-description">{mod.summary}</p>
       <div className="card-bottom"><span>{mod.category}</span><CardStats statistics={statistics}><span className="card-stat">{kib(mod.ramBytes)} memory</span></CardStats></div>
       <CardProof stability={stability} name={mod.title + ' for ' + DEVICES_BY_ID[mod.device].name} compared={compared} canCompare={canCompare} onCompare={onCompare} />
@@ -88,8 +92,8 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
   const libraryFamily = families.includes(family) ? family : 'all'
   // Each module in view before the type filter, by type: the phone type sheet counts what each choice would show.
   const scopeFamilies = [
-    ...(!device || device.id === 'octatrack' ? AVAILABLE_MODULES.filter(module => (!category || module.category === category) && (module.name + ' ' + module.description + ' ' + module.authorName + ' ' + module.author).toLowerCase().includes(term)).map(module => DETAILS[module.id].family) : []),
-    ...DIGI_MODS.filter(mod => (!device || mod.device === device.id) && (!category || mod.libraryCategory === category) && (mod.title + ' ' + mod.summary + ' ' + mod.author).toLowerCase().includes(term)).map(mod => mod.category),
+    ...(!device || device.id === 'octatrack' ? AVAILABLE_MODULES.filter(module => (!category || module.category === category) && (module.name + ' ' + module.description + ' ' + module.authorName + ' ' + module.author + ' ' + contributorSearchText(module.contributors)).toLowerCase().includes(term)).map(module => DETAILS[module.id].family) : []),
+    ...DIGI_MODS.filter(mod => (!device || mod.device === device.id) && (!category || mod.libraryCategory === category) && (mod.title + ' ' + mod.summary + ' ' + mod.author + ' ' + contributorSearchText(mod.contributors)).toLowerCase().includes(term)).map(mod => mod.category),
   ]
   const typeCounts = families.map(value => ({ value, count: scopeFamilies.filter(item => item === value).length })).filter(option => option.count || option.value === libraryFamily)
   const warnings = [
@@ -101,7 +105,7 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
   ]
   const digiGroups = (['digitakt', 'digitone'] as const).filter(id => !device || device.id === id).map(id => ({
     id,
-    mods: DIGI_MODS.filter(mod => mod.device === id && (!category || mod.libraryCategory === category) && (libraryFamily === 'all' || mod.category === libraryFamily) && (mod.title + ' ' + mod.summary + ' ' + mod.author).toLowerCase().includes(term))
+    mods: DIGI_MODS.filter(mod => mod.device === id && (!category || mod.libraryCategory === category) && (libraryFamily === 'all' || mod.category === libraryFamily) && (mod.title + ' ' + mod.summary + ' ' + mod.author + ' ' + contributorSearchText(mod.contributors)).toLowerCase().includes(term))
       .sort((a,b) => compareModules({id: id + '-' + a.id, name: a.title, authorName: a.author, updatedAt: a.updatedAt}, {id: id + '-' + b.id, name: b.title, authorName: b.author, updatedAt: b.updatedAt}, sort, statistics)),
   }))
   function browseResults() {
@@ -121,6 +125,7 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
   const resultsSummary = !hasMods ? 'No modules yet · ' + device?.name : term ? total + ' ' + (total === 1 ? 'result' : 'results') + ' for “' + query.trim() + '”' : total + ' ' + (total === 1 ? 'module' : 'modules') + ' · ' + ((device ?? onlyGroup)?.name ?? 'All machines')
   return <div className="library-page">
     <div className="page-heading"><div><p className="page-kicker">MODWERK / {device?.name.toUpperCase() ?? 'ALL MACHINES'}</p><h1>{category ? LIBRARY_CATEGORY_LABELS[category] : device ? 'Module library' : 'All mods'}</h1><p>{category === 'standalone' ? STANDALONE_NOTE : 'Explore modules for your Elektron instruments.'}</p></div><span className="library-total">{total} modules</span></div>
+    {device && projectMachineForDevice(device.id) && <p className="machine-external-projects"><a href={assetUrl('projects/') + '?machine=' + projectMachineForDevice(device.id)}>Other projects for {device.name} <Icon name="arrow" size={14} /></a></p>}
     {!!warnings.length && <SelectionWarning warnings={warnings.map(warning => ({id: warning.device.id, title: warning.device.name + ': your selection needs a change', description: warning.description, href: deviceHref(warning.device.id, 'configuration')}))} />}
     {phone ? resultsSlot && createPortal(<LibraryResultsBar summary={resultsSummary} sort={sort} onSortChange={onSortChange} family={libraryFamily} onFamilyChange={onFamilyChange} families={typeCounts} allCount={scopeFamilies.length} disabled={!hasMods} />, resultsSlot) : <LibraryTools family={libraryFamily} families={families} onFamilyChange={onFamilyChange} sort={sort} onSortChange={onSortChange} comparisonCount={comparison.length} onCompare={onOpenComparison} buildHref={hasMods ? deviceHref(device?.id ?? 'octatrack', 'configuration') : null} buildLabel={hasMods ? 'Build firmware for ' + (device?.name ?? 'Octatrack') : 'No modules to build yet'} machine={machinePicker} disabled={!hasMods} />}
     {device || !total ? <div className="library-subheading"><span>{term ? 'Results for “' + query.trim() + '”' : 'Explore the collection'}</span><span className="subtle">{device ? device.name + (device.firmware ? ' · OS ' + device.firmware.releases.join(' / ') : ' · no modules yet') : 'All machines'}</span></div> : null}

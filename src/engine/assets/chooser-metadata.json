@@ -114,6 +114,13 @@
       "fx1Only": true
     },
     {
+      "id": "airwindows-chorus",
+      "key": "AIR CHORUS",
+      "fxId": 30,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
       "id": "miniverb",
       "key": "MINIVERB",
       "fxId": 23,
@@ -146,13 +153,6 @@
       "key": "TAPEHEAD",
       "fxId": 31,
       "fx1": true,
-      "fx1Only": false
-    },
-    {
-      "id": "airwindows-chorus",
-      "key": "AIR CHORUS",
-      "fxId": 30,
-      "fx1": false,
       "fx1Only": false
     },
     {
@@ -208,6 +208,13 @@
     {
       "id": "recorder-loop-fix",
       "key": "RECORDER LOOP FIX",
+      "fxId": null,
+      "fx1": false,
+      "fx1Only": false
+    },
+    {
+      "id": "poly8",
+      "key": "POLY8",
       "fxId": null,
       "fx1": false,
       "fx1Only": false

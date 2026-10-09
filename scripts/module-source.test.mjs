@@ -19,7 +19,7 @@ describe('release package scope and reviewed source inventory', () => {
   })
   it('binds approved standalone MIDI Scenes without compiling its archived 8.2 port', async () => {
     const versions = await compiledModuleVersions(root, catalog), paths = await moduleSourcePaths(root)
-    expect(Object.keys(versions)).toEqual(['spectrum', 'modulation', 'character', 'miniverb', 'tapeecho', 'euclid', 'repitch', 'tapehead', 'airwindows-chorus', ...requested.filter(id => id !== 'vector'),'previewvol','cc-map','sidechain-compressor','vector','playmodes','mute-modes','recorder-loop-fix'])
+    expect(Object.keys(versions)).toEqual(['spectrum', 'modulation', 'character', 'miniverb', 'tapeecho', 'euclid', 'repitch', 'tapehead', 'airwindows-chorus', ...requested.filter(id => id !== 'vector'),'previewvol','cc-map','sidechain-compressor','vector','playmodes','mute-modes','recorder-loop-fix','poly8'])
     for (const id of ['playmodes', 'mute-modes', 'recorder-loop-fix']) {
       expect(versions[id]).toBe(id === 'playmodes' ? '0.1.1-experimental' : '0.1.0-experimental')
       expect(paths).toContain('modules/' + id + '/manifest.py')
@@ -27,7 +27,7 @@ describe('release package scope and reviewed source inventory', () => {
     expect(versions['midi-scenes']).toBe('0.2.4-experimental')
     expect(versions.miniverb).toBe('0.2.0-experimental')
     for (const id of verifiedRequested) {
-      expect(versions[id]).toBe(id === 'analog-bassdrum' ? '0.1.3-experimental' : id === 'vector' ? '0.2.3-experimental' : id === 'synth' ? '0.1.2-experimental' : id === 'usb-audio-out-tracks-main-cue' ? '0.2.0-experimental' : '0.1.2-experimental')
+      expect(versions[id]).toBe(id === 'analog-bassdrum' ? '0.1.5-experimental' : id === 'vector' ? '0.2.4-experimental' : id === 'synth' ? '0.1.2-experimental' : id === 'usb-audio-out-tracks-main-cue' ? '0.2.0-experimental' : '0.1.2-experimental')
       expect(paths).toContain('modules/' + id + '/manifest.py')
     }
     expect(paths).toContain('modules/midi-scenes/recipe.json')

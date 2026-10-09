@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 export const USB_AUDIO_MODULE = 'usb-audio-out-tracks-main-cue'
 export const USB_AUDIO_VERSION = '0.2.0-experimental'
 export const USB_AUDIO_REVISION = '7b2984c859732ae6c797ae49c7d61d250b1b6519'

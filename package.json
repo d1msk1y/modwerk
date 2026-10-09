@@ -1,6 +1,6 @@
 {
   "name": "octamod",
-  "license": "GPL-3.0-or-later",
+  "license": "SEE LICENSE IN LICENSE",
   "private": true,
   "version": "0.1.0",
   "type": "module",
@@ -27,7 +27,7 @@
     "modules:generate": "node scripts/modules.mjs --write",
     "modules:check": "node scripts/modules.mjs",
     "licenses:generate": "node scripts/licenses.mjs --write",
-    "licenses:check": "node scripts/licenses.mjs && node --test scripts/license-notices.node-test.mjs",
+    "licenses:check": "node scripts/platform-licenses.mjs && node scripts/licenses.mjs && node --test scripts/license-notices.node-test.mjs scripts/platform-licenses.node-test.mjs",
     "module:new": "node scripts/scaffold-module.mjs",
     "module:verify": "node scripts/module-verify.mjs",
     "module:doctor": "node scripts/module-doctor.mjs",
@@ -48,12 +48,14 @@
     "@tiptap/react": "3.31.4",
     "@tiptap/starter-kit": "3.31.4",
     "better-auth": "1.7.7",
+    "jose": "6.2.12",
     "react": "19.3.0",
     "react-dom": "19.3.0",
     "react-markdown": "10.1.0",
     "remark-gfm": "4.0.1",
     "remark-parse": "11.0.0",
-    "unified": "11.0.5"
+    "unified": "11.0.5",
+    "wavesurfer.js": "8.0.2"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
@@ -66,6 +68,7 @@
     "eslint-plugin-react-refresh": "0.5.7",
     "fake-indexeddb": "6.2.5",
     "globals": "17.12.0",
+    "jsdom": "30.1.2",
     "sharp": "0.35.4",
     "typescript": "6.0.3",
     "typescript-eslint": "8.71.0",
