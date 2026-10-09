@@ -2,6 +2,7 @@ import type { CatalogBrowse } from '../catalog/catalog-browse'
 import { ModuleDetailLayout } from '../components/ModuleDetailLayout'
 import { ModuleResourceSummary, type ResourceIndicator } from '../components/ModuleResourceSummary'
 import { Icon } from '../components/Icon'
+import { ModuleUsageInstructions } from '../components/ModuleUsageInstructions'
 import { DigiIssueReport } from '../community/DigiIssueReport'
 import { issueRepository } from '../community/report-context'
 import { FLASHING_RISKS, FIRMWARE_SHARING_NOTICE } from '../firmware-notices'
@@ -63,8 +64,7 @@ function DigiModuleGuide({ mod, device }: { mod: DigiMod; device: DeviceProfile 
       <summary><span>How to use it</span><Icon name="plus" size={16} /></summary>
       <div className="disclosure-content">
         <section className="detail-section module-access"><h2>Find it on your {device.name}</h2>{'location' in access ? <><p>{access.location}</p><ol>{access.steps.map(step => <li key={step}>{step}</li>)}</ol></> : <p>{access.noUiReason}</p>}</section>
-        <h3>{document.tests.documentation?.tutorial.title ?? 'Quick tutorial'}</h3>
-        <ol className="usage-list">{document.presentation.usage.map(step => <li key={step}>{step}</li>)}</ol>
+        <ModuleUsageInstructions module={{ id: mod.device + '-' + mod.id, name: document.name, version: document.version }} title={document.tests.documentation?.tutorial.title} steps={document.presentation.usage}/>
         <a href={documentUrl(mod, 'README.md')} target="_blank" rel="noreferrer">Read the complete guide ↗</a>
       </div>
     </details>

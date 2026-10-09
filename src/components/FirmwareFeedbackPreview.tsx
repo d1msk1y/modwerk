@@ -6,7 +6,10 @@ import { CHECK_IN_DELAY, forgetHardwareFeedback, rememberHardwareFeedback, type 
 import { Icon } from './Icon'
 import { ReportingPreviewContext } from './ReportingPreviewContext'
 
-const build: DownloadedBuild = { machine: 'Octatrack', os: '1.40C', modules: builtModules(['miniverb', 'tapeecho', 'euclid', 'repitch']) }
+const previewMachine = new URLSearchParams(window.location.search).get('guide-machine')
+const build: DownloadedBuild = previewMachine === 'digitakt'
+  ? { machine: 'Digitakt', os: '1.54', modules: builtModules(['digitakt-digimono', 'digitakt-digiutils', 'digitakt-digislicer', 'digitakt-digineighbor', 'digitakt-digisophie']) }
+  : { machine: 'Octatrack', os: '1.40C', modules: builtModules(['miniverb', 'tapeecho', 'euclid', 'repitch', 'vector', 'synth']) }
 const memberId = 'local-post-download-check-in-preview'
 
 /** DEV-only fixture: same scheduler and dialog as production, with no firmware or report requests. */
