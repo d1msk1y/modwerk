@@ -114,7 +114,7 @@ The module changes nothing until you choose MATRIX, except the box title in chan
 
 ## Tests and measurements
 
-See [TESTING.md](TESTING.md). Tested on an MKII (OS 1.40C base) on 7 and 8 October 2026: routing, levels, the MIXER, everyday flows, saving and power, and the stock checks; the rewritten conversion is emulator-tested and awaits a hardware check.
+See [TESTING.md](TESTING.md). Tested on an MKII (OS 1.40C base) on 7–9 October 2026: routing, levels, the MIXER, everyday flows, saving and power, and the stock checks; and the mode conversion; the renamed build was confirmed on 9 October.
 
 ## Authorship and licences
 

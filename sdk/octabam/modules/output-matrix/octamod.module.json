@@ -89,14 +89,14 @@
     "report": "TESTING.md",
     "summary": "The image gate passes 76 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7-8 Oct 2026). No timed stress run, no chip timing.",
     "hardwareStatus": "reported",
-    "evidenceRevision": "de1f89bef99c861f6180eedabd5064478eb27f60",
+    "evidenceRevision": "d98a2544d8258e54bbe4fb8c9b7d4bee48da07e9",
     "gates": [
       "modules/output-matrix/verify.py"
     ],
     "qualification": {
       "moduleVersion": "0.1.0-experimental",
       "sourceSha256": "54e59b2216bc57d6d6e6e787fe6f9ed54ba414522e6bcd7cea0da24b9b661fff",
-      "imageSha256": "0e0d1507b60473c3225c1a303fb8687a5fe4004b81c4ee419f9be6296e7dc40e",
+      "imageSha256": "fa05f59f3606e1c13a9e5d13f3849d4ac76e61b636467fc8c6f7d832f49aec11",
       "cycles": [
         {
           "processor": "dsp",
@@ -187,16 +187,17 @@
         "kind": "functional",
         "status": "reported",
         "model": "MKII",
-        "testedOn": "2026-10-08",
+        "testedOn": "2026-10-09",
         "tester": "npp1993",
-        "sourceRevision": "de1f89bef99c861f6180eedabd5064478eb27f60",
-        "imageSha256": "0e0d1507b60473c3225c1a303fb8687a5fe4004b81c4ee419f9be6296e7dc40e",
-        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (this source, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and MATRIX to STUDIO and NORMAL and back.",
+        "sourceRevision": "d98a2544d8258e54bbe4fb8c9b7d4bee48da07e9",
+        "imageSha256": "fa05f59f3606e1c13a9e5d13f3849d4ac76e61b636467fc8c6f7d832f49aec11",
+        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10, this source, whose only change from PHNSTAT9 is the renaming (module, OUT CFG title, MATRIX mode and internal names): the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX, and the author reported everything looked good.",
         "limitations": [
           "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
           "One MKII; no MKI.",
           "Conversions in Parts other than the current one and in other banks were checked in the emulator only.",
-          "No combination with other modules on the unit."
+          "No combination with other modules on the unit.",
+          "OUTMTX10 itself was given a short confirmation of the renamed labels; the full checks ran on PHNSTAT8/9, whose behaviour the gate shows unchanged."
         ],
         "report": "TESTING.md"
       },

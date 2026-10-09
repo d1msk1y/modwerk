@@ -205,13 +205,14 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 
 ## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
 
-**Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7 and 8 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE). No image was shared; each is identified by its SHA-256.
+**Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7, 8 and 9 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE). No image was shared; each is identified by its SHA-256.
 
 | Date | Image | What happened |
 | --- | --- | --- |
 | 7 Oct | PHNROUTE3 | Booted; MATRIX selects; LEVEL and CUE + LEVEL work. Feedback: the knob too fine, names too long, MIX still drawn as a blend (all changed, table above) |
 | 8 Oct | PHNSTAT8 (stock DSP code built in, SPRING REV harvested) | The routing checks below |
-| 8 Oct | PHNSTAT9 (the same build, this source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the OUT CFG title and the solid master bar |
+| 8 Oct | PHNSTAT9 (the same build, source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the box title and the solid master bar |
+| 9 Oct | OUTMTX10 (this source `d98a254`, SHA-256 `fa05f59f…ec11`; the rename only) | The AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX; the tester reported everything looked good |
 
 Other development images were built in between; only those above were flashed for these results.
 
