@@ -15,3 +15,7 @@ The DSP engines and upload images are byte-identical to the approved 0.1.4 build
 Promotion requires actual version-matched physical results or a new explicit owner exception for named missing qualification. Keep issue #363 open until publication, saved live-download verification and report/notification completion. The Output Matrix halt is a separate unverified symptom; this candidate addresses the confirmed invalid-bank cause, and does not establish a fix for that halt.
 
 After that gate, apply this source to the public module, update the version and catalogue pin, imported fingerprint, qualification, documentation/captures, release notes and generated metadata, rebuild packages from the clean commit and repeat native/browser composition checks under [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md). Continue on this PR; do not extend the 0.1.4 waiver or use automatic issue-closing keywords.
+
+## Promoted 9 October 2026
+
+The owner reports FLEX persists on AB015FIX01 and directs merge/publication. The exact machine.s is promoted to public 0.1.5-experimental. This folder preserves the private staging regression and original evidence; apply.py remains pinned to the historical 0.1.4 base. Publication is verified separately.

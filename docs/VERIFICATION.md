@@ -1115,3 +1115,7 @@ The complete release check on main `6545261` passes 1,564 application tests in 2
 Two exhaustive compatibility cases exceeded CI’s five-second per-test limit after the larger native declaration matrix was added. Each is now partitioned into 16 disjoint groups covering the same complete selection/order assertions; the timeout is unchanged. The full local check passes again. Native compilation and Windows checks already passed for the unchanged firmware source.
 
 The catalogue-wide qualification replay is also split by module after its single sequential case reached 5.04 seconds in CI. Every source/folder/version/waiver assertion remains; each module now has an independent unchanged deadline. The full local check passes 1,564 app tests and 87 SDK checks.
+
+### Analog BD pre-boot capacity in the logger-bearing builder
+
+Native octabam omits the mandatory browser core logger. At the pre-boot staging boundary, its smaller runtime can fit a crowded Analog BD selection while the browser correctly refuses the logger-bearing image. Native comparison still requires byte-identical module-owned OS/DSP writes and non-overlapping platform/logger writes for these selections. Only the exact Analog BD boot-memory guard is accepted as this separate platform limit; unknown errors remain mismatches. Records retain `browserPlatformRefused` per selection and in the summary, distinct from matching native refusals and downloadable builds. The guard remains enabled; no unsafe firmware is generated.
