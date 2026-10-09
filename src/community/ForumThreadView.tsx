@@ -19,11 +19,15 @@ import { mediaBusy, readyAttachments, type PendingMedia } from './forum-media-cl
 import { ModuleIssueNotice } from './ModuleIssueNotice'
 import { ModuleDiscussionDialog } from './ModuleDiscussionDialog'
 import { saveDiscussionIssueDraft } from './discussion-issue-draft'
+import { useForumReplyDraft } from './forum-reply-draft'
 import { threadHref } from '../routing'
+import { setPageMetadata } from '../page-metadata'
+import { postExcerpt } from './forum-links'
 import { ReplyStarters } from './ReplyStarters'
 import { ModuleWorksCount } from './ModuleWorksCount'
 import { MODULE_STATISTICS_CHANGED } from './module-statistics'
 import { starterBody, type ReplyStarter } from './reply-starters'
+import { RenderBoundary } from '../components/RenderBoundary'
 function errorText(error:unknown){return error instanceof Error?error.message:'The request could not be completed.'}
 function PostCard({item,author,locked,opening,refresh,onQuote,onVisitor}:{item:ForumPost;author:string|null;locked:boolean;opening:boolean;refresh:()=>Promise<void>;onQuote:(value:string)=>void;onVisitor:(action:string)=>void}){
   const {session}=useCommunity(),[editing,setEditing]=useState(false),[body,setBody]=useState(item.body),[error,setError]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[reporting,setReporting]=useState(false)
@@ -54,8 +58,14 @@ function ModuleIntro({initiallyOpen,children}:{initiallyOpen:boolean;children:Re
   const [open,setOpen]=useState(initiallyOpen)
   return <details className="forum-intro" open={open} onToggle={event=>setOpen(event.currentTarget.open)}><summary><strong>Modwerk</strong><span>About this discussion</span><Icon name="arrow" size={13}/></summary>{children}</details>
 }
-export function ForumThreadView({id,query=new URLSearchParams(),onCopy,embedded=false,onReportIssue,onReplyCount}:{id:string;query?:URLSearchParams;onCopy?:(config:SharedConfiguration)=>void;embedded?:boolean;onReportIssue?:()=>void;onReplyCount?:(count:number)=>void}){
-  const {session}=useCommunity(),[loaded,setLoaded]=useState<{key:string;data:ThreadDetail}|null>(null),[error,setError]=useState(''),[reply,setReply]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[media,setMedia]=useState<PendingMedia[]>([])
+type ThreadViewProps={id:string;query?:URLSearchParams;onCopy?:(config:SharedConfiguration)=>void;embedded?:boolean;onReportIssue?:()=>void;onReplyCount?:(count:number)=>void}
+export function ForumThreadView(props:ThreadViewProps){
+  const fallback=<>{!props.embedded&&<BackLink href="#forum">All discussions</BackLink>}<div role="alert"><h2>Discussion could not open</h2><p className="service-note">Reload the page to try again. Your saved reply draft stays in this tab.</p><button type="button" className="button button-quiet" onClick={()=>window.location.reload()}>Reload discussion</button></div></>
+  return <RenderBoundary key={props.id+'?'+(props.query?.toString()??'')} fallback={fallback}><ForumThreadContent {...props}/></RenderBoundary>
+}
+function ForumThreadContent({id,query=new URLSearchParams(),onCopy,embedded=false,onReportIssue,onReplyCount}:ThreadViewProps){
+  const {session}=useCommunity(),[loaded,setLoaded]=useState<{key:string;data:ThreadDetail}|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[media,setMedia]=useState<PendingMedia[]>([])
+  const [reply,setReply]=useForumReplyDraft(id,session.user?.id??'')
   const [localPage,setLocalPage]=useState(0),[revision,setRevision]=useState(0)
   const [confirming,setConfirming]=useState(false),[starter,setStarter]=useState<ReplyStarter|''>('')
   // Where the member's reading left off, kept from the first load of this visit: later loads have already moved the marker.
@@ -67,6 +77,10 @@ export function ForumThreadView({id,query=new URLSearchParams(),onCopy,embedded=
   const focusedReply=useRef(false)
   const identity=id+':'+(session.user?.id??'')+':'+session.admin,key=identity+':'+page
   const data=loaded?.key===key?loaded.data:null
+  useEffect(() => {
+    if (embedded || !data) return
+    setPageMetadata({ title: data.thread.title + ' — Modwerk forum', description: page === 0 ? postExcerpt(data.posts[0]?.body ?? '') : 'Discussion on the Modwerk forum.', url: new URL(threadHref(id, data.thread.title), document.baseURI).href })
+  }, [embedded, data, id, page])
   async function load(nextPage=page){setLoaded({key:identity+':'+nextPage,data:await api<ThreadDetail>('/forum/threads/'+id+'?page='+nextPage)})}
   useEffect(()=>{let cancelled=false;void api<ThreadDetail>('/forum/threads/'+id+'?page='+page).then(value=>{if(!cancelled){setLoaded({key,data:value});setError('');if(value.firstUnread)setUnreadStart(current=>current??value.firstUnread??null)}}).catch(error=>{if(!cancelled)setError(errorText(error))});return()=>{cancelled=true}},[id,page,key,revision])
   async function act(action:string,payload:unknown,method='POST'){setBusy(true);setError('');try{const result=await post<{id?:string;page?:number}>('/forum/threads/'+id+'/'+action,payload,method);const nextPage=action==='replies'?result.page??page:page;await load(nextPage);if(action==='replies'){window.dispatchEvent(new Event(MODULE_STATISTICS_CHANGED));setReply('');setStarter('');setMedia([]);setNotice('Reply posted.');if(embedded)setLocalPage(nextPage);else if(nextPage!==page)window.location.assign('#forum/thread/'+id+'?page='+nextPage+'&post='+result.id)}}catch(error){setError(errorText(error))}finally{setBusy(false)}}

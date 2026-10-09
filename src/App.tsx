@@ -17,6 +17,8 @@ import { PrivacyPage } from './community/PrivacyPage'
 import { INDEPENDENCE_NOTICE, FLASHING_RISKS, FIRMWARE_SHARING_NOTICE } from './firmware-notices'
 import { assetUrl } from './hosting'
 import { getRoute, moduleHref } from './routing'
+import { setPageMetadata } from './page-metadata'
+import { HOME_DESCRIPTION, HOME_TITLE } from './site-metadata'
 import { ModuleSets } from './components/ModuleSets'
 import { ModuleComparison } from './components/ModuleComparison'
 import { api } from './community/api'
@@ -197,7 +199,17 @@ export default function App() {
     else libraryNavRef.current?.scrollTo({ left: 0 })
   }, [route])
   useEffect(() => { mainRef.current?.scrollTo({ top: 0 }); window.scrollTo({ top: 0 }) }, [route])
-  useEffect(() => { document.title=(detailModule?.name??digiMod?.title??(allRoute?'All mods':machineView==='configuration'?currentDevice.name+' configuration':machineView?currentDevice.name+' modules':forumRoute?'Forum':accountRoute?'Account':developerRoute?(developer?.user&&!route.startsWith('developer/complete')?'Creator settings':'Account'):route==='faq'?'FAQ':route==='credits'?'Credits':route==='privacy'?'Privacy':route==='impressum'?'Impressum':route==='community-rules'?'Community rules':route==='report-content'?'Report content':route==='configuration'?'Configuration':route.startsWith('submit')?'Start developing':(route==='review'||route==='admin')?'Admin workspace':route.startsWith('module-set')?'Module sets':'Module library'))+' · Modwerk' }, [route,detailModule?.name,forumRoute,accountRoute,developerRoute,developer?.user,devicesRoute,allRoute,digiMod?.title,machineView,currentDevice.name])
+  useEffect(() => {
+    const appUrl = new URL(document.baseURI)
+    if (detailModule) setPageMetadata({ title: detailModule.name + ' for Elektron Octatrack — Modwerk', description: detailModule.description, url: new URL(moduleHref(detailModule.id), appUrl).href })
+    else if (digiMod) setPageMetadata({ title: digiMod.title + ' for Elektron ' + currentDevice.name + ' — Modwerk', description: digiMod.summary, url: new URL(deviceHref(digiMod.device, 'module/' + digiMod.id), appUrl).href })
+    else if (route === 'submit') setPageMetadata({ title: 'Start developing — Modwerk', description: 'Build a mod for Elektron instruments: write it with the SDK, submit it through GitHub and get it reviewed for the Modwerk library.', url: new URL('submit/', appUrl).href })
+    // A public thread owns its title and description, supplied by its static page and refreshed after loading.
+    else if (!route.startsWith('forum/thread/')) {
+      const title = allRoute || route === 'library' ? HOME_TITLE : (machineView==='configuration'?currentDevice.name+' configuration':machineView?currentDevice.name+' modules':forumRoute?'Forum':accountRoute?'Account':developerRoute?(developer?.user&&!route.startsWith('developer/complete')?'Creator settings':'Account'):route==='faq'?'FAQ':route==='credits'?'Credits':route==='privacy'?'Privacy':route==='impressum'?'Impressum':route==='community-rules'?'Community rules':route==='report-content'?'Report content':route==='configuration'?'Configuration':route.startsWith('submit')?'Start developing':(route==='review'||route==='admin')?'Admin workspace':route.startsWith('module-set')?'Module sets':'Module library')+' · Modwerk'
+      setPageMetadata({ title, description: HOME_DESCRIPTION, url: appUrl.href })
+    }
+  }, [route,detailModule,digiMod,forumRoute,accountRoute,developerRoute,developer?.user,allRoute,machineView,currentDevice.name])
   const selection = resolveSelection(selectedIds)
   const availabilityError = moduleAvailabilityError(selectedIds)
   const conflicts = selectionConflicts(selectedIds, DSP_LOADER && (active?.keepStockFx2 ?? true))

@@ -3,7 +3,6 @@ import { moduleSlug } from '../catalog/module-links'
 import { MODULE_DOCUMENTS_BY_ID } from '../catalog/documents'
 import MACHINE_MODULES from '../catalog/machine-modules.json'
 import type { ModwerkModule } from '../catalog/module-contract-v3'
-import { deviceHref } from '../devices/registry'
 
 /** Community IDs are unique across machines; configuration IDs stay native to each SDK. */
 export const COMMUNITY_MODULES = [
@@ -16,7 +15,8 @@ export const COMMUNITY_MODULES = [
   ...(MACHINE_MODULES.modules as ModwerkModule[]).map(module => ({
     id: module.machine + '-' + module.id, moduleId: module.id, machine: module.machine,
     name: module.name, version: module.version, author: module.author.github,
-    maintainers: module.maintainers, href: deviceHref(module.machine, 'module/' + module.id),
+    // Internal account-return and notification routes retain hashes; routing upgrades public navigation to paths.
+    maintainers: module.maintainers, href: '#' + module.machine + '/module/' + module.id,
     sourcePath: 'sdk/' + module.machine + '/modules/' + module.id, summary: module.presentation.summary,
     evidence: module.evidence.tier,
   })),

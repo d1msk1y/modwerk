@@ -22,7 +22,7 @@ export function DigiIssueReport({ id, openRequest = 0, embedded = false, workspa
   const [sent, setSent] = useState<BugReportResult | null>(null), [busy, setBusy] = useState(false), [error, setError] = useState('')
   const [opened, setOpened] = useState(embedded), tracker = useIssueTracker(id, opened)
   useOpenIssueReport(report, title, openRequest)
-  const { draft, clearDraft } = useDiscussionIssueDraft(id)
+  const { draft, clearDraft } = useDiscussionIssueDraft(id, report)
   const [formKey, setFormKey] = useState(0), [kept, setKept] = useState({ model: embedded && device.variants?.length === 1 ? device.variants[0] : '', os: baseOs, flash: 'flashed', moduleVersion: moduleVersion ?? module.version, follow: true })
   useEffect(() => { if (sent) { success.current?.focus(); report.current?.scrollIntoView({ block: 'start' }) } }, [sent])
   useEffect(() => { if (formKey) title.current?.focus() }, [formKey])
