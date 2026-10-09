@@ -74,7 +74,7 @@
       "revision": "363861e31ee963c478fab2b190a0fabe1d7ce37b",
       "sourcePath": "modules/analog-bassdrum/README.md",
       "sourceSha256": "4876d9613e5e65de0aefeef7ddd60ef6d0d5642c61b1fde60b97fc0f72255f68",
-      "vendoredSha256": "3736faf95b23136c57b83e50e708f0d5f2352a9030eef5123bc42b8cc2ca5bd3",
+      "vendoredSha256": "efcdface8d593d015d0de6d037ec97ddb0781a9349343bfe30a8fda55d31d0cc",
       "importedVendoredSha256": "57743ee073204e2a1b51ed7abad7ddf44eae95faddc90d397ca707d30a2bdfed",
       "adaptation": " Octamod 0.1.1 version and native verification evidence appended; imported fingerprint retained.",
       "localDocumentationUpdate": {
@@ -98,6 +98,12 @@
           "documentationOnly": true,
           "previousVendoredSha256": "f52aa4eef3dcf791d128df145ad89773019293f4db963ae7de77344b1cf126b4",
           "reason": "Document Flex SRC parameter retention and the reporter-confirmed page reset for issue #363; original import and upstream fingerprints preserved. Firmware source and qualification are unchanged."
+        },
+        {
+          "moduleVersion": "0.1.4-experimental",
+          "documentationOnly": true,
+          "previousVendoredSha256": "3736faf95b23136c57b83e50e708f0d5f2352a9030eef5123bc42b8cc2ca5bd3",
+          "reason": "Correct issue #363 guidance after the later power-cycle report: invalid retained FLEX SETUP can reject the working bank. Firmware and original import fingerprints remain unchanged; the 0.1.5 fix is staged privately."
         }
       ]
     },

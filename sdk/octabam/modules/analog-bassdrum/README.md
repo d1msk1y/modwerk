@@ -40,10 +40,10 @@ Use separate Attack and Tune sweeps so their effects are easy to hear. For the d
 
 ### Switch back to Flex
 
-Changing an Analog BD track to FLEX retains its SRC parameter values. Analog BD uses the track's Flex parameter slots, so drum settings become sample-playback settings such as STRT, RTRG and RTIM. Existing trigs can therefore produce a short, weak or unexpectedly pitched sample until those settings are adjusted. The [reporter of issue #363](https://github.com/repeat98/modwerk/issues/363) confirmed that clearing SRC restored normal Flex playback and withdrew the bug claim.
+Changing an Analog BD track to FLEX retains its SRC parameter values. Analog BD uses the track's Flex parameter slots, so drum settings become sample-playback settings such as STRT, RTRG and RTIM. Existing trigs can therefore produce a short, weak or unexpectedly pitched sample until those settings are adjusted. The later [power-cycle report in issue #363](https://github.com/repeat98/modwerk/issues/363#issuecomment-6083911774) establishes a persistence bug: the retained SETUP values can be outside FLEX's valid range, causing the working bank to be rejected at the next power-up and all tracks to revert to STATIC. **In 0.1.4, reset SRC after switching and before powering off.** A firmware fix is in preparation; it is not included in this download.
 
 1. Select FLEX in the track machine chooser or SRC SETUP, then select the sample you want to play.
-2. Press SRC, hold SRC and press PLAY to initialize the SRC parameter page to the Flex defaults. This replaces the current SRC settings; repeat SRC + PLAY immediately to undo. Check SRC SETUP and the sample assignment afterwards.
+2. Press SRC, hold SRC and press PLAY to initialize the SRC parameter page to the Flex defaults. This replaces the current SRC settings. Check SRC SETUP and the sample assignment afterwards; undoing the reset restores the invalid retained values, so do not leave them in place before powering off.
 3. Play the pattern again. If particular trigs still sound different, review their SRC parameter locks, scene assignments and LFO destinations: they may still target the same parameter slots. Adjust those deliberately for the sample.
 
 The page-clear shortcut is documented in the [Octatrack MKII manual, section 12.9.8](https://www.elektron.se/wp-content/uploads/2024/09/Octatrack-MKII-User-Manual_ENG_OS1.40A_210414.pdf#page=73). This guidance records the reporter's recovery and the current switch code; it adds no new physical hardware qualification.
