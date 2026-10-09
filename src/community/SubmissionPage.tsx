@@ -16,13 +16,20 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
     <h2>Get support for your modules</h2>
     <p>Once your module is published, you can add your own Ko-fi support link. <a href="#account/developer">Verify your developer account with GitHub</a>, claim your module, then save your Ko-fi page in the Creator settings. A small cup beside your name lets visitors open a tip panel. You can change or remove the link at any time.</p>
   </section>
-  const releaseSteps=<section className="configuration-section"><h2>Fix an issue with your coding agent</h2><p>Open your fork in your agent and tell it <code>{'Fix issue <link>'}</code>. It prepares the fix and a version bump, tells you what to test on hardware, and opens the release PR after you report the results.</p><p>Pushing a commit does not bump the version or update the website by itself. After the required checks pass, an opted-in author PR merges and starts publication. Wait for the site deployment to succeed, verify the new version and download, then post /modwerk resolve &lt;version&gt; verified-download on the GitHub issue. It closes the linked GitHub and Modwerk report with the released version and queues follower updates. Replying to reports and closing usage questions require no fork.</p><a href={moduleRepository+'/blob/main/docs/MODULE_AUTHOR_UPDATES.md'} target="_blank" rel="noreferrer">Author release steps ↗</a></section>
+  const releaseSteps=<section className="configuration-section">
+    <h2>Fixes and reports</h2>
+    <p>Tell your coding agent <code>{'Fix issue <link>'}</code>. It prepares the fix, version bump, hardware checks and PR.</p>
+    <p>Pushes and merges don’t close reports. After deployment, verify the live version and saved firmware download on your unit, then comment as the registered author: <code>{'/modwerk resolve <version> verified-download'}</code>.</p>
+    <p>For usage problems: <code>{'/modwerk close configuration <explanation>'}</code>. Use <code>duplicate</code>, <code>not_reproducible</code> or <code>withdrawn</code> for other reasons. Post commands on the GitHub issue; closure syncs to Modwerk and notifies the reporter.</p>
+    <p>Any report affects the grade, including usage problems. For ordinary comments, choose “Post a discussion instead”; returning from the issue form keeps your reply.</p>
+    <a href={moduleRepository+'/blob/main/docs/MODULE_AUTHOR_UPDATES.md'} target="_blank" rel="noreferrer">Author release steps ↗</a>
+  </section>
   if(module&&module.machine!=='octatrack')return <div className="community-page contribution-page"><BackLink href={moduleId?'#developer':'#library'}>{moduleId?'Creator settings':'Module library'}</BackLink>
     <div className="page-heading"><div><p className="page-kicker">MODWERK / DEVELOPERS</p><h1>Update {module.name}</h1><p>{DEVICES_BY_ID[module.machine].name} · Current version {module.version}. Prepare source, documentation and media together in a GitHub pull request.</p></div><span className="pill">Author updates</span></div>
     <section className="configuration-section"><h2>Start from the reviewed module</h2><p>Keep its licence, attribution and pinned source provenance. Increase the module’s semantic version for every code change and every automatic author release, and keep the manifest, README, tutorial and test evidence synchronized.</p><div className="forum-actions"><a className="button button-primary" href={moduleRepository+'/tree/main/'+module.sourcePath} target="_blank" rel="noreferrer">Open module source ↗</a><a className="button button-quiet" href={moduleRepository+'/compare'} target="_blank" rel="noreferrer">Open a pull request ↗</a><a href={moduleRepository+'/blob/main/docs/SDK.md'} target="_blank" rel="noreferrer">Machine SDK & evidence rules ↗</a></div></section>
     <section className="configuration-section"><h2>Include the update evidence</h2><p><a href={moduleRepository+'/blob/main/docs/MODULE_AUTHOR_UPDATES.md'} target="_blank" rel="noreferrer">Automatic author publication guide ↗</a></p><p>Use the machine’s v3 <code>modwerk.module.json</code> contract: source/build identity, compatibility, memory and load measurements, hardware coverage and actual UI captures where applicable. State the evidence tier and remaining limitations honestly. Documentation, tutorial, screenshots and credits must match this version.</p><p>Submit only original or properly licensed sources and reviewed media. Keep firmware, stock bytes, dumps and generated firmware builds local. Registered module authors can request automatic merge and publication in the PR after verifying their evidence and passing the required checks. Changes beyond their own modules need owner review. Pending or rejected updates keep the existing approved release available.</p><p>Questions about developing or submitting a module? <a href={DEVELOPMENT_DISCORD_URL} target="_blank" rel="noreferrer">Join the development Discord ↗</a></p></section>
 
-    {module&&releaseSteps}
+    {releaseSteps}
     {creatorSupport}
   </div>
   const guide=(path:string)=>moduleRepository+'/blob/main/'+path
@@ -58,7 +65,7 @@ export function SubmissionPage({moduleId=''}:{moduleId?:string}) {
         <a className="button button-quiet" href={moduleRepository+'/compare'} target="_blank" rel="noreferrer">Open a pull request ↗</a>
       </li>
     </ol>
-    {module&&releaseSteps}
+    {releaseSteps}
     {creatorSupport}
     <section className="configuration-section">
       <h2>Starter prompts</h2>
