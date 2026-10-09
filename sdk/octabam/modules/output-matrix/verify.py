@@ -1,37 +1,37 @@
 #!/usr/bin/env python3
-"""PHONES ROUTING's gate: the built image under the ColdFire port (ot_emu).
+"""OUTPUT MATRIX's gate: the built image under the ColdFire port (ot_emu).
 
-    python3 modules/phones-routing/verify.py        (from the octabam root)
+    python3 modules/output-matrix/verify.py        (from the octabam root)
 
 Reads, and SKIPs without any of them:
-  - the image: out/mainos_bus.bin built with PHONES ROUTING (PHONES_IMAGE overrides);
+  - the image: out/mainos_bus.bin built with OUTPUT MATRIX (MATRIX_IMAGE overrides);
   - the port: out/emu/ot_emu (`make emu-cf`; OT_EMU overrides);
   - the fixture: octabam's one-THRU card, T1 a THRU machine on inputs A/B and
     nothing else sounding (`tools/verify/stems_fixture.py --thru1` in octabam,
-    which writes out/stems_fixture_thru1.json), or PHONES_FIXTURE=<that json>.
+    which writes out/stems_fixture_thru1.json), or MATRIX_FIXTURE=<that json>.
 
 What it runs (each an ot_emu run of the fixture, CUE CFG and T1's destination
 poked, RMS over the last 2,000 samples of core 0's eight TX0 ring words: 0/1
 CUE, 2/3 MAIN, 4/5 PHONES):
   1. every destination code 0..13 reaches exactly its outputs (MASTER off);
-  2. ROUTED MAIN equals the stock path's MAIN in the same image (0.05%);
+  2. MATRIX MAIN equals the stock path's MAIN in the same image (0.05%);
   3. CUE and PHONES follow the stock level law against MAIN, (MAIN/CUE)^2;
   4. mono jacks: with L = R, MNL..PHR carry exactly the stereo level (0.2%);
   5. MKII: PHL lands on word 5, as stock's MKII phones swap;
   6. MASTER on: T1 on MAIN reaches MAIN through T8; on PHNS, MAIN is silent;
   7. FUNC + TRACK mute silences a routed track on every output;
-  8. DIR inputs reach MAIN in ROUTED as in the stock path (0.05%);
+  8. DIR inputs reach MAIN in MATRIX as in the stock path (0.05%);
   9. declick: switching MAIN -> PHNS mid-tone adds no step larger than the
      tone's own (MAIN) and no more than 10% over it (PHONES, the fade-in);
- 10. the mode switch (keys, MKII): NORMAL -> ROUTED converts bank 1, bank 16
+ 10. the mode switch (keys, MKII): NORMAL -> MATRIX converts bank 1, bank 16
      and the live bytes by the rules (MODEL below), and marks changed banks
      for saving; a power cycle (CS1 and card of that run, the firmware's own
-     power-up load) keeps ROUTED and the current track's code;
- 11. every conversion rule, by the keys: ROUTED -> STUDIO and -> NORMAL for
+     power-up load) keeps MATRIX and the current track's code;
+ 11. every conversion rule, by the keys: MATRIX -> STUDIO and -> NORMAL for
      all 14 codes and a stray cue level (two Parts, bank 16, the saved Part,
      the live bytes, NORMAL's cue bits from the current Part), both round
-     trips back, STUDIO -> ROUTED for the four level cases, and NORMAL ->
-     ROUTED with and without CUE MUTES TRACK.
+     trips back, STUDIO -> MATRIX for the four level cases, and NORMAL ->
+     MATRIX with and without CUE MUTES TRACK.
 What it cannot see: hardware timing, the analogue jacks, other modules.
 """
 import json
@@ -50,8 +50,8 @@ from concurrent.futures import ThreadPoolExecutor
 HERE = pathlib.Path(__file__).absolute().parent
 ROOT = pathlib.Path.cwd() if (pathlib.Path.cwd() / "tools/emu").is_dir() else HERE.parents[1]
 EMU = pathlib.Path(os.environ.get("OT_EMU", ROOT / "out/emu/ot_emu"))
-IMAGE = pathlib.Path(os.environ.get("PHONES_IMAGE", ROOT / "out/mainos_bus.bin"))
-FIXTURE = pathlib.Path(os.environ.get("PHONES_FIXTURE", ROOT / "out/stems_fixture_thru1.json"))
+IMAGE = pathlib.Path(os.environ.get("MATRIX_IMAGE", ROOT / "out/mainos_bus.bin"))
+FIXTURE = pathlib.Path(os.environ.get("MATRIX_FIXTURE", ROOT / "out/stems_fixture_thru1.json"))
 PY = ROOT / ".venv/bin/python3" if (ROOT / ".venv/bin/python3").exists() else pathlib.Path(sys.executable)
 
 # The destination codes (manifest.py _CODES): per code, (CUE, MAIN, PHONES).
@@ -79,13 +79,13 @@ def expected_words(code):
     return words
 
 
-# The conversion rules (phones.s convert_all), as the gate expects them.
+# The conversion rules (matrix.s convert_all), as the gate expects them.
 CUE_DESTS = {1, 3, 5, 6, 9, 10}
 LEVEL_DESTS = {0, 3, 4, 6, 7, 8, 2, 11, 12}          # MAIN, or PHONES only (kept on MAIN)
 
 
-def out_of_routed(level, code):
-    """ROUTED (level, code) -> STUDIO or NORMAL (LEVEL, cue level)."""
+def out_of_matrix(level, code):
+    """MATRIX (level, code) -> STUDIO or NORMAL (LEVEL, cue level)."""
     code = code if code <= 13 else 0
     return (level if code in LEVEL_DESTS else 0, level if code in CUE_DESTS else 0)
 
@@ -146,38 +146,38 @@ class Run:
 def main():
     for what, path in (("image", IMAGE), ("port", EMU), ("fixture", FIXTURE)):
         if not path.exists():
-            print(f"verify phones-routing: SKIP (no {what}: {path})")
+            print(f"verify output-matrix: SKIP (no {what}: {path})")
             return 0
     fx = json.loads(FIXTURE.read_text())
-    work = pathlib.Path(tempfile.mkdtemp(prefix="phones_verify_"))
+    work = pathlib.Path(tempfile.mkdtemp(prefix="output_matrix_verify_"))
     run = Run(work, fx)
     tone = work / "tone4.wav"; tone4(tone)
     base = "0x8000000a=0;0x80000034=0"                       # no mutes, MASTER off
-    routed = base + ";0x80000037=2"
+    matrix = base + ";0x80000037=2"
     jobs = {}
     with ThreadPoolExecutor(max_workers=6) as pool:
         def go(tag, args, **kw):
             jobs[tag] = pool.submit(run.emu, tag, args, **kw)
         go("normal", ["--poke", base])
         for c in range(14):
-            go(f"c{c}", ["--poke", routed, "--step", f"20:poke:0x80000c51={c}"])
+            go(f"c{c}", ["--poke", matrix, "--step", f"20:poke:0x80000c51={c}"])
         levels = ";0x80000036=127;0x80000032=127;0x80000035=127"
-        go("st_tone", ["--poke", routed + levels, "--step", "20:poke:0x80000c51=0"], audio=tone)
+        go("st_tone", ["--poke", matrix + levels, "--step", "20:poke:0x80000c51=0"], audio=tone)
         for c in range(7, 13):
-            go(f"mono{c}", ["--poke", routed + levels, "--step", f"20:poke:0x80000c51={c}"], audio=tone)
-        go("mkii", ["--mkii", "--poke", routed, "--step", "20:poke:0x80000c51=11"])
+            go(f"mono{c}", ["--poke", matrix + levels, "--step", f"20:poke:0x80000c51={c}"], audio=tone)
+        go("mkii", ["--mkii", "--poke", matrix, "--step", "20:poke:0x80000c51=11"])
         go("master_main", ["--poke", "0x8000000a=0;0x80000034=1;0x80000037=2", "--step", "20:poke:0x80000c51=0"])
         go("master_phns", ["--poke", "0x8000000a=0;0x80000034=1;0x80000037=2", "--step", "20:poke:0x80000c51=2"])
-        go("mute", ["--poke", routed, "--step", "20:poke:0x80000c51=6", "--step", "60:poke:0x8000000a=1"])
+        go("mute", ["--poke", matrix, "--step", "20:poke:0x80000c51=6", "--step", "60:poke:0x8000000a=1"])
         go("dir_normal", ["--poke", base + ";0x80000031=127"])
-        go("dir_routed", ["--poke", routed + ";0x80000031=127", "--step", "20:poke:0x80000c51=0"])
-        go("declick", ["--poke", routed + levels, "--step", "20:poke:0x80000c51=0", "--step", "100:poke:0x80000c51=2"],
+        go("dir_matrix", ["--poke", matrix + ";0x80000031=127", "--step", "20:poke:0x80000c51=0"])
+        go("declick", ["--poke", matrix + levels, "--step", "20:poke:0x80000c51=0", "--step", "100:poke:0x80000c51=2"],
            frames=160, audio=tone)
         conv = conversion_jobs(run, pool, work)
         mx = matrix_jobs(run, pool, work)
     res = {t: j.result() for t, j in jobs.items()}
 
-    print("verify phones-routing: routing")
+    print("verify output-matrix: routing")
     normal = run.rms(run.words(res["normal"]))
     for c in range(14):
         r = run.rms(run.words(res[f"c{c}"]))
@@ -186,13 +186,13 @@ def main():
               f"code {c:2d}: signal on words {sorted(w for w in range(8) if r[w] > 1000)}, expected {sorted(want)}")
     main0 = run.rms(run.words(res["c0"]))
     check(all(abs(main0[w] - normal[w]) <= 5e-4 * normal[w] for w in (2, 3)),
-          f"ROUTED MAIN {main0[2]:.0f}/{main0[3]:.0f} = stock path {normal[2]:.0f}/{normal[3]:.0f}")
+          f"MATRIX MAIN {main0[2]:.0f}/{main0[3]:.0f} = stock path {normal[2]:.0f}/{normal[3]:.0f}")
     cue1, ph2 = run.rms(run.words(res["c1"])), run.rms(run.words(res["c2"]))
     ratio = (127 / 64) ** 2                                     # the fixture: MAIN 127, CUE 64, MIX 64
     check(abs(main0[2] / cue1[0] / ratio - 1) < 0.01 and abs(main0[2] / ph2[4] / ratio - 1) < 0.01,
           f"MAIN/CUE {main0[2] / cue1[0]:.3f}, MAIN/PHONES {main0[2] / ph2[4]:.3f}, law (127/64)^2 = {ratio:.3f}")
 
-    print("verify phones-routing: mono, MKII, master, mute, inputs")
+    print("verify output-matrix: mono, MKII, master, mute, inputs")
     st = run.rms(run.words(res["st_tone"]))[2]
     for c, word in zip(range(7, 13), (2, 3, 0, 1, 4, 5)):
         m = run.rms(run.words(res[f"mono{c}"]))[word]
@@ -204,10 +204,10 @@ def main():
     check(mp[2] == 0 and mp[4] > 1000, f"MASTER, T1 PHNS: MAIN {mp[2]:.0f}, PHONES {mp[4]:.0f}")
     mu = run.rms(run.words(res["mute"]))
     check(max(mu[:6]) == 0, f"T1 on ALL, muted: {[round(x) for x in mu[:6]]}")
-    dn, dr = run.rms(run.words(res["dir_normal"])), run.rms(run.words(res["dir_routed"]))
-    check(abs(dr[2] / dn[2] - 1) < 5e-4, f"DIR AB 127: ROUTED MAIN {dr[2]:.0f}, stock path {dn[2]:.0f}")
+    dn, dr = run.rms(run.words(res["dir_normal"])), run.rms(run.words(res["dir_matrix"]))
+    check(abs(dr[2] / dn[2] - 1) < 5e-4, f"DIR AB 127: MATRIX MAIN {dr[2]:.0f}, stock path {dn[2]:.0f}")
 
-    print("verify phones-routing: declick")
+    print("verify output-matrix: declick")
     x = run.words(res["declick"])
     tone_step = max(abs(x[i + 1][2] - x[i][2]) for i in range(600, 1200))   # MAIN before the switch
     for word, limit in ((2, 1.0), (4, 1.1)):
@@ -217,7 +217,7 @@ def main():
     conversion_checks(conv)
     matrix_checks(mx)
     shutil.rmtree(work, ignore_errors=True)
-    print(f"verify phones-routing: {'FAIL (' + str(len(FAILS)) + ')' if FAILS else 'PASS'}")
+    print(f"verify output-matrix: {'FAIL (' + str(len(FAILS)) + ')' if FAILS else 'PASS'}")
     return 1 if FAILS else 0
 
 
@@ -229,7 +229,7 @@ def keys(*steps):
 
 
 def conversion_jobs(run, pool, work):
-    """ROUTED selected with the keys (PROJ, CONTROL, AUDIO, CUE CFG, ROUTED),
+    """MATRIX selected with the keys (PROJ, CONTROL, AUDIO, CUE CFG, MATRIX),
     then CUE + LEVEL +8 detents (two steps) on the current track; dumps for the conversion, and a
     second boot from that run's CS1 and card."""
     menu = keys((500, "0x1c"), (900, "0x20"), (1100, "0x20"), (1300, "0x31"), (1700, "0x31"), (2100, "0x21"),
@@ -269,7 +269,7 @@ def part_lv(bank, part, saved=False):
     return B0 + bank * BANK + (0x9505c if saved else WORK_LV) + part * 0x18b2
 
 
-# ROUTED fixtures: Part 1 codes 0..7, Part 2 codes 8..13, a stray cue level
+# MATRIX fixtures: Part 1 codes 0..7, Part 2 codes 8..13, a stray cue level
 # (100, read as MAIN) and MAIN at level 0; levels 40 + code, all distinct.
 R_PAIRS = ([(40 + c, c) for c in range(8)], [(40 + c, c) for c in range(8, 14)] + [(90, 100), (0, 0)])
 # STUDIO and NORMAL fixtures, one Part: (LEVEL, cue level) on T1..T8.
@@ -321,7 +321,7 @@ def matrix_checks(mx):
     work, jobs = mx
     for j in jobs.values():
         j.result()
-    print("verify phones-routing: conversion rules")
+    print("verify output-matrix: conversion rules")
     rd = lambda tag, k: (work / f"m_{tag}_{k}.bin").read_bytes()
     pairs = lambda b: [(b[2 * t], b[2 * t + 1]) for t in range(8)]
     for tag, (mode, parts, extra, rows) in MATRIX.items():
@@ -330,8 +330,8 @@ def matrix_checks(mx):
         for p, src in enumerate(parts):
             want = list(src)
             cued = [N_CUED >> t & 1 for t in range(8)] if mode == 0 else [0] * 8
-            if mode == 2:                              # ROUTED -> STUDIO or NORMAL
-                want = [out_of_routed(*x) for x in want]
+            if mode == 2:                              # MATRIX -> STUDIO or NORMAL
+                want = [out_of_matrix(*x) for x in want]
                 if len(rows) > 1:                      # and back
                     cued = [int(c in CUE_DESTS) for _, c in R_PAIRS[0]]
                     want = [from_studio(*x) for x in want] if rows[0] == 1 else \
@@ -364,13 +364,13 @@ def conversion_checks(conv):
     for j in jobs.values():
         j.result()
     rd = lambda k: (work / f"conv_{k}.bin").read_bytes()
-    print("verify phones-routing: mode switch and power cycle")
+    print("verify output-matrix: mode switch and power cycle")
     mask = int.from_bytes((work / "conv_pre_mask.bin").read_bytes(), "big")
     mutes = int.from_bytes((work / "conv_pre_mutes.bin").read_bytes(), "big")
     t = rd("track")[0]
     pre = lambda k: (work / f"conv_pre_{k}.bin").read_bytes()
     conv = lambda b: [from_normal(b[2 * k], b[2 * k + 1], mask >> (16 + k) & 1, mutes) for k in range(8)]
-    check(rd("mode")[0] == 2, f"CUE CFG after YES on ROUTED: {rd('mode')[0]}")
+    check(rd("mode")[0] == 2, f"CUE CFG after YES on MATRIX: {rd('mode')[0]}")
     for name in ("b1", "b16"):
         got = [(rd(name)[2 * k], rd(name)[2 * k + 1]) for k in range(8)]
         exp = conv(pre(name))

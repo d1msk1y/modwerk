@@ -1,8 +1,8 @@
 {
   "schemaVersion": 2,
-  "id": "phones-routing",
-  "key": "PHONES ROUTING",
-  "name": "Phones Routing",
+  "id": "output-matrix",
+  "key": "OUTPUT MATRIX",
+  "name": "Output Matrix",
   "version": "0.1.0-experimental",
   "category": "system",
   "author": {
@@ -13,10 +13,10 @@
   },
   "nativeManifest": "manifest.py",
   "presentation": {
-    "label": "Headphones as a third output",
+    "label": "Any track to MAIN, CUE or PHONES",
     "family": "Output routing",
     "summary": "Turn the headphone jack into a third assignable output pair and pick each track's outputs with CUE + LEVEL.",
-    "overview": "Adds ROUTED beside NORMAL and STUDIO in PROJECT > CONTROL > AUDIO (the box stock calls CUE CFG, titled ROUTING with the module). In ROUTED, LEVEL sets a track's level and CUE + LEVEL chooses where it plays: MAIN, CUE or PHONES as stereo pairs in any combination, or a single mono jack of the six (track L+R summed at half each, so a centred sound keeps its level). The choice is stored in the Part, so it survives SRC page resets, Part reload and project save. The MIXER's MIX knob becomes the PHONES output level. Inputs keep their stock DIR routing to MAIN.",
+    "overview": "Adds MATRIX beside NORMAL and STUDIO in PROJECT > CONTROL > AUDIO (the box stock calls CUE CFG, titled OUT CFG with the module). In MATRIX, LEVEL sets a track's level and CUE + LEVEL chooses where it plays: MAIN, CUE or PHONES as stereo pairs in any combination, or a single mono jack of the six (track L+R summed at half each, so a centred sound keeps its level). The choice is stored in the Part, so it survives SRC page resets, Part reload and project save. The MIXER's MIX knob becomes the PHONES output level. Inputs keep their stock DIR routing to MAIN.",
     "highlights": [
       "Three stereo output pairs: MAIN, CUE and the headphone jack.",
       "Per track: any combination of MAIN, CUE and PHONES, or one mono jack (MAIN L/R, CUE L/R, PHONES L/R).",
@@ -24,7 +24,7 @@
       "With MASTER TRACK on, tracks routed to MAIN feed the master and track 8's destination picks where the master plays."
     ],
     "usage": [
-      "PROJECT > CONTROL > AUDIO: select ROUTING > ROUTED and press YES.",
+      "PROJECT > CONTROL > AUDIO: select OUT CFG > MATRIX and press YES.",
       "On a track, hold CUE: the LEV box shows the destination. Turn LEVEL to change it.",
       "In the MIXER, MIX (labelled PHN) sets the PHONES output level. Choose NORMAL or STUDIO again to return to stock behaviour."
     ]
@@ -36,9 +36,9 @@
     "conflicts": [],
     "limitations": [
       "Builds with the stock DSP code built in (static_stock) and takes SPRING REV's program memory on core 0: SPRING REV leaves both effect menus while the module is installed.",
-      "The ROUTED mixdown costs core 0 up to about 216 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
-      "Switching to or from ROUTED rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
-      "A ROUTED project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
+      "The MATRIX mixdown costs core 0 up to about 216 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
+      "Switching to or from MATRIX rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
+      "A MATRIX project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
       "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger."
     ],
     "effectId": null
@@ -64,7 +64,7 @@
       "source": "TESTING.md"
     },
     "impact": {
-      "conditions": "Eight tracks in ROUTED at the dearest routing (every track on ALL, MASTER on, levels moving); NORMAL and STUDIO run stock code plus a 4-instruction check.",
+      "conditions": "Eight tracks in MATRIX at the dearest routing (every track on ALL, MASTER on, levels moving); NORMAL and STUDIO run stock code plus a 4-instruction check.",
       "cpu": {
         "level": "minimal",
         "basis": "measured-comparison",
@@ -91,11 +91,11 @@
     "hardwareStatus": "reported",
     "evidenceRevision": "de1f89bef99c861f6180eedabd5064478eb27f60",
     "gates": [
-      "modules/phones-routing/verify.py"
+      "modules/output-matrix/verify.py"
     ],
     "qualification": {
       "moduleVersion": "0.1.0-experimental",
-      "sourceSha256": "d212468fa57476a6dd84eb1706a007f1aab29502005a94d3ecd4ea9c2df9bd18",
+      "sourceSha256": "54e59b2216bc57d6d6e6e787fe6f9ed54ba414522e6bcd7cea0da24b9b661fff",
       "imageSha256": "0e0d1507b60473c3225c1a303fb8687a5fe4004b81c4ee419f9be6296e7dc40e",
       "cycles": [
         {
@@ -109,7 +109,7 @@
           "conditions": {
             "parameterExtremes": "Every destination code 0..13 per track, all eight tracks on ALL, mixed stereo and mono routings, MAIN/CUE/PHONES levels 0..127, MASTER on and off.",
             "parameterModulation": "MAIN, CUE and MIX levels changed every other frame for 60 frames; LEVEL, XVOL scenes, locks and LFOs act through stock gain ramps the mixdown reads, unchanged.",
-            "modeSwitching": "All eight tracks changing destination in one frame (list rebuild and declick), and NORMAL/STUDIO/ROUTED switches.",
+            "modeSwitching": "All eight tracks changing destination in one frame (list rebuild and declick), and NORMAL/STUDIO/MATRIX switches.",
             "maxLoad": "One instance per unit (a global mode). Worst measured: 4,336 + 192 executed instructions per 16-sample frame on core 0, every track on ALL with MASTER on; stock 880 + 191.",
             "inputConditions": "Tone and four-input test audio; the code path does not depend on sample values. Counts are executed instructions, not modelled cycles."
           },
@@ -191,7 +191,7 @@
         "tester": "npp1993",
         "sourceRevision": "de1f89bef99c861f6180eedabd5064478eb27f60",
         "imageSha256": "0e0d1507b60473c3225c1a303fb8687a5fe4004b81c4ee419f9be6296e7dc40e",
-        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (this source, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and ROUTED to STUDIO and NORMAL and back.",
+        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (this source, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and MATRIX to STUDIO and NORMAL and back.",
         "limitations": [
           "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
           "One MKII; no MKI.",
@@ -204,13 +204,13 @@
         "tutorial": {
           "title": "Quick tutorial",
           "steps": [
-            "Press PROJ, open CONTROL > AUDIO, move right into ROUTING, select ROUTED and press YES.",
+            "Press PROJ, open CONTROL > AUDIO, move right into OUT CFG, select MATRIX and press YES.",
             "Select track 1, hold CUE and turn LEVEL until the LEV box reads PHN: track 1 now plays only in the headphones.",
             "Open the MIXER and turn MIX (PHN) to set the headphone level; choose NORMAL again to return to stock routing."
           ]
         },
         "screenshots": [
-          "media/ot-routing-menu.png",
+          "media/ot-out-cfg-menu.png",
           "media/ot-cue-held.png",
           "media/ot-cue-level-phn.png",
           "media/ot-mixer-phn.png"
@@ -226,10 +226,10 @@
   },
   "media": [
     {
-      "path": "media/ot-routing-menu.png",
+      "path": "media/ot-out-cfg-menu.png",
       "captureType": "emulator",
-      "caption": "PROJECT > CONTROL > AUDIO: move right into the ROUTING box, select ROUTED and press YES. NORMAL and STUDIO behave as stock.",
-      "alt": "Actual Octatrack LCD: CONTROL AUDIO page with a TRACK 8 box and a ROUTING box listing NORMAL, STUDIO and ROUTED, ROUTED checked.",
+      "caption": "PROJECT > CONTROL > AUDIO: move right into the OUT CFG box, select MATRIX and press YES. NORMAL and STUDIO behave as stock.",
+      "alt": "Actual Octatrack LCD: CONTROL AUDIO page with a TRACK 8 box and a OUT CFG box listing NORMAL, STUDIO and MATRIX, MATRIX checked.",
       "credit": "npp1993",
       "license": "LicenseRef-OT-UI-Documentation",
       "source": "original",
@@ -238,7 +238,7 @@
         "shows": "location",
         "firmware": "1.40C",
         "moduleVersion": "0.1.0-experimental",
-        "imageSha256": "0b4cb65147ce0eb8f4a580d06d3c7c3c08b158a6b2fc9b8218914d47519fbc24",
+        "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
         "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
       }
     },
@@ -255,7 +255,7 @@
         "shows": "controls",
         "firmware": "1.40C",
         "moduleVersion": "0.1.0-experimental",
-        "imageSha256": "0b4cb65147ce0eb8f4a580d06d3c7c3c08b158a6b2fc9b8218914d47519fbc24",
+        "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
         "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
       }
     },
@@ -272,14 +272,14 @@
         "shows": "controls",
         "firmware": "1.40C",
         "moduleVersion": "0.1.0-experimental",
-        "imageSha256": "0b4cb65147ce0eb8f4a580d06d3c7c3c08b158a6b2fc9b8218914d47519fbc24",
+        "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
         "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
       }
     },
     {
       "path": "media/ot-mixer-phn.png",
       "captureType": "emulator",
-      "caption": "In ROUTED the MIXER's MIX knob is labelled PHN: it sets the headphone output's level, centre 0 dB. MAIN and CUE work as stock.",
+      "caption": "In MATRIX the MIXER's MIX knob is labelled PHN: it sets the headphone output's level, centre 0 dB. MAIN and CUE work as stock.",
       "alt": "Actual Octatrack LCD: the MIXER with the first box labelled PHN over a slider marked - and +, beside MAIN and CUE at +0.",
       "credit": "npp1993",
       "license": "LicenseRef-OT-UI-Documentation",
@@ -289,21 +289,21 @@
         "shows": "controls",
         "firmware": "1.40C",
         "moduleVersion": "0.1.0-experimental",
-        "imageSha256": "0b4cb65147ce0eb8f4a580d06d3c7c3c08b158a6b2fc9b8218914d47519fbc24",
+        "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
         "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
       }
     }
   ],
   "access": {
-    "location": "PROJECT > CONTROL > AUDIO > ROUTING (stock CUE CFG) > ROUTED; then CUE + LEVEL on any audio track, and MIX in the MIXER.",
+    "location": "PROJECT > CONTROL > AUDIO > OUT CFG (stock CUE CFG) > MATRIX; then CUE + LEVEL on any audio track, and MIX in the MIXER.",
     "steps": [
-      "Include Phones Routing in your build.",
-      "Press PROJ (MKII), open CONTROL > AUDIO, move right into the ROUTING box, select ROUTED and press YES.",
+      "Include Output Matrix in your build.",
+      "Press PROJ (MKII), open CONTROL > AUDIO, move right into the OUT CFG box, select MATRIX and press YES.",
       "Select an audio track, hold CUE and turn LEVEL to pick its outputs; the LEV box shows the destination.",
       "Open the MIXER: MIX, labelled PHN, sets the headphone output level."
     ],
     "screenshots": [
-      "media/ot-routing-menu.png",
+      "media/ot-out-cfg-menu.png",
       "media/ot-cue-held.png",
       "media/ot-cue-level-phn.png",
       "media/ot-mixer-phn.png"

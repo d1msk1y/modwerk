@@ -1,14 +1,14 @@
-| PHONES ROUTING, ColdFire side. GNU as, ColdFire ISA A+ (m68k-elf-as).
+| OUTPUT MATRIX, ColdFire side. GNU as, ColdFire ISA A+ (m68k-elf-as).
 |
 | CUE CFG lives in the byte 0x80000037 (0 NORMAL, 1 STUDIO; this module adds
-| 2 ROUTED), mirrored to CS1 at 0x100b1497. Every stock reader but the
-| AUDIO page tests it nonzero, so ROUTED behaves as STUDIO there.
+| 2 MATRIX), mirrored to CS1 at 0x100b1497. Every stock reader but the
+| AUDIO page tests it nonzero, so MATRIX behaves as STUDIO there.
 |
 | This file: the AUDIO page's third CUE CFG row and its YES actions (with
 | the cue-byte conversion on a mode switch), the project load and the
 | power-up CS1 check (pokes in the manifest), CUE + LEVEL as the destination
 | chooser and its LEV box, and the level page that carries the bus levels,
-| the eight destinations and the declick to the DSP (phones_mix.asm).
+| the eight destinations and the declick to the DSP (matrix_mix.asm).
 | Tested under the ColdFire port only: see TESTING.md.
 
         .equ    CUE_CFG,      0x80000037
@@ -69,14 +69,14 @@ audio_keys:
 
 | The CUE CFG boxes: checked when the byte equals the row. d0 returns the
 | glyph; d1 is free (the stock getters use d0 and d1).
-        .global cue_get_normal, cue_get_studio, cue_get_routed
+        .global cue_get_normal, cue_get_studio, cue_get_matrix
 cue_get_normal:
         moveq   #0,%d1
         bra.s   cue_get
 cue_get_studio:
         moveq   #1,%d1
         bra.s   cue_get
-cue_get_routed:
+cue_get_matrix:
         moveq   #2,%d1
 cue_get:
         move.l  %d2,-(%sp)
@@ -89,16 +89,16 @@ cue_get:
         rts
 
 | YES on a CUE CFG row. As stock: store, mirror, redraw; and when the
-| switch enters or leaves ROUTED, convert every Part's cue bytes so the
+| switch enters or leaves MATRIX, convert every Part's cue bytes so the
 | routing means the same thing in the new mode (convert_all).
-        .global act_normal, act_studio, act_routed, act_none
+        .global act_normal, act_studio, act_matrix, act_none
 act_normal:
         moveq   #0,%d0
         bra.s   set_mode
 act_studio:
         moveq   #1,%d0
         bra.s   set_mode
-act_routed:
+act_matrix:
         moveq   #2,%d0
 set_mode:
         lea     -32(%sp),%sp
@@ -112,16 +112,16 @@ set_mode:
         beq.s   1f
         cmp.l   %d1,%d3
         bne.s   9f                       | NORMAL <-> STUDIO: nothing to convert
-        moveq   #0,%d4                   | out of ROUTED into STUDIO
+        moveq   #0,%d4                   | out of MATRIX into STUDIO
         tst.l   %d2
         bne.s   2f
-        moveq   #3,%d4                   | out of ROUTED into NORMAL
+        moveq   #3,%d4                   | out of MATRIX into NORMAL
         bsr     cue_mask_from_live
         bra.s   2f
-1:      moveq   #1,%d4                   | into ROUTED from STUDIO
+1:      moveq   #1,%d4                   | into MATRIX from STUDIO
         tst.l   %d3
         bne.s   2f
-        moveq   #2,%d4                   | into ROUTED from NORMAL
+        moveq   #2,%d4                   | into MATRIX from NORMAL
 2:      move.l  %d2,-(%sp)
         bsr     convert_all
         move.l  (%sp)+,%d2
@@ -144,18 +144,18 @@ act_none:
 | Parts are also in CS1 (what survives a power cycle), at 0x100a4ece and
 | 0x100ab196. The working/saved relation is kept: both copies convert, so
 | no unsaved bit changes. Each mode keeps what the other can express, no
-| level is lost, and a round trip comes back as it was. L is ROUTED's level;
+| level is lost, and a round trip comes back as it was. L is MATRIX's level;
 | STUDIO has LEVEL (MAIN) and a cue level; NORMAL has LEVEL, a cue level and
 | one project-wide cue bit per track (CUE + TRACK, 0x80000008 bit 16 + t),
 | with CUE MUTES TRACK (0x8000009c) taking cued tracks off MAIN. d4:
-|   0  ROUTED into STUDIO, 3 into NORMAL: LEVEL = L where the destination
+|   0  MATRIX into STUDIO, 3 into NORMAL: LEVEL = L where the destination
 |      has MAIN, or only PHONES (which neither mode can isolate: it stays
 |      audible on MAIN), else 0; cue level = L where it has CUE, else 0.
 |      OFF gives 0 and 0. Into NORMAL, the current Part's destinations with
 |      CUE also set the cue bits (cue_mask_from_live): NORMAL has one set.
-|   1  STUDIO into ROUTED: LEVEL and cue -> M+C at LEVEL; LEVEL only -> MAIN;
+|   1  STUDIO into MATRIX: LEVEL and cue -> M+C at LEVEL; LEVEL only -> MAIN;
 |      cue only -> CUE at the cue level; neither -> MAIN at 0.
-|   2  NORMAL into ROUTED: not cued -> MAIN; cued with a cue level -> M+C
+|   2  NORMAL into MATRIX: not cued -> MAIN; cued with a cue level -> M+C
 |      at LEVEL, or CUE at the cue level when LEVEL is 0 or CUE MUTES TRACK
 |      is on; cued at cue level 0 -> MAIN, or OFF (LEVEL kept) when CUE
 |      MUTES TRACK silenced it.
@@ -232,7 +232,7 @@ conv_tracks:
         beq.s   20f
         cmpi.l  #2,%d4
         beq.s   30f
-        moveq   #DEST_MAX,%d3            | out of ROUTED
+        moveq   #DEST_MAX,%d3            | out of MATRIX
         cmp.l   %d3,%d0
         bls.s   10f
         moveq   #0,%d0                   | a cue level, not a code: MAIN
@@ -320,7 +320,7 @@ cue_mask_from_live:
 | byte, adds the accelerated delta, clamps to 0..127 and from 0x4004ea10
 | writes d3 everywhere the cue level lives: the Part, its CS1 copy, the
 | dirty bits, the live byte 0x80000c51+2t, CC 47 out, then redraws. In
-| ROUTED the same tail stores a destination code 0..13 instead, stepped as
+| MATRIX the same tail stores a destination code 0..13 instead, stepped as
 | stock steps a select with few choices (THRU INAB, the AUDIO page lists):
 | 0x4003240c adds 256 per detent (7 times that while the layer's push flag
 | for the knob, 0x46c7d8ee + 24 * (0x38 + encoder), is set) to the knob's
@@ -402,7 +402,7 @@ part_cue:
 1:      rts
 
 | ---- LEV box with CUE held (jmp detour, displaced: pea 0x400b7b98 "CUE")
-| ROUTED labels the box with the current track's destination, so holding
+| MATRIX labels the box with the current track's destination, so holding
 | CUE shows it without a turn. Stock draws the label from x 45 (the
 | arguments pushed at 0x4004dd6a); a name is centred there as the value is
 | while turning: glyphs advance 4 pixels, so a two-letter name starts at
@@ -433,7 +433,7 @@ lev_box_cue:
         jmp     0x4004dd82               | the stock jsr 0x40012bd8
 
 | ---- its value (jmp detour, displaced: the push of d4, "%d" and the buffer
-| and the jsr to sprintf; 0x4004ddc6 goes on to draw it). ROUTED prints the
+| and the jsr to sprintf; 0x4004ddc6 goes on to draw it). MATRIX prints the
 | destination's name; the same 12 bytes stay pushed for the stock pop.
         .global lev_box_val
 lev_box_val:
@@ -457,7 +457,7 @@ lev_box_val:
 | ---- the LEV box bars (jmp detour, displaced: moveq #18,d0; muls.l d2,d0)
 | STUDIO draws a level bar from d2 and a cue bar from d4, the cue bar shaded
 | (0x40012368) when d5 is set: the master track, which has no cue in
-| STUDIO. In ROUTED d4 is a destination code, so both bars show the level,
+| STUDIO. In MATRIX d4 is a destination code, so both bars show the level,
 | solid on every track (the master may go to CUE or PHONES there): the
 | path joins stock's solid drawing at 0x4004df9c, past its d5 test. On the
 | MAIN display (FUNC held: 0x46c7c730 set and CUE not held, 0x4004dca0)
@@ -486,13 +486,13 @@ lev_bars:
 | core 0 reads at X:$205); the detour sits just after it stores d2, the MAIN
 | level sign-extended, as word $29. The level bytes run 0..127, 64 = 0 dB.
 |
-| In ROUTED, $29 is rewritten as 64, so each track's ramped MAIN gain is its
+| In MATRIX, $29 is rewritten as 64, so each track's ramped MAIN gain is its
 | own level x XVOL and no bus level, and the module's mixdown applies the bus
 | levels after the sum. d2 keeps the real level: one builder branch sends it
-| again as $2c. Words the DSP reads only in ROUTED:
+| again as $2c. Words the DSP reads only in MATRIX:
 |   $37  the MAIN level        $38  the PHONES level (the MIX byte)
 |   $39  T1..T4 destinations   $3a  T5..T8 (4 bits each, T1 and T5 highest)
-|   $3b  1 in ROUTED, else 0
+|   $3b  1 in MATRIX, else 0
 | CUE stays in $28 as stock sends it. Free here: d0, d1, d4 and a0 (each is
 | written before it is read after the return); d3 is the replayed load.
 |
@@ -509,14 +509,14 @@ lev_bars:
         .equ    PG_PHONES,    0x70
         .equ    PG_DEST_LO,   0x72
         .equ    PG_DEST_HI,   0x74
-        .equ    PG_ROUTED,    0x76
+        .equ    PG_MATRIX,    0x76
         .equ    LIVE_CUE,     0x80000c51  | + 2t: the live cue byte, here a destination
         .global page_levels
 page_levels:
         mvs.b   CUE_CFG,%d0
         cmpi.l  #2,%d0
         beq.s   1f
-        clr.w   PG_ROUTED(%a2)
+        clr.w   PG_MATRIX(%a2)
         bra     9f
 1:      move.w  %d2,PG_MAIN(%a2)
         move.w  #64,PG_MAIN0(%a2)        | $29: unity
@@ -565,12 +565,12 @@ page_levels:
         move.w  %d3,PG_DEST_HI(%a2)      | T5..T8
         movem.l (%sp),%a1/%a3
         lea     8(%sp),%sp
-        move.w  #1,PG_ROUTED(%a2)
+        move.w  #1,PG_MATRIX(%a2)
 9:      move.b  0x80000032,%d3           | the displaced load
         rts
 
 | ---- MIXER: the MIX label (jmp detour, displaced: pea 0x400b7b8c "MIX")
-| In ROUTED, MIX is the PHONES level (64 = 0 dB, as MAIN and CUE), so the
+| In MATRIX, MIX is the PHONES level (64 = 0 dB, as MAIN and CUE), so the
 | label reads PHN and the slider's ends - and +; its value popup is stock.
         .global mixer_mix_label
 mixer_mix_label:
@@ -603,22 +603,22 @@ mixer_mix_right:
         jmp     0x4007c532
 
         .data
-        .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions, str_routing
+        .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions, str_outcfg
 t8_labels:   .long 0x400b44e1, 0x400b5eb0, str_blank    | MASTER, NORMAL, (none)
 t8_getters:  .long 0x40065138, 0x40065154, 0
 t8_actions:  .long 0x40065554, 0x40065514, act_none
-cue_labels:  .long 0x400b5eb0, 0x400b5eb7, str_routed   | NORMAL, STUDIO, ROUTED
-cue_getters: .long cue_get_normal, cue_get_studio, cue_get_routed
-cue_actions: .long act_normal, act_studio, act_routed
+cue_labels:  .long 0x400b5eb0, 0x400b5eb7, str_matrix   | NORMAL, STUDIO, MATRIX
+cue_getters: .long cue_get_normal, cue_get_studio, cue_get_matrix
+cue_actions: .long act_normal, act_studio, act_matrix
 | The destination codes, in CUE + LEVEL order. The DSP side reads the same
-| numbering (phones_mix.asm).
+| numbering (matrix_mix.asm).
 dest_names:  .long n_main, n_cue, n_phns, n_mc, n_mp, n_cp, n_all
              .long n_mnl, n_mnr, n_cul, n_cur, n_phl, n_phr, n_off
 sent_codes:  .byte 0, 0, 0, 0, 0, 0, 0, 0   | the codes the DSP routes by
 fading:      .byte 0, 0, 0, 0, 0, 0, 0, 0   | 1: faded out last frame (sent_codes + 8)
 str_blank:   .asciz ""
-str_routed:  .asciz "ROUTED"
-str_routing: .asciz "ROUTING"              | the box title, stock "CUE CFG"
+str_matrix:  .asciz "MATRIX"
+str_outcfg: .asciz "OUT CFG"              | the box title, stock "CUE CFG"
 str_phn:     .asciz "PHN"
 str_minus:   .asciz "-"
 str_plus:    .asciz "+"
