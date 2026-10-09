@@ -4,7 +4,7 @@
   "sourceSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
   "staticStock": true,
   "builderSources": {
-    "tools/build/build_bus.py": "38d80300f9e7fee2d59bd1c81d7bf421ada6d9e35ee40350c53a2583322dfa31",
+    "tools/build/build_bus.py": "d53381cb0b931319d62de1493c3292ac3a4b98afae4d64e9b715ed3f740e3289",
     "tools/build/ab_image.py": "d51e8face61e0642f24743cc8081b1d258943f5040a3b34d003cf34a4f797c14",
     "tools/remix/loader.S": "32e09fd813ddc65511390faaebc3b86d963b2700f304b35cdb1ec48f90449287"
   },

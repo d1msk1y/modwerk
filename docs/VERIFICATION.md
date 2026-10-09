@@ -1028,3 +1028,29 @@ still reports 111 stale mismatch rows after earlier module updates; running the
 same check on untouched current main produces exactly the same rows and result
 summaries. Air Chorus adds no mismatch to those historical records; its new
 114-profile record matches current source independently.
+
+## Sidechain Compressor's table stays in P memory: native XTABLE guard — 9 October 2026
+
+A native remix with Analog BD, Mini Verb, TapeHead and Sidechain Compressor froze the
+sequencer after one step on an Octatrack MKII. It used static stock DSP and gave up the
+three reverbs, LO-FI and DJ EQ. Because DJ EQ was given up, XTABLE had moved Sidechain's
+48-word table into the stock curve bank at X:0x4840. The identical image with the table
+left in P memory runs on the same unit. Each image was flashed once. The cause is
+open; `sdk/octabam/docs/remixer/FAILURE_MODES.md` records what was ruled out.
+
+`build_bus.py` now keeps a `stock_dsp` module's table in P memory. Such a module is
+reached only through hooks, and Sidechain Compressor is the only one with a table. The
+build log says why. Tables of dispatched effects still move to X memory. The web
+composer places module tables in P memory only, so it is unaffected.
+
+- **The remix that froze.** With the guard, it builds DSP uploads byte-identical on both
+  cores to the image that runs on the unit.
+- **A dispatched effect beside Sidechain.** A local remix with Spectrum and Sidechain, DJ
+  EQ given up, parks Spectrum's table in X and keeps Sidechain's in P.
+- **The native Analog BD matrix.** All 136 profiles were rebuilt in the pinned toolchain
+  container, one SDK copy per shard. All 130 build identities and six refusals are
+  unchanged. The 38 current-main profiles of the octabam infrastructure record were
+  rebuilt the same way: 34 images and four refusals are unchanged. Only the
+  `build_bus.py` source fingerprint moves, in both records and the import record.
+
+No new hardware run of the guarded build is claimed. Images and firmware stayed local.

@@ -2861,6 +2861,20 @@ hostquit:
         _xt_tables = [k for k in sorted((k for k in CARRIED if k in _texts),
                                         key=lambda k: _MODS[k].dsp.priority)
                       if "$facade" in _texts[k] or PTABLE_MARK in _texts[k]]
+        # ⚠️ ONLY A DISPATCHED EFFECT'S TABLE IS PARKED. A stock_dsp module's
+        # code has no dispatch entry: stock code reaches it through hooks.
+        # SIDECHAIN_COMPRESSOR is the one with a table, and its table in the
+        # curve bank froze a MKII at step 1 (9 Oct 2026: Analog BD + Mini
+        # Verb + TapeHead + Sidechain, reverbs, LO-FI and DJ EQ given up);
+        # the same image with the table in P runs. ot_emu runs the frozen
+        # image clean, so the cause is not known. Until a unit runs such a
+        # table from X, it stays in P (AGENTS.md; FAILURE_MODES.md).
+        _xt_refused = [k for k in _xt_tables if k in STOCK_DSP]
+        _xt_tables = [k for k in _xt_tables if k not in _xt_refused]
+        if _xt_refused:
+            print(f"  XTABLE: {', '.join(_xt_refused)}'s table stays in P -- "
+                  f"hook-reached code reading the stock curve bank froze a "
+                  f"MKII (9 Oct 2026) and is not hardware-proven")
         _pristine = IMG.read_bytes()
         _xt_rec = {t: stock_mod.curve_bank_record(_pristine, t) for t in "AB"}
         _xt_same = (all(_xt_rec.values()) and

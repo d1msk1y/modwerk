@@ -500,6 +500,18 @@ payload, or read through a build-supplied base; and audit any stock-table
 read on BOTH payloads under `rig_render.py`. Our own modules were scanned
 14 Sep 2026 and read none.
 
+**A HOOK-REACHED TABLE IN THE STOCK CURVE BANK STOPPED A MKII AFTER ONE
+STEP, AND THE PORT RAN THE SAME IMAGE CLEAN.** With DJ EQ given up,
+XTABLE moved Sidechain Compressor's 48-word table to X:0x4840 and turned
+its two `p:(r1+n1)` reads into `x:(` (9 Oct 2026: Analog BD + Mini Verb +
+TapeHead + Sidechain, static stock). The image with the table left in P
+runs. The two DSP uploads differ in nothing else but Sidechain's position.
+Under `ot_emu` only the boot loader writes those X words, and the table
+cannot steer control flow, so the cause is open. A dispatched effect's
+table in X has run on a unit (VOCODER); a `stock_dsp` module's has not.
+`build_bus.py` keeps a `stock_dsp` module's table in P. Do not lift that
+without a unit running the image (`docs/remixer/FAILURE_MODES.md`).
+
 **A DESCRIPTOR NAME THAT EXACTLY FILLS ITS FIELD LEAVES NO NUL, AND THE
 CRASH LANDS SOMEWHERE ELSE ENTIRELY.** `abbr` is a 5-byte field holding FOUR
 characters plus a terminator; `fullname` is 13 bytes holding TWELVE (and the
