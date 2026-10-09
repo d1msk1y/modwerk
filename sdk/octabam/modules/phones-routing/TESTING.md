@@ -202,6 +202,18 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 
 ## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
 
+**Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7 and 8 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE); returning to the stock OS by MIDI SysEx from the Startup Menu (through an E-RM MultiClock) was proven once on 7 Oct before any module image was flashed. No image was shared; each is identified by its SHA-256.
+
+| Date | Image | What happened |
+| --- | --- | --- |
+| 7 Oct | PHNROUTE3 | Booted; ROUTED selects; LEVEL and CUE + LEVEL work. Feedback: the knob too fine, names too long, MIX still drawn as a blend (all changed, table above) |
+| 7 Oct | PHNROUTE6 (loader build) | No sound; sequencer stuck on trig 1 in every project, also with MIDI sync off and in a new project; the stock OS ran the same projects |
+| 8 Oct | PHNSTAT8 (static build) | Plays; the routing checks below |
+| 8 Oct | PHNCTRL7 (loader, no module) | Froze as PHNROUTE6 |
+| 8 Oct | PHNSTAT9 (static build, this source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the ROUTING title and the solid master bar |
+
+PHNROUTE4 and PHNROUTE5 were built but not flashed.
+
 **PHNROUTE6 froze; PHNSTAT8 runs.** PHNROUTE6 booted with no sound and the sequencer stuck on trig 1 in every project, sync off; the stock OS ran the same project. Octabam's build adds its experimental stock-effect loader (DSP DYNLOAD STOCK, whose README says it is for the emulator only) to every remix unless the remix keeps the stock code built in (`static_stock`). PHNSTAT8 is the same module built with `static_stock=True`, SPRING REV off both choosers to give core 0 room: it plays. The emulator ran PHNROUTE6 normally, so it does not model this freeze. PHNCTRL7, the same remix without the module (the stock effects and the loader only), froze the same way on 8 Oct 2026: the loader alone causes it.
 
 On PHNSTAT8, by the user, ✅ unless noted:
@@ -218,6 +230,14 @@ On PHNSTAT8, by the user, ✅ unless noted:
 | Leaving ROUTED | ROUTED → STUDIO as the first rules said; STUDIO → ROUTED turned a CUE-only track into M+C, which led to the rewrite above (not yet re-run on hardware) |
 | Leaving ROUTED, PHNSTAT9 (rewritten rules) | T1 MN, T2 CUE, T3 PHN, T4 M+C at different levels: into STUDIO T2 on CUE only (LEVEL 0, cue level = its level), T3 on MAIN, T4 on both; back to ROUTED as MN, CUE, MN, M+C with the levels kept; into NORMAL T2 and T4 cued, T2 on CUE only; back to ROUTED T2 is CUE. With the user's CUE MUTES TRACK on, T4 played on CUE only in NORMAL: stock mutes every cued track on MAIN, as the rules expect |
 | The AUDIO page and the LEV box, PHNSTAT9 | The box reads ROUTING; the master track's LEV bar is solid in ROUTED |
+
+Reported on the unit, as heard (not measured):
+- **Headphone sides:** PHL first seemed to come out of the right ear; the tester then noticed they wear their headphones reversed. PHN with AMP BAL hard left comes out of the same ear as PHL, which is where stock puts a left-panned sound (emulator: stock and the module both land BAL hard left on the MKII's second phones word).
+- **Mono level** was compared on MAIN only (MNL against MN); not on CUE or PHONES.
+- **AMP BAL:** slight artifacts while turning BAL; not compared with stock on the unit (emulator below).
+- **Destination changes during playback** click slightly (emulator below).
+- **Load:** no CPU meter exists on the unit; a semi-busy project was judged by ear. No stress project was run.
+- **CUE MUTES TRACK** was on in the tester's settings during the NORMAL checks.
 
 Asked on the unit and answered in the emulator:
 - **AMP BAL artifacts:** a BAL sweep by MIDI (CC 8, 64 → 0 → 127 → 64, a value a frame) on stock and on ROUTED MN gives the same per-64-sample envelope steps (median 18,880 against 18,943) and envelopes within 0.6%: BAL is stock's, ahead of the mixdown.
