@@ -78,10 +78,11 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 
 **Building**
 - The module is built with the stock DSP code built in (`static_stock`, octabam's default for native images).
-- Built that way, the module needs one stock effect's room on core 0: SPRING REV (1,063 words), DARK REV (1,067), or LO-FI and DJ EQ together (882), taken off both effect menus. The test images give up SPRING REV; which one a release gives up is still open.
+- Built that way, the module needs one stock effect's room on core 0 (769 words). Modwerk's builder gives up the fewest stock reverbs that fit everything selected, SPRING REV first, then PLATE REV or DARK REV; a given-up effect leaves the FX2 menu. The test images give up SPRING REV.
 
 **Conflicts**
 - The module changes core 0's mixdown on the DSP.
+- Analog BD: not combinable yet. Its builder places DSP code only beside a reviewed list of effects, and Output Matrix is not on it.
 - Modules that read or change the gain path or the output ring are not yet declared as conflicts.
 
 ## Changes to stock flows

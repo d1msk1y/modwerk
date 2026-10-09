@@ -33,13 +33,16 @@
   "compatibility": {
     "firmware": "1.40C",
     "location": "Audio tracks",
-    "conflicts": [],
+    "conflicts": [
+      "analog-bassdrum"
+    ],
     "limitations": [
-      "Builds with the stock DSP code built in (static_stock) and takes SPRING REV's program memory on core 0: SPRING REV leaves both effect menus while the module is installed.",
+      "Builds with the stock DSP code built in and takes a given-up stock effect's program memory on core 0. The builder chooses it: SPRING REV first, then PLATE REV or DARK REV when other modules also need room. The given-up effect leaves the FX2 menu.",
       "The MATRIX mixdown costs core 0 up to about 210 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
       "Switching to or from MATRIX rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
       "A MATRIX project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
-      "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger."
+      "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger.",
+      "Not yet combinable with Analog BD, whose builder places DSP code only beside a reviewed list of effects."
     ],
     "effectId": null
   },
