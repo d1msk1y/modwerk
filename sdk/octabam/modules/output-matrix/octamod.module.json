@@ -36,7 +36,7 @@
     "conflicts": [],
     "limitations": [
       "Builds with the stock DSP code built in (static_stock) and takes SPRING REV's program memory on core 0: SPRING REV leaves both effect menus while the module is installed.",
-      "The MATRIX mixdown costs core 0 up to about 216 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
+      "The MATRIX mixdown costs core 0 up to about 210 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
       "Switching to or from MATRIX rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
       "A MATRIX project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
       "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger."
@@ -47,7 +47,7 @@
     "recorded": "Measured in the ColdFire port (instructions) and from the build report",
     "storage": {
       "label": "Memory",
-      "display": "1,498 B DRAM + 781 DSP P words + 193 DSP Y words",
+      "display": "1,498 B DRAM + 769 DSP P words + 193 DSP Y words",
       "value": 4423,
       "unit": "bytes",
       "method": "static",
@@ -74,13 +74,13 @@
       "dsp": {
         "level": "low",
         "basis": "measured-comparison",
-        "rationale": "Up to about 216 extra instructions per sample on core 0 (about 7% of 3,120); about 20 with every track on MAIN.",
+        "rationale": "Up to about 210 extra instructions per sample on core 0 (about 7% of 3,120); about 20 with every track on MAIN.",
         "source": "TESTING.md"
       },
       "memory": {
         "level": "low",
         "basis": "measured-comparison",
-        "rationale": "1,498 bytes of DRAM code and data, 781 DSP program words reused from SPRING REV and 193 DSP Y words.",
+        "rationale": "1,498 bytes of DRAM code and data, 769 DSP program words reused from SPRING REV and 193 DSP Y words.",
         "source": "TESTING.md"
       }
     }
@@ -89,14 +89,14 @@
     "report": "TESTING.md",
     "summary": "The image gate passes 117 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys (including track 8 as the master and the power-cycle copies), CC 51 out and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7–9 Oct 2026). No timed stress run, no chip timing.",
     "hardwareStatus": "reported",
-    "evidenceRevision": "707bf7af3c2119693ad24953bdf82dd49faed36a",
+    "evidenceRevision": "c75ef30178ceb62dbabeacfc6e682a0dfdf17281",
     "gates": [
       "modules/output-matrix/verify.py"
     ],
     "qualification": {
       "moduleVersion": "0.1.0-experimental",
       "sourceSha256": "dd38755b04d2eaa554b2b83d27d5e4912fb82a0f54fad0b61167cc3a023ce4fd",
-      "imageSha256": "b8ff149bf0844527faf9528ee13302ddb0e652e7fecd98fcc603f14103a92448",
+      "imageSha256": "71d6c3596cd43b82f275c0050c39601b4003eda5baea8d93ac63de15578774b6",
       "cycles": [
         {
           "processor": "dsp",
@@ -189,15 +189,15 @@
         "model": "MKII",
         "testedOn": "2026-10-09",
         "tester": "npp1993",
-        "sourceRevision": "707bf7af3c2119693ad24953bdf82dd49faed36a",
-        "imageSha256": "b8ff149bf0844527faf9528ee13302ddb0e652e7fecd98fcc603f14103a92448",
-        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10 (the renaming only: the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX) and then OUTMTX11, this source, which adds the review fixes: with track 8 as the master routed to M+C, switching to NORMAL leaves it uncued with the master still on MAIN, and switching back shows MN; a track routed to PHN plays only in the headphones.",
+        "sourceRevision": "c75ef30178ceb62dbabeacfc6e682a0dfdf17281",
+        "imageSha256": "71d6c3596cd43b82f275c0050c39601b4003eda5baea8d93ac63de15578774b6",
+        "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10 (the renaming only: the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX) then OUTMTX11, which adds the review fixes: with track 8 as the master routed to M+C, switching to NORMAL leaves it uncued with the master still on MAIN, and switching back shows MN; a track routed to PHN plays only in the headphones. Then OUTMTX12, this source, which loads each routing list's length in one instruction (-12 DSP words): tracks on MN, CUE and PHN, several on one output, the mono jacks, M+P and ALL, the master track and destination changes during playback all played as before.",
         "limitations": [
           "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
           "One MKII; no MKI.",
           "Conversions in Parts other than the current one and in other banks were checked in the emulator only.",
           "No combination with other modules on the unit.",
-          "OUTMTX10 and OUTMTX11 were given short checks of what changed; the full checks ran on PHNSTAT8/9, whose behaviour the gate shows unchanged otherwise.",
+          "OUTMTX10, OUTMTX11 and OUTMTX12 were given short checks of what changed; the full checks ran on PHNSTAT8/9, whose behaviour the gate shows unchanged otherwise.",
           "CC 51 out on a switch into NORMAL is emulator-verified only (no controller was connected)."
         ],
         "report": "TESTING.md"

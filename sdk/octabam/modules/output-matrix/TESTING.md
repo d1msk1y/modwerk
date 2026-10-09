@@ -221,7 +221,8 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 | 8 Oct | PHNSTAT8 (stock DSP code built in, SPRING REV harvested) | The routing checks below |
 | 8 Oct | PHNSTAT9 (the same build, source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the box title and the solid master bar |
 | 9 Oct | OUTMTX10 (source `d98a254`, SHA-256 `fa05f59f…ec11`; the rename only) | The AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX; the tester reported everything looked good |
-| 9 Oct | OUTMTX11 (this source `707bf7a`, SHA-256 `b8ff149b…2448`; the review fixes) | Track 8 as the master, routed to M+C: after switching to NORMAL it is not cued and the master plays on MAIN; back in MATRIX it shows MN. A track on PHN plays only in the headphones. CC 51 out not checked (no controller connected) |
+| 9 Oct | OUTMTX11 (source `707bf7a`, SHA-256 `b8ff149b…2448`; the review fixes) | Track 8 as the master, routed to M+C: after switching to NORMAL it is not cued and the master plays on MAIN; back in MATRIX it shows MN. A track on PHN plays only in the headphones. CC 51 out not checked (no controller connected) |
+| 9 Oct | OUTMTX12 (this source `c75ef30`, SHA-256 `71d6c359…74b6`; the 12-word trim) | In MATRIX with several tracks playing: MN, CUE and PHN on the right outputs, several tracks on one output, the mono jacks, M+P and ALL, the master track, destination changes during playback; all as before |
 
 Other development images were built in between; only those above were flashed for these results.
 
