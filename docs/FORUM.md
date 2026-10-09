@@ -132,6 +132,12 @@ The hourly job sends digests. A member gets at most one per 6 hours (default) or
 
 Production uses the paid Resend plan with `ACTIVITY_MAIL_DAILY_LIMIT=1000` and `NEWS_MAIL_DAILY_LIMIT=500`, beside the separate 80/day account-mail safeguard. Activity and news also have 30-day bucket caps of 30 times their daily limits; account mail has a 2,400-per-30-day-bucket cap. Across a 31-day month the daily budgets permit at most 48,980 attempts, leaving headroom within the 50,000-email plan for other provider usage. These are application budgets, not Resend's billing-period counters; monitor actual provider usage. Unconfigured/local environments retain conservative defaults of 15 activity and 5 news messages per day. News mail is described in [COMMUNITY_OPERATIONS.md](COMMUNITY_OPERATIONS.md#news-mail). Reaching the cap stops that run and is counted as limited in the Accounts tab; failed deliveries are retried on the next run. Disable open and click tracking for the sending domain in Resend: the privacy notice promises activity email has none. Notifications are kept until account deletion, which removes them and the preferences; account export includes both.
 
+## Thread rendering and editor recovery
+
+Opening a thread from the bell, a shared link or a device notification must keep the app navigation available. The thread view has a local rendering boundary with a reload action; changing threads resets it. Saved member reply drafts remain in this tab. Embedded module discussions use the same boundary.
+
+The formatting editor loads separately. A missing editor bundle (for example, after a deployment in an older open tab) or an editor rendering error falls back to a controlled Markdown textarea. It keeps the current draft, input label, form field name and disabled state, so members can still read and reply without reloading. Client rendering regression tests use a test-only DOM environment to verify both recovery paths.
+
 ## Security boundaries
 
 All source is assumed public. Security depends on server-side checks, private deployment secrets and maintained authentication code, not hidden frontend controls.
