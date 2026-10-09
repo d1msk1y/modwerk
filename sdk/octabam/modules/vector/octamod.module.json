@@ -220,7 +220,7 @@
       "Two-instance native Part/project save-reload, saved-card fresh load and battery-RAM-only restart",
       "Exact-version owner exception; physical reboot/audio unverified"
     ],
-    "evidenceRevision": "d1e38bcde2d37ac62d45e60655c0e7137750bf97",
+    "evidenceRevision": "16c04ae4d713376bd6bb119951899c33fa2e0ae9",
     "qualification": {
       "moduleVersion": "0.2.4-experimental",
       "sourceSha256": "1255e99133cbd8d6d2587c95f93462ea80fccbd169462a2acb02aedbd346cbd3",
@@ -510,7 +510,7 @@
   },
   "source": {
     "repository": "https://github.com/repeat98/modwerk",
-    "revision": "3b860408fdcbf362e31dd7233b24026b3d2b2312",
+    "revision": "16c04ae4d713376bd6bb119951899c33fa2e0ae9",
     "path": "sdk/octabam/modules/vector"
   }
 }

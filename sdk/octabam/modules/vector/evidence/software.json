@@ -153,5 +153,40 @@
       "omittedStockFx2": []
     },
     "containerRoundTrip": true
+  },
+  "sourcePinnedWorker": {
+    "result": "passed",
+    "moduleVersion": "0.2.4-experimental",
+    "mainSha256": "e2fa4176afe4d7f8b1cf0f5eed456d338d47acb212973e99d7bcc476c75f9ce3",
+    "updateSha256": "198f9a4a8b2529e43b60ba9f16fbc4ba9b84afcfc7ae53487c2009c2c234b88e",
+    "bytes": 466756,
+    "report": {
+      "version": "ELEKLOADER",
+      "revision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
+      "sourceCommit": null,
+      "sourceTreeSha256": "b43202fc97da4cab96a04a52f7aa8ee87fa63090ffd3184a977717de841128ec",
+      "moduleIds": [
+        "repitch",
+        "vector",
+        "playmodes",
+        "mute-modes",
+        "recorder-loop-fix"
+      ],
+      "moduleVersions": {
+        "repitch": "0.1.2-experimental",
+        "vector": "0.2.4-experimental",
+        "playmodes": "0.1.1-experimental",
+        "mute-modes": "0.1.0-experimental",
+        "recorder-loop-fix": "0.1.0-experimental"
+      },
+      "keepStockFx2": true,
+      "osBytes": 1130712,
+      "runtimeBytes": 90780,
+      "reservedBytes": 10586112,
+      "fx1Rows": 10,
+      "fx2Rows": 14,
+      "omittedStockFx2": []
+    },
+    "containerRoundTrip": true
   }
 }

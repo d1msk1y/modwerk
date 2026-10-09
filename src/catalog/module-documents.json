@@ -4506,7 +4506,7 @@
       "category": "machines",
       "source": {
         "repository": "https://github.com/repeat98/modwerk",
-        "revision": "3b860408fdcbf362e31dd7233b24026b3d2b2312",
+        "revision": "16c04ae4d713376bd6bb119951899c33fa2e0ae9",
         "path": "sdk/octabam/modules/vector"
       },
       "access": {
@@ -4735,7 +4735,7 @@
         "report": "TESTING.md",
         "summary": "Firmware-free generator/writer and all 256 VECTOR-instance masks pass ASan/UBSan; authored assembly reproduces. Exact-image ColdFire emulator tests reproduce the previous reset/stuck transport and pass two-instance Part/project save-reload, saved-card fresh load and battery-only restart. Twelve SRC controls, ordinary stock validation, both pool menus and advancing transport are checked. Physical reboot/audio remain untested under the exact-version owner exception.",
         "hardwareStatus": "untested",
-        "evidenceRevision": "d1e38bcde2d37ac62d45e60655c0e7137750bf97",
+        "evidenceRevision": "16c04ae4d713376bd6bb119951899c33fa2e0ae9",
         "gates": [
           "Firmware-free sanitizer generator, writer and packed-settings checks",
           "Authored C/hooks to assembly reproducibility without firmware",
