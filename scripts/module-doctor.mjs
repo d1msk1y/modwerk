@@ -14,6 +14,7 @@ import { LIBRARY_CATEGORIES } from '../src/catalog/modules.ts'
 import { parseModuleDocument } from '../src/catalog/module-contract.ts'
 import { COMPARED_BEFORE_RECORDS, NOT_COMPOSED } from './module-coverage.mjs'
 import { moduleSourceFingerprint } from './module-source.mjs'
+import { ANALOG_BD_DSP_COMPANIONS } from '../src/engine/analog-bd-layout.ts'
 import { moduleNativeSourceSha256 } from './module-qualification.mjs'
 import { judgeRecord, ownerWaivedPerformanceRow } from './perf-audit-analysis.mjs'
 
@@ -125,7 +126,7 @@ function octatrack(id) {
   else ok('declaration checks', 'recorded alone and beside ' + pairs + ' other modules')
 
   const conflicts = document.compatibility.conflicts ?? []
-  info('conflicts', (document.compatibility.effectId != null ? 'effect id ' + document.compatibility.effectId + ': refused beside Analog BD automatically; ' : '') + (conflicts.length ? 'declared: ' + conflicts.join(', ') : 'none declared') + '. Are they complete? (guide: Integrate)')
+  info('conflicts', (document.compatibility.effectId != null ? 'effect id ' + document.compatibility.effectId + ': ' + (ANALOG_BD_DSP_COMPANIONS.includes(document.id) ? 'reviewed beside Analog BD, subject to DSP space; ' : 'refused beside Analog BD automatically; ') : '') + (conflicts.length ? 'declared: ' + conflicts.join(', ') : 'none declared') + '. Are they complete? (guide: Integrate)')
   return lines
 }
 

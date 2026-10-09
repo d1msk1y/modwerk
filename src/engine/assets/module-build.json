@@ -1,10 +1,10 @@
 {
   "schemaVersion": 1,
   "kind": "source-packages",
-  "sourceCommit": "8d08ac24a468dba2576b4329a2c496cdf6d7d824",
+  "sourceCommit": null,
   "nativeRevision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
-  "sourceTreeSha256": "b45f60bf6a10c7c96a9d7c42b25c21c0b5ab1ee1e97ffb6637c073c2436ed79e",
-  "compilerSha256": "a5b021705103fd7d31ae464cddba93ed4c3ed7cc1c9e38f9a3dc85e033838713",
+  "sourceTreeSha256": "911c75023f63af9e48fe7d475fac432c8f5b4fefcdecaf3328d76d4e3ee9eeea",
+  "compilerSha256": "ee9d2e6da1fae22116d7fcb47cff2ad0b8c2d8eaa9ebb1038516d85965700655",
   "moduleVersions": {
     "spectrum": "0.1.1-experimental",
     "modulation": "0.1.1-experimental",
@@ -14,7 +14,7 @@
     "euclid": "0.1.4-experimental",
     "repitch": "0.1.2-experimental",
     "tapehead": "0.1.2-experimental",
-    "airwindows-chorus": "0.1.1-experimental",
+    "airwindows-chorus": "0.1.2-experimental",
     "everb": "0.1.0-experimental",
     "analog-bassdrum": "0.1.5-experimental",
     "midi-scenes": "0.2.4-experimental",
@@ -28,53 +28,52 @@
     "playmodes": "0.1.1-experimental",
     "mute-modes": "0.1.0-experimental",
     "recorder-loop-fix": "0.1.0-experimental",
-    "poly8": "0.2.6-experimental",
-    "output-matrix": "0.1.0-experimental"
+    "poly8": "0.2.6-experimental"
   },
   "files": {
     "dsp-packages.json": {
-      "bytes": 70521,
-      "sha256": "ea7447f5c5edfd38a8eabdb43dabbac16c6c21faf0beb537cf7d14f516c6ba56"
+      "bytes": 60735,
+      "sha256": "4398c1355f915f018efd331a7a296a0486a6d2ddbe6cf211ba54a21f775392d1"
     },
     "resident-dsp.json": {
-      "bytes": 24932,
-      "sha256": "728c96819efe7db6053d8198797859546711af372d832f13b6ed7189f3fa7008"
+      "bytes": 24851,
+      "sha256": "0051d71400bc3427aa7c47f0af483c4572c2acbf0e0982966f1f2ff3d10345cb"
     },
     "coldfire-packages.json": {
-      "bytes": 351527,
-      "sha256": "285e064580fa071cc4136a177b12882236f8d15b8482bf441868e1b945ff1324"
+      "bytes": 351446,
+      "sha256": "985e6977f010fd163bfc4358b89fb606478ce77026ff504943bd0af2cab0d7cc"
     },
     "rom-packages.json": {
-      "bytes": 24127,
-      "sha256": "fd712de542c5a698f8268228540c7c34132a9406e8f16d9e01cec36f797ec61a"
+      "bytes": 24046,
+      "sha256": "7467904434b3d72344e02c7fd283894882bf4c2cc502bddfba163086d2afd4dd"
     },
     "bootstrap-package.json": {
-      "bytes": 3666,
-      "sha256": "21e5b4a2168ce5b00ff8492adf0dc6bae21be0afa6160ed24dc3e2eb6dbf1b89"
+      "bytes": 3585,
+      "sha256": "777222eb465282ab22efa825053330477d9727795126e00098b2dfcbb8f0050c"
     },
     "menu-recipes.json": {
-      "bytes": 33886,
-      "sha256": "fd3cdf33049dc00b0f0f92fea18f824acfbfef315e1075d06d18bfc97aded32d"
+      "bytes": 33805,
+      "sha256": "76294ae3be8aa411a16f00ff76e850c5bdab8433e9eb275e3416cc44456ed1dc"
     },
     "descriptor-recipes.json": {
-      "bytes": 62780,
-      "sha256": "b9e8edda3be71fc1c7c2ddaa01529c327422da22bb9277a62f613b666d80c8b1"
+      "bytes": 62699,
+      "sha256": "53c18acf41175010c5a17e5b45a3314bc28b893e5a87f5c1664f27efa084ad1a"
     },
     "platform-writes.json": {
-      "bytes": 16996,
-      "sha256": "8ef3005871306674868b91590aad6a2eec27504891b72cd12eefcb3c1caf0cc4"
+      "bytes": 16915,
+      "sha256": "2bd9ab734c05f56d0a4957fd952ad56a335647ee858c9179ef79a29df8d921a0"
     },
     "requested-packages.json": {
-      "bytes": 1064452,
-      "sha256": "b0c16f7cdd6152b50092066ec2d36a4bdf4abc5cadb8d72949ddeaece31f6abe"
+      "bytes": 1045911,
+      "sha256": "6dfcfbe00baf09c7c7efb7feda7a128c660572504813441ded25d7611b9ed6ba"
     },
     "utility-packages.json": {
-      "bytes": 12794,
-      "sha256": "c0b6ef1193101127af21fbd56cc111e74c0b09371e6d602f97176d4eb31b6149"
+      "bytes": 12713,
+      "sha256": "d209db8dc1f1b649e37d3ba6a3fd4d60e0385e0bc2afa0ed78e6bbe394843d39"
     },
     "usb-audio-packages.json": {
-      "bytes": 737436,
-      "sha256": "d0c8d56a49ea5d400360926dc4db706c226098f21e0b05959d3232fff06352bd"
+      "bytes": 737355,
+      "sha256": "b80c75997769661e959eab5afdcfd4fb36a510d6c0c9339700502bfcd075323c"
     }
   },
   "approval": null,
