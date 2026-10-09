@@ -176,7 +176,7 @@
     "report": "TESTING.md",
     "summary": "Render gates pass on a native image: exact dry at MIX 0, pre-delay/decay/stereo laws, eight-instance isolation under guard and dirty start, garbage start, no zipper on any continuous knob, trig splits, REV switching, DPTH locked between shimmer and chorus, and EDCY unable to hold a tail. Static 468 cycles/sample, 381.7 instructions/sample measured against stock under the same cases; 32 s stress with eight instances, LFOs, locks and splits: no clobber, no hang. Not tested on hardware.",
     "hardwareStatus": "untested",
-    "evidenceRevision": "ad42564857dcb7a1fa6c9893ba419f7b8bc15b3b",
+    "evidenceRevision": "345fe68142b301590b8d3d795b35246070478596",
     "gates": [
       "verify.py: source and init rules, static cycles, native placement, exact dry, reverb laws, idle, eight-instance isolation (-guard -dirty), garbage start, zipper census, trig splits, REV switching, DPTH locks, EDCY latch",
       "evidence/performance.json: perf:audit (static, stock benchmark under matched cases, 32 s stress)",
