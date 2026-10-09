@@ -27,6 +27,7 @@ import { ReplyStarters } from './ReplyStarters'
 import { ModuleWorksCount } from './ModuleWorksCount'
 import { MODULE_STATISTICS_CHANGED } from './module-statistics'
 import { starterBody, type ReplyStarter } from './reply-starters'
+import { RenderBoundary } from '../components/RenderBoundary'
 function errorText(error:unknown){return error instanceof Error?error.message:'The request could not be completed.'}
 function PostCard({item,author,locked,opening,refresh,onQuote,onVisitor}:{item:ForumPost;author:string|null;locked:boolean;opening:boolean;refresh:()=>Promise<void>;onQuote:(value:string)=>void;onVisitor:(action:string)=>void}){
   const {session}=useCommunity(),[editing,setEditing]=useState(false),[body,setBody]=useState(item.body),[error,setError]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[reporting,setReporting]=useState(false)
@@ -57,7 +58,12 @@ function ModuleIntro({initiallyOpen,children}:{initiallyOpen:boolean;children:Re
   const [open,setOpen]=useState(initiallyOpen)
   return <details className="forum-intro" open={open} onToggle={event=>setOpen(event.currentTarget.open)}><summary><strong>Modwerk</strong><span>About this discussion</span><Icon name="arrow" size={13}/></summary>{children}</details>
 }
-export function ForumThreadView({id,query=new URLSearchParams(),onCopy,embedded=false,onReportIssue,onReplyCount}:{id:string;query?:URLSearchParams;onCopy?:(config:SharedConfiguration)=>void;embedded?:boolean;onReportIssue?:()=>void;onReplyCount?:(count:number)=>void}){
+type ThreadViewProps={id:string;query?:URLSearchParams;onCopy?:(config:SharedConfiguration)=>void;embedded?:boolean;onReportIssue?:()=>void;onReplyCount?:(count:number)=>void}
+export function ForumThreadView(props:ThreadViewProps){
+  const fallback=<>{!props.embedded&&<BackLink href="#forum">All discussions</BackLink>}<div role="alert"><h2>Discussion could not open</h2><p className="service-note">Reload the page to try again. Your saved reply draft stays in this tab.</p><button type="button" className="button button-quiet" onClick={()=>window.location.reload()}>Reload discussion</button></div></>
+  return <RenderBoundary key={props.id+'?'+(props.query?.toString()??'')} fallback={fallback}><ForumThreadContent {...props}/></RenderBoundary>
+}
+function ForumThreadContent({id,query=new URLSearchParams(),onCopy,embedded=false,onReportIssue,onReplyCount}:ThreadViewProps){
   const {session}=useCommunity(),[loaded,setLoaded]=useState<{key:string;data:ThreadDetail}|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[media,setMedia]=useState<PendingMedia[]>([])
   const [reply,setReply]=useForumReplyDraft(id,session.user?.id??'')
   const [localPage,setLocalPage]=useState(0),[revision,setRevision]=useState(0)
