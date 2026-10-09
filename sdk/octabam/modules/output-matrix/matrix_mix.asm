@@ -276,8 +276,7 @@ omx_cueon:
         clr     a
         clr     b
         move    #>$c20,r7
-        move    y:>$c11,x0
-        move    x0,n7
+        move    y:>$c11,n7
         do      n7,omx_cs
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -287,8 +286,7 @@ omx_cs:
         btst    #0,x1
         bcc     omx_cnomono
         move    #>$c28,r7
-        move    y:>$c12,x0
-        move    x0,n7
+        move    y:>$c12,n7
         do      n7,omx_cml
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -296,8 +294,7 @@ omx_cs:
         mac     x0,y1,a
 omx_cml:
         move    #>$c30,r7
-        move    y:>$c13,x0
-        move    x0,n7
+        move    y:>$c13,n7
         do      n7,omx_cmr
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -332,8 +329,7 @@ omx_cuedone:
         clr     a
         clr     b
         move    #>$c38,r7
-        move    y:>$c14,x0
-        move    x0,n7
+        move    y:>$c14,n7
         do      n7,omx_ms
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -343,8 +339,7 @@ omx_ms:
         btst    #1,x1
         bcc     omx_mnomono
         move    #>$c40,r7
-        move    y:>$c15,x0
-        move    x0,n7
+        move    y:>$c15,n7
         do      n7,omx_mml
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -352,8 +347,7 @@ omx_ms:
         mac     x0,y1,a
 omx_mml:
         move    #>$c48,r7
-        move    y:>$c16,x0
-        move    x0,n7
+        move    y:>$c16,n7
         do      n7,omx_mmr
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -383,24 +377,21 @@ omx_nodir:
         clr     a                       ; MAIN is T8's own MAIN routing
         clr     b
         move    #>$c1d,r7
-        move    y:>$c1a,x0
-        move    x0,n7
+        move    y:>$c1a,n7
         do      n7,omx_t8s
         move    y:(r7),r4
         move    y:(r4)+,x0
         add     x0,a            y:(r4)+,x0
         add     x0,b
 omx_t8s:
-        move    y:>$c1b,x0
-        move    x0,n7
+        move    y:>$c1b,n7
         do      n7,omx_t8l
         move    y:(r7),r4
         move    y:(r4)+,x0
         mac     x0,y1,a         y:(r4)+,x0
         mac     x0,y1,a
 omx_t8l:
-        move    y:>$c1c,x0
-        move    x0,n7
+        move    y:>$c1c,n7
         do      n7,omx_t8r
         move    y:(r7),r4
         move    y:(r4)+,x0
@@ -431,8 +422,7 @@ omx_phon:
         clr     a
         clr     b
         move    #>$c50,r7
-        move    y:>$c17,x0
-        move    x0,n7
+        move    y:>$c17,n7
         do      n7,omx_ps
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -442,8 +432,7 @@ omx_ps:
         btst    #2,x1
         bcc     omx_pnomono
         move    #>$c58,r7
-        move    y:>$c18,x0
-        move    x0,n7
+        move    y:>$c18,n7
         do      n7,omx_pml
         move    y:(r7)+,r4
         move    y:(r4)+,x0
@@ -451,8 +440,7 @@ omx_ps:
         mac     x0,y1,a
 omx_pml:
         move    #>$c60,r7
-        move    y:>$c19,x0
-        move    x0,n7
+        move    y:>$c19,n7
         do      n7,omx_pmr
         move    y:(r7)+,r4
         move    y:(r4)+,x0

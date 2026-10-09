@@ -51,16 +51,16 @@
       "value": 4423,
       "unit": "bytes",
       "method": "static",
-      "conditions": "ColdFire unit .text 1,272 B and .data 226 B (runtime ELF); DSP P code 739 words and a 42-word table in SPRING REV's harvested span on core 0; DSP Y $c00..$cc0. No per-track copies, no audio buffers.",
+      "conditions": "ColdFire unit .text 1,272 B and .data 226 B (runtime ELF); DSP P code 727 words and a 42-word table in SPRING REV's harvested span on core 0; DSP Y $c00..$cc0. No per-track copies, no audio buffers.",
       "source": "TESTING.md"
     },
     "processing": {
       "label": "DSP core 0 mixdown",
-      "display": "≤ 283 instructions/sample (stock 67)",
-      "value": 283,
+      "display": "≤ 277 instructions/sample (stock 67)",
+      "value": 277,
       "unit": "instructions/sample",
       "method": "emulator",
-      "conditions": "Executed instructions of the mixdown (P:$257..$2d5) and headphone crossfade (P:$30a..$35a) per 16-sample frame, every track on ALL, MASTER on, MAIN/CUE/PHONES levels moving, including the frame that rebuilds the routing lists: 4,336 + 192 per frame. Stock: 880 + 191. Cycles and bus stalls are not modelled.",
+      "conditions": "Executed instructions of the mixdown (P:$257..$2d5) and headphone crossfade (P:$30a..$35a) per 16-sample frame, every track on ALL, MASTER on, MAIN/CUE/PHONES levels moving, including the frame that rebuilds the routing lists: 4,240 + 192 per frame (4,336 before the 12-word trim, TESTING.md). Stock: 880 + 191. Cycles and bus stalls are not modelled.",
       "source": "TESTING.md"
     },
     "impact": {
@@ -100,8 +100,8 @@
       "cycles": [
         {
           "processor": "dsp",
-          "worstCase": 283,
-          "maxConfiguration": 283,
+          "worstCase": 277,
+          "maxConfiguration": 277,
           "maxInstances": 1,
           "budget": 3120,
           "unit": "cycles/sample",
@@ -110,7 +110,7 @@
             "parameterExtremes": "Every destination code 0..13 per track, all eight tracks on ALL, mixed stereo and mono routings, MAIN/CUE/PHONES levels 0..127, MASTER on and off.",
             "parameterModulation": "MAIN, CUE and MIX levels changed every other frame for 60 frames; LEVEL, XVOL scenes, locks and LFOs act through stock gain ramps the mixdown reads, unchanged.",
             "modeSwitching": "All eight tracks changing destination in one frame (list rebuild and declick), and NORMAL/STUDIO/MATRIX switches.",
-            "maxLoad": "One instance per unit (a global mode). Worst measured: 4,336 + 192 executed instructions per 16-sample frame on core 0, every track on ALL with MASTER on; stock 880 + 191.",
+            "maxLoad": "One instance per unit (a global mode). Worst measured: 4,240 + 192 executed instructions per 16-sample frame on core 0, every track on ALL with MASTER on; stock 880 + 191.",
             "inputConditions": "Tone and four-input test audio; the code path does not depend on sample values. Counts are executed instructions, not modelled cycles."
           },
           "report": "TESTING.md"
@@ -154,9 +154,9 @@
           {
             "name": "DSP core 0 program: mixdown and phones hooks, in SPRING REV's harvested span",
             "space": "dsp-p",
-            "words": 739,
+            "words": 727,
             "wordBits": 24,
-            "bytes": 2217,
+            "bytes": 2181,
             "scope": "shared"
           },
           {
@@ -177,9 +177,9 @@
           }
         ],
         "perInstanceBytes": 0,
-        "sharedBytes": 4420,
+        "sharedBytes": 4384,
         "maxInstances": 1,
-        "totalBytes": 4420,
+        "totalBytes": 4384,
         "conditions": "From the static build's runtime ELF and the DSP placement report. Detours patch stock instructions in place; the level-page words and battery-RAM copies the module uses are stock's. No heap; ColdFire stack use is the callers' frames plus at most 48 bytes (set_mode's saved registers and the conversion's call chain).",
         "report": "TESTING.md"
       },

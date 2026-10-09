@@ -277,7 +277,7 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in MATRIX (stoc
 
 **ColdFire**, `--watch-pc` on `page_levels` entry and its `rts`, 241 calls per run: 189 executed instructions typical, 229 at most (the frame where all eight tracks change destination). The mode conversion runs once per switch in the UI task.
 
-**Memory**, from the runtime ELF and the placement report: `.text` 1,272 B and `.data` 226 B in DRAM; DSP core 0 program 739 words at P:$127c..$155f and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,420 bytes.
+**Memory**, from the runtime ELF and the placement report: `.text` 1,272 B and `.data` 226 B in DRAM; DSP core 0 program 739 words at P:$127c..$155f and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,420 bytes. Since the 12-word trim below: 727 words at P:$127c..$1553, total 4,384 bytes.
 
 ## Screenshots (9 Oct 2026)
 
@@ -289,3 +289,23 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in MATRIX (stoc
 - A stress run of core 0 at its limit (heavy effects on T5–T8 with every bus in use).
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.
 
+
+## The 12-word trim (9 Oct 2026, emulator only)
+
+Each of the twelve routing-list loops loaded its length with `move y:>$c1x,x0` then `move x0,n7`; they now load it with `move y:>$c1x,n7` (`7ff000`). P code 739 → 727 words. `x0` is not read after any of these loops before it is written.
+
+- **Form.** Stock 1.40C has no long-absolute Y move. Its X twin `move x:>$20d,n7` (`77f000`) occurs 61 times. OUTMTX11, run on the unit, already uses `move y:>$c11,x0` and `move y:(r7)+,r4`. The trimmed form differs from both only in the field that each of them has already proved. It has not run on the chip yet; the combination test image OMXALL02 carries it, and OMXALL01 is the untrimmed control.
+- **Gate.** `verify.py` on the Output Matrix image (SPRING REV harvested): 117/117, and all 117 lines are identical to the untrimmed image's, including every measured level.
+- **Beside Analog BD, Mini Verb, TapeHead and Sidechain.** 117/117. The untrimmed gate reproduces itself exactly, and four lines move by at most 0.012%. A control build with a `nop` in place of each removed instruction restores the two stock-path lines; the two MASTER lines stay moved. These are attributed to frame timing (the PHONES level of "T1 → PHNS" moves, and its path does not run the changed loops), not proved.
+- **Cost.** `--dsp-stopwatch 0:0x257:0x2d5`, one run per case: fixture as the gate, 200 frames, CUE CFG and every destination poked at load, levels static. Executed instructions per 16-sample frame, mean / max:
+
+| Routing | MASTER | Before | After |
+| --- | --- | --- | --- |
+| Every track ALL | off | 2,936 / 3,995 | 2,898 / 3,947 |
+| Every track ALL | on | 3,187 / 4,336 | 3,109 / 4,240 |
+| ALL, MNL, CUL, PHL, ALL, MNR, CUR, PHR | off | 2,708 / 3,568 | 2,592 / 3,424 |
+| the same | on | 2,946 / 3,904 | 2,791 / 3,712 |
+| Every track MAIN | off | 1,115 / 1,570 | 1,115 / 1,570 |
+| Every track MAIN | on | 1,911 / 2,598 | 1,859 / 2,534 |
+
+The maxima before the trim equal the qualification table's (3,995 and 4,336), so the worst case becomes (4,240 + 192) / 16 = 277 instructions per sample, from 283. The means differ from that table's because these runs hold the levels still.

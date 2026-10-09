@@ -74,7 +74,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 
 **Status**
 - Built and tested in the emulator, and on an MKII (see Tests and measurements): the CUE CFG row, the project load, the CUE + LEVEL destination chooser, the LEV box, the level page words and the DSP mixdown (every destination, mono sums, the master track, the MKII phones swap) and converting cue bytes on a mode switch.
-- The MATRIX mixdown and headphone path cost core 0 at most about 283 instructions per sample against stock's 67, that is about 216 more (about 7% of the 3,120 a core can spend), measured with every track on ALL, MASTER on and all three bus levels moving. With every track on MAIN the extra is about 20. NORMAL and STUDIO run stock code plus a four-instruction check.
+- The MATRIX mixdown and headphone path cost core 0 at most about 277 instructions per sample against stock's 67, that is about 210 more (about 7% of the 3,120 a core can spend), measured with every track on ALL, MASTER on and all three bus levels moving. With every track on MAIN the extra is about 20. NORMAL and STUDIO run stock code plus a four-instruction check.
 
 **Building**
 - The module is built with the stock DSP code built in (`static_stock`, octabam's default for native images).
