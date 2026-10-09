@@ -223,7 +223,7 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 | 9 Oct | OUTMTX10 (source `d98a254`, SHA-256 `fa05f59f…ec11`; the rename only) | The AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX; the tester reported everything looked good |
 | 9 Oct | OUTMTX11 (source `707bf7a`, SHA-256 `b8ff149b…2448`; the review fixes) | Track 8 as the master, routed to M+C: after switching to NORMAL it is not cued and the master plays on MAIN; back in MATRIX it shows MN. A track on PHN plays only in the headphones. CC 51 out not checked (no controller connected) |
 | 9 Oct | OUTMTX12 (source `c75ef30`, SHA-256 `71d6c359…74b6`; the 12-word trim) | In MATRIX with several tracks playing: MN, CUE and PHN on the right outputs, several tracks on one output, the mono jacks, M+P and ALL, the master track, destination changes during playback; all as before |
-| 9 Oct | OUTMTX13 (this source `a118cf1`, SHA-256 `3e883adb…e514`; the AUDIO page tables moved into `.text`, below) | The first boot after flashing froze the sequencer, on a project last saved by an image with Analog BD; after a power cycle the sequencer ran. OUT CFG lists NORMAL, STUDIO and MATRIX; track 8 as the master shows its MASTER and NORMAL rows and works; MATRIX to NORMAL and back converts the routing; routing changes are kept over a power cycle |
+| 9 Oct | OUTMTX13 (this source `a118cf1`, SHA-256 `3e883adb…e514`; the AUDIO page tables moved into `.text`, below) | OUT CFG lists NORMAL, STUDIO and MATRIX; track 8 as the master shows its MASTER and NORMAL rows and works; MATRIX to NORMAL and back converts the routing; routing changes are kept over a power cycle |
 
 Other development images were built in between; only those above were flashed for these results.
 

@@ -84,7 +84,8 @@ def fingerprint(reference, address):
 
 def requested_release_scope(buildable):
     """Permit the reviewed scope; MIDISC2.0 is a standalone local-stock recipe."""
-    ordinary = [id for id in buildable if id not in UTILITIES + [id for id in HOOKED if id not in REQUESTED]]
+    hooked_only = [id for id in HOOKED if id not in REQUESTED]
+    ordinary = [id for id in buildable if id not in UTILITIES + hooked_only]
     if [id for id in buildable if id in UTILITIES] not in ([], UTILITIES):
         raise ValueError('Unsupported utility module scope')
     scopes = (ORDER, ORDER + REQUESTED, ORDER + [id for id in REQUESTED if id != 'midi-scenes'])

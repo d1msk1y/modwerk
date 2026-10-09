@@ -112,6 +112,9 @@ describe('loader-free DSP placement (native static stock)', () => {
     // Nothing is large enough: every candidate, so placement names the overrun.
     expect(donors(['spectrum', 'modulation'])).toEqual(['SPRING REV', 'PLATE REV', 'DARK REV'])
     expect(donors([], ['SPRING REV'])).toEqual(['SPRING REV'])
+    // Output Matrix's core-0 code fits Spring; beside a larger effect a second reverb goes.
+    expect(donors(['output-matrix'])).toEqual(['SPRING REV']); expect(donors(['output-matrix', 'tapeecho'])).toEqual(['SPRING REV'])
+    expect(donors(['output-matrix', 'miniverb'])).toEqual(['SPRING REV', 'PLATE REV'])
     // An effect still on FX1 keeps its code; DELAY has none to give.
     expect(stockFx2Donors(['spectrum', 'modulation'], { fx1: [...stockFx1, 'PLATE REV'], fx2: kept.fx2 })).toEqual(['SPRING REV', 'DARK REV'])
   })
