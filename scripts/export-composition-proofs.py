@@ -163,6 +163,9 @@ def main():
                 work=pathlib.Path(tmp)
                 for name in ['modules','platform','dsp','vendor']:os.symlink(root/name,work/name,target_is_directory=True)
                 (work/'out').mkdir();os.chdir(work);sys.modules.pop('build_bus',None);build=importlib.import_module('build_bus');build.IMG=root/'out/raw/section_3_MAIN_OS.bin';build.OUT=work/'out/image.bin';log=io.StringIO()
+                # Analog BD's assembler outputs must share this selection's
+                # disposable workspace, never a second worker's SDK out/ tree.
+                importlib.import_module('ab_image').OUT=work/'out/analog-bassdrum'
                 if build.ORDER!=menu['fx2']:raise ValueError('Native carried / hidden order does not match the declared FX2 chooser: native '+json.dumps(build.ORDER)+' vs declared '+json.dumps(menu['fx2'])+'.')
                 try:
                     with contextlib.redirect_stdout(log):build.main()

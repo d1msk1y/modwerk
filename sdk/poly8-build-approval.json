@@ -1,0 +1,15 @@
+{
+  "kind": "owner-approved-update",
+  "id": "poly8",
+  "version": "0.2.5-experimental",
+  "approvedBy": "repeat98",
+  "approvedOn": "2026-10-08",
+  "ownerStatement": "Approve this scoped experimental release",
+  "reason": "Owner explicitly approved POLY 0.2.5-experimental with current-build hardware, chip worst-case timing and complete memory-bound qualification waived. T06 software evidence is retained; common-builder/native parity and publication checks remain mandatory. No missing measurement is claimed passed. Owner subsequently requested the POLY8 name and an Octemu launch from the Modwerk builder before release.",
+  "sourceSha256": "9f8920b2c518b569ba5d7e67f8be38a0b15ede7ab8a100392e848c86c700e43b",
+  "waived": [
+    "current-build-hardware",
+    "chip-worst-case-cycles",
+    "complete-memory-bounds"
+  ]
+}

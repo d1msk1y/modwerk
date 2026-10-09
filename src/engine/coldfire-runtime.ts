@@ -1,6 +1,6 @@
 import { selectedDramRegions, placeDramRegions } from './runtime-memory.ts'
 import { readCoreLogger, loggerExternals, LOGGER_RESERVE_BYTES, LOGGER_RETAINED_BYTES } from './core-logger.ts'
-import { readRequestedObject, requestedFacts, selectedRequestedGroups } from './requested-modules.ts'
+import { readRequestedObject, requestedFacts, selectedRequestedGroups, requestedObjectSelected, requestedObjectDram } from './requested-modules.ts'
 import { resolveSelection } from '../catalog/modules.ts'
 import { readColdFirePackage, PLATFORM_UNITS } from './coldfire-package.ts'
 import { linkColdFireRuntime, runtimeCatalogObject } from './coldfire-link.ts'
@@ -20,10 +20,10 @@ export async function createStaticColdFireRuntime(ids: readonly string[], origin
       units.push(...await readUsbAudioObjects(usbAudio, original)); continue
     }
     if (module.id === 'tapeecho' || module.id === 'euclid') units.push(await readColdFirePackage(module.id))
-    for (const pkg of requestedFacts.objects.filter(pkg => pkg.moduleId === module.id && pkg.dram && selected.some(g => g.moduleId === pkg.moduleId))) units.push(await readRequestedObject(pkg.label, original))
+    for (const pkg of requestedFacts.objects.filter(pkg => pkg.moduleId === module.id && requestedObjectDram(pkg, ids) && requestedObjectSelected(pkg, ids) && selected.some(g => g.moduleId === pkg.moduleId))) units.push(await readRequestedObject(pkg.label, original, ids))
   }
   if (usbAudio && !ids.includes(USB_AUDIO_MODULE)) throw new Error('USB Audio settings require the USB Audio module.')
-  if (!usbAudio && selected.some(g => g.moduleId === 'usb-midi')) for (const pkg of requestedFacts.objects.filter(pkg => pkg.moduleId === 'usb-midi')) units.push(await readRequestedObject(pkg.label, original))
+  if (!usbAudio && selected.some(g => g.moduleId === 'usb-midi')) for (const pkg of requestedFacts.objects.filter(pkg => pkg.moduleId === 'usb-midi')) units.push(await readRequestedObject(pkg.label, original, ids))
   const reserveBytes = (units.length ? 1707 * 6144 : 0) + LOGGER_RESERVE_BYTES
   const regions = placeDramRegions(selectedDramRegions(ids), base, base + reserveBytes - LOGGER_RETAINED_BYTES)
   units.push(await readCoreLogger())

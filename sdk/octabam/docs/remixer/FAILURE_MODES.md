@@ -37,7 +37,7 @@ cause and a physical fix remain unconfirmed.
 and REL at INF. Polyphonic panel recording also failed. This is a hardware
 report, not a reproduced physical measurement.
 
-**Candidate mitigation.** The unpublished `sdk/drafts/poly-machine` 0.2.1
+**Candidate mitigation.** The then-unpublished `sdk/drafts/poly-machine` 0.2.1
 test limits admission to eight shared heads with a pitch-weighted fetch budget,
 steals release tails first, ignores duplicate held-key presses and defaults
 new assignments to LOOP OFF. Existing saved LOOP choices remain unchanged.
