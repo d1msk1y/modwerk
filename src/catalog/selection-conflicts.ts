@@ -2,7 +2,7 @@ import { DSP_EFFECT_IDS, resolveSelection } from './modules.ts'
 
 export type ConflictFix = { label: string; removeIds?: string[]; keepStockFx2?: boolean }
 export type SelectionConflict = { id: string; title: string; description: string; moduleIds: string[]; fixes: ConflictFix[] }
-// Only these custom effects have reviewed placements beside Analog BD.
+// Only these custom effects have reviewed placements beside Analog BD. Output Matrix is not one yet.
 const analogBdCompanions = ['miniverb', 'tapeecho', 'euclid', 'tapehead', 'sidechain-compressor']
 // These build beside the stock FX2 effects: TapeHead fits in the space they leave, and Sidechain
 // Compressor hooks stock COMPRESSOR instead of taking a slot. Every other DSP effect needs their space.

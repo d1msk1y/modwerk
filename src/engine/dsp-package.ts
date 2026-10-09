@@ -6,7 +6,7 @@ export type DspPackage = {
   id: string
   key: string
   author: string
-  fxId: number
+  fxId: number | null
   words: number
   code: string
   sha256: string
@@ -37,7 +37,7 @@ export async function readDspPackage(id: string, tag?: string): Promise<DspPacka
   const pkg = catalog.packages.find(pkg => pkg.id === id && (!('tag' in pkg) || pkg.tag === tag))
   if (!pkg) throw new Error('This module needs a different native placement path.')
   const module = MODULES.find(module => module.id === id)
-  if (!module || module.key !== pkg.key || module.author !== pkg.author || module.fxId !== pkg.fxId) throw new Error('The module package does not match its catalog entry.')
+  if (!module || module.key !== pkg.key || module.author !== pkg.author || (module.fxId ?? null) !== pkg.fxId) throw new Error('The module package does not match its catalog entry.')
   validateCompiledPackage(pkg.id, pkg.version)
   const words = packageWords(pkg)
   const bytes = new Uint8Array(words.length * 3)
