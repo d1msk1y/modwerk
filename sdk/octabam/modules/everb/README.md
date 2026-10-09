@@ -7,11 +7,10 @@ Erbe-Verb: a space you can shrink to a two-millisecond box or stretch to a hall,
 saturating drone, absorb or diffuse, swirl with a chorus, smear with random grains or lift with octave
 shimmer, reverse, and tilt dark or bright. Original code, written from Erbe's published paper.
 
-**Status: staged draft** (`sdk/drafts/everb/`). The configurator does not offer E-Verb yet: a module
-enters the catalog only with a hardware report from a real unit or an owner waiver for this exact version,
-and it has not run on hardware (see [Compatibility and limitations](#compatibility-and-limitations)).
-Everything else for a release is here: the source, its gates, the performance record, the sound audit,
-real LCD captures and the documentation.
+**Status: experimental release** (`sdk/octabam/modules/everb/`). The owner reports a positive
+functional audition on MKII using the exact private EVRB01T01 build. See
+[evidence/owner-hardware.md](evidence/owner-hardware.md) for actual statements and coverage limits.
+The source, emulator gates, performance record, sound audit and real LCD captures are unchanged.
 
 ## Overview
 
@@ -99,17 +98,9 @@ holds the chord for that step.
 - **Octatrack MKI and MKII, OS 1.40C**, FX2 of any audio track, all eight tracks (four instances per DSP
   core). FX2 only: the effect needs the 16K-word delay buffer that the OS gives FX2 instances. Effect ID
   0x1b (27).
-- **Not tested on hardware.** The author's Octatrack is broken. Everything below comes from the native
-  builder, the DSP emulator and the headless ColdFire emulator ([TESTING.md](TESTING.md)). Until someone
-  runs it on a unit, treat it as experimental. [TESTING.md](TESTING.md#hardware) lists what a tester
-  should run.
-- **Promoting the draft.** Move this folder to `sdk/octabam/modules/everb/`; record the hardware report
-  (or the owner's waiver) in `tests.qualification`, with the cycle and memory figures in TESTING.md; add
-  `sdk/catalog.json` and `src/community/module-changelogs.json` entries; add `everb` to `ORDER` in
-  `scripts/build-module-packages.py` with a locally verified descriptor guard (donor DARK REV's
-  descriptor, FX 0x1b), as Air Chorus has; rebuild and import the packages; run
-  `npm run module:verify -- everb`, which writes `sdk/native-comparisons/everb.json`; and add a
-  docs/VERIFICATION.md entry (docs/ADD_A_MODULE.md, steps 4 to 7).
+- **Hardware report:** the owner reports a positive MKII functional audition on EVRB01T01.
+  Detailed coverage and unreported tests remain explicit in [the hardware report](evidence/owner-hardware.md).
+  MKI, full-load chip timing and broader hardware acceptance are not established.
 - **What a build with E-Verb gives up.** The site builds stock DSP code in, so a module's code takes the
   space of stock effects listed on neither menu. E-Verb's 1,588 words take the space of two of the
   FX2-only stock reverbs. On its own it gives up **SPRING REV and DARK REV**: they are missing from the FX2
@@ -132,8 +123,9 @@ holds the chord for that step.
 - **Cost.** E-Verb is dearer than any stock effect. In the stock benchmark's own method it peaks at 376
   executed instructions per sample without trig splits, against 258 for SPRING REV (the cost target for
   new FX) and 293 for DJ EQ, the dearest stock effect. With trig splits at every position, for E-Verb and
-  for stock alike, the figures are 382, 314 and 331. Four per core fit the static budget (4 × 468 of
-  3,120 usable cycles per sample). Whether four E-Verbs beside four heavy FX1 effects on one core keep up
+  for stock alike, the figures are 382, 314 and 331. The full-call software bound for four per core is
+  47,680 of 49,920 modeled cycles per 16-frame block, including trigger splits; see the
+  [release bounds](evidence/release-bounds.md). Whether four E-Verbs beside four heavy FX1 effects on one core keep up
   on a real unit is not measured; a core that overruns stops the sequencer on step 1 (see octabam's
   FAILURE_MODES.md).
 - **Loud sustained tones.** A full-scale steady sine on a room resonance can push the wet plus dry over
@@ -158,7 +150,7 @@ holds the chord for that step.
 
 [TESTING.md](TESTING.md) has every command and result. In short:
 
-- **Render gates** (`python3 modules/everb/verify.py` with the draft copied into the native tree, all 26
+- **Render gates** (`python3 modules/everb/verify.py` from the native SDK, all 26
   passing): the source and init rules; static cycles; placement in a real native image; exact dry at MIX
   0 with knobs moving and trig splits; the pre-delay, decay and stereo laws; settling after the input
   stops. Also eight instances isolated under `dsp_host -guard 0x4000 -guard-shared -dirty`, garbage
@@ -171,7 +163,7 @@ holds the chord for that step.
   hang.
 - **Sound** (`npm run fx:audit`): every −12 dBFS tone is clean at the defaults; the tables, the loud-tone
   limits and the same audit of the stock reverbs are in TESTING.md.
-- **Hardware**: not tested.
+- **Hardware**: owner-reported MKII functional audition; see the exact-build report and its limits.
 
 ## Authorship and licences
 

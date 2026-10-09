@@ -1,8 +1,9 @@
 # E-Verb testing
 
-Everything here was run locally on the native builder, the DSP56300 emulator (`dsp_host`) and the
-headless ColdFire emulator (`ot_emu`). **Nothing was run on an Octatrack**: the author's unit is broken.
-No result below is a hardware result. Firmware, images, memory dumps and renders stayed outside the
+The author's measurements below were run locally on the native builder, DSP56300 emulator (`dsp_host`)
+and headless ColdFire emulator (`ot_emu`), not on hardware. The owner subsequently reported a MKII
+functional audition on EVRB01T01; [the exact-build report](evidence/owner-hardware.md) records its scope.
+No emulator result below is relabelled as hardware evidence. Firmware, images, memory dumps and renders stayed outside the
 repository and were deleted.
 
 ## Commands and exact revision
@@ -32,21 +33,18 @@ then E-Verb). SHA-256 b776efe203efecd0ceda90f68d7fe109cc8fc13a1f07bed00303f81af2
 build is deterministic (rebuilt byte-identical several times). E-Verb sits at P:0x01252–0x01885 on
 payload A and P:0x01012–0x01645 on payload B.
 
-The native builder discovers modules only under `sdk/octabam/modules/`, and `npm run modules:generate`
-refuses an unqualified folder there, so the draft is copied in for a local run and the copy removed
-afterwards:
+The original draft was temporarily copied into the native registry for these runs. The release
+now lives directly in `sdk/octabam/modules/everb/`; the same source commands run in place:
 
 ```sh
-cp -R sdk/drafts/everb sdk/octabam/modules/everb             # local only; rm -r it afterwards
 cd sdk/octabam
 python3 modules/everb/generate.py --check                    # everb.asm is what the generator writes
 python3 modules/everb/verify.py                              # the render gates (about 40 s)
 python3 modules/everb/perf.py bench  <out>                   # matched benchmark with stock (about 1 min)
 python3 modules/everb/perf.py stress <out> --seconds 32      # the stress run (about 12 min)
 cd ../..
-npm run perf:audit -- check sdk/drafts/everb/evidence/performance.json
+npm run perf:audit -- check sdk/octabam/modules/everb/evidence/performance.json
 npm run fx:audit -- plan <dir> --tail 12                     # then the renders below, then check
-rm -r sdk/octabam/modules/everb
 ```
 
 ## Changes after review
@@ -271,7 +269,7 @@ of these should change, but none was run.
 
 ## Performance
 
-`npm run perf:audit -- check sdk/drafts/everb/evidence/performance.json`:
+`npm run perf:audit -- check sdk/octabam/modules/everb/evidence/performance.json`:
 
 ```
 ✓ record          dsp record for everb@0.1.0-experimental
@@ -284,8 +282,10 @@ of these should change, but none was run.
 no-op): 468 cycles/sample, the dearer of the two MODEFORK arms (the other is 382). The arms strictly
 alternate, so the per-frame floor is 425 and 468 is a conservative ceiling. The per-call knob code runs
 once per block and is outside that count but inside the measured figure. Four per core use 1,872 of the
-3,120 cycles a core's module code may spend, leaving 1,248: room for one more heavy module per core by
-this model, beside the stock effects, whose cost the model keeps in the separate stock share.
+3,120 cycles for their sample loops alone; this does not establish headroom for another heavy module.
+The release's full-call bound in [evidence/release-bounds.md](evidence/release-bounds.md) is 47,680 of
+49,920 modeled cycles/core/block, leaving 2,240 per block for additional custom work. Stock work is
+reserved separately, and real-chip contention remains unmeasured.
 
 **Measured**: `perf.py bench`, `benchmark_stock_dsp.py`'s own method, E-Verb on the private image and the
 stock effects on the original one through the same cases (executed instructions/sample, null stub
@@ -369,7 +369,8 @@ pages publish its knobs. The chooser rows are rebuilt by the builder for every s
 
 ## Hardware
 
-**Not tested.** The author's Octatrack MKII is broken. Before this version can be qualified, someone
+**Author: not tested.** The author's Octatrack MKII is broken. The owner later reports a MKII
+functional audition on EVRB01T01; see [evidence/owner-hardware.md](evidence/owner-hardware.md). Before this version can be qualified, someone
 with an MKI or MKII needs to flash a build containing E-Verb (the site's configurator once promoted, or
 a local native build) and report, with model, OS, image SHA-256, date and duration:
 
@@ -393,3 +394,8 @@ source hash and limitations: [media/capture.json](media/capture.json). The five 
 SETUP page after choosing E-Verb, the main page at the defaults, MIX turned to 100, DPTH turned to +56
 and the SETUP page with REV ON. Each was opened and checked against the declared controls. They show the
 interface only, not sound.
+
+## Release qualification accounting
+
+[evidence/release-bounds.md](evidence/release-bounds.md) adds the full per-block software bound and
+reserved X padding to the original loop-only/used-memory figures. It changes no DSP source or sound.

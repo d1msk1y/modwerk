@@ -737,6 +737,15 @@
     ],
     "airwindows-chorus": [
       {
+        "version": "0.1.1-experimental",
+        "date": "2026-10-09",
+        "changes": [
+          "Beta release for beta testers: reduces measured DSP work by 35.80% with the original full stereo delay range, smoothing and control meanings retained. Thirty recorded comparison fixtures are bit-identical to 0.1.0.",
+          "Targets the reported multi-instance clicking by reducing DSP load. The T3/T4 emulator reproduction did not reproduce the hardware symptom, so this is a mitigation pending beta hardware results, not a confirmed clicking fix.",
+          "FX2 only. Current hardware testing is owner-waived for this exact version/source; physical timing, multi-instance audio and Part/project/reboot persistence remain unverified. Existing control values and saved parameter layout are unchanged."
+        ]
+      },
+      {
         "version": "0.1.0-experimental",
         "date": "2026-10-08",
         "changes": [
@@ -825,6 +834,18 @@
           "PTCH tuning is independent of chromatic and MIDI notes, with ten panel octave positions and dedicated-route MIDI 0–127.",
           "Selecting POLY opens native FLEX samples directly; STATIC is excluded.",
           "Hardware deadlines, broad lifecycle combinations, note recording and public packaging remain unqualified."
+        ]
+      }
+    ],
+    "everb": [
+      {
+        "version": "0.1.0-experimental",
+        "date": "2026-10-09",
+        "changes": [
+          "First E-Verb release: original Erbe-Verb-inspired FX2 feedback-delay reverb with size, saturation/sustain, absorption, chorus/grains/shimmer, reverse pre-delay, tilt and envelope routings.",
+          "The six main-page controls support locks, LFOs, scenes and MIDI CC; SETUP controls are per Part. MIX 0 is exact dry passthrough.",
+          "Uses the shared native/browser builder; alone, replaces Spring Rev and Dark Rev while preserving Plate Rev and other stock effects.",
+          "Owner reports working MKII sound, two distinct simultaneous T1/T5 instances, Part/project save/reload and physical reboot on exact EVRB01T01. Full-load silicon timing and broader hardware modulation/recovery coverage remain unverified."
         ]
       }
     ]

@@ -16,13 +16,9 @@ The configurator supports module discovery, filtering, comparisons and module se
 
 The browser composes real firmware with the dynamic DSP loader disabled. **Downloads are available for verified loader-free selections**, including Analog BD, MIDI Scenes, USB Audio (tracks + MAIN/CUE) and Scale Quantizer at `0.1.1-experimental`. Spectrum, Modulation and Character remain temporarily paused in the public library. The original 256 profiles retain 74 byte-identical images and 182 matching refusals; the requested 288 profiles add 156 byte identities and 132 matching refusals. Actual-browser full-file identities and altered-firmware rejection passed for the supported six- and five-module combinations. Read [verification and remaining work](VERIFICATION.md) for evidence and hardware limits. Approved releases rebuild authored packages in isolation and require them to reproduce the locally verified packages.
 
-Air Chorus is also temporarily paused following the owner's 9 October 2026
-report against published `0.1.0-experimental`: with two instances on T3 and T4
-(reported as the same DSP core), raising MIX on the second instance introduces
-loud rhythmic clicking. The cause is unconfirmed. The existing frontend pause
-hides it from the library and prevents new builds that select it, while keeping
-saved configurations readable. The private DSP optimization remains staged;
-this report does not establish its hardware behavior or a fix.
+Air Chorus 0.1.1 is available to the **Beta tester** class and verified administrators, with a **Beta** badge on its card and page. Ordinary members and visitors retain the pause. Beta membership is an independent, administrator-managed flag, alongside existing member/developer/owner roles; it grants no moderation, ownership or author-release permissions. Manage it in **Admin → Accounts → Beta testers**. Server sessions provide the flag, build authorization rechecks it, and revocation invalidates the frontend build state. Browser source/packages remain inspectable; this is an access workflow, not secrecy or firmware DRM.
+
+The owner authorized beta publication of the staged DSP optimization on 9 October 2026 and waived current hardware evidence for its exact 0.1.1 source. Measured DSP work is reduced, but the T3/T4 clicking report remains unconfirmed. The module page and release notes retain that limitation. Other paused effects stay paused, public indexing omits beta modules, and the deployed release inventory labels beta versions. Update notifications go only to eligible beta followers/administrators, preserving opt-outs; beta releases create no public release announcement.
 
 ## Preserve public firmware availability
 
