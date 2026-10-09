@@ -19,6 +19,7 @@ import { mediaBusy, readyAttachments, type PendingMedia } from './forum-media-cl
 import { ModuleIssueNotice } from './ModuleIssueNotice'
 import { ModuleDiscussionDialog } from './ModuleDiscussionDialog'
 import { saveDiscussionIssueDraft } from './discussion-issue-draft'
+import { useForumReplyDraft } from './forum-reply-draft'
 import { threadHref } from '../routing'
 import { ReplyStarters } from './ReplyStarters'
 import { ModuleWorksCount } from './ModuleWorksCount'
@@ -55,7 +56,8 @@ function ModuleIntro({initiallyOpen,children}:{initiallyOpen:boolean;children:Re
   return <details className="forum-intro" open={open} onToggle={event=>setOpen(event.currentTarget.open)}><summary><strong>Modwerk</strong><span>About this discussion</span><Icon name="arrow" size={13}/></summary>{children}</details>
 }
 export function ForumThreadView({id,query=new URLSearchParams(),onCopy,embedded=false,onReportIssue,onReplyCount}:{id:string;query?:URLSearchParams;onCopy?:(config:SharedConfiguration)=>void;embedded?:boolean;onReportIssue?:()=>void;onReplyCount?:(count:number)=>void}){
-  const {session}=useCommunity(),[loaded,setLoaded]=useState<{key:string;data:ThreadDetail}|null>(null),[error,setError]=useState(''),[reply,setReply]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[media,setMedia]=useState<PendingMedia[]>([])
+  const {session}=useCommunity(),[loaded,setLoaded]=useState<{key:string;data:ThreadDetail}|null>(null),[error,setError]=useState(''),[busy,setBusy]=useState(false),[notice,setNotice]=useState(''),[media,setMedia]=useState<PendingMedia[]>([])
+  const [reply,setReply]=useForumReplyDraft(id,session.user?.id??'')
   const [localPage,setLocalPage]=useState(0),[revision,setRevision]=useState(0)
   const [confirming,setConfirming]=useState(false),[starter,setStarter]=useState<ReplyStarter|''>('')
   // Where the member's reading left off, kept from the first load of this visit: later loads have already moved the marker.
