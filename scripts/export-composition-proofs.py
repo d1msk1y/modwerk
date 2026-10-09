@@ -163,6 +163,9 @@ def main():
                 work=pathlib.Path(tmp)
                 for name in ['modules','platform','dsp','vendor']:os.symlink(root/name,work/name,target_is_directory=True)
                 (work/'out').mkdir();os.chdir(work);sys.modules.pop('build_bus',None);build=importlib.import_module('build_bus');build.IMG=root/'out/raw/section_3_MAIN_OS.bin';build.OUT=work/'out/image.bin';log=io.StringIO()
+                # Analog BD's assembler outputs must share this selection's
+                # disposable workspace, never a second worker's SDK out/ tree.
+                importlib.import_module('ab_image').OUT=work/'out/analog-bassdrum'
                 if build.ORDER!=menu['fx2']:raise ValueError('Native carried / hidden order does not match the declared FX2 chooser: native '+json.dumps(build.ORDER)+' vs declared '+json.dumps(menu['fx2'])+'.')
                 try:
                     with contextlib.redirect_stdout(log):build.main()
@@ -178,7 +181,7 @@ def main():
                     proofs.append(proof)
                     print(f"{ids or ['stock']} default={default}: {len(image)} bytes, full native identity captured.")
                 except (SystemExit,AssertionError) as error:
-                    if a.static_stock and any(word in str(error) for word in ('has colliding modules:','overruns the region','nowhere to place','does not fit','do not fit','chooser list of','currently composes with stock effects only',' not free','past the stock zero run','fits neither the clone window','cannot share DSP memory')):
+                    if a.static_stock and any(word in str(error) for word in ('has colliding modules:','overruns the region','nowhere to place','does not fit','do not fit','chooser list of','currently composes with stock effects only',' not free','past the stock zero run','fits neither the clone window','cannot share DSP memory','pre-boot analog bd payload A dst overlaps runtime stage:')):
                         proofs.append({'moduleIds':ids,'keepStockFx2':default,'menu':menu,'error':str(error)});print(f"{ids or ['stock']} keep={default}: refused: {str(error)[:90]}")
                     elif ids==order and default and ('does not fit' in str(error) or 'do not fit' in str(error)):
                         proofs.append({'moduleIds':ids,'default':default,'menu':menu,'error':str(error)});print('Crowded all-module / stock-chooser selection rejects placement, as expected.')

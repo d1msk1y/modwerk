@@ -130,7 +130,7 @@ function fixture() {
     mkdirSync(dirname(join(root, path)), { recursive: true })
     cpSync(join(ROOT, path), join(root, path), { recursive: true })
   }
-  for (const path of [...noticePaths, 'docs/USB_AUDIO_ATTRIBUTION.txt', 'scripts/elekloader-update.ts', 'scripts/elekloader-vendor.ts', 'scripts/licenses.mjs', 'scripts/license-notices.mjs']) copy(path)
+  for (const path of [...noticePaths, 'LICENSE', 'LICENSES', 'docs/USB_AUDIO_ATTRIBUTION.txt', 'scripts/elekloader-update.ts', 'scripts/elekloader-vendor.ts', 'scripts/licenses.mjs', 'scripts/license-notices.mjs']) copy(path)
   const manifest = JSON.parse(readFileSync(join(root, 'sdk/octabam/licenses/manifest.json'), 'utf8')) as { moduleComponents: Record<string, string[]> }
   for (const id of Object.keys(manifest.moduleComponents)) {
     const folder = `sdk/octabam/modules/${id}`
@@ -139,6 +139,7 @@ function fixture() {
     copy(folder + '/' + document.license.file)
   }
   for (const name of ['react', 'react-dom', 'scheduler']) copy(`node_modules/${name}/LICENSE`)
+  for (const name of ['LICENSE', 'package.json']) copy(`node_modules/wavesurfer.js/${name}`)
   return root
 }
 

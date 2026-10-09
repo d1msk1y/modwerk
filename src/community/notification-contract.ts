@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 export type NotificationKind = 'reply' | 'mention' | 'bug_report' | 'post_like' | 'module_comment' | 'module_rating' | 'module_like' | 'module_update' | 'message' | 'request_status' | GithubIssueKind
 /** Replies and status changes on one of the recipient's own reports, locally or on GitHub. */
 export type GithubIssueKind = 'issue_comment' | 'issue_resolved' | 'issue_closed' | 'issue_reopened'

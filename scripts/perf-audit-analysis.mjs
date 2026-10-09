@@ -112,6 +112,18 @@ export function judgeRecord(record, options = {}) {
   return rows
 }
 
+/** Only missing measurements may be excused by the existing exact-source owner approval.
+ * The publication validator separately validates the complete approval and documentation.
+ * Measured failures and ordinary audit verdicts remain failures. */
+export function ownerWaivedPerformanceRow(record, row, approval, sourceSha256) {
+  if (row.state !== 'fail' || !HEX64.test(sourceSha256 ?? '') || approval?.kind !== 'owner-approved-update' || approval.approvedBy !== 'repeat98' || approval.id !== record.module || approval.version !== record.version || approval.sourceSha256 !== sourceSha256 || !Array.isArray(approval.waived)) return false
+  if (row.name === 'cycles') return approval.waived.includes('chip-worst-case-cycles') && record.kind === 'coldfire' && record.cycles?.unit === 'cycles/event' && ['static', 'measured', 'budget'].every(key => record.cycles[key] === null) && text(record.cycles.method, 10)
+  if (!approval.waived.includes('current-build-hardware') || record.kind !== 'coldfire') return false
+  if (row.name === 'stock benchmark') return ['stockLongestUs', 'moduleLongestUs', 'stockIdlePercent', 'moduleIdlePercent'].every(key => record.load?.[key] === null) && text(record.load?.method, 10)
+  if (row.name === 'stress') return ['floodMessagesPerSecond', 'clockBpm', 'seconds', 'stuckNotes', 'hangs', 'dropped'].every(key => record.stress?.[key] === null)
+  return false
+}
+
 /** Known-good and known-bad records, run through the same judgement, so a verdict can be trusted. Returns { name, ok, detail } rows. */
 export function selfTest() {
   const rows = [], row = (name, ok, detail) => rows.push({ name, ok, detail })

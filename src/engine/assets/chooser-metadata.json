@@ -213,8 +213,8 @@
       "fx1Only": false
     },
     {
-      "id": "output-matrix",
-      "key": "OUTPUT MATRIX",
+      "id": "poly8",
+      "key": "POLY8",
       "fxId": null,
       "fx1": false,
       "fx1Only": false

@@ -1246,7 +1246,7 @@
       "caveLimit": 1074625596
     }
   ],
-  "sourceCommit": "a84bc2fd14e90e5715e8c309192276f471ae69f7",
+  "sourceCommit": "0bca73e5891843e4b30b169ad5074921fec4c338",
   "moduleVersions": {
     "spectrum": "0.1.1-experimental",
     "modulation": "0.1.1-experimental",
@@ -1257,7 +1257,7 @@
     "repitch": "0.1.2-experimental",
     "tapehead": "0.1.2-experimental",
     "airwindows-chorus": "0.1.0-experimental",
-    "analog-bassdrum": "0.1.4-experimental",
+    "analog-bassdrum": "0.1.5-experimental",
     "midi-scenes": "0.2.4-experimental",
     "usb-audio-out-tracks-main-cue": "0.2.0-experimental",
     "quantizer": "0.1.2-experimental",
@@ -1269,6 +1269,6 @@
     "playmodes": "0.1.1-experimental",
     "mute-modes": "0.1.0-experimental",
     "recorder-loop-fix": "0.1.0-experimental",
-    "output-matrix": "0.1.0-experimental"
+    "poly8": "0.2.6-experimental"
   }
 }

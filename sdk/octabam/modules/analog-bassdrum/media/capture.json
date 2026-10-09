@@ -1,8 +1,8 @@
 {
   "firmware": "1.40C",
-  "imageSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
-  "emulatorSha256": "f521565f3866947788d7c45507576a4ed386d2e4ef57e9683ab65fa0acc6a166",
-  "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6.",
+  "imageSha256": "137580f326b6adc3b0d58f2183d530507f1b370c48911b38d5d0cf94d9e96898",
+  "emulatorSha256": "908a0f8deb76fc8ab3cc0968b924db68e108d9b4f54145e7a8facfe6cad0732c",
+  "setup": "Headless ot_emu; MKII panel; stopped transport; 128\u00d764 LCD at integer scale 6.",
   "palette": {
     "on": [
       240,
@@ -119,13 +119,13 @@
     "set": "OCTABAM",
     "name": "RIG"
   },
-  "moduleVersion": "0.1.4-experimental",
+  "moduleVersion": "0.1.5-experimental",
   "capturedOn": "2026-10-09",
-  "dsp": "Real DSP enabled on both cores; stopped transport. Actual complete-image audio verified separately in 909-reference-port evidence.",
+  "dsp": "Real DSP enabled on both cores; stopped transport. DSP source/upload bytes identical to 0.1.4.",
   "captureTool": "scripts/capture-module-ui.py",
   "captureToolSha256": "0d234a1bcfae080f86110263e37a3c34a7ed692412e0221bd6cf7da84f52f9c7",
-  "visualReview": "All four actual LCD screenshots opened and reviewed: no popup/error; Analog BD assignment, highlighted 909 engine and both model controls visible. The shared third label reads TUNE in the 808 shot; the engine uses this control for its retained TONE response.",
+  "visualReview": "All four actual LCD images opened and reviewed. Assignment, selected 909 engine and both model controls visible; no popup/error. The shared third label reads TONE in both shots; it controls 808 TONE and 909 TUNE.",
   "license": "LicenseRef-OT-UI-Documentation",
   "credit": "Octamod contributors (headless capture)",
-  "sourceSha256": "7e44c680ca96887ad7966c8ca8f6a73f856aac78b4a02f5c8edcd12df27d05fe"
+  "sourceSha256": "e741e4876ea3ae44eb54ddc93ff3b5bf5f65ebb3e9320cc5fd1f602f7925966d"
 }

@@ -2108,7 +2108,7 @@
       "id": "analog-bassdrum",
       "key": "ANALOG BD",
       "name": "Analog BD",
-      "version": "0.1.4-experimental",
+      "version": "0.1.5-experimental",
       "category": "machines",
       "source": {
         "repository": "https://github.com/sambanks/octabam",
@@ -2144,8 +2144,9 @@
         "label": "808 / 909",
         "family": "Drum synthesis",
         "summary": "808 and 909 bassdrum engines; 909 body and transient fitted more closely to private TR-909 direct-out recordings.",
-        "overview": "Analog BD synthesizes 808 and 909 bassdrums in the Octatrack DSP. Version 0.1.4 refines the 909 body, Attack and Tune against Skee Mask’s recordings while retaining 808, the shared desk and TDEP/SAT smoothing. Neighboring strength and noise vary subtly; exact transient-shape variation remains approximate.",
+        "overview": "Analog BD synthesizes 808 and 909 bassdrums in the Octatrack DSP. Version 0.1.5 restores valid playback and SETUP defaults when leaving Analog BD, preventing retained-bank rejection at power-up. Its 808/909 sound is unchanged from 0.1.4.",
         "highlights": [
+          "Restore valid stock SRC defaults when leaving Analog BD",
           "909 harmonic phase/asymmetry and complete-hit envelope/DC fit",
           "Minimum/maximum Attack and final-hit Tune endpoints refined",
           "Direct-out reference comparison at LPF bypass",
@@ -2154,6 +2155,7 @@
         "usage": [
           "Assign ANALOG BD in the track machine chooser or SRC SETUP. Double-tap the track to open its engine browser; choose 808 or 909 with UP/DOWN or LEVEL and confirm with YES.",
           "Shape the drum on SRC. The 808 has TONE and SWEEP; the 909 has TUNE and TDEP. Set accent, LPF and desk bands in SRC SETUP; AMP controls track volume.",
+          "Switching from Analog BD restores stock SRC playback and SETUP defaults automatically. Select your sample and review existing SRC parameter locks, scenes and LFO destinations, which retain their parameter-slot assignments.",
           "Keep a separate project copy for stock firmware: saving an Analog BD project without this module can clamp its controls. Eight voices do not guarantee enough processing room for every effect combination."
         ]
       },
@@ -2244,11 +2246,11 @@
           "Saving this project on stock firmware can overwrite synth settings.",
           "909 reference uses a decay-modified TR-909 at one recorded decay setting; the full modified range and exact intermediate knob positions are not reproduced.",
           "The direct-out reference excludes the 909 main-out LPF: use LPF 0 for reference comparison; assignment default remains 127.",
-          "Neighboring transient shapes remain more consistent than the reference. Current-source physical audio/persistence, maximum FX load, chip timing and complete memory bounds remain unverified."
+          "Neighboring transient shapes remain more consistent than the reference. Owner reports FLEX reboot persistence for AB015FIX01; current-source audio, broader persistence/instance checks, maximum FX load, chip timing and complete memory bounds remain unverified. Output Matrix sequencer halt remains unverified."
         ]
       },
       "resources": {
-        "recorded": "9 Oct 2026 (native and complete-image emulator checks; current hardware waived)",
+        "recorded": "9 Oct 2026 (native/emulator regression; owner reports FLEX reboot persistence)",
         "storage": {
           "label": "DSP code",
           "display": "997 P words",
@@ -2272,7 +2274,7 @@
           "cpu": {
             "level": "low",
             "basis": "source-estimate",
-            "rationale": "Existing guarded ColdFire machine/control glue publishes the same saved knob bytes; the smoothing runs entirely in DSP code and adds no ColdFire work.",
+            "rationale": "Guarded machine assignment now restores twelve bytes in each Part copy when leaving Analog BD. This runs only on assignment, outside the DSP audio loop; chip timing remains unmeasured.",
             "source": "TESTING.md"
           },
           "dsp": {
@@ -2284,23 +2286,25 @@
           "memory": {
             "level": "low",
             "basis": "source-estimate",
-            "rationale": "997 P words/core plus the separate 35-word stock helper stay within the donor. The 3776-word X upload/core and four 64-word voices retain their allocations; no extra Y/ColdFire allocation. Complete lifetime/stack bounds remain unmeasured.",
+            "rationale": "DSP code and uploads are byte-identical to 0.1.4. ColdFire runtime grows by 36 bytes to 14052; no new state allocation. Complete memory/stack bounds remain unmeasured.",
             "source": "TESTING.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "909 body phase/asymmetry, complete envelope/DC and Attack/Tune endpoints fitted to Skee Mask’s direct-out recordings. Native min/max/all128 controls, both-core instance isolation, actual complete-image source/stock AMP output and saved private image round trip pass. Owner accepted AB014REF05 and explicitly waived fresh physical hardware/persistence, worst-case chip timing and complete memory bounds for this exact experimental source. Shape variation remains smaller than in the reference; full FX load and physical persistence remain untested. Historical 0.1.3 MKII results are not relabelled.",
-        "hardwareStatus": "untested",
-        "evidenceRevision": "d96ae7f04f2429ddf8674d7de4b0adb01b812b0d",
+        "summary": "Restore twelve borrowed SRC bytes before removing AB/1 in both Part copies. 512 compiled assignment cases, reselection/destination checks and actual-panel CS1-only fresh emulator restarts pass; 0.1.4 rejects the bank. Owner reports FLEX persists on AB015FIX01 and instructs merge/publication. Both DSP cores are byte-identical to 0.1.4. Broader hardware/maximum-load, chip timing and memory limits remain under a new exact-source owner approval; Output Matrix halt is unverified.",
+        "hardwareStatus": "reported",
+        "evidenceRevision": "e7fe4fb745e610a63ab9fe390f330334369995c2",
         "gates": [
           "sdk/drafts/analog-bassdrum-909-reference/run.py",
           "sdk/drafts/analog-bassdrum-909-reference/qualification/multi-test.py",
           "sdk/drafts/analog-bassdrum-909-reference/qualification/ranges.py",
           "sdk/drafts/analog-bassdrum-909-reference/qualification/costs.py",
           "sdk/drafts/analog-bassdrum-909-reference/qualification/port.py",
-          "sdk/drafts/analog-bassdrum-909-reference/qualification/reference.py"
+          "sdk/drafts/analog-bassdrum-909-reference/qualification/reference.py",
+          "sdk/drafts/analog-bassdrum-flex-restore/verify.py",
+          "sdk/drafts/analog-bassdrum-flex-restore/reboot.py"
         ],
         "documentation": {
           "tutorial": {
@@ -2338,9 +2342,9 @@
             "page": "SRC SETUP",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.4-experimental",
-            "imageSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
-            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB014REF05 image and disposable project; 128×64 LCD at integer scale 6."
+            "moduleVersion": "0.1.5-experimental",
+            "imageSha256": "137580f326b6adc3b0d58f2183d530507f1b370c48911b38d5d0cf94d9e96898",
+            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB015FIX01 image and disposable project; 128×64 LCD at integer scale 6."
           }
         },
         {
@@ -2355,16 +2359,16 @@
             "page": "Analog BD engine browser",
             "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.4-experimental",
-            "imageSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
-            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB014REF05 image and disposable project; 128×64 LCD at integer scale 6."
+            "moduleVersion": "0.1.5-experimental",
+            "imageSha256": "137580f326b6adc3b0d58f2183d530507f1b370c48911b38d5d0cf94d9e96898",
+            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB015FIX01 image and disposable project; 128×64 LCD at integer scale 6."
           }
         },
         {
           "path": "media/ot-909.png",
           "captureType": "emulator",
-          "caption": "Press SRC, hold TUNE at 0 and try ATK through 0–127 to compare the transient. Then hold ATK at 0 and sweep TUNE separately; press STOP and let the tail finish. E (TDEP) and F (SAT) keep the existing smoothing.",
-          "alt": "909 SRC main controls with PITCH, DECAY, TUNE, ATK, TDEP and SAT.",
+          "caption": "Press SRC, hold TUNE at 0 and try ATK through 0–127 to compare the transient. Then hold ATK at 0 and sweep TUNE separately; press STOP and let the tail finish. E (TDEP) and F (SAT) keep the existing smoothing. The shared third label reads TONE in this capture; it operates 909 TUNE.",
+          "alt": "909 SRC main controls with PITCH, DECAY, TONE, ATK, TDEP and SAT; the TONE-labelled control operates 909 TUNE.",
           "credit": "Octamod contributors (headless capture)",
           "license": "LicenseRef-OT-UI-Documentation",
           "source": "original",
@@ -2372,16 +2376,16 @@
             "page": "909 SRC main",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.4-experimental",
-            "imageSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
-            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB014REF05 image and disposable project; 128×64 LCD at integer scale 6."
+            "moduleVersion": "0.1.5-experimental",
+            "imageSha256": "137580f326b6adc3b0d58f2183d530507f1b370c48911b38d5d0cf94d9e96898",
+            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB015FIX01 image and disposable project; 128×64 LCD at integer scale 6."
           }
         },
         {
           "path": "media/ot-808.png",
           "captureType": "emulator",
-          "caption": "Choose 808 in the same browser to compare its unchanged engine and SAT behavior. E controls SWEEP; the third encoder controls its TONE response, although this shared page reads TUNE in the captured image. Finish with STOP and let the tail decay.",
-          "alt": "808 SRC main page with PITCH, DECAY, TUNE, ATK, SWEEP and SAT labels.",
+          "caption": "Choose 808 in the same browser to compare its unchanged engine and SAT behavior. E controls SWEEP; the third encoder controls its TONE response, labelled TONE in this capture. Finish with STOP and let the tail decay.",
+          "alt": "808 SRC main page with PITCH, DECAY, TONE, ATK, SWEEP and SAT labels.",
           "credit": "Octamod contributors (headless capture)",
           "license": "LicenseRef-OT-UI-Documentation",
           "source": "original",
@@ -2389,9 +2393,9 @@
             "page": "808 SRC main",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.4-experimental",
-            "imageSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
-            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB014REF05 image and disposable project; 128×64 LCD at integer scale 6."
+            "moduleVersion": "0.1.5-experimental",
+            "imageSha256": "137580f326b6adc3b0d58f2183d530507f1b370c48911b38d5d0cf94d9e96898",
+            "setup": "Headless ot_emu; MKII panel, stopped transport; actual DSP-enabled AB015FIX01 image and disposable project; 128×64 LCD at integer scale 6."
           }
         }
       ]
@@ -5540,8 +5544,16 @@
       },
       "author": {
         "github": "sambanks",
+        "name": "Sam Banks",
+        "contributors": [
+          {
+            "github": "bryantysinger",
+            "name": "Bryan Tysinger"
+          }
+        ],
         "credits": [
           "Sam Banks: all eight recorder patches, source oracles and octabam declaration.",
+          "Bryan Tysinger (@bryantysinger): early issue identification, extensive documentation, test case development and testing over more than a year.",
           "Modwerk contributors: source import, original qualification probes, documentation and SVG thumbnail.",
           "Modwerk: overflow-safe inverse arm phase correction; GPL-3.0-or-later. Original Sam Banks cave attribution and MIT terms retained."
         ]
@@ -5690,317 +5702,345 @@
     },
     {
       "schemaVersion": 2,
-      "id": "output-matrix",
-      "key": "OUTPUT MATRIX",
-      "name": "Output Matrix",
-      "version": "0.1.0-experimental",
-      "category": "system",
+      "id": "poly8",
+      "key": "POLY8",
+      "name": "POLY8",
+      "version": "0.2.6-experimental",
+      "category": "machines",
+      "source": {
+        "repository": "https://github.com/repeat98/octamad",
+        "revision": "887a237686d39defb7b85f29359f1e29b9ff6241",
+        "path": "modules/poly-machine"
+      },
       "access": {
-        "location": "PROJECT > CONTROL > AUDIO > OUT CFG (stock CUE CFG) > MATRIX; then CUE + LEVEL on any audio track, and MIX in the MIXER.",
+        "location": "SRC SETUP > POLY8 > FLEX samples",
         "steps": [
-          "Include Output Matrix in your build.",
-          "Press PROJ (MKII), open CONTROL > AUDIO, move right into the OUT CFG box, select MATRIX and press YES.",
-          "Select an audio track, hold CUE and turn LEVEL to pick its outputs; the LEV box shows the destination.",
-          "Open the MIXER: MIX, labelled PHN, sets the headphone output level."
+          "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
+          "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
+          "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+          "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
+          "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
+          "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
+          "Use REC+PLAY in chromatic mode to record up to four held panel notes spanning at most eleven semitones. Recorded duration follows AMP HOLD."
         ],
         "screenshots": [
-          "media/ot-out-cfg-menu.png",
-          "media/ot-cue-held.png",
-          "media/ot-cue-level-phn.png",
-          "media/ot-mixer-phn.png"
+          "media/selection-flow/assigned-src.png",
+          "media/selection-flow/left-machine-chooser.png",
+          "media/selection-flow/right-flex-pool.png",
+          "media/poly8/main-poly.png",
+          "media/poly8/loop-encoder.png"
         ]
       },
       "author": {
-        "github": "npp1993",
+        "github": "repeat98",
+        "name": "repeat98",
         "credits": [
-          "npp1993"
+          "Sam Banks: original octabam POLY runtime, MIT.",
+          "repeat98: preservation snapshot and VECTOR integration reference, MIT.",
+          "Modwerk contributors: independent pitch, extended keyboard/MIDI range and pool adapter."
         ]
       },
       "nativeManifest": "manifest.py",
       "presentation": {
-        "label": "Any track to MAIN, CUE or PHONES",
-        "family": "Output routing",
-        "summary": "Turn the headphone jack into a third assignable output pair and pick each track's outputs with CUE + LEVEL.",
-        "overview": "Adds MATRIX beside NORMAL and STUDIO in PROJECT > CONTROL > AUDIO (the box stock calls CUE CFG, titled OUT CFG with the module). In MATRIX, LEVEL sets a track's level and CUE + LEVEL chooses where it plays: MAIN, CUE or PHONES as stereo pairs in any combination, or a single mono jack of the six (track L+R summed at half each, so a centred sound keeps its level). The choice is stored in the Part, so it survives SRC page resets, Part reload and project save. The MIXER's MIX knob becomes the PHONES output level. Inputs keep their stock DIR routing to MAIN.",
+        "label": "8 shared sample voices",
+        "family": "Sample machines",
+        "summary": "Eight-voice FLEX playback with native chord recording and a shared machine chooser.",
+        "overview": "One POLY8 per Part, eight sample voices and fixed headroom. Combine with Repitch, Mute Modes, Scale Quantizer, Analog BD, VECTOR and FM Synth, subject to native memory limits. Physical timing and reboot qualification remain incomplete.",
         "highlights": [
-          "Three stereo output pairs: MAIN, CUE and the headphone jack.",
-          "Per track: any combination of MAIN, CUE and PHONES, or one mono jack (MAIN L/R, CUE L/R, PHONES L/R).",
-          "Routing lives in the Part: SRC page resets and track clears leave it alone.",
-          "With MASTER TRACK on, tracks routed to MAIN feed the master and track 8's destination picks where the master plays."
+          "One POLY8 per Part; refusal modal closes with NO or automatically after 120 native UI ticks.",
+          "Eight shared voices; release tails yield before held notes.",
+          "Independent ATK/HOLD/REL, with no per-note DSP or heap allocation.",
+          "Ten panel octave positions and dedicated-route MIDI notes 0–127.",
+          "PTCH tunes the chord; double-TRACK opens FLEX samples.",
+          "LOOP OFF on new assignments; panel chords record into native bank locks.",
+          "Fixed -18.06 dB per voice keeps eight full-scale voices within the mix range.",
+          "Shared chooser with Analog BD, VECTOR and FM Synth; Repitch, Mute Modes and Scale Quantizer can be included."
         ],
         "usage": [
-          "PROJECT > CONTROL > AUDIO: select OUT CFG > MATRIX and press YES.",
-          "On a track, hold CUE: the LEV box shows the destination. Turn LEVEL to change it.",
-          "In the MIXER, MIX (labelled PHN) sets the PHONES output level. Choose NORMAL or STUDIO again to return to stock behaviour."
+          "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
+          "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
+          "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+          "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
+          "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
+          "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
+          "Use REC+PLAY in chromatic mode to record up to four held panel notes spanning at most eleven semitones. Recorded duration follows AMP HOLD."
         ]
       },
-      "controls": [],
+      "controls": [
+        {
+          "name": "PTCH",
+          "default": 64,
+          "count": 128,
+          "doc": "Track-wide sample tuning; each note adds an independent semitone offset. Held and releasing voices follow tuning changes.",
+          "labels": null
+        },
+        {
+          "name": "LOOP",
+          "default": 0,
+          "count": 4,
+          "doc": "Native FLEX loop mode. New POLY8 assignments default to OFF; existing selections are preserved.",
+          "labels": [
+            "OFF",
+            "AUTO",
+            "ON",
+            "PIPO"
+          ]
+        }
+      ],
       "compatibility": {
         "firmware": "1.40C",
         "effectId": null,
-        "location": "Audio tracks",
+        "location": "Track machine",
         "conflicts": [
-          "analog-bassdrum"
+          "octakit"
         ],
         "limitations": [
-          "Builds with the stock DSP code built in and takes a given-up stock effect's program memory on core 0. The builder chooses it: SPRING REV first, then PLATE REV or DARK REV when other modules also need room. The given-up effect leaves the FX2 menu.",
-          "The MATRIX mixdown costs core 0 up to about 210 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
-          "Switching to or from MATRIX rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
-          "A MATRIX project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
-          "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger.",
-          "Not yet combinable with Analog BD, whose builder places DSP code only beside a reviewed list of effects."
+          "Experimental release: physical CPU deadlines, recording, reboot persistence and broader stock workflows remain unqualified.",
+          "Only one newly assigned POLY8 machine per Part; older multi-POLY8 Parts must be reduced to one before use. Fixed headroom makes a single note 18.06 dB quieter than 0.2.1.",
+          "TSTR is OFF while POLY8 is active.",
+          "FLEX only; STATIC requires independent streaming-cache support.",
+          "Panel recording supports up to four notes within an octave; wider/larger chords and recorded key-up duration are unsupported. Extended-range MIDI recording remains incomplete.",
+          "MIDI channels shared with non-POLY8 audio tracks keep stock note-command mapping outside 72–96.",
+          "Linear interpolation can alias at high pitches; no anti-aliasing upgrade is claimed.",
+          "Ratios saturate below 32× rather than fold by octaves; very low pitches are limited by Q16 playback phase.",
+          "The octave selector is a global live control; it is not saved per Part.",
+          "Recorded chord steps use PTCH lock storage for their root. Stock PTCH lock editing/display for those steps is not qualified; native SAMPLE locks remain available.",
+          "Shared-machine composition is covered by guarded dispatch seams; native memory and DSP limits can still refuse a selection."
         ]
       },
       "resources": {
-        "recorded": "Measured in the ColdFire port (instructions) and from the build report",
+        "recorded": "2026-10-09",
         "storage": {
-          "label": "Memory",
-          "display": "1,610 B DRAM + 769 DSP P words + 193 DSP Y words",
-          "value": 4496,
+          "label": "Shared platform reserve",
+          "display": "10 MiB arena + 96 KiB logger",
+          "value": 10586112,
           "unit": "bytes",
           "method": "static",
-          "conditions": "ColdFire unit .text 1,464 B and .data 146 B (runtime ELF); DSP P code 727 words and a 42-word table in SPRING REV's harvested span on core 0; DSP Y $c00..$cc0. No per-track copies, no audio buffers.",
+          "conditions": "Shared reservation once: 1,707 platform pages plus 16 core-logger pages, 6,144 bytes each. Total 10,586,112 bytes is removed from sample RAM; POLY uses fixed allocations inside the arena.",
           "source": "TESTING.md"
         },
         "processing": {
-          "label": "DSP core 0 mixdown",
-          "display": "≤ 277 instructions/sample (stock 67)",
-          "value": 277,
-          "unit": "instructions/sample",
-          "method": "emulator",
-          "conditions": "Executed instructions of the mixdown (P:$257..$2d5) and headphone crossfade (P:$30a..$35a) per 16-sample frame, every track on ALL, MASTER on, MAIN/CUE/PHONES levels moving, including the frame that rebuilds the routing lists: 4,240 + 192 per frame (4,336 before the 12-word trim, TESTING.md). Stock: 880 + 191. Cycles and bus stalls are not modelled.",
+          "label": "ColdFire playback",
+          "display": "Instruction counts measured; deadlines pending",
+          "value": null,
+          "unit": "cycles/frame",
+          "method": "unmeasured",
+          "conditions": "Native emulator instruction counts are not hardware cycles. Pitch-weighted eight-voice physical deadlines need qualification.",
           "source": "TESTING.md"
         },
         "impact": {
-          "conditions": "Eight tracks in MATRIX at the dearest routing (every track on ALL, MASTER on, levels moving); NORMAL and STUDIO run stock code plus a 4-instruction check.",
+          "conditions": "One POLY track with eight shared voices, seven stock FLEX tracks and resident stock DSP effects. Higher sample ratios may reduce admitted voices under the pitch-work budget.",
           "cpu": {
-            "level": "minimal",
+            "level": "high",
             "basis": "measured-comparison",
-            "rationale": "The level-page detour runs once a frame, 189 instructions typical and 229 at most (all eight tracks changing destination). The mode conversion runs once per switch in the UI task.",
+            "rationale": "Current 0.2.6 native instruction counts cover eight POLY8 voices, seven FLEX tracks and 24 LFOs. ColdFire owns sample fetching, interpolation and envelopes; measured emulator instructions are not physical utilization or deadlines.",
             "source": "TESTING.md"
           },
           "dsp": {
-            "level": "low",
-            "basis": "measured-comparison",
-            "rationale": "Up to about 210 extra instructions per sample on core 0 (about 7% of 3,120); about 20 with every track on MAIN.",
+            "level": "minimal",
+            "basis": "source-estimate",
+            "rationale": "POLY8 adds no per-note DSP engine or dynamic loader; its voices share the existing per-track filter and FX path. POLY8 alone preserves both stock DSP uploads; selected DSP mods or Analog BD can modify those payloads.",
             "source": "TESTING.md"
           },
           "memory": {
-            "level": "low",
-            "basis": "measured-comparison",
-            "rationale": "1,610 bytes of DRAM code and data, 769 DSP program words reused from SPRING REV and 193 DSP Y words.",
+            "level": "high",
+            "basis": "source-estimate",
+            "rationale": "Shared 10,586,112-byte reservation once (platform arena plus core logger), reducing sample RAM. Voice state and renderer scratch are fixed allocations; there is no per-note heap allocation.",
             "source": "TESTING.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "The image gate passes 117 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys (including track 8 as the master and the power-cycle copies), CC 51 out and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7–9 Oct 2026). No timed stress run, no chip timing.",
+        "summary": "T07/T08 MKII boot failure was traced to an unloaded initialization flag. Corrected T09 received the owner report \"works really well\"; the exact T10 selection-flow update then received \"works like a charm\" on MKII. Duration, separate persistence tests and maximum-load coverage were not reported. Chip deadlines and complete memory bounds remain unqualified under an exact-version owner exception.",
         "hardwareStatus": "reported",
-        "evidenceRevision": "a118cf12c801921196854c15608654b460946c4a",
+        "evidenceRevision": "9e853271be169d242bdf00b79147707e86ee12cb",
         "gates": [
-          "modules/output-matrix/verify.py"
+          "verify-source.py",
+          "verify-addressing.py",
+          "verify-initialization.py",
+          "pool-test.c",
+          "verify-midi.py",
+          "recording-test.c",
+          "native-panel-gate.py",
+          "verify-recording.py",
+          "native-assignment-fixture.py",
+          "native-warm-gate.py",
+          "verify-gain.py",
+          "native-diagnostic-limit-gate.py",
+          "native-diagnostic-gate.py",
+          "native-diagnostic-checkpoint-gate.py",
+          "native-ui-consistency-gate.py",
+          "native-load-matrix.py",
+          "native-gain-bound.py",
+          "native-shared-machine-gate.py",
+          "native-warm-audio-gate.py",
+          "shared-validation-test.c (256 mixed AB/FM/VECTOR signature masks with sanitizers)",
+          "native-selection-flow-gate.py"
         ],
-        "qualification": {
-          "documentation": {
-            "tutorial": {
-              "title": "Quick tutorial",
-              "steps": [
-                "Press PROJ, open CONTROL > AUDIO, move right into OUT CFG, select MATRIX and press YES.",
-                "Select track 1, hold CUE and turn LEVEL until the LEV box reads PHN: track 1 now plays only in the headphones.",
-                "Open the MIXER and turn MIX (PHN) to set the headphone level; choose NORMAL again to return to stock routing."
-              ]
-            },
-            "screenshots": [
-              "media/ot-out-cfg-menu.png",
-              "media/ot-cue-held.png",
-              "media/ot-cue-level-phn.png",
-              "media/ot-mixer-phn.png"
-            ],
-            "screenshotStyle": "black-and-white"
+        "documentation": {
+          "tutorial": {
+            "title": "Quick start",
+            "steps": [
+              "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
+              "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
+              "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+              "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
+              "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
+              "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
+              "Use REC+PLAY in chromatic mode to record up to four held panel notes spanning at most eleven semitones. Recorded duration follows AMP HOLD."
+            ]
           },
-          "moduleVersion": "0.1.0-experimental",
-          "sourceSha256": "7d77ed52e9571afc0122dc86624382858ac3ffe495861887d14d0c9fe3643cd0",
-          "imageSha256": "3e883adbaff67781f526e6e2c01a7833bdcd0696be79df296b624937b969e514",
-          "cycles": [
-            {
-              "processor": "dsp",
-              "worstCase": 277,
-              "maxConfiguration": 277,
-              "maxInstances": 1,
-              "budget": 3120,
-              "unit": "cycles/sample",
-              "method": "emulator",
-              "conditions": {
-                "parameterExtremes": "Every destination code 0..13 per track, all eight tracks on ALL, mixed stereo and mono routings, MAIN/CUE/PHONES levels 0..127, MASTER on and off.",
-                "parameterModulation": "MAIN, CUE and MIX levels changed every other frame for 60 frames; LEVEL, XVOL scenes, locks and LFOs act through stock gain ramps the mixdown reads, unchanged.",
-                "modeSwitching": "All eight tracks changing destination in one frame (list rebuild and declick), and NORMAL/STUDIO/MATRIX switches.",
-                "maxLoad": "One instance per unit (a global mode). Worst measured: 4,240 + 192 executed instructions per 16-sample frame on core 0, every track on ALL with MASTER on; stock 880 + 191.",
-                "inputConditions": "Tone and four-input test audio; the code path does not depend on sample values. Counts are executed instructions, not modelled cycles."
-              },
-              "report": "TESTING.md"
-            },
-            {
-              "processor": "coldfire",
-              "worstCase": 229,
-              "maxConfiguration": 229,
-              "maxInstances": 1,
-              "budget": 9650,
-              "unit": "cycles/block",
-              "method": "emulator",
-              "conditions": {
-                "parameterExtremes": "Every destination per track, levels 0..127, MASTER on and off.",
-                "parameterModulation": "Level changes every other frame; not routed through LFOs or locks.",
-                "modeSwitching": "All eight tracks changing destination in one frame (the declick path for each).",
-                "maxLoad": "The level-page detour, once a frame: 189 executed instructions typical, 229 at most. Budget: 10% of a 362.8 us frame at 266 MHz. The mode conversion (16 banks x 8 Parts) runs once per switch in the UI task, outside the frame.",
-                "inputConditions": "Independent of audio. Executed instructions; cycles and cache effects are not modelled."
-              },
-              "report": "TESTING.md"
-            }
+          "screenshots": [
+            "media/selection-flow/assigned-src.png",
+            "media/selection-flow/left-machine-chooser.png",
+            "media/selection-flow/right-flex-pool.png",
+            "media/poly8/main-poly.png",
+            "media/poly8/loop-encoder.png"
           ],
-          "memory": {
-            "regions": [
-              {
-                "name": "ColdFire code and the AUDIO page tables stock code points at (DRAM unit .text)",
-                "space": "sdram",
-                "words": 1464,
-                "wordBits": 8,
-                "bytes": 1464,
-                "scope": "shared"
-              },
-              {
-                "name": "ColdFire data: routing state and names (DRAM unit .data)",
-                "space": "sdram",
-                "words": 146,
-                "wordBits": 8,
-                "bytes": 146,
-                "scope": "shared"
-              },
-              {
-                "name": "DSP core 0 program: mixdown and phones hooks, in SPRING REV's harvested span",
-                "space": "dsp-p",
-                "words": 727,
-                "wordBits": 24,
-                "bytes": 2181,
-                "scope": "shared"
-              },
-              {
-                "name": "DSP core 0 program: the 42-word destination table",
-                "space": "dsp-p",
-                "words": 42,
-                "wordBits": 24,
-                "bytes": 126,
-                "scope": "shared"
-              },
-              {
-                "name": "DSP core 0 Y: bus factors, lists, PHONES buffer ($c00..$cc0)",
-                "space": "dsp-y",
-                "words": 193,
-                "wordBits": 24,
-                "bytes": 579,
-                "scope": "shared"
-              }
-            ],
-            "perInstanceBytes": 0,
-            "sharedBytes": 4496,
-            "maxInstances": 1,
-            "totalBytes": 4496,
-            "conditions": "From the static build's runtime ELF and the DSP placement report. Detours patch stock instructions in place; the level-page words and battery-RAM copies the module uses are stock's. No heap; ColdFire stack use is the callers' frames plus at most 48 bytes (set_mode's saved registers and the conversion's call chain).",
-            "report": "TESTING.md"
-          },
-          "hardware": {
-            "kind": "functional",
-            "status": "reported",
-            "model": "MKII",
-            "testedOn": "2026-10-09",
-            "tester": "npp1993",
-            "sourceRevision": "a118cf12c801921196854c15608654b460946c4a",
-            "imageSha256": "3e883adbaff67781f526e6e2c01a7833bdcd0696be79df296b624937b969e514",
-            "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10 (the renaming only: the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX) then OUTMTX11, which adds the review fixes: with track 8 as the master routed to M+C, switching to NORMAL leaves it uncued with the master still on MAIN, and switching back shows MN; a track routed to PHN plays only in the headphones. Then OUTMTX12, which loads each routing list's length in one instruction (-12 DSP words): tracks on MN, CUE and PHN, several on one output, the mono jacks, M+P and ALL, the master track and destination changes during playback all played as before. Then OUTMTX13, this source, which moves the AUDIO page's tables into the unit's code section so the website builder places them where native does: the first boot after flashing froze the sequencer on a project last saved by an image with Analog BD, and after a power cycle it ran; OUT CFG with NORMAL, STUDIO and MATRIX, track 8 as the master (MASTER and NORMAL rows), MATRIX to NORMAL and back, routing changes, and routing kept over a power cycle.",
-            "limitations": [
-              "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
-              "One MKII; no MKI.",
-              "Conversions in Parts other than the current one and in other banks were checked in the emulator only.",
-              "No combination with other modules on the unit.",
-              "OUTMTX10, OUTMTX11 and OUTMTX12 were given short checks of what changed; the full checks ran on PHNSTAT8/9, whose behaviour the gate shows unchanged otherwise.",
-              "CC 51 out on a switch into NORMAL is emulator-verified only (no controller was connected)."
-            ],
-            "report": "TESTING.md"
-          }
+          "screenshotStyle": "black-and-white"
         }
       },
       "license": {
         "spdx": "MIT",
         "file": "LICENSE",
-        "declaration": "Original code by npp1993 under the MIT licence. Stock code is referenced by address and SHA-256 only; no Elektron firmware, routines or tables are included."
+        "declaration": "Full upstream MIT terms and snapshot identities retained. VECTOR adapter attribution retained. Firmware, stock dumps, card images and built output stay private."
       },
       "media": [
         {
-          "path": "media/ot-out-cfg-menu.png",
+          "path": "media/poly8/setup-poly.png",
           "captureType": "emulator",
-          "caption": "PROJECT > CONTROL > AUDIO: move right into the OUT CFG box, select MATRIX and press YES. NORMAL and STUDIO behave as stock.",
-          "alt": "Actual Octatrack LCD: CONTROL AUDIO page with a TRACK 8 box and a OUT CFG box listing NORMAL, STUDIO and MATRIX, MATRIX checked.",
-          "credit": "npp1993",
-          "license": "LicenseRef-OT-UI-Documentation",
+          "caption": "Open SRC SETUP with FUNC+SRC, select POLY8 and press YES. New assignments start with LOOP OFF, so try a short sample first.",
+          "alt": "SRC SETUP with POLY8 selected and LOOP OFF",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "PROJECT > CONTROL > AUDIO",
+            "page": "SRC SETUP with POLY8 selected and LOOP OFF",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/poly8/right-flex-pool.png",
+          "captureType": "emulator",
+          "caption": "Double-press the track key to open the native FLEX slots; RIGHT opens them from the machine chooser. Select a loaded sample with YES, then press NO to return to SRC.",
+          "alt": "FLEX slots with REPITCH_440 selected",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "FLEX slots with REPITCH_440 selected",
             "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.0-experimental",
-            "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
-            "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
           }
         },
         {
-          "path": "media/ot-cue-held.png",
+          "path": "media/poly8/main-poly.png",
           "captureType": "emulator",
-          "caption": "Hold CUE on any audio track: the LEV box shows where the track plays. MN means MAIN, the starting point after switching from NORMAL.",
-          "alt": "Actual Octatrack LCD: a track's SRC page with the LEV box labelled MN above its level bar.",
-          "credit": "npp1993",
-          "license": "LicenseRef-OT-UI-Documentation",
+          "caption": "Return to SRC and choose CHROMATIC with FUNC+DOWN. Hold several trig keys and turn PTCH to tune the chord; release the keys with finite AMP HOLD and REL to end the notes.",
+          "alt": "SRC POLY8 page with PTCH, STRT, LEN, RATE, RTRG and RTIM",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "SRC page, CUE held",
+            "page": "SRC POLY8 page with PTCH, STRT, LEN, RATE, RTRG and RTIM",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.0-experimental",
-            "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
-            "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
           }
         },
         {
-          "path": "media/ot-cue-level-phn.png",
+          "path": "media/poly8/loop-encoder.png",
           "captureType": "emulator",
-          "caption": "Keep CUE held and turn LEVEL to step through MN, CUE, PHN, M+C, M+P, C+P, ALL, the six mono jacks and OFF. PHN puts the track in the headphones only.",
-          "alt": "Actual Octatrack LCD: the same SRC page with the LEV box labelled PHN.",
-          "credit": "npp1993",
-          "license": "LicenseRef-OT-UI-Documentation",
+          "caption": "Open SRC SETUP with FUNC+SRC and turn encoder A to change LOOP. AUTO is shown here; reselecting POLY8 keeps AUTO or PIPO, while a new assignment starts at OFF.",
+          "alt": "SRC SETUP with POLY8 selected and LOOP AUTO",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "SRC page, CUE + LEVEL",
+            "page": "SRC SETUP with POLY8 selected and LOOP AUTO",
             "shows": "controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.0-experimental",
-            "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
-            "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
           }
         },
         {
-          "path": "media/ot-mixer-phn.png",
+          "path": "media/poly8/left-machine-chooser.png",
           "captureType": "emulator",
-          "caption": "In MATRIX the MIXER's MIX knob is labelled PHN: it sets the headphone output's level, centre 0 dB. MAIN and CUE work as stock.",
-          "alt": "Actual Octatrack LCD: the MIXER with the first box labelled PHN over a slider marked - and +, beside MAIN and CUE at +0.",
-          "credit": "npp1993",
-          "license": "LicenseRef-OT-UI-Documentation",
+          "caption": "Press LEFT from the FLEX slots to return to the machine list; POLY8 stays selected. Choose FLEX and press YES to replace POLY8, or press NO to keep the current assignment.",
+          "alt": "Machine chooser with POLY8 selected below the stock machines",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "MIXER",
-            "shows": "controls",
+            "page": "Machine chooser with POLY8 selected below the stock machines",
+            "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.1.0-experimental",
-            "imageSha256": "4bba473634b4a9c9f946ae7f721240e8fcef354bff849ad501a29c8b2568176f",
-            "setup": "Headless ot_emu; MKII panel; empty disposable card (fresh project); stopped transport; actual 128×64 LCD pixels at integer scale 6."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/selection-flow/assigned-src.png",
+          "captureType": "emulator",
+          "caption": "Open SRC SETUP with FUNC+SRC, choose POLY8 and press YES. The page stays open and sample slots do not appear automatically.",
+          "alt": "SRC SETUP remains visible after POLY8 assignment; LOOP OFF",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "SRC SETUP remains visible after POLY8 assignment; LOOP OFF",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
+          }
+        },
+        {
+          "path": "media/selection-flow/left-machine-chooser.png",
+          "captureType": "emulator",
+          "caption": "Double-press the track key, then press LEFT from FLEX slots to reach the machine list. POLY8 stays selected.",
+          "alt": "Machine chooser with POLY8 selected",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "Machine chooser with POLY8 selected",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
+          }
+        },
+        {
+          "path": "media/selection-flow/right-flex-pool.png",
+          "captureType": "emulator",
+          "caption": "Double-press the track key to browse FLEX slots. LEFT returns to the machine list; RIGHT reopens the slots.",
+          "alt": "FLEX sample slots opened explicitly",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "FLEX sample slots opened explicitly",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
           }
         }
       ]

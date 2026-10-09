@@ -1,5 +1,9 @@
 # App development and operations
 
+The independent API/backend is source available under Elastic-2.0; the browser
+frontend remains GPL-3.0-or-later. Read [platform licensing](PLATFORM_LICENSING.md)
+for the scope and dependency boundary before sharing code between them.
+
 Existing published module authors may use the [automatic author-update workflow](MODULE_AUTHOR_UPDATES.md): verified ownership, changes confined to their modules, explicit evidence review and successful checks on the exact source/base permit bot merge and publication. Other changes retain owner review. Existing qualification gates and exact-version owner exceptions are unchanged.
 
 For module development, start with the [repository quickstart](../README.md) and [SDK guide](../sdk/README.md). Run commands below from the repository root.
@@ -26,11 +30,59 @@ Every visible module must support firmware generation and download in a compatib
 
 ## Browsing module results
 
+### External project directory
+
+`/projects/` is the **Other projects** directory, linked from the desktop sidebar,
+phone menu and instrument libraries. It lists independent mods, tools, emulators
+and developer tools that use their own workflows outside Modwerk. Entries have creator
+credits, repository links, instrument tags and original short summaries; they
+never enter firmware selections, module releases or module notifications.
+
+Maintain the curated list in `src/projects/projects.ts`. Check repository links
+and keep current versions, detailed installation and support requirements in the
+upstream project. Instrument tags aid discovery and do not certify every model
+or OS. Individual modules already offered by Modwerk belong in the module
+library; upstream collections may remain here with their relationship explained.
+Search combines with instrument and project-type filters. Instrument links can
+prefilter the directory with `?machine=<family-id>`. The production build emits
+the full link directory as readable HTML, with its own canonical URL, social
+card and sitemap entry. “Want me to add your project?” opens the existing support
+email address with a prefilled project-submission draft. The sidebar and mobile
+menu temporarily mark the directory as New. Selection criteria and independently
+researched additions are recorded in [the curation notes](EXTERNAL_PROJECTS.md).
+
+Card thumbnails are cached GitHub repository Open Graph images, including each
+repository's custom sharing artwork when provided. Refresh them with
+`node scripts/project-thumbnails.mjs --refresh` under Node 24; this maintenance command
+requires network access. It records source URLs, fetch dates, dimensions and
+hashes in `src/projects/thumbnails.json`. Images are resized without cropping
+and served locally, preserving the existing image policy and avoiding visitor
+requests to GitHub. Creator credits and directory-source attribution remain
+visible. Octatrack Manager uses its README screenshot; Octobus Additions uses
+its creator's GitHub image because the layout has no cover. These previews are
+upstream promotional images, not Modwerk validation
+or proof of compatibility. The directory's own Modwerk sharing card is separate;
+see [social-preview artwork](SOCIAL-PREVIEW.md#other-projects-directory).
+Omit `--refresh` to resume missing previews after a transient download failure.
+
+### Module navigation
+
 On desktop (above 1100px), module detail pages offer left and right chevrons and Left/Right arrow keys to move through the catalog results that were visible when a module was opened. The result order includes the selected machine, category, search, type and sort; All machines continues across machine groups in their displayed order. Paging stops at each end. “Back to results” restores the same filters. The last result selection stays in this tab's session storage so refreshing a module page keeps the context; unavailable storage still permits paging during the visit. Direct pages outside that result selection keep their usual library link.
 
 Inputs, tab lists, menus, media controls and open dialogs retain their arrow-key behavior. Phones and smaller layouts retain the normal module page without side chevrons or global arrow-key navigation.
 
 ## Run locally
+
+The shared dark palette is defined by the semantic colour tokens at the top of
+`src/styles.css`. Use those tokens for neutral surfaces, text, control borders
+and interaction states in the library, forum, device pages and dialogs. Keep
+module illustrations and success/warning colours distinct. Secondary text must
+remain readable on hover surfaces; primary buttons use dark text on lavender.
+Keep panel edges quiet and use filled surfaces for separation; reserve bright
+outlines for focus. Native selects share the chevron token with a 14px edge inset
+and 42px right padding, including in dialogs and phone layouts.
+When changing the palette, inspect rendered pages and keyboard focus at phone,
+tablet and desktop widths, and measure text contrast against the actual surface.
 
 Use Node.js 24:
 
@@ -61,6 +113,21 @@ Open `http://127.0.0.1:5173/?preview=reporting` to compare the module-page feedb
 Reporting actions share the neutral **Works for me** button (plus before submission, green check and **Reported working** after success) and amber **Report an issue** button. Download follow-ups and return reminders offer these actions directly on each module; bulk confirmation is optional and never preselects companions. Downloaded builds carry their original versions. Digi reports with a known model and OS keep those prefilled fields under **More details**, where the reporter can correct them. The release-follow checkbox stays a horizontal row in inline forms and dialogs.
 
 Module-page working buttons restore the signed-in member’s confirmation across navigation, reloads and devices. They become available again for a new module version; the distinct-member count across versions stays intact. A quick confirmation without a matching current download records the displayed catalog version only as button state, while the installed firmware version remains unknown. Existing quick confirmations recover that state from the deployed release history at their original save time.
+
+## Audio playback
+
+`src/components/AudioPlayer.tsx` supplies WaveSurfer waveforms and shared controls
+for community cards, forum attachments, upload previews, module galleries and the
+downloaded firmware guide. Use it for new audio surfaces. Only one clip plays at
+a time across the site; navigating away releases playback and the waveform.
+The library and audio decoding load when a player becomes visible, or when the
+visitor presses Play. Waveforms use the actual audio, decoded at 8 kHz for display;
+playback retains the file's original quality. Hovering shows the seek timestamp.
+Native range controls support touch
+and keyboard seeking (arrows skip five seconds, Shift skips ten, Home/End go to
+the start/end). Loading or decoding failures keep playback controls available.
+Private media still uses the existing authenticated blob fetch and URL cleanup.
+WaveSurfer's full BSD notice is included by `npm run licenses:generate`.
 
 ## Optional site support
 

@@ -1,0 +1,15 @@
+{
+  "kind": "owner-approved-update",
+  "id": "poly8",
+  "version": "0.2.6-experimental",
+  "approvedBy": "repeat98",
+  "approvedOn": "2026-10-09",
+  "ownerStatement": "Approve this scoped experimental release",
+  "reason": "Owner explicitly approved publication of exact POLY8T10 source as 0.2.6-experimental with chip worst-case timing, complete memory-bound qualification and separately reported Part/project/reboot tests waived. Owner reported \"works like a charm\" on MKII for the exact T10 image. This functional result is retained; unreported detailed hardware benchmarks, flood/persistence cases and missing measurements remain unverified. Native/browser compatibility, stock isolation, actual UI documentation, checks and owner-reviewed publication remain mandatory. Actual statements and exact image identities are retained in evidence/owner-release-t10.md.",
+  "sourceSha256": "a32ed194a288c8847ad0ba110e8bca3bf266ada2227772ef813623b32a21421d",
+  "waived": [
+    "current-build-hardware",
+    "chip-worst-case-cycles",
+    "complete-memory-bounds"
+  ]
+}

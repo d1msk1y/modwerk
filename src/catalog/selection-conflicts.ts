@@ -1,4 +1,9 @@
-import { DSP_EFFECT_IDS, resolveSelection } from './modules.ts'
+import { DSP_EFFECT_IDS, MODULES, resolveSelection } from './modules.ts'
+import { MODULE_DOCUMENTS_BY_ID } from './documents.ts'
+import compact from './compatibility-checks.json' with { type: 'json' }
+import { recordedCheck, type CompactChecks } from './compatibility-checks.ts'
+const DECLARATION_CHECKS = compact as CompactChecks
+const CHECKED_SELECTIONS = new Set(DECLARATION_CHECKS.checked)
 
 export type ConflictFix = { label: string; removeIds?: string[]; keepStockFx2?: boolean }
 export type SelectionConflict = { id: string; title: string; description: string; moduleIds: string[]; fixes: ConflictFix[] }
@@ -8,6 +13,10 @@ const analogBdCompanions = ['miniverb', 'tapeecho', 'euclid', 'tapehead', 'sidec
 // Compressor hooks stock COMPRESSOR instead of taking a slot. Every other DSP effect needs their space.
 const FITS_BESIDE_STOCK_FX2 = ['tapehead', 'sidechain-compressor']
 const crowdedMenuIds = ['miniverb', 'tapeecho', 'euclid', 'repitch', 'quantizer']
+const DECLARED_CONFLICT_PAIRS = MODULES.flatMap((left, index) => MODULES.slice(index + 1).filter(right =>
+  (MODULE_DOCUMENTS_BY_ID[left.id]?.compatibility.conflicts.includes(right.id) || MODULE_DOCUMENTS_BY_ID[right.id]?.compatibility.conflicts.includes(left.id)) &&
+  recordedCheck(DECLARATION_CHECKS, [left.id, right.id], CHECKED_SELECTIONS)?.length !== 0
+).map(right => [left, right] as const))
 
 export function selectionConflicts(ids: readonly string[], keepStockFx2 = false): SelectionConflict[] {
   const modules = resolveSelection(ids), selected = new Set(modules.map(module => module.id))
@@ -21,13 +30,13 @@ export function selectionConflicts(ids: readonly string[], keepStockFx2 = false)
       moduleIds: modules.map(module => module.id),
       fixes: [{ label: 'Keep MIDI Scenes', removeIds: companions.map(module => module.id) }, { label: 'Remove MIDI Scenes', removeIds: ['midi-scenes'] }] })
   }
-  if (selected.has('vector') && selected.has('analog-bassdrum')) conflicts.push({
+  if (!selected.has('poly8') && selected.has('vector') && selected.has('analog-bassdrum')) conflicts.push({
     id: 'vector-analog-bd', title: 'Choose VECTOR or Analog BD',
     description: 'VECTOR and Analog BD use the same native machine chooser hooks. Build them separately.',
     moduleIds: ['vector', 'analog-bassdrum'],
     fixes: [{ label: 'Keep VECTOR', removeIds: ['analog-bassdrum'] }, { label: 'Keep Analog BD', removeIds: ['vector'] }],
   })
-  if (selected.has('synth')) {
+  if (!selected.has('poly8') && selected.has('synth')) {
     const companions = modules.filter(module => ['analog-bassdrum', 'quantizer', 'vector'].includes(module.id))
     if (companions.length) conflicts.push({ id: 'synth-machine-conflict', title: 'Choose FM Synth or overlapping machine modules',
       description: 'FM Synth bundles Scale Quantizer and uses the machine chooser hooks. It cannot run alongside ' + companions.map(module => module.name).join(', ') + '.',
@@ -55,6 +64,16 @@ export function selectionConflicts(ids: readonly string[], keepStockFx2 = false)
     moduleIds: crowdedMenuIds,
     fixes: [{ label: 'Remove Euclid', removeIds: ['euclid'] }],
   })
+  // Declared incompatibilities become actionable before building. Preserve
+  // explicitly native-verified companion pairs when historical prose is stale.
+  for (const [left, right] of DECLARED_CONFLICT_PAIRS) {
+    if (selected.has('poly8') && [['analog-bassdrum', 'vector'], ['analog-bassdrum', 'synth'], ['synth', 'vector'], ['synth', 'quantizer']].some(pair => pair.includes(left.id) && pair.includes(right.id))) continue
+    if (!selected.has(left.id) || !selected.has(right.id) || conflicts.some(conflict => conflict.moduleIds.includes(left.id) && conflict.moduleIds.includes(right.id))) continue
+    conflicts.push({ id: 'declared-' + [left.id, right.id].sort().join('-'), title: 'Choose ' + left.name + ' or ' + right.name,
+      description: left.name + ' and ' + right.name + ' declare incompatible native resources. Build them separately.', moduleIds: [left.id, right.id],
+      fixes: [{ label: 'Keep ' + left.name, removeIds: [right.id] }, { label: 'Keep ' + right.name, removeIds: [left.id] }],
+    })
+  }
   return conflicts
 }
 export function selectionConflictError(ids: readonly string[], keepStockFx2 = false) {
