@@ -159,6 +159,10 @@ act_none:
 |      at LEVEL, or CUE at the cue level when LEVEL is 0 or CUE MUTES TRACK
 |      is on; cued at cue level 0 -> MAIN, or OFF (LEVEL kept) when CUE
 |      MUTES TRACK silenced it.
+| With MASTER TRACK on, track 8 is the master, which has no cue in NORMAL
+| or STUDIO (stock never cues it): out of MATRIX it keeps LEVEL = L (0 for
+| OFF) with cue level 0 and is never cued; into MATRIX it becomes MAIN at
+| its LEVEL.
         .equ    BANK0,        0x400e21e0
         .equ    BANK_SIZE,    0x9b340
         .equ    PART_SIZE,    0x18b2
@@ -176,6 +180,8 @@ act_none:
         .equ    CUE_MUTES,    0x8000009c   | CUE MUTES TRACK
         .equ    CUE_MASK_CS1, 0x100b14d4   | 0x80000008's power-cycle copy, as CUE + TRACK writes it
         .equ    D_OFF,        13
+        .equ    MASTER_ON,    0x80000034   | MASTER TRACK: track 8 is the master
+        .equ    CC_OUT,       0x40033e3c   | (track, cc, value): stock's audio-track CC out, gated on AUDIO CC OUT
 
 | d4 the direction; uses d0-d3, d5-d7, a0-a3. a1 counts the bytes a bank's
 | conversion changed: a bank with none is not marked for saving.
@@ -228,7 +234,22 @@ conv_tracks:
         moveq   #0,%d7                   | the track
 1:      mvz.b   (%a0),%d1                | LEVEL
         mvz.b   1(%a0),%d0               | the cue byte
-        cmpi.l  #1,%d4
+        moveq   #7,%d3
+        cmp.l   %d3,%d7
+        bne.s   15f
+        tst.b   MASTER_ON
+        beq.s   15f
+        cmpi.l  #1,%d4                   | track 8 as the master:
+        beq.s   40f                      | into MATRIX, MAIN at its LEVEL
+        cmpi.l  #2,%d4
+        beq.s   40f
+        moveq   #D_OFF,%d3               | out of MATRIX: no cue; OFF stays silent
+        cmp.l   %d3,%d0
+        bne.s   16f
+        moveq   #0,%d1
+16:     moveq   #0,%d0
+        bra.s   7f
+15:     cmpi.l  #1,%d4
         beq.s   20f
         cmpi.l  #2,%d4
         beq.s   30f
@@ -288,12 +309,20 @@ conv_tracks:
 
 | Into NORMAL: the cue bits (0x80000008 bits 16..23 and its CS1 copy) from
 | the current Part's destinations, read from the live cue bytes before
-| convert_all rewrites them. Uses d0, d1, d5-d7, a0.
+| convert_all rewrites them; never track 8 while it is the master. Each
+| track whose cue state changes gets CC 51 out, as CUE + TRACK sends it
+| (0x4007d63a: value 1 cued, 0 not; CC_OUT checks AUDIO CC OUT itself).
+| Uses d0, d1, d5-d7, a0, a1.
 cue_mask_from_live:
         moveq   #0,%d5                   | the new cue bits
         moveq   #0,%d7
         movea.l #LIVE_LV+1,%a0
-1:      mvz.b   (%a0),%d0
+1:      moveq   #7,%d1
+        cmp.l   %d1,%d7
+        bne.s   3f
+        tst.b   MASTER_ON
+        bne.s   2f                       | the master is never cued
+3:      mvz.b   (%a0),%d0
         moveq   #DEST_MAX,%d1
         cmp.l   %d1,%d0
         bhi.s   2f                       | not a code: not cued
@@ -309,10 +338,32 @@ cue_mask_from_live:
         cmp.l   %d1,%d7
         bne.s   1b
         move.l  CUE_MASK,%d0
+        move.l  %d0,%d6                  | the old bits
         andi.l  #0xff00ffff,%d0
         or.l    %d5,%d0
         move.l  %d0,CUE_MASK
         move.l  %d0,CUE_MASK_CS1
+        eor.l   %d5,%d6
+        andi.l  #0x00ff0000,%d6          | the cue bits that changed
+        moveq   #0,%d7
+4:      moveq   #16,%d0
+        add.l   %d7,%d0
+        btst    %d0,%d6
+        beq.s   6f
+        moveq   #0,%d1
+        btst    %d0,%d5
+        beq.s   5f
+        moveq   #1,%d1                   | now cued
+5:      move.l  %d1,-(%sp)               | value
+        moveq   #0x33,%d0
+        move.l  %d0,-(%sp)               | CC 51
+        move.l  %d7,-(%sp)               | track
+        jsr     CC_OUT
+        lea     12(%sp),%sp
+6:      addq.l  #1,%d7
+        moveq   #8,%d0
+        cmp.l   %d0,%d7
+        bne.s   4b
         rts
 
 | ---- CUE + LEVEL (jmp detour, displaced: lea -16(sp),sp; movem.l d2-d5,(sp))
@@ -494,7 +545,10 @@ lev_bars:
 |   $39  T1..T4 destinations   $3a  T5..T8 (4 bits each, T1 and T5 highest)
 |   $3b  1 in MATRIX, else 0
 | CUE stays in $28 as stock sends it. Free here: d0, d1, d4 and a0 (each is
-| written before it is read after the return); d3 is the replayed load.
+| written before it is read after the return). d3 also carries the codes
+| word while building; the replayed load restores only its low byte, which
+| is enough because stock follows with extw d3 and a word store, and clears
+| d3 before any long use (0x4000d1f0, 0x4000d320).
 |
 | The declick: the DSP routes by the codes it is sent (sent_codes). When a
 | track's destination changes, the first frame keeps the old code and sends

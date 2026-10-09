@@ -31,7 +31,9 @@ CUE, 2/3 MAIN, 4/5 PHONES):
      all 14 codes and a stray cue level (two Parts, bank 16, the saved Part,
      the live bytes, NORMAL's cue bits from the current Part), both round
      trips back, STUDIO -> MATRIX for the four level cases, and NORMAL ->
-     MATRIX with and without CUE MUTES TRACK.
+     MATRIX with and without CUE MUTES TRACK; the current bank's power-cycle
+     copies of the Parts; track 8 as the master (never cued, no cue level);
+     CC 51 out for each track a switch into NORMAL cues.
 What it cannot see: hardware timing, the analogue jacks, other modules.
 """
 import json
@@ -84,20 +86,25 @@ CUE_DESTS = {1, 3, 5, 6, 9, 10}
 LEVEL_DESTS = {0, 3, 4, 6, 7, 8, 2, 11, 12}          # MAIN, or PHONES only (kept on MAIN)
 
 
-def out_of_matrix(level, code):
-    """MATRIX (level, code) -> STUDIO or NORMAL (LEVEL, cue level)."""
+def out_of_matrix(level, code, master=False):
+    """MATRIX (level, code) -> STUDIO or NORMAL (LEVEL, cue level). master:
+    track 8 with MASTER TRACK on, which has no cue outside MATRIX."""
     code = code if code <= 13 else 0
+    if master:
+        return (0 if code == 13 else level, 0)
     return (level if code in LEVEL_DESTS else 0, level if code in CUE_DESTS else 0)
 
 
-def from_studio(main, cue):
+def from_studio(main, cue, master=False):
+    if master:
+        return main, 0
     if cue == 0:
         return main, 0
     return (main, 3) if main else (cue, 1)
 
 
-def from_normal(level, cue, cued, mutes):
-    if not cued:
+def from_normal(level, cue, cued, mutes, master=False):
+    if master or not cued:
         return level, 0
     if cue == 0:
         return level, (13 if mutes else 0)
@@ -246,7 +253,8 @@ def conversion_jobs(run, pool, work):
                                                     f"0x80000c50,16={work / 'conv_pre_live.bin'};0x80000008,4={work / 'conv_pre_mask.bin'};"
                                                     f"{B0 + WORK_LV:#x},16={work / 'conv_pre_b1.bin'};"
                                                     f"{B0 + 15 * BANK + WORK_LV:#x},16={work / 'conv_pre_b16.bin'};"
-                                                    f"0x8000009c,4={work / 'conv_pre_mutes.bin'}"],
+                                                    f"0x8000009c,4={work / 'conv_pre_mutes.bin'};"
+                                                    f"0x80000034,1={work / 'conv_pre_master.bin'}"],
                                audio=False, card=card)}
     jobs["conv"] = pool.submit(lambda: (run.emu("conv", ["--mkii", "--live-script", str(script), "--card-out",
                                                          str(work / "conv_out.img"), "--mem-dump", spec], audio=False,
@@ -269,6 +277,9 @@ def part_lv(bank, part, saved=False):
     return B0 + bank * BANK + (0x9505c if saved else WORK_LV) + part * 0x18b2
 
 
+CS1_LV = {False: 0x100a4ee0, True: 0x100ab1a8}               # the current bank's Parts kept for a power cycle
+
+
 # MATRIX fixtures: Part 1 codes 0..7, Part 2 codes 8..13, a stray cue level
 # (100, read as MAIN) and MAIN at level 0; levels 40 + code, all distinct.
 R_PAIRS = ([(40 + c, c) for c in range(8)], [(40 + c, c) for c in range(8, 14)] + [(90, 100), (0, 0)])
@@ -282,21 +293,28 @@ def pokes(pairs_by_part, extra=""):
     out = []
     for part, pairs in enumerate(pairs_by_part):
         for t, (lv, cue) in enumerate(pairs):
-            for bank, saved in ((0, False), (0, True), (15, False)):
-                a = part_lv(bank, part, saved) + 2 * t
+            addrs = [part_lv(bank, part, saved) for bank, saved in ((0, False), (0, True), (15, False))]
+            addrs += [CS1_LV[saved] + part * 0x18b2 for saved in (False, True)]
+            for base in addrs:
+                a = base + 2 * t
                 out += [f"{a:#x}={lv}", f"{a + 1:#x}={cue}"]
             if part == 0:
                 out += [f"{0x80000c50 + 2 * t:#x}={lv}", f"{0x80000c51 + 2 * t:#x}={cue}"]
     return ";".join(out) + extra
 
 
+M0, M1 = ";0x80000034=0", ";0x80000034=1"                   # MASTER TRACK off / on
 MATRIX = {  # tag: (mode, pairs by Part, extra pokes, rows chosen in order)
-    "rs": (2, R_PAIRS, "", (1,)), "rs_r": (2, R_PAIRS, "", (1, 2)),
-    "rn": (2, R_PAIRS, ";0x80000009=0;0x8000009f=0", (0,)),
-    "rn_r": (2, R_PAIRS, ";0x80000009=0;0x8000009f=0", (0, 2)),
-    "sr": (1, (S_PAIRS,), "", (2,)),
-    "nr": (0, (N_PAIRS,), f";0x80000009={N_CUED};0x8000009f=0", (2,)),
-    "nr_m": (0, (N_PAIRS,), f";0x80000009={N_CUED};0x8000009f=1", (2,)),
+    "rs": (2, R_PAIRS, M0, (1,)), "rs_r": (2, R_PAIRS, M0, (1, 2)),
+    "rn": (2, R_PAIRS, M0 + ";0x80000009=0;0x8000009f=0;0x8000004a=3", (0,)),
+    "rn_r": (2, R_PAIRS, M0 + ";0x80000009=0;0x8000009f=0", (0, 2)),
+    "sr": (1, (S_PAIRS,), M0, (2,)),
+    "nr": (0, (N_PAIRS,), M0 + f";0x80000009={N_CUED};0x8000009f=0", (2,)),
+    "nr_m": (0, (N_PAIRS,), M0 + f";0x80000009={N_CUED};0x8000009f=1", (2,)),
+    # track 8 as the master: R_PAIRS' Part 1 puts it on MNL, so give it CUE (and Part 2 T8 MN at 0)
+    "rs_t8": (2, ([*R_PAIRS[0][:7], (77, 1)], R_PAIRS[1]), M1, (1,)),
+    "rn_t8": (2, ([*R_PAIRS[0][:7], (77, 6)], R_PAIRS[1]), M1 + ";0x80000009=0;0x8000009f=0;0x8000004a=3", (0,)),
+    "sr_t8": (1, ([*S_PAIRS[:7], (90, 60)],), M1, (2,)),
 }
 
 
@@ -310,10 +328,12 @@ def matrix_jobs(run, pool, work):
         script.write_text("\n".join(lines + [f"{500 + 4000 * len(rows)} quit"]) + "\n")
         dumps = {f"p{p}": f"{part_lv(0, p):#x},16" for p in range(2)}
         dumps.update(s0=f"{part_lv(0, 0, True):#x},16", b16=f"{part_lv(15, 0):#x},16", live="0x80000c50,16",
+                     cs1w=f"{CS1_LV[False]:#x},16", cs1s=f"{CS1_LV[True]:#x},16",
                      mask="0x80000008,4", maskcs1="0x100b14d4,4", mode="0x80000037,1")
         spec = ";".join(f"{a}={work / f'm_{tag}_{k}.bin'}" for k, a in dumps.items())
         jobs[tag] = pool.submit(run.emu, f"m_{tag}", ["--mkii", "--poke", f"0x80000037={mode};" + pokes(pairs, extra),
-                                                      "--live-script", str(script), "--mem-dump", spec], audio=False)
+                                                      "--live-script", str(script), "--mem-dump", spec,
+                                                      "--midi-out", str(work / f"m_{tag}.midi")], audio=False)
     return work, jobs
 
 
@@ -326,30 +346,37 @@ def matrix_checks(mx):
     pairs = lambda b: [(b[2 * t], b[2 * t + 1]) for t in range(8)]
     for tag, (mode, parts, extra, rows) in MATRIX.items():
         final = (0, 1, 2)[rows[-1]]
+        master = M1 in extra
+        mt = lambda t: master and t == 7
         check(rd(tag, "mode")[0] == final, f"{tag}: CUE CFG {rd(tag, 'mode')[0]}, expected {final}")
+        cued_from = [int(c in CUE_DESTS and not mt(t)) for t, (_, c) in enumerate(parts[0])] if mode == 2 else None
         for p, src in enumerate(parts):
             want = list(src)
             cued = [N_CUED >> t & 1 for t in range(8)] if mode == 0 else [0] * 8
             if mode == 2:                              # MATRIX -> STUDIO or NORMAL
-                want = [out_of_matrix(*x) for x in want]
+                want = [out_of_matrix(*x, mt(t)) for t, x in enumerate(want)]
                 if len(rows) > 1:                      # and back
-                    cued = [int(c in CUE_DESTS) for _, c in R_PAIRS[0]]
-                    want = [from_studio(*x) for x in want] if rows[0] == 1 else \
-                           [from_normal(*x, cued[t], 0) for t, x in enumerate(want)]
+                    want = [from_studio(*x, mt(t)) for t, x in enumerate(want)] if rows[0] == 1 else \
+                           [from_normal(*x, cued_from[t], 0, mt(t)) for t, x in enumerate(want)]
             elif mode == 1:
-                want = [from_studio(*x) for x in want]
+                want = [from_studio(*x, mt(t)) for t, x in enumerate(want)]
             else:
-                want = [from_normal(*x, cued[t], extra.endswith("=1")) for t, x in enumerate(want)]
+                want = [from_normal(*x, cued[t], extra.endswith("=1"), mt(t)) for t, x in enumerate(want)]
             got = pairs(rd(tag, f"p{p}"))
             check(got == want, f"{tag} Part {p + 1}: {got}, expected {want}")
             if p == 0:
-                for k in ("s0", "b16", "live"):
+                for k in ("s0", "b16", "live", "cs1w", "cs1s"):
                     check(pairs(rd(tag, k)) == want, f"{tag} {k} matches Part 1: {pairs(rd(tag, k))}")
-        if tag == "rn":
-            bits = sum(1 << t for t, (_, c) in enumerate(R_PAIRS[0]) if c in CUE_DESTS)
+        if final == 0:                                 # into NORMAL: the cue bits and CC 51 out
+            bits = sum(1 << t for t, c in enumerate(cued_from) if c)
             for k in ("mask", "maskcs1"):
                 got = rd(tag, k)[1]
-                check(got == bits, f"rn: NORMAL cue bits ({k}) {got:08b}, expected {bits:08b} (the current Part's CUE destinations)")
+                check(got == bits, f"{tag}: NORMAL cue bits ({k}) {got:08b}, expected {bits:08b} (the current Part's CUE destinations{', not the master' if master else ''})")
+            if "0x8000004a=3" in extra:
+                out = (work / f"m_{tag}.midi").read_bytes()
+                ccs = sorted({(b & 15, v) for b, c, v in zip(out, out[1:], out[2:]) if b & 0xf0 == 0xb0 and c == 0x33})
+                check(len(ccs) == bin(bits).count("1") and all(v == 1 for _, v in ccs),
+                      f"{tag}: CC 51 out {ccs} for the {bin(bits).count('1')} newly cued tracks")
 
 
 def power_cycle(run, work):
@@ -369,7 +396,8 @@ def conversion_checks(conv):
     mutes = int.from_bytes((work / "conv_pre_mutes.bin").read_bytes(), "big")
     t = rd("track")[0]
     pre = lambda k: (work / f"conv_pre_{k}.bin").read_bytes()
-    conv = lambda b: [from_normal(b[2 * k], b[2 * k + 1], mask >> (16 + k) & 1, mutes) for k in range(8)]
+    master = (work / "conv_pre_master.bin").read_bytes()[0] != 0
+    conv = lambda b: [from_normal(b[2 * k], b[2 * k + 1], mask >> (16 + k) & 1, mutes, master and k == 7) for k in range(8)]
     check(rd("mode")[0] == 2, f"CUE CFG after YES on MATRIX: {rd('mode')[0]}")
     for name in ("b1", "b16"):
         got = [(rd(name)[2 * k], rd(name)[2 * k + 1]) for k in range(8)]

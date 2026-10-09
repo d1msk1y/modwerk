@@ -87,7 +87,7 @@
   },
   "tests": {
     "report": "TESTING.md",
-    "summary": "The image gate passes 76 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7-8 Oct 2026). No timed stress run, no chip timing.",
+    "summary": "The image gate passes 117 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys (including track 8 as the master and the power-cycle copies), CC 51 out and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7–9 Oct 2026). No timed stress run, no chip timing.",
     "hardwareStatus": "reported",
     "evidenceRevision": "d98a2544d8258e54bbe4fb8c9b7d4bee48da07e9",
     "gates": [
@@ -95,7 +95,7 @@
     ],
     "qualification": {
       "moduleVersion": "0.1.0-experimental",
-      "sourceSha256": "54e59b2216bc57d6d6e6e787fe6f9ed54ba414522e6bcd7cea0da24b9b661fff",
+      "sourceSha256": "71d2e7eab9fc14817ebe802b1398e7d3e98b8ba8c1de58a97089fae4e361bea4",
       "imageSha256": "fa05f59f3606e1c13a9e5d13f3849d4ac76e61b636467fc8c6f7d832f49aec11",
       "cycles": [
         {

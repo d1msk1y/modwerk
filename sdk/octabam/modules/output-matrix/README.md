@@ -57,9 +57,10 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
     | PHN, PHL, PHR | L (neither mode has a PHONES-only output, so the track stays audible on MAIN) | 0 |
     | OFF | 0 | 0 |
 
-    Into NORMAL, the tracks whose destination in the current Part includes CUE are also cued. NORMAL has one set of cue settings for the whole project, so other Parts keep their levels but not their own cueing. With CUE MUTES TRACK on (PROJECT > SYSTEM > PERSONALIZE), stock takes every cued track off MAIN, so M+C and ALL play on CUE only in NORMAL, and come back to MATRIX as CUE.
+    Into NORMAL, the tracks whose destination in the current Part includes CUE are also cued. NORMAL has one set of cue settings for the whole project, so other Parts keep their levels but not their own cueing. With CUE MUTES TRACK on (PROJECT > SYSTEM > PERSONALIZE), stock takes every cued track off MAIN, so M+C and ALL play on CUE only in NORMAL, and come back to MATRIX as CUE. The tracks a switch into NORMAL cues send CC 51 out, as CUE + TRACK does.
   - **Entering MATRIX from STUDIO:** LEVEL and a cue level → M+C at LEVEL (the CUE side takes LEVEL); LEVEL only → MAIN; cue level only → CUE at the cue level; neither → MAIN at 0.
   - **Entering MATRIX from NORMAL:** not cued → MAIN; cued with a cue level → M+C at LEVEL, or CUE at the cue level when LEVEL is 0 or CUE MUTES TRACK is on; cued at cue level 0 → MAIN, or OFF (LEVEL kept) when CUE MUTES TRACK leaves it silent.
+  - **Track 8 as the master** (MASTER TRACK on) has no cue in NORMAL or STUDIO, as stock: leaving MATRIX it keeps its level on MAIN (0 for OFF) with cue level 0 and is never cued; entering MATRIX it becomes MAIN at its level.
   - **What a round trip loses:** through STUDIO, the mono jacks come back as their stereo pair, PHONES-only as MAIN, C+P as CUE, ALL as M+C and OFF as MAIN at 0. Through NORMAL, also: in Parts other than the current one, a CUE-only track comes back as MAIN at 0 unless the current Part cues the same track.
 
   Save the project to keep the conversion, as with any edit.

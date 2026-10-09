@@ -139,7 +139,7 @@ Each check dumps the (LEVEL, cue) pairs in several places: bank 1's working Part
 
 **Regression.** The full routing table still puts signal on exactly the same outputs in all 20 captures. RMS moves by up to 0.24%, because the new ColdFire code shifts load timing and so the measurement window. MATRIX MAIN is within 27 LSB of the stock path in the same build.
 
-### The rules rewritten (8 Oct 2026)
+### The rules rewritten (8 Oct 2026), and track 8 as the master (9 Oct)
 
 The first rules lost a CUE-only track on a round trip (hardware: MATRIX → STUDIO → MATRIX turned CUE into M+C) and ignored NORMAL's cue settings. The rules now in README.md "Where the routing is stored" were agreed with the user: PHONES-only stays on MAIN outside MATRIX; M+C takes LEVEL. The gate checks each rule with the keys (the cursor on the CUE CFG box starts on NORMAL; the PROJECT menu reopens on CONTROL's list, so a second visit takes one YES), against a Python model of the rules, in bank 1's working Parts 1 and 2, its saved Part 1, bank 16's Part 1 and the live bytes:
 
@@ -152,6 +152,14 @@ The first rules lost a CUE-only track on a round trip (hardware: MATRIX → STUD
 | STUDIO → MATRIX | (50, 0), (0, 60), (50, 60), (0, 0), (70, 30), (0, 127), (127, 0), (5, 5) | (50, MN), (60, CUE), (50, M+C), (0, MN), (70, M+C), (127, CUE), (127, MN), (5, M+C) |
 | NORMAL → MATRIX | five tracks cued, CUE MUTES TRACK off | Not cued → MN; cued with both levels → M+C; cued at LEVEL 0 → CUE at the cue level |
 | NORMAL → MATRIX | the same, CUE MUTES TRACK on | Cued with a cue level → CUE at it; cued at cue level 0 → OFF, LEVEL kept |
+
+| MATRIX → STUDIO, MASTER on | T8 (the master) on CUE at 77 | (77, 0): LEVEL kept, no cue level; the others as without MASTER |
+| MATRIX → NORMAL, MASTER on | T8 on ALL | (77, 0) and never cued: the cue bits are `01101010`, T8's bit clear |
+| STUDIO → MATRIX, MASTER on | T8 with LEVEL 90 and cue 60 | (90, MN) |
+| Cue CC on a switch into NORMAL | AUDIO CC OUT on, nothing cued before | CC 51 = 1 on the channels of T2, T4, T6 and T7 (the newly cued tracks), nothing else |
+| Every run | the current bank's power-cycle copies (CS1) of Part 1, working and saved | Equal to Part 1 in RAM |
+
+The master rule follows the manual (cue output is not available on track 8 as the master) and stock's STUDIO LEV box, which shades the master's cue bar. The cue CC is stock's `0x40033e3c(track, 0x33, 1)`, the call CUE + TRACK makes, so it sends only when AUDIO CC OUT is on.
 
 Stock's level builder (`0x40004db8`) confirms the NORMAL model: with `0x8000009c` set it adds the cue bits to the mute bits, so cued tracks leave MAIN; the cue level is independent of LEVEL.
 
@@ -172,7 +180,7 @@ It replays everything above in about 30 port runs:
 - NORMAL → MATRIX with the keys, then a power cycle from that run's CS1 and card;
 - every conversion rule (above), seven keyed runs.
 
-Last run, 8 Oct 2026, on the build with the stock DSP code built in (below): **PASS**, 76 checks.
+Last run, 9 Oct 2026, on the renamed build with the stock DSP code built in: **PASS**, 117 checks (the 76 above, plus track 8 as the master in three directions, the power-cycle copies of the current bank's Parts in every conversion case, and CC 51 out).
 
 ## Code review (7 Oct 2026) and what it changed
 
@@ -203,7 +211,7 @@ Cost after the fixes, instructions per frame: every track to MAIN 1,170, T1 to A
 
 The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's rule; PHNROUTE5 has stock's rule.
 
-## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
+## Hardware: MKII, OS 1.40C base (7–9 Oct 2026)
 
 **Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7, 8 and 9 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE). No image was shared; each is identified by its SHA-256.
 
@@ -250,7 +258,7 @@ The master track's second LEV bar was shaded (stock STUDIO's mark for no cue); i
 
 ## Measurements for the qualification record (8 Oct 2026)
 
-Image: the static build (`static_stock=True`, SPRING REV harvested) of this source, MAIN OS SHA-256 `4bba4736…8176f`; the tested card image PHNSTAT9 is `0e0d1507…c40e`. Port runs of octabam's one-THRU fixture, 200 frames, sequencer running, MAIN/CUE/MIX levels changed every other frame from frame 60 to 120, and at frame 130 all eight tracks switched to PHN (list rebuild and declick for every track).
+Image: the static build (`static_stock=True`, SPRING REV harvested) of the source before the rename (`de1f89b`, whose code differs from today's only in names, the track-8 master rule and the cue CC on a switch into NORMAL, none of which runs per frame), MAIN OS SHA-256 `0b4cb651…fbc24`; the tested card image PHNSTAT9 is `0e0d1507…c40e`. Port runs of octabam's one-THRU fixture, 200 frames, sequencer running, MAIN/CUE/MIX levels changed every other frame from frame 60 to 120, and at frame 130 all eight tracks switched to PHN (list rebuild and declick for every track).
 
 **DSP core 0**, `--dsp-stopwatch 0:0x257:0x2d5` (the mixdown), executed instructions per 16-sample frame:
 
@@ -270,9 +278,9 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in MATRIX (stoc
 
 **Memory**, from the runtime ELF and the placement report: `.text` 1,272 B and `.data` 226 B in DRAM; DSP core 0 program 739 words at P:$127c..$155f and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,420 bytes.
 
-## Screenshots (8 Oct 2026)
+## Screenshots (9 Oct 2026)
 
-`scripts/capture-module-ui.py` with the static build above (`--image-sha256 4bba4736…8176f`), emulator SHA-256 `23ba6f6c…2b152b28`, empty disposable card, MKII panel, 150 ms keys. The plan dismisses the date prompt, opens PROJECT > CONTROL > AUDIO, selects MATRIX, then on T1 holds CUE (MN), turns LEVEL +8 (PHN), releases CUE and opens the MIXER. Each image was opened and checked; hashes in `media/capture.json`. The capture tool gained a `MIXER` key for this.
+`scripts/capture-module-ui.py` with the renamed static build (`--image-sha256 4bba4736…8176f`; the later track-8 and CC changes draw nothing), emulator SHA-256 `23ba6f6c…2b152b28`, empty disposable card, MKII panel, 150 ms keys. The plan dismisses the date prompt, opens PROJECT > CONTROL > AUDIO, selects MATRIX, then on T1 holds CUE (MN), turns LEVEL +8 (PHN), releases CUE and opens the MIXER. Each image was opened and checked; hashes in `media/capture.json`. The capture tool gained a `MIXER` key for this.
 
 ## Not run
 - MKI key paths.
