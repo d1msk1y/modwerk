@@ -4,7 +4,7 @@ import { communityModule } from './modules'
 
 export type DownloadedBuild = { machine: string; os: string; modules: readonly BuiltModule[] }
 export type HardwareFeedback = DownloadedBuild & { downloadedAt: number; remindAt: number; completed: string[]; dismissed: boolean; checkInAt?: number; checkInShownAt?: number }
-export const CHECK_IN_DELAY = 5 * 60 * 1000
+export const CHECK_IN_DELAY = 8 * 1000
 export const FEEDBACK_DELAY = 60 * 60 * 1000
 export const FEEDBACK_SNOOZE = 24 * FEEDBACK_DELAY
 export const FEEDBACK_RETENTION = 30 * FEEDBACK_SNOOZE

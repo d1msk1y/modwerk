@@ -20,11 +20,11 @@ beforeEach(() => {
 afterEach(() => { stops.forEach(stop => stop()); vi.useRealTimers(); vi.unstubAllGlobals() })
 
 describe('the post-download check-in', () => {
-  it('opens after five minutes without navigation and retains the downloaded versions', async () => {
+  it('opens after eight seconds without navigation and retains the downloaded versions', async () => {
     const open = vi.fn()
     stops.push(watchHardwareCheckIn('alice', open, () => true))
     rememberHardwareFeedback('alice', build)
-    expect(CHECK_IN_DELAY).toBe(5 * 60 * 1000)
+    expect(CHECK_IN_DELAY).toBe(8 * 1000)
     await vi.advanceTimersByTimeAsync(CHECK_IN_DELAY - 1); expect(open).not.toHaveBeenCalled()
     await vi.advanceTimersByTimeAsync(1)
     expect(open).toHaveBeenCalledOnce()

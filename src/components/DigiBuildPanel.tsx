@@ -1,6 +1,6 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
 import { useState } from 'react'
-import { BuildFollowUp } from '../community/BuildFollowUp'
+import { DownloadedBuildOverview } from '../community/HardwareFeedbackCheckIn'
 import { builtModules } from '../community/build-follow-up'
 import { useDownloadFollows } from '../community/useDownloadFollows'
 import { trackFirmwareDownload } from '../community/usage'
@@ -87,7 +87,7 @@ export function DigiBuildPanel({ device, firmware, moduleIds, onExport, exported
       <p className="service-note">{FLASHING_RISKS} Flash at your own risk. Local checks cannot guarantee hardware safety.</p>
       <p className="service-note">{FIRMWARE_SHARING_NOTICE}</p>
       {downloaded === key && <p className="success-note" role="status">Download requested. Check your browser’s downloads folder.</p>}{downloaded===key&&followNotice&&<p className="service-note" role="status">{followNotice}</p>}</section>}
-    {result && DIGI_DOWNLOADS_ENABLED && downloaded === key && state.phase === 'built' && <BuildFollowUp machine={device.name} os={release ?? ''} modules={builtModules(state.moduleIds.map(id => device.id + '-' + id))}/>}
+    {result && DIGI_DOWNLOADS_ENABLED && downloaded === key && state.phase === 'built' && <DownloadedBuildOverview build={{ machine: device.name, os: release ?? '', modules: builtModules(state.moduleIds.map(id => device.id + '-' + id)) }}/>}
     {result && <section className="configuration-section"><details><summary>File identity &amp; builder</summary><dl className="build-identity">
       <dt>SHA-256</dt><dd>{result.sha256}</dd><dt>Mods</dt><dd>{result.mods.join(', ')}</dd>
       <dt>Builder</dt><dd><a href={BUILDER_SOURCE.repository + '/tree/' + BUILDER_SOURCE.commit} target="_blank" rel="noreferrer">elekloader {BUILDER_SOURCE.commit.slice(0, 7)} ↗</a> by irpina, GPL-3.0-or-later · <a href={assetUrl('licenses/THIRD_PARTY_NOTICES.html')} target="_blank" rel="noreferrer">Licence notices</a></dd>
