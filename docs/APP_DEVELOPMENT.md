@@ -46,7 +46,7 @@ In a second terminal, run `npm run dev` and open http://127.0.0.1:5173. Vite pro
 
 ## Search indexing
 
-The production build includes visible HTML summaries before React mounts: the homepage links to available modules on all three supported machines, module pages use their current catalogue documentation, and `/submit/` describes the shared developer workflow. Public forum pages include their existing public excerpt. React replaces these summaries with the interactive app; firmware and private account/report data are never prerender inputs.
+The production build includes HTML summaries: the homepage links to available modules on all three supported machines, module pages use their current catalogue documentation, and `/submit/` describes the shared developer workflow. Public forum pages include their existing public excerpt. A small same-origin, parser-blocking script in the head hides these summaries before the body can paint, preventing a text flash while React loads. React replaces them with the interactive app. With JavaScript disabled, or if the app script fails to load or execute before mounting, the summaries remain readable. Firmware and private account/report data are never prerender inputs.
 
 Octatrack modules use `/module/<slug>/`; Digitakt and Digitone modules use `/<machine>/module/<id>/`. Old module hash links still open and are normalized to public paths. Direct pages carry one canonical URL, a descriptive instrument-specific title, descriptions and share cards. Client navigation updates the page metadata as well. Library filters, configurations and account views retain their existing hash navigation.
 

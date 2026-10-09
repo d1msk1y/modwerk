@@ -16,17 +16,27 @@ it.each(['./', '/octamod/'])('builds crawlable content and a sitemap matching th
   const appUrl = new URL(base.startsWith('/') ? base : '.', 'https://modwerk.app/')
   const plugin = seo()
   plugin.configResolved({ base })
-  const bundle = { 'index.html': { type: 'asset', fileName: 'index.html', source: html }, '404.html': { type: 'asset', fileName: '404.html', source: notFoundPageHtml(html, base) } }
-  for (const module of MODULES) bundle['module/' + module.id + '/index.html'] = { type: 'asset', fileName: 'module/' + module.id + '/index.html', source: modulePageHtml(html, module, 'x.jpg', base) }
-  for (const mod of DIGI_MODS) bundle[`${mod.device}/module/${mod.id}/index.html`] = { type: 'asset', fileName: `${mod.device}/module/${mod.id}/index.html`, source: digiModulePageHtml(html, mod, 'x.jpg', base) }
-  bundle['submit/index.html'] = { type: 'asset', fileName: 'submit/index.html', source: sitePageHtml(html, SITE_PAGES[0], 'x.jpg', base) }
-  const forum = forumThreadPageHtml(html, thread, base)
+  const builtHtml = html.replaceAll('%BASE_URL%', base)
+  const bundle = { 'index.html': { type: 'asset', fileName: 'index.html', source: builtHtml }, '404.html': { type: 'asset', fileName: '404.html', source: notFoundPageHtml(builtHtml, base) } }
+  for (const module of MODULES) bundle['module/' + module.id + '/index.html'] = { type: 'asset', fileName: 'module/' + module.id + '/index.html', source: modulePageHtml(builtHtml, module, 'x.jpg', base) }
+  for (const mod of DIGI_MODS) bundle[`${mod.device}/module/${mod.id}/index.html`] = { type: 'asset', fileName: `${mod.device}/module/${mod.id}/index.html`, source: digiModulePageHtml(builtHtml, mod, 'x.jpg', base) }
+  bundle['submit/index.html'] = { type: 'asset', fileName: 'submit/index.html', source: sitePageHtml(builtHtml, SITE_PAGES[0], 'x.jpg', base) }
+  const forum = forumThreadPageHtml(builtHtml, thread, base)
   bundle['forum/thread/public-topic/index.html'] = { type: 'asset', fileName: 'forum/thread/public-topic/index.html', source: forum }
   bundle['forum/thread/alias/index.html'] = { type: 'asset', fileName: 'forum/thread/alias/index.html', source: forum }
   const emitted = []
   plugin.generateBundle.call({ emitFile(asset) { emitted.push(asset) } }, {}, bundle)
   const sitemap = emitted.find(asset => asset.fileName === 'sitemap.xml').source
   const root = bundle['index.html'].source
+  for (const page of Object.values(bundle)) {
+    const startup = page.source.match(/<script\b[^>]*src="[^"]*app-startup\.js"[^>]*>/g)
+    expect(startup).toHaveLength(1)
+    expect(startup[0]).not.toMatch(/\b(?:async|defer|type)\b/)
+    expect(page.source.indexOf(startup[0])).toBeLessThan(page.source.indexOf('</head>'))
+    const pageUrl = new URL(page.fileName, appUrl)
+    const documentBase = new URL(page.source.match(/<base href="([^"]*)"/)[1], pageUrl)
+    expect(new URL(startup[0].match(/src="([^"]*)"/)[1], documentBase).href).toBe(new URL('app-startup.js', appUrl).href)
+  }
   expect(root).toContain('<h1>Mods for Elektron instruments</h1>')
   expect(root).toContain(HOME_DESCRIPTION)
   expect(root).toContain(`<meta property="og:url" content="${appUrl.href}" />`)
