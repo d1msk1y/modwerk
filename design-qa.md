@@ -1,31 +1,54 @@
-# Module working feedback — design QA
+# Post-download module overview — design QA
 
-Final result: **passed** (2026-10-08).
+final result: passed
 
-The user selected the third compact feedback layout after reviewing it on the full local Modwerk page, then requested yellow issue reporting. The configuration action remains primary; Following becomes a small control because downloads already follow updates. A single feedback block groups the invitation, working count and both reporting actions. The existing waveform, gauges, sidebar, tabs and creator support remain in their actual page context.
+**Comparison target**
 
-Visual reference: the third feedback-invitation mock (`exec-b6194b3e-635d-4cb4-ba81-bf0243b786dc.png`) and its selected local page implementation. `artifacts/module-feedback/feedback-card-comparison.png` places the source and final FM Synth details together, normalizing both to the actual 538px details-pane width. The native app typography/density, shorter Following label and existing creator cup are retained. Yellow issue colors are the requested refinement. Fixture discussion counts differ from the mock; they are not layout findings.
+The selected “Inside your .bin” reference, refined for the repository’s real module content and the requested larger window. This is a production UI adaptation, with existing catalogue artwork, real version-matched captures and source-authored instructions.
 
-The five fidelity surfaces were checked:
+- Source visual truth: `/var/folders/pq/8kctb9dj5yzfncd2xl2wkw1w0000gn/T/TemporaryItems/NSIRD_screencaptureui_tr9270/Bildschirmfoto 2026-10-09 um 07.40.01.png` (1684 × 1378 pixels; the generated mockup does not declare a CSS viewport or device scale).
+- Implementation: `http://127.0.0.1:5173/?preview=firmware-feedback`.
+- Implementation screenshot: `/Users/jannikassfalg/coding/modwerk/artifacts/module-feedback/post-download/desktop-final.png` (1440 × 1024 pixels, 1440 × 1024 CSS viewport, devicePixelRatio 1).
+- State: dark theme, Mini Verb selected, four downloaded modules with the same versions as the reference, controls capture, quick test, no saved feedback. The development fixture uses production components with disposable local report actions.
+- Full comparison: `/Users/jannikassfalg/coding/modwerk/artifacts/module-feedback/post-download/comparison-final.png`. Both modal regions cropped and normalized to 800 pixels wide without changing their aspect ratios. Source crop: 1572 × 1290; implementation crop: 1392 × 976. The source is an enlarged mockup; typography was also checked at native browser size, avoiding a claim of pixel identity.
+- Focused readable comparison: `/Users/jannikassfalg/coding/modwerk/artifacts/module-feedback/post-download/detail-comparison-final.png`, quick-test instructions and feedback controls from both artifacts in the same image.
+- Additional evidence: `/Users/jannikassfalg/coding/modwerk/artifacts/module-feedback/post-download/mobile.png` (390 × 844 CSS/pixels, DPR 1), `/Users/jannikassfalg/coding/modwerk/artifacts/module-feedback/post-download/laptop-scrolled.png` (1280 × 720 CSS/pixels, DPR 1).
 
-- **Typography:** existing system font and title scale; 15px invitation, 12px supporting copy and count, and 13px reporting labels. Long labels wrap on small phones without clipping.
-- **Spacing:** 16px feedback padding, prompt/count on the left and stacked actions on the right. At widths up to 820px the prompt and count precede paired actions. The full site shell and responsive gauges stay in place.
-- **Colors:** neutral gray plus/button before saving; green check and “Reported working” only after success. Report an issue uses the existing open-issue colors (`#393222`, `#71603b`, `#efd17c`). Configuration retains the existing lavender style.
-- **Assets:** actual module artwork, gauges and project icons are reused. No replacement artwork or approximate branding was introduced.
-- **Copy:** “Tried it on your instrument?” and “Let others know how it went.” invite both outcomes. The count remains distinct members across versions. Automatic download follows are described to assistive technology without another large action or paragraph.
+**Findings and comparison history**
 
-Responsive browser checks passed at 320, 375, 768 and the normal 1389px viewport: no document overflow, overlapping feedback actions or clipped labels. Reporting controls are at least 44 CSS pixels high; the 320px success state wraps to 52px. The early option preview’s margin/width overlap was corrected before the final implementation. The mobile Following alignment was corrected and checked again.
+1. Initial browser inspection found catalogue artwork constrained by the existing 62 × 47 compact-preview rule, plus excessive caption height on a short screen. Fixed the scoped artwork dimensions, moved detailed captions to an accessible disclosure, and added height-sensitive spacing. Captures confirm correct image proportions, independent scrolling and a persistent footer.
+2. First combined comparison (`comparison.png`, `detail-comparison.png` in the same evidence directory): [P2] instruction and module text was too small relative to the reference’s hierarchy. Increased instruction titles to 16px, body to 15px, names to 16px and summaries to 14–16px; adjusted the normal capture height so the quick test and feedback remain visible at 1440 × 1024. Increased signal visibility while retaining existing artwork.
+3. Post-fix combined comparison (`comparison-final.png`, `detail-comparison-final.png`): no remaining actionable P0/P1/P2 findings. The three-step quick test and both feedback actions fit above the fixed footer. A native DOM measurement places the feedback controls at y=813–859, inside the guide pane ending at y=922. Longer instructions remain available by scrolling inside the modal.
+4. Mobile inspection found the selected card could sit partly outside the horizontal module list. Added selection scrolling and reset guide/body scroll on module changes. Verified the selected Tape Echo card is fully visible, with body scroll reset to zero and no document overflow at 390px.
 
-Interaction evidence: one Works press saves immediately and updates the local fixture count from 2 to 3; a green confirmation appears with a status announcement. A failed save produces an inline alert and permits retry. The yellow issue action opens the existing report form and focuses Title. These checks use a local fixture and create no production hardware claims. The earlier database/build-context coverage remains unchanged.
+**Required fidelity surfaces**
 
-Evidence is saved in `artifacts/module-feedback/feedback-card-desktop.png`, `feedback-card-mobile.png`, `feedback-card-confirmed-mobile.png`, `feedback-card-error.png` and the comparison image. Required full app checks passed: 191 test files, 1,286 tests, lint, type checks, catalogue/licence checks and production build. No firmware source changed, so a native build was unnecessary.
+- Fonts/typography: existing system font stack (`-apple-system, system-ui, Segoe UI, sans-serif`), weight 600 headings and step titles, 1.5–1.6 body line height. Clear display/body hierarchy; exact versions wrap safely. The mockup’s enlarged display scale is intentionally adapted to readable native CSS text rather than reproduced as screenshot pixels. Focused comparison verifies spacing and readable wrapping.
+- Spacing/layout: enlarged desktop modal up to 1440px wide and 1000px tall, viewport-bounded with fixed header/footer. The guide has more horizontal room than the mockup to support real captures and longer copy. Independent desktop panes and a horizontal mobile module list prevent content loss. Dividers, padding, rounded selection state and lavender rail preserve the chosen composition.
+- Colors/tokens: dark charcoal surface and borders, muted secondary copy, existing lavender primary/selected token, neutral working action and amber issue action. Feedback states use existing green/amber semantics. Visible focus ring verified.
+- Image quality/assets: real module control/location captures, aspect ratios preserved, pixel rendering for LCD captures, paging and enlargement inside the same modal. Reused the repository’s approved catalogue artwork and icon components; no new imitation captures or generated placeholder media. Artwork differs from the conceptual mockup intentionally because the user requested the design work with actual content. Captures are labelled with their actual provenance in credits.
+- Copy/content: “Inside your .bin” describes the download without claiming it has already been flashed. Machine, OS, all downloaded versions and actual summaries stay visible. Quick tests are bound to exact versions; other modules use their authored usage steps. Historical versions explicitly explain unavailable guidance instead of silently showing newer controls. Flashing help stays in the overlay.
 
-The reporting consistency follow-up also checks the real module card, download follow-up, return reminder, delayed check-in and the Octatrack/Digi forms together at `?preview=reporting`. The preview uses the actual components with local submissions, and `?preview=reporting-module#module/fm-synth` exposes the real page shell. Reporting entry points in issue lists, discussions and the forum share the same amber action.
+**Interaction and responsive checks**
 
-The inline module-page regression was reproduced and fixed: the general form label rule had stacked the release-follow checkbox. Its computed direction is now `row`; the bounded form stays inside the scrolling workspace and the Post report button is visible above the footer. Browser checks at 320, 375, 768 and 1280 CSS pixels found no document overflow. A per-module confirmation changes only that module to Reported working. Both the Octatrack dialog and the short Digi form reach their local success state; the latter submits with its already attached device and OS fields still collapsed. The flashing guide explains the card root with a file tree and links the official Elektron manuals. The approved modal now runs after five minutes in the real download flow; the eight-second development simulation exercises the same scheduler and dialog with a disposable local fixture.
+- Delayed opening: simulated download initially has no dialog, then opens via the production eight-second scheduler; scheduler tests cover deadline and cross-tab claims.
+- All four module choices and Next navigation; selected card visibility and scroll reset.
+- Control/location screenshot paging and successful actual asset loading.
+- Enlarging, returning, and Escape returning to the quick test with focus restored to the screenshot control.
+- Full setup steps and flashing help open in the same overlay.
+- Local per-module working confirmation and issue submission; issue dialog returns to the overview with both statuses preserved and other modules available.
+- Dismiss and reopen via the development fixture; production panels retain Open module guide for the same build.
+- 1440 × 1024 desktop, 1280 × 720 laptop scrolling, and 390 × 844 mobile: no horizontal document overflow, footer remains accessible, long content scrolls inside the overlay.
+- Browser console error/warning check returned an empty list. A transient asset load failure during catalogue regeneration was retried after generation and the actual location screenshot loaded successfully; the user-facing missing-image fallback was also exercised.
 
-Implementation validation passed catalogue/licence/SDK checks, lint, types and production build. The required parallel check passed 191 test files / 1,292 tests; one existing module-doctor test exceeded its five-second timeout. An isolated retry passed both tests in that remaining file, covering all 192 files / 1,293 tests without weakening assertions or timeouts. Seven new scheduler tests cover timing, visibility/dialog guards, duplicate tabs, changed builds, completion/dismiss/snooze, legacy reminders, cancellation and unavailable storage. Production assets omit the development previews and retain the real check-in.
+**Implementation checklist**
 
-The browser simulation now runs the production scheduler and check-in controller. It opened automatically after its eight-second fixture deadline without navigation. A one-click working confirmation and a successful local issue report stayed visible together; only their respective modules were completed. The 375px dialog had no horizontal overflow. Preview reports remained local. The real controller uses the existing working-report and issue endpoints with the full downloaded build context.
+- [x] Larger responsive modal with persistent downloaded module overview.
+- [x] Real version-matched screenshots, inline enlargement and usage documentation.
+- [x] Per-module feedback with exact build context.
+- [x] Short-delay scheduler and guide reopen action.
+- [x] Native browser comparison, keyboard and responsive verification.
 
-No unresolved visual or interaction defects remain in the checked reporting surfaces.
+Residual limits: real firmware flashing and hardware sound behavior were not exercised; this change concerns the website’s guide and reporting UI. Backend report delivery is covered by existing automated tests; the browser preview deliberately submits locally.
+
+Automated validation on the current-main base passed: `VITEST_MAX_WORKERS=1 npm run check -- --base origin/main`, 198 test files / 1,382 tests, licence/catalogue/SDK checks, lint, type checks and production bundle. The default parallel runs hit variable five-second timeouts in existing module-doctor/backend tests under local CPU load; the supported single-worker override preserved all assertions and timeouts. Full log: `artifacts/module-feedback/post-download/check-single-worker.log`. No native firmware build was required.

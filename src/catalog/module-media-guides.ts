@@ -27,7 +27,7 @@ export const MODULE_MEDIA_GUIDES: Readonly<Record<string, ScreenshotGuide>> = {
     ],
   },
   miniverb: {
-    version: '0.1.2-experimental',
+    version: '0.2.0-experimental',
     screenshots: [
       {
         path: 'media/ot-location.png',
@@ -36,8 +36,8 @@ export const MODULE_MEDIA_GUIDES: Readonly<Record<string, ScreenshotGuide>> = {
       },
       {
         path: 'media/ot-controls.png',
-        caption: 'Raise DECAY for a longer tail and DAMP for a darker one. MOD adds movement; RATE sets its speed. Start with a little MIX, then raise it to bring the reverb forward, or set it to 0 for the dry sample.',
-        alt: 'Mini Verb main FX2 page with DECAY, DAMP, MIX, MOD and RATE.',
+        caption: 'Raise MIX on encoder F to hear the reverb. DECAY sets the tail length, DAMP darkens its decay and TONE on encoder C colors the wet output; TONE 64 is neutral. MOD and RATE add movement. MIX 0 gives dry playback.',
+        alt: 'Mini Verb main FX2 page with DECAY, DAMP and TONE above MOD, RATE and MIX.',
       },
     ],
   },
