@@ -1,0 +1,50 @@
+{
+  "schema": 1,
+  "candidateVersion": "0.1.4-experimental",
+  "date": "2026-10-09",
+  "kind": "Owner audition of a native DSP WAV; not a physical hardware test",
+  "ownerReply": "Yes, keep this attack",
+  "priorFeedback": "The body and resonance sound bang on though",
+  "reviewedAudio": {
+    "sha256": "d639aa46acb33b8c57d773ce42feb9e11c7859a151848cd21d2ef5e9bd81d476",
+    "sampleRate": 44100,
+    "frames": 491400,
+    "bpm": 70,
+    "tune": 0,
+    "attackValues": [
+      0,
+      32,
+      64,
+      96,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127,
+      127
+    ],
+    "sourceFullPreviewSha256": "434a4a9587ac88667cccbfd7a9cece1d0f9a2567b8c00d3b1c0c28632e142f65"
+  },
+  "sourceFiles": {
+    "dsp909.py": "e1202c3e43f25fd3a745152a0e6226f2a48dd6deb42ad8e8c060ef83fd4d038a",
+    "bd909.asm": "966ccb67b2e55eda7645056fd05ac3f88240fbdb048b114b03cd62fff5578b54",
+    "fit909.json": "ef56a49a47281a96e9bd335ee95f8eb69fb1d28a83f392742e5160765d17d70d"
+  },
+  "privateFirmware": {
+    "label": "AB014REF02",
+    "bytes": 571280,
+    "sha256": "bbc8b7a42a2ecfa6bc18fb74d22d9abed5d3d1a70f9829953acc5a5e381dffc7",
+    "stockUpgradeSha256": "34695b606eb00e1b4dded5fd0c4b66f3a460522a632e47d7416dbd220599e1ad",
+    "savedFileDecodedMainOsMatchesNative": true
+  },
+  "physicalHardware": "untested",
+  "remaining": [
+    "Part/project/physical-reboot persistence",
+    "Distinct track/core/FX isolation on a physical unit",
+    "Full-chain/maximum-FX load and worst-case chip timing"
+  ],
+  "note": "This later owner result supersedes the initial pending-audition snapshot in draft.json; no hardware approval is inferred."
+}

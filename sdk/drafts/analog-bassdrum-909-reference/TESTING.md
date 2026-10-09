@@ -80,7 +80,7 @@ Only numerical JSON may be retained as evidence. Full firmware uses the normal n
 
 ## Exact private hardware audition
 
-Use only the saved `AB014REF02` image matching `evidence/private-build.json`, not the public 0.1.3 download or an earlier private render. Physical results are **not yet supplied**.
+Use only the saved `AB014REF02` image matching `evidence/private-build.json`, not the public 0.1.3 download or an earlier private render. The owner accepted the Attack-only native render: “Yes, keep this attack.” [evidence/audition.json](evidence/audition.json) binds this later approval to the cropped audio, native source and corresponding private firmware. It supersedes the initial pending-audition snapshot in `draft.json`. Physical results are **not yet supplied**.
 
 1. Select ANALOG BD in SRC SETUP, then the 909 engine by double-tapping the track. At 70 BPM start with PITCH 49, DECAY 98, TUNE 0, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. Sweep ATK, then leave it fixed and compare neighboring attacks with the supplied recordings. Test the low/high Tune ends and normal musical settings.
 2. Use several distinct 808/909 tracks across both DSP cores. Edit, reset and replace one voice while listening for changes in others. Exercise parameter locks, LFOs and scenes, including TDEP/SAT modulation and rapid retriggers. Test stock AMP and retained FX, particularly PLATE/DARK after the harvested-helper relocation, and demanding track/FX loads.

@@ -2,7 +2,7 @@
 
 A private `0.1.4-experimental` candidate based on the three 70 BPM TR-909 sweeps supplied by the owner. Thanks to **Skee Mask**, who kindly recorded his TR-909 so we could match Analog BD more closely.
 
-This overlay changes only the 909 body, attack and short Tune response. It is outside module discovery and the catalogue. The approved, downloadable version remains `0.1.3-experimental`. Audition and version-matched hardware qualification are pending; the earlier version's approval does not cover this source.
+This overlay changes only the 909 body, attack and short Tune response. It is outside module discovery and the catalogue. The approved, downloadable version remains `0.1.3-experimental`. The owner accepted the sharper Attack-only native preview on 9 October 2026 ([exact audition record](evidence/audition.json)). Version-matched hardware qualification is pending; the earlier version's approval does not cover this source.
 
 ## Sound changes
 
@@ -23,7 +23,7 @@ Do not place the recordings, rendered audio, compiled DSP, raw traces or firmwar
 
 The native 70 BPM previews use PITCH 49, DECAY 98, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. They play five rising Attack values (0/32/64/96/127), eight more hits at Attack 127, then five rising Tune values at Attack 64. Both versions receive exactly the same controls and triggers, with no separate peak normalization. The current version reaches its output limit on the high-Attack hits; the candidate preview does not.
 
-Before promotion, audition against the original reference, check parameter locks/LFOs/scenes and several distinct instances on the exact private firmware, and record Part/project/reboot results. Then follow [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md) to update manifest, catalogue, version-matched public changelog, qualification, generated metadata and packages. Do not reuse the 0.1.3 qualification or publish this overlay by copying its version label alone.
+Before promotion, check parameter locks/LFOs/scenes and several distinct instances on the exact private firmware, and record Part/project/reboot results. Then follow [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md) to update manifest, catalogue, version-matched public changelog, qualification, generated metadata and packages. Do not reuse the 0.1.3 qualification or publish this overlay by copying its version label alone.
 
 ## Authorship and licence
 
