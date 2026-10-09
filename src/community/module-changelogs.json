@@ -441,6 +441,14 @@
     ],
     "vector": [
       {
+        "version": "0.2.4-experimental",
+        "date": "2026-10-09",
+        "changes": [
+          "Prevent packed VECTOR settings from making stock Part validation reject the saved bank at startup, which reset machines to STATIC and left PLAY stuck on the first step. Preserve existing S2 version 1/2 settings while retaining stock validation of other data.",
+          "Two-instance Part/project save-reload, saved-card fresh load and battery-RAM-only restart pass in the emulator. Physical reboot/audio remain unverified under the owner-approved exception for this exact version. Already reset projects require restoration from a backup."
+        ]
+      },
+      {
         "version": "0.2.3-experimental",
         "date": "2026-10-06",
         "changes": [
