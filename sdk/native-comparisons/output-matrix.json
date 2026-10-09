@@ -498,13 +498,14 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1114033,
-        "osSha256": "979a662df18feead0b55898dbff00cd887b0d59477244a6059ab881b481be4a8",
-        "maskedOsSha256": "d2e18d0b0a68d58bf2a603cf8037ea50358abb7231783d37e4846e663413955a"
+        "osSha256": "9dfe23cf7f85eb5b77f37cfae8ff6c344689048a607a592b783c0a5734d1ffda",
+        "maskedOsSha256": "b3421ec7042c8c7ee66a92eeb6037b00550b5cb79078a47b7b689ff1d8d1696c"
       },
       "result": "masked"
     },
@@ -533,8 +534,8 @@
       },
       "native": {
         "bytes": 1114033,
-        "osSha256": "2e5599d4e07d0a9b1503d7b1315573cde28f43df68107fbebd6ce38bc977dde9",
-        "maskedOsSha256": "1eefcc4fbda4b332ae8f5e6ff21c8b5486da123b3acee37a75e2b1aea1b16c4f"
+        "osSha256": "603f0e6bb1cce89e3138143f0d4f505bd4ee782a86ddaccea37ffa866e46659d",
+        "maskedOsSha256": "4c00f9b44f90fbfa7e13174f5ade8fb1604775e2efc93534004719455d42e30b"
       },
       "result": "masked"
     },
@@ -4808,7 +4809,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3013 > 2724 words)"
+        "refused": "payload A: OUTPUT MATRIX overruns the region (3152 > 2724 words)"
       },
       "result": "refused"
     },
@@ -4842,7 +4843,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3013 > 2724 words)"
+        "refused": "payload A: OUTPUT MATRIX overruns the region (3152 > 2724 words)"
       },
       "result": "refused"
     },
@@ -4895,7 +4896,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3967 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3337 > 2724 words)"
       },
       "result": "refused"
     },
@@ -4938,7 +4939,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3967 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3337 > 2724 words)"
       },
       "result": "refused"
     },
@@ -5051,13 +5052,14 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1129013,
-        "osSha256": "b4cb65cde0eac09daf5c905a4285c3312fa0cfd8f2119336786dc401ff8f6d79",
-        "maskedOsSha256": "e9bac63b549080e68d2becfaa432c60e95e5e2deebaf36d4da724120b1be72f1",
+        "osSha256": "89e34289a1ad86366eb12b8626fceb4650abe87b4bce997ccef5757a2584ed86",
+        "maskedOsSha256": "d396c5531e374584a224353ef67cd4011e2cec95f80d33cc5568b3f7695682b6",
         "platformArena": true
       },
       "result": "masked"
@@ -5092,8 +5094,8 @@
       },
       "native": {
         "bytes": 1129013,
-        "osSha256": "205d715c6efe8ea274b054051674d78ac16b43a2112c4d5a8360cb2bdf5bc4be",
-        "maskedOsSha256": "a98738ff3961e36d2f5e0514fda2240b215d37a502851857d979ec70b9f81a20",
+        "osSha256": "2f5d5bf31c2aaf8d7cc1d949ff5a60c05bfe0331669a98ce32eac6292c718d96",
+        "maskedOsSha256": "e61b6f25d5ffa9d56de765fa49f655a5b1b79549e9f74fe3f04f7125760bdf40",
         "platformArena": true
       },
       "result": "masked"
