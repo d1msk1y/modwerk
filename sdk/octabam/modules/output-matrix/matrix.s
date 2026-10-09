@@ -656,7 +656,10 @@ mixer_mix_right:
 1:      pea     str_plus
         jmp     0x4007c532
 
-        .data
+| Stock code points at these (manifest SymbolRefs), so they live in .text:
+| the runtime's .data moves with what else it links (the browser builder adds
+| the logger), and its .text start does not.
+        .align  4
         .global t8_labels, t8_getters, t8_actions, cue_labels, cue_getters, cue_actions, str_outcfg
 t8_labels:   .long 0x400b44e1, 0x400b5eb0, str_blank    | MASTER, NORMAL, (none)
 t8_getters:  .long 0x40065138, 0x40065154, 0
@@ -664,6 +667,9 @@ t8_actions:  .long 0x40065554, 0x40065514, act_none
 cue_labels:  .long 0x400b5eb0, 0x400b5eb7, str_matrix   | NORMAL, STUDIO, MATRIX
 cue_getters: .long cue_get_normal, cue_get_studio, cue_get_matrix
 cue_actions: .long act_normal, act_studio, act_matrix
+str_outcfg:  .asciz "OUT CFG"              | the box title, stock "CUE CFG"
+
+        .data
 | The destination codes, in CUE + LEVEL order. The DSP side reads the same
 | numbering (matrix_mix.asm).
 dest_names:  .long n_main, n_cue, n_phns, n_mc, n_mp, n_cp, n_all
@@ -672,7 +678,6 @@ sent_codes:  .byte 0, 0, 0, 0, 0, 0, 0, 0   | the codes the DSP routes by
 fading:      .byte 0, 0, 0, 0, 0, 0, 0, 0   | 1: faded out last frame (sent_codes + 8)
 str_blank:   .asciz ""
 str_matrix:  .asciz "MATRIX"
-str_outcfg: .asciz "OUT CFG"              | the box title, stock "CUE CFG"
 str_phn:     .asciz "PHN"
 str_minus:   .asciz "-"
 str_plus:    .asciz "+"
