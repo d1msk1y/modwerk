@@ -12,6 +12,14 @@ The configurator supports module discovery, filtering, comparisons and module se
 
 The browser composes real firmware with the dynamic DSP loader disabled. **Downloads are available for verified loader-free selections**, including Analog BD, MIDI Scenes, USB Audio (tracks + MAIN/CUE) and Scale Quantizer at `0.1.1-experimental`. Spectrum, Modulation and Character remain temporarily paused in the public library. The original 256 profiles retain 74 byte-identical images and 182 matching refusals; the requested 288 profiles add 156 byte identities and 132 matching refusals. Actual-browser full-file identities and altered-firmware rejection passed for the supported six- and five-module combinations. Read [verification and remaining work](VERIFICATION.md) for evidence and hardware limits. Approved releases rebuild authored packages in isolation and require them to reproduce the locally verified packages.
 
+Air Chorus is also temporarily paused following the owner's 9 October 2026
+report against published `0.1.0-experimental`: with two instances on T3 and T4
+(reported as the same DSP core), raising MIX on the second instance introduces
+loud rhythmic clicking. The cause is unconfirmed. The existing frontend pause
+hides it from the library and prevents new builds that select it, while keeping
+saved configurations readable. The private DSP optimization remains staged;
+this report does not establish its hardware behavior or a fix.
+
 ## Preserve public firmware availability
 
 Every visible module must support firmware generation and download in a compatible configuration. Pending updates stay on their branches; failed builds keep the approved deployment. Do not set the global download flag to false while an update awaits review. The public download policy regression test is part of `npm run check`; fix or isolate the pending change instead of weakening that check. MIDI Scenes remains standalone and ordinary compatibility/placement failures still explain how to fix a selection.
@@ -41,6 +49,8 @@ For the local post-download check-in preview, open `http://127.0.0.1:5173/?previ
 Open `http://127.0.0.1:5173/?preview=reporting` to compare the module-page feedback card, download follow-up, return reminder, delayed modal and Octatrack/Digi issue forms side by side. The preview reuses the real reporting components with a local fixture member; working confirmations and report submissions stay local and do not create hardware claims or notifications. `?preview=reporting-module#module/fm-synth` shows the actual module-page layout with the same local-only reporting actions. Production builds omit the preview entry points and retain the real check-in.
 
 Reporting actions share the neutral **Works for me** button (plus before submission, green check and **Reported working** after success) and amber **Report an issue** button. Download follow-ups and return reminders offer these actions directly on each module; bulk confirmation is optional and never preselects companions. Downloaded builds carry their original versions. Digi reports with a known model and OS keep those prefilled fields under **More details**, where the reporter can correct them. The release-follow checkbox stays a horizontal row in inline forms and dialogs.
+
+Module-page working buttons restore the signed-in member’s confirmation across navigation, reloads and devices. They become available again for a new module version; the distinct-member count across versions stays intact. A quick confirmation without a matching current download records the displayed catalog version only as button state, while the installed firmware version remains unknown. Existing quick confirmations recover that state from the deployed release history at their original save time.
 
 ## Optional site support
 

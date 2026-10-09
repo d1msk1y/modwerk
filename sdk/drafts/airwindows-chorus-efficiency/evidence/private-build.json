@@ -8,5 +8,11 @@
   "roundTripVerified": true,
   "hardwareStatus": "untested",
   "reproducedFromBaseCommit": "8f8fe5d6b000ea15970070602ff8e753c1e01117",
-  "preparedRebuildMainMatched": true
+  "preparedRebuildMainMatched": true,
+  "latestNativeRebuild": {
+    "mainBaseCommit": "864a006128e08c8c9608a14e51f29e5675cac7d1",
+    "method": "Current merged SDK source copied to a private tree, candidate chorus.asm overlaid, existing build_private.py with the verified original 1.40C MAIN and reviewed toolchain. Compare the complete resulting MAIN bytes with the tested AIRC011T2 MAIN.",
+    "mainMatched": true,
+    "candidateDspUnchanged": true
+  }
 }

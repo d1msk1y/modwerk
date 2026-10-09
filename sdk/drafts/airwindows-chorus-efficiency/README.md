@@ -5,6 +5,11 @@ The owner requested that it stay staged for hardware testing. The published
 module, catalog, packages, previous approval and downloads remain at 0.1.0.
 No earlier hardware result or waiver covers this candidate.
 
+Published 0.1.0 is now paused after a report of rhythmic clicking with T3 + T4
+instances as MIX rises. [CLICKING.md](CLICKING.md) records the investigation.
+The optimized image is ready for the owner's comparison, but is not a verified
+clicking fix. Keep it staged and Air Chorus hidden pending actual results.
+
 The goal is lower DSP cost with the same sound: preserve the full stereo
 sweep, Airwindows air compensation, three-point interpolation, 48-bit states,
 per-sample control smoothing and saved control meanings. The verification

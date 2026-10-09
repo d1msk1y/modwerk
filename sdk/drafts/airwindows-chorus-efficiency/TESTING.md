@@ -133,27 +133,40 @@ in [private-build.json](evidence/private-build.json). No fresh native/browser
 composition matrix, real-unit timing, Part/project/power-cycle acceptance or
 publication is claimed. These remain promotion gates after hardware testing.
 
+## Reported clicking and full-emulator playback
+
+[CLICKING.md](CLICKING.md) records the T3/T4 report and exact reproduction.
+Both published 0.1.0 and AIRC011T2 complete the generated project's 8,192
+real playback blocks. The actual ColdFire records deliver the second instance's
+MIX ramp 0..127. All eight tracks' input/output and both cores' control records
+are bit-identical between images (262,144 active stereo frames). The reported
+hardware failure remains unresolved; this result does not establish physical
+headroom or authorize publication.
+
 ## Repository checks on the staging branch
 
-Prepared again from `origin/main` at
-`8f8fe5d6b000ea15970070602ff8e753c1e01117`; the native MAIN rebuild matches
-the tested private MAIN SHA-256 exactly. Only this draft directory differs
-from that base; the published SDK, application and package files are untouched.
+The earlier base had a malformed licence inventory and an unqualified LOFI
+draft in the active SDK. Main's repair in PR #341 resolved those integration
+blockers. This branch now incorporates main at
+`864a006128e08c8c9608a14e51f29e5675cac7d1`; Air Chorus remains paused. Only
+this draft directory differs. The candidate DSP and AIRC011T2 bytes are
+unchanged; the follow-up adds reproduction tools, captured evidence and a
+specific T3/T4 hardware checklist. A fresh private native rebuild using this
+merged SDK and the unchanged candidate DSP reproduces the complete AIRC011T2
+MAIN byte for byte; see the private-build record. Fresh repository validation is recorded
+in the PR. No hardware pass, promotion or new public firmware is claimed.
 
-With Node 24.21.0 and `npm ci`, lint passes (six existing warnings), TypeScript
-passes, and `npm run sdk:check` passes all 84 Python tests. The draft performance
-audit also passes. The app test run records 1,362 passed, ten failed and two
-skipped assertions; its additional loopback-listener suite passes on retry
-with sandbox permission for the local test server.
+Node 24.21.0 / `npm ci` validation on this merged tree:
 
-The required `npm run check -- --base origin/main` and the published module's
-doctor are **not green** on this base. The check stops parsing the unchanged
-`sdk/octabam/licenses/manifest.json` at line 326 (missing closing array/comma
-before `airwindows-chorus`). The committed SDK/package fingerprints also
-disagree. `npm run modules:generate` independently stops at the existing
-`lofi-amf-fix` publication-qualification requirement, preventing fresh generated
-media; page tests and the bundle consequently report missing generated
-thumbnails. The other app failures exercise the malformed licence inventory,
-doctor and source fingerprint. These are baseline integration blockers, not
-successful qualification. They need repair before a green merge/release;
-no public package or unrelated module is changed by this staged optimization.
+- `npm run module:doctor -- airwindows-chorus`: green for the paused published
+  module; native-composition comparison is skipped while paused. This does
+  not qualify the draft for release.
+- `npm run check -- --base origin/main`: metadata, licence/inventory,
+  generation, all 84 SDK tests, lint, types and bundle pass. The initial app
+  run has seven timeouts. With `VITEST_MAX_WORKERS=1`, 1,376 of 1,377 tests
+  pass; only the all-module doctor exceeds its unchanged five-second limit.
+- `npm run test -- scripts/module-doctor.test.mjs --maxWorkers=1`: both tests
+  pass in isolation with the original limits. Every app test therefore has
+  a passing observation, but the combined check itself recorded a timeout.
+- Both full-emulator playback analyzers, the exact-output comparison and the
+  final fixture/card/MIDI byte comparison pass. No raw inputs are committed.
