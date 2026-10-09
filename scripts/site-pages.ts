@@ -3,10 +3,8 @@ import type { Plugin, ResolvedConfig } from 'vite'
 import { siteUrls } from './module-pages.ts'
 import { socialCard } from './social-cards.ts'
 import type { SocialCard } from './social-cards.ts'
-
-function escapeHtml(value: string) {
-  return value.replace(/[&<>"']/g, character => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[character]!)
-}
+import { escapeHtml, pageMetadataHtml, pageContentHtml } from './page-html.ts'
+import { developerContent } from './seo-content.ts'
 
 /** Pages that have a real path, so a link to them can carry its own card. Each path is also a route in `src/routing.ts`. */
 export const SITE_PAGES = [
@@ -24,10 +22,9 @@ export function sitePageHtml(html: string, page: SitePage, imagePath: string, ba
     'og:title': title, 'og:description': page.description, 'og:url': pageUrl, 'og:image': imageUrl, 'og:image:alt': alt,
     'twitter:title': title, 'twitter:description': page.description, 'twitter:image': imageUrl, 'twitter:image:alt': alt,
   }
-  return html
+  const result = pageMetadataHtml(html, title, pageUrl, values)
     .replace(/<base href="[^"]*"\s*\/>/, `<base href="${escapeHtml(base.startsWith('/') ? base : '../'.repeat(page.path.split('/').length - 1))}" />`)
-    .replace(/(<meta (?:property|name)="([^"]+)" content=")[^"]*("\s*\/>)/g, (tag, start, key: string, end) => key in values ? start + escapeHtml(values[key]) + end : tag)
-    .replace(/<title>[\s\S]*?<\/title>/, `<title>${escapeHtml(title)}</title>\n    <link rel="canonical" href="${escapeHtml(pageUrl)}" />`)
+  return pageContentHtml(result, developerContent(appUrl))
 }
 
 export function sitePageCard(page: SitePage): SocialCard { return { kicker: page.kicker, title: page.name, left: 'modwerk.app', right: page.right } }

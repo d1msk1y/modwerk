@@ -3,6 +3,7 @@ import { moduleIdFromSlug, modulePath, moduleSlug } from './catalog/module-links
 import { profilePath, threadIdFromSegment, threadPath } from './community/forum-links'
 
 const moduleRoute = /^module\/([a-z0-9-]+)$/
+const digiModuleRoute = /^(digitakt|digitone)\/module\/([a-z0-9-]+)$/
 const threadPathRoute = /^forum\/thread\/([a-zA-Z0-9-]+)\/(?:index\.html)?$/
 const profilePathRoute = /^forum\/profile\/([a-z0-9_]{3,24})\/(?:index\.html)?$/
 const forumRoute = /^forum\/(?:thread\/([a-zA-Z0-9-]+)|profile\/([a-z0-9_]{3,24}))$/
@@ -12,11 +13,12 @@ export function moduleHref(id: string) { return assetUrl(modulePath(id)) }
 export function threadHref(id: string, title?: string | null, query = '') { return assetUrl(threadPath(id, title)) + query }
 export function profileHref(username: string) { return assetUrl(profilePath(username)) }
 
-/** The app route named by a path (not a hash): module, thread, profile and submit pages. A thread or profile path carries its query in the URL search. */
+/** The app route named by a public path. A thread or profile path carries its query in the URL search. */
 function pathRoute(url: URL, appUrl: URL) {
   const path = url.pathname.slice(appUrl.pathname.length)
   const module = /^module\/([a-z0-9-]+)\/(?:index\.html)?$/.exec(path), thread = threadPathRoute.exec(path), profile = profilePathRoute.exec(path)
-  return /^submit\/(?:index\.html)?$/.test(path) ? 'submit' : module ? 'module/' + module[1] : thread ? 'forum/thread/' + threadIdFromSegment(thread[1]) + url.search : profile ? 'forum/profile/' + profile[1] + url.search : ''
+  const digi = /^(digitakt|digitone)\/module\/([a-z0-9-]+)\/(?:index\.html)?$/.exec(path)
+  return /^submit\/(?:index\.html)?$/.test(path) ? 'submit' : digi ? digi[1] + '/module/' + digi[2] : module ? 'module/' + module[1] : thread ? 'forum/thread/' + threadIdFromSegment(thread[1]) + url.search : profile ? 'forum/profile/' + profile[1] + url.search : ''
 }
 
 /** Only app destinations participate; assets, downloads and external links keep normal browser behavior. */
@@ -47,9 +49,11 @@ export function canonicalRouteUrl(url: URL, appUrl: URL, moduleIds: readonly str
     return target
   }
   const module = moduleRoute.exec(route)
+  const digi = digiModuleRoute.exec(route)
   const publicRoute = route.replace(/^module\/([a-z0-9-]+)(?=\?|$)/, (_match, id: string) => 'module/' + moduleSlug(id))
   const target = module && moduleIds.includes(module[1])
     ? new URL(modulePath(module[1]), appUrl)
+    : digi ? new URL(`${digi[1]}/module/${digi[2]}/`, appUrl)
     : routePath === 'submit' && !routeQuery && url.hash ? new URL('submit/', appUrl)
     : url.hash ? new URL('#' + publicRoute, appUrl) : url
   target.search = search

@@ -32,6 +32,12 @@ button { color: inherit; }
 h1, h2, p { margin: 0; }
 h1 { font-size: 32px; line-height: 1.25; letter-spacing: -.7px; font-weight: 650; }
 h2 { font-size: 16px; letter-spacing: -.15px; font-weight: 600; }
+.seo-content { max-width: 960px; margin: 0 auto; padding: 32px 20px; line-height: 1.6; }
+.seo-content h1, .seo-content h2, .seo-content h3, .seo-content p, .seo-content dl { margin: 0 0 16px; }
+.seo-content h2 { margin-top: 32px; font-size: 22px; }
+.seo-content a { color: var(--accent); text-decoration: underline; }
+.seo-content dt { font-weight: 600; }
+.seo-content dd { margin: 0 0 16px; }
 .subtle { color: var(--muted); font-size: 13px; font-weight: 400; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 .skip-link { position: fixed; top: -80px; left: 16px; z-index: 30; padding: 12px; border-radius: 6px; background: var(--surface); }
