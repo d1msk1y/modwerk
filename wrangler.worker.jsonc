@@ -10,6 +10,9 @@
   "vars": {
     // Production push is enabled after VAPID setup; devices still opt in independently.
     "WEB_PUSH_ENABLED": "true",
+    // Immutable GitHub identities allowed to notify after the reviewed Pages deployment.
+    "RELEASE_REPOSITORY_ID": "1399349338",
+    "RELEASE_REPOSITORY_OWNER_ID": "67785539",
     "APP_URL": "https://modwerk.app/",
     "AUTH_BASE_URL": "https://octamod-community.octamod.workers.dev/api/auth",
     "REGISTRATION_OPEN": "false",
