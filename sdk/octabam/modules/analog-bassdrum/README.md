@@ -1,6 +1,6 @@
 # Analog BD
 
-Version `0.1.4-experimental` fits the 909 body, Attack and Tune more closely to Skee Mask's private TR-909 direct-out recordings. The 808 engine and existing TDEP/SAT smoothing remain unchanged. The owner approved the sound and explicitly waived fresh physical hardware/persistence testing, worst-case chip timing and complete memory bounds for this exact experimental source.
+Version `0.1.5-experimental` restores valid stock playback and SETUP defaults when leaving Analog BD, preventing the working bank from being rejected on the next power-up. The owner reports FLEX persists on exact private build AB015FIX01 and directed publication with the remaining qualification limits recorded in TESTING.md. The 808/909 DSP sound is unchanged from 0.1.4.
 
 ## Overview
 
@@ -40,25 +40,25 @@ Use separate Attack and Tune sweeps so their effects are easy to hear. For the d
 
 ### Switch back to Flex
 
-Changing an Analog BD track to FLEX retains its SRC parameter values. Analog BD uses the track's Flex parameter slots, so drum settings become sample-playback settings such as STRT, RTRG and RTIM. Existing trigs can therefore produce a short, weak or unexpectedly pitched sample until those settings are adjusted. The [reporter of issue #363](https://github.com/repeat98/modwerk/issues/363) confirmed that clearing SRC restored normal Flex playback and withdrew the bug claim.
+Changing an Analog BD track to FLEX or another stock machine now restores the twelve borrowed SRC playback and SETUP bytes in both working Part copies before removing the Analog BD marker. You do not need SRC + PLAY for this transition in 0.1.5. Reselecting ANALOG BD keeps its patch. This fixes the invalid SETUP values that could reject the retained bank at power-up in [issue #363](https://github.com/repeat98/modwerk/issues/363#issuecomment-6083911774).
 
-1. Select FLEX in the track machine chooser or SRC SETUP, then select the sample you want to play.
-2. Press SRC, hold SRC and press PLAY to initialize the SRC parameter page to the Flex defaults. This replaces the current SRC settings; repeat SRC + PLAY immediately to undo. Check SRC SETUP and the sample assignment afterwards.
-3. Play the pattern again. If particular trigs still sound different, review their SRC parameter locks, scene assignments and LFO destinations: they may still target the same parameter slots. Adjust those deliberately for the sample.
+1. Select FLEX in the track machine chooser or SRC SETUP, then select your sample.
+2. Check its SRC settings and sample assignment, then play the pattern.
+3. Review existing SRC parameter locks, scenes and LFO destinations: they still target the same parameter slots and may need adjustment for the sample.
 
-The page-clear shortcut is documented in the [Octatrack MKII manual, section 12.9.8](https://www.elektron.se/wp-content/uploads/2024/09/Octatrack-MKII-User-Manual_ENG_OS1.40A_210414.pdf#page=73). This guidance records the reporter's recovery and the current switch code; it adds no new physical hardware qualification.
+For 0.1.4 and earlier, reset SRC with SRC + PLAY immediately after switching and before powering off; undoing that reset restores the invalid values. LOAD PROJECT or leaving USB disk mode can recover the saved baseline after a rejected restore. The reported sequencer halt with unreleased Output Matrix in MATRIX mode remains unverified by this release.
 
 ## Compatibility and limitations
 
 The target remains Octatrack 1.40C with the existing Analog BD registration and SPRING REV reservation. SYNTH, MACHINEDRUM and POLY registration conflicts remain unchanged. Existing stock-firmware project-clamping limitations still apply.
 
-The supplied 909 recordings cover one modified instrument and one decay setting. Intermediate physical knob positions are unknown. Body/Attack/Tune agreement is closer, not a 1:1 recreation of every setting or every hit. Current-source physical audio, Part/project/reboot persistence, maximum FX load, chip timing and complete lifetime/stack memory bounds remain unverified. Earlier 0.1.3 MKII reports remain historical. The owner approved this exact release with those named qualification limits; no hardware pass is inferred.
+The supplied 909 recordings cover one modified instrument and one decay setting. Intermediate physical knob positions are unknown. Body/Attack/Tune agreement is closer, not a 1:1 recreation of every setting or every hit. The owner reports FLEX reboot persistence for AB015FIX01. Current-source physical audio, broader Part/project and multiple-instance persistence, maximum FX load, chip timing and complete lifetime/stack memory bounds remain unverified. Earlier 0.1.3 MKII reports remain historical. The owner approved this exact release with those named qualification limits; no hardware pass is inferred.
 
 ## Tests and measurements
 
-[TESTING.md](TESTING.md) binds the native/emulator results and owner exception to this source. All 128 values of ten audible controls, trigger splits, both-core code placements and four distinct interleaved voices/core pass focused native gates. Actual complete-image source/stock AMP/main-output checks pass at the three reference endpoints; the saved private update round-trips to the tested MAIN OS. These are software checks.
+[TESTING.md](TESTING.md) binds the native/emulator results and owner exception to this source. The 512 compiled assignment cases and actual-panel emulator cold boots reproduce 0.1.4 rejection and pass 0.1.5 restore; the owner reports physical FLEX persistence. The unchanged 0.1.4 DSP source passed all 128 values of ten audible controls, trigger splits, both-core code placements and four distinct interleaved voices/core pass focused native gates. Actual complete-image source/stock AMP/main-output checks pass at the three reference endpoints; the saved private update round-trips to the tested MAIN OS. These are software checks.
 
-Matched 909 executed instruction cost rises 6.22% on average and 6.27% in the most increased matched block versus 0.1.3. 808 output/counts remain unchanged. Combined code is 997 P words/core plus the separate 35-word helper, within the existing reservation; X upload, voice blocks, Y and ColdFire allocations remain unchanged. These counts are not chip wall-clock timing or maximum-load headroom. See [CPU.md](CPU.md).
+Matched 909 executed instruction cost rises 6.22% on average and 6.27% in the most increased matched block versus 0.1.3. 808 output/counts remain unchanged. Combined code is 997 P words/core plus the separate 35-word helper, within the existing reservation; X upload, voice blocks, Y and state allocations remain unchanged; ColdFire runtime grows by 36 bytes for machine-switch restoration. These counts are not chip wall-clock timing or maximum-load headroom. See [CPU.md](CPU.md).
 
 ## Authorship and licences
 
@@ -68,7 +68,7 @@ Many thanks to **Skee Mask**, who kindly recorded his TR-909 so we could match A
 
 ## Screens and audio
 
-These are actual MKII controller-emulator LCD pixels from the current AB014REF05 image, with the real DSP enabled and transport stopped. [Capture provenance](media/capture.json) records the image, tool and disposable project. UI captures demonstrate controls and access; they do not prove physical audio or persistence. The owner auditioned actual firmware-emulator audio separately.
+These are actual MKII controller-emulator LCD pixels from the current AB015FIX01 image, with the real DSP enabled and transport stopped. [Capture provenance](media/capture.json) records the image, tool and disposable project. UI captures demonstrate controls and access; they do not prove physical audio or persistence. The owner auditioned 0.1.4 firmware-emulator audio separately; its DSP code is unchanged here.
 
 Hold FUNC and press SRC for SRC SETUP. ANALOG BD is assigned; LOW/HIGH 64 provide a neutral desk starting point. Use LPF 0 when comparing the direct-out reference, then adjust filtering separately.
 
@@ -78,10 +78,10 @@ Double-tap the assigned TRACK key to open the engine browser. Choose 909 with UP
 
 ![Analog BD engine browser with 909 highlighted below 808.](media/ot-engines.png)
 
-Press SRC for 909 PITCH, DECAY, TUNE, ATK, TDEP and SAT. Try Attack alone with Tune fixed, then a separate Tune sweep; finish with STOP and let the tail decay.
+Press SRC for 909 PITCH, DECAY, TUNE, ATK, TDEP and SAT (the shared third label reads TONE in this capture). Try Attack alone with Tune fixed, then a separate Tune sweep; finish with STOP and let the tail decay.
 
-![909 SRC main controls with PITCH, DECAY, TUNE, ATK, TDEP and SAT.](media/ot-909.png)
+![909 SRC main controls with PITCH, DECAY, TONE, ATK, TDEP and SAT.](media/ot-909.png)
 
-Choose 808 in the same browser to compare its retained engine. E is labelled SWEEP in place of TDEP. The third encoder controls 808 TONE, although the shared page reads TUNE in this capture; switching retains control bytes.
+Choose 808 in the same browser to compare its retained engine. E is labelled SWEEP in place of TDEP. The third encoder controls 808 TONE, labelled TONE in this capture; switching retains control bytes.
 
-![808 SRC main page with PITCH, DECAY, TUNE, ATK, SWEEP and SAT labels.](media/ot-808.png)
+![808 SRC main page with PITCH, DECAY, TONE, ATK, SWEEP and SAT labels.](media/ot-808.png)
