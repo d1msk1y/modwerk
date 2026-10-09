@@ -8,7 +8,7 @@
     "tools/build/ab_image.py": "c4573d4e0715961f7081dc1d5a0639d42ac63313ccc9e50a0737ac0685e2fc14",
     "tools/remix/loader.S": "32e09fd813ddc65511390faaebc3b86d963b2700f304b35cdb1ec48f90449287"
   },
-  "moduleSourceTreeSha256": "4f495d95ba20a18560f3a62b3e39eeee8ddfdbb51c329dcf0ddbd258e86cfd2c",
+  "moduleSourceTreeSha256": "911c75023f63af9e48fe7d475fac432c8f5b4fefcdecaf3328d76d4e3ee9eeea",
   "packing": null,
   "proofs": [
     {
@@ -1660,15 +1660,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "6b42821529b4f18ec23794a1d713f10236e0bdb8771ffd9582cd573452daca32",
-      "osSha256": "e8c375d29e1eaf1b6e885e79d1cf38e50a19557e398d636e74ca52bd1c2a03dc",
-      "maskedOsSha256": "b71bd3a71f27afa741d5169ca0c3164ded8aaafa0aafb79a8a195a9e46386da6",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "e47db2689a697505ff01012ebf518588c8d429f581408e669ec71943133fdff1",
+      "osSha256": "3b2fae42eb224eb402e7c3b325fc586896b00d868e452cbf6532191b9b0ea4c9",
+      "maskedOsSha256": "2ae2a8c9b41f7b13392577f2dbba2b04fada98d26bd75690f8c10a5af9d1a854",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -1694,11 +1695,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "8ce36c5fb8c9ccf1c44a1f0cb31707d26ec85c31f63335b6ae5a98ef2ad8b2a4",
-      "osSha256": "9c1811d5bc7325a88752902e8528d2a849cef91a388f65fadc00a47976e9da3c",
-      "maskedOsSha256": "0a5060f03099ba3ca1a12d7c6a82ad62c585b05ca4b80730eea22b9b34949810",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "9e1edcce09a0a0e194ff43bf8bf279bd3658fec8c59a5ebe1a8f50815d0be8d0",
+      "osSha256": "6def828ece8f76ef3c6c1600ad4547e7959cb1698eff45c8f19b2e2b6cbe691a",
+      "maskedOsSha256": "935d8292d09d402df33135b5c0f565933f2086567d7ca3f0350ccb99b2c31f81",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -1737,7 +1738,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266149,
+      "sha256": "91a509ab0584ab4556cf8821081e31a32e9c89c4e421ad6f62896106b846d9be",
+      "osSha256": "2993ae86619f0f6b6d5b0c84d2ba78980fb6cd1d10460471242cbee5be9024b5",
+      "maskedOsSha256": "dd7bd5bb45f897a9f3be21643a72f40d70a250149d4a60f798c3fe039d8b618a",
+      "appendSha256": "64aaccf47756366a6294bf043ad4bad7400f099a6317dcc095593e9d9e6b569c"
     },
     {
       "moduleIds": [
@@ -1765,7 +1770,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266149,
+      "sha256": "ad327790d3f0687b07fb581570bfd95b9638aa25ffacc99ce5f6dd34124d351c",
+      "osSha256": "ba748197d55c20f2337c7a0a23346d211afdbd18d603470aaf4ef9c9b641f530",
+      "maskedOsSha256": "0395bd29ee578b285793f6f22b9f47f47e1977d841b5c25a5996de5bb25e14fe",
+      "appendSha256": "64aaccf47756366a6294bf043ad4bad7400f099a6317dcc095593e9d9e6b569c"
     },
     {
       "moduleIds": [
@@ -1799,16 +1808,17 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "TAPE ECHO",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1371091,
-      "sha256": "883ef921955f2bb006af675a544d7b01f8f2b117a30e901853eb7ce385d4b184",
-      "osSha256": "4739c9afdf4cfba7a23fd40135f154eeb6fc30d7b0665a6451caed4c271decf9",
-      "maskedOsSha256": "b46737dc1f345fb8bdd077aac56cd5e621b4a1d26250d537beb280aac5c04de7",
-      "appendSha256": "8e31a5112ae0968167b3dbe3992152ca654ad79c4f9f2c6f15e73497e4ba3836"
+      "bytes": 1369091,
+      "sha256": "de16cdfe409b4ea9a1f86d4e2f5371f3fc4778ff54a8e7c51154634504d62f03",
+      "osSha256": "7d964866876c173a114c5e4e53c5e02a6e07a7330134a92d1e9c7516a8e7af82",
+      "maskedOsSha256": "2e656f4089dde4c3d2cf4a22564efefa9cc215fa2ad6ccecd0d5ccc6944d8c17",
+      "appendSha256": "76a9a4e83d434bfa7a03bd5fc09793478e7c945710a18e2b12708b521eb3a87b"
     },
     {
       "moduleIds": [
@@ -1836,11 +1846,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1371091,
-      "sha256": "6690c5d0d56e825c4f1057b1ee857e8568475f9fbb095346ed37f4bb27fadb85",
-      "osSha256": "7044aaa64c0f115fa8e7f7fb9b276b135746b712be5f5fabd2d3be24ea36ce46",
-      "maskedOsSha256": "ff8ab5785b1456a97eed423068733e5331ecdde0ee907609035372384bfc9928",
-      "appendSha256": "8e31a5112ae0968167b3dbe3992152ca654ad79c4f9f2c6f15e73497e4ba3836"
+      "bytes": 1369091,
+      "sha256": "0f3dbc36de4c6aff3e626edea0a4197235bec1372e52a08023acbd20f701047a",
+      "osSha256": "1f64227e1fb9801d67b286f843e459da7e544532d0b97076be371b8a741a2bec",
+      "maskedOsSha256": "c4ed8ee73d157c11ade9edcf354320852b1aebc478682967e3f110b87b8f928b",
+      "appendSha256": "76a9a4e83d434bfa7a03bd5fc09793478e7c945710a18e2b12708b521eb3a87b"
     },
     {
       "moduleIds": [
@@ -1881,7 +1891,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368429,
+      "sha256": "bfd72333171eb062323fcd02654d21d974fad8b94264582121ee1f8ff8bfb10e",
+      "osSha256": "59adaafc5f32a913d139d6067cef18822358d71696d144567b362ffb5bb947ff",
+      "maskedOsSha256": "7d99da67e4eed99c3c003ed58d45bef8bb3f9760ef9c4fee305ea0def013f309",
+      "appendSha256": "e04ed3513653f03c5b34f6e99ac7001f1cc51b9e02ff66f53f1767a706a26906"
     },
     {
       "moduleIds": [
@@ -1911,7 +1925,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368429,
+      "sha256": "22a18f0101c4fe8a44ec04ccad887623dda238d2350df9097e09476d8f89e750",
+      "osSha256": "e32068043aa9efe8f0bccbb16cb0ab39a152311f31e46b8911113d3f9ff7b5b9",
+      "maskedOsSha256": "890b4c329de0ebe3fa88e5a3bdaa8bd1759da71d4d2c99d11ffe7e2327c40afd",
+      "appendSha256": "e04ed3513653f03c5b34f6e99ac7001f1cc51b9e02ff66f53f1767a706a26906"
     },
     {
       "moduleIds": [
@@ -1951,7 +1969,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1268603,
+      "sha256": "4d21dd481a57049f16c2190cb66bdb9fb3d1c682e17db1d580d757592dd19942",
+      "osSha256": "b014a89e58bdef79dd36df1e4eb0243b78d606e71d9da7da3741894d421b11f4",
+      "maskedOsSha256": "fc396c2ee19259250c445bbafffac9f2e5453edd00642b3777410769743b56f6",
+      "appendSha256": "126cb94417dd22c76d8b49496dea1519621a26c882b4874b8c6064e34dfa7dda"
     },
     {
       "moduleIds": [
@@ -1980,7 +2002,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1268603,
+      "sha256": "060070d98ff277a74b56b5869d3976e57b318d33fd77434ed140822367d6acd4",
+      "osSha256": "2eaa3da4226831bc07e2209bfe8d9e827acd0f1119ba71681c916b68c34ffd20",
+      "maskedOsSha256": "2a657a94972c903ebcd657f0a9766d502365be3548cf46f5498dfc4f0d81560a",
+      "appendSha256": "126cb94417dd22c76d8b49496dea1519621a26c882b4874b8c6064e34dfa7dda"
     },
     {
       "moduleIds": [
@@ -2095,7 +2121,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1370852,
+      "sha256": "88a17db262009cd0f0a225a327d18e68683aa83c1cbfcd018602870a5481a281",
+      "osSha256": "7127d5900865918cf226dce5929b8b64ba959c9f80b17e3f9349c9a3ce95c676",
+      "maskedOsSha256": "7835b5c480ded83b5f92d16682767d3dfe22aa28d3c98e8e7e7e5d62b3d3cce5",
+      "appendSha256": "f43edb772e377c7caa76eff077e7bc1434fcfc281f1510bc1abb3560183eaf8f"
     },
     {
       "moduleIds": [
@@ -2126,7 +2156,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1370852,
+      "sha256": "2294ae939f33b4f614105603716ef7c2d3b0c3774dfc616b0423ad305f8902ff",
+      "osSha256": "d96195de457dbf87f6a168bf01b0160de41850df806885909895f2383ec9c4d8",
+      "maskedOsSha256": "f8fc2ccdf12873390f3932ae36d76cdcb33094f8f832f7156d7198854f933ec4",
+      "appendSha256": "f43edb772e377c7caa76eff077e7bc1434fcfc281f1510bc1abb3560183eaf8f"
     },
     {
       "moduleIds": [
@@ -2237,15 +2271,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "aca9398dc09a6e92b89c73064d7e64f87b3561795e9ba98e5aa47d363e658cfd",
-      "osSha256": "764399a0c9237fafaf773bd833c3fbb5a7c7fb10935665c5d248bd11d9e81fe7",
-      "maskedOsSha256": "eb70ece211117072ce7377df8b6705aba850f342ecc1ded3ca94a702f8016748",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "c6de06aec52f4472de1920e3be2943b63669e2dde6b04315721c7bd2a3b9fd44",
+      "osSha256": "bab91a2a2106f085e7149f50404eabbf070098916347b5a8b0b3fdcc6e4e8f6c",
+      "maskedOsSha256": "ce2f5908cb31fb753e63c48e9f423bd7f3aa770542a4747a2741a729747c91ad",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -2272,11 +2307,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "ddaee8ff1d5bd96c1abba3acbd80f36ccd7e74816d72f65e8a93bb21df9c9ee2",
-      "osSha256": "b41227aa534c16b6afe5d7e8fef34c16ea86ad2bc32909d6eebef735941d34e0",
-      "maskedOsSha256": "99be189eb92f5abd84d673341f394de1fe3ffccaead47615f4080a82eb6c9c3a",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "e5ef5e2406db7c81c1fc8a0bdb4d9adfc7a137d68b824734bf1a037ad51dc5e9",
+      "osSha256": "0d24bc371407ee0625c6e89f8085b19b93c4cc6d9d04abc6c97842e03c4e4f4b",
+      "maskedOsSha256": "7d620b5c639b38e6bf6801ea9ed4bd3f8abf7cd5eba5e5175db469662265b7f2",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -2316,7 +2351,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266135,
+      "sha256": "e2ac421f88f665ca30be0652f2f5df726ff8a6a486fbae8f20334e49828aaca5",
+      "osSha256": "adf56204cbabfeda5b95f5282622ab6eb305d56591737f18bcf20a25e2756b74",
+      "maskedOsSha256": "56d4d91725da4e1399e6b55c41bd8cf2254f64d5becbecf415fbd6615f8790f6",
+      "appendSha256": "47ef81686881cc12829a099df490bbca14e2d9ffa779257e00a89ee25c5355ba"
     },
     {
       "moduleIds": [
@@ -2345,7 +2384,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266135,
+      "sha256": "2c50f0743b15487e99366aeed779282b19b4ce98cc00fa54a84401641af6da5d",
+      "osSha256": "cacf7d81ed08bc07de675f6db4c56e79b85d47dfee5b6cfb68d20519921e1656",
+      "maskedOsSha256": "d74560551f3efad37833bf6dbba92a43454a75e3689c11083734c61cde44c277",
+      "appendSha256": "47ef81686881cc12829a099df490bbca14e2d9ffa779257e00a89ee25c5355ba"
     },
     {
       "moduleIds": [
@@ -2460,7 +2503,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368420,
+      "sha256": "0e201cafb342cf7783b70d223753b56acb4691e5afbe59ccaec944d28c6a054b",
+      "osSha256": "5a4194f42f8773fa4ef682e302a0942412dae161389bbf82896b9e4277dbc863",
+      "maskedOsSha256": "84beb385bccc5931fef7f1c6592e0a52713adab781ca65b28cd351f03191af8f",
+      "appendSha256": "e036fa8e39359d99e0c2399985baf77b8bf4dd7aa0c7aa0938c094ade84a0884"
     },
     {
       "moduleIds": [
@@ -2491,7 +2538,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368420,
+      "sha256": "8b30f2f20d46d9d08276d9e577b256acd3a52e5ed6c3990cd5244b0929b75a41",
+      "osSha256": "56b20fd80c90895dc948f891c282e833d5e51e298d4cdd298b56c3628773eae3",
+      "maskedOsSha256": "37ed365b55dcb6875f6fca61aab93ec8f4bcb4b74ea81397c5d6ca8f2c40ff40",
+      "appendSha256": "e036fa8e39359d99e0c2399985baf77b8bf4dd7aa0c7aa0938c094ade84a0884"
     },
     {
       "moduleIds": [
@@ -3289,15 +3340,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1271478,
-      "sha256": "bf91e1b7315c69d01115af067491e1866b3fc8c9311eba384b395a945ae493b2",
-      "osSha256": "a7b241b73f8da1a74c50ca6ebc5f14d2bdf9c62bac02b7df2b4674cf874b8bc5",
-      "maskedOsSha256": "be1715c483f2f221f0dc66db3cd4b934a352ea14ab79458affca7bdd8e444ac4",
-      "appendSha256": "a292f56cd9f77587b00e9784dd970a5e21461eef9b22b8085d9ed13e5db408df"
+      "bytes": 1269474,
+      "sha256": "c7758b249717f122aeb1ec13c40592bae0d79aa4ed37bcc4a76599c16782a284",
+      "osSha256": "8fac574fd3939598a0e4873e5729897e60e0db3e84cd62b2ba6266d3c029241a",
+      "maskedOsSha256": "6148e1a7fd32acf2d9613c57596fbb012382746c19db634f91b88bd925c77023",
+      "appendSha256": "4bdc53934db52600df026a09bcdd68b0f62c1a93ae0be88f1ea611ca3bb44751"
     },
     {
       "moduleIds": [
@@ -3324,11 +3376,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1271478,
-      "sha256": "be56088dd04208375f861cbeb1919e995a0ae312bedeed92789791ad336f0741",
-      "osSha256": "2edec502495e8c931db11443f9718666292e38dfbba5f2db334e7c190c665586",
-      "maskedOsSha256": "314b9fa5f614c84886b485d9235dab4b84b4496acaf2e671b3c0130ddee63ca0",
-      "appendSha256": "a292f56cd9f77587b00e9784dd970a5e21461eef9b22b8085d9ed13e5db408df"
+      "bytes": 1269474,
+      "sha256": "67dd2fd51f3321188663735e10c73aa78aa9e1f09dacb7d32773e06bfcb48e14",
+      "osSha256": "314f22880d9049f0e411cafdb3af6beb16b0754dd796a09065a41c298ba4e891",
+      "maskedOsSha256": "775f488e326fb3d022682281315a5bd9b805d24eda4697493a6771f2def1ade9",
+      "appendSha256": "4bdc53934db52600df026a09bcdd68b0f62c1a93ae0be88f1ea611ca3bb44751"
     },
     {
       "moduleIds": [
@@ -3733,15 +3785,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1270990,
-      "sha256": "d224bc5fb7f12a4717c0f5f7bd02609308ecc4d90b8a1bad33df0477d472e78a",
-      "osSha256": "b403abd76f036f523e3e231fddbe87afd607c28a8fad454d56c77d2c080dd1e1",
-      "maskedOsSha256": "9dd3c34f0d95fcbb1f87e8d7afc64d5660acdc5a4de868acf494c8e284fcf178",
-      "appendSha256": "814660d46e057862cb39622cc26d386c4b1320dee6ec314af5bca87fcd07a3bd"
+      "bytes": 1268986,
+      "sha256": "a38a77b7ab3883bb468d14e6494b5f6d870c3d6462224aca84d024d6fb1139a2",
+      "osSha256": "f23295febc851eb12ccbf4940bb9a4987d2bbb5a0909b7ee859faaf148de33b5",
+      "maskedOsSha256": "ef37312747ba08e02e6386d5b2b8f6a800f97fd5ce6bf1b6b66043bf6516e6e1",
+      "appendSha256": "61511d8bd09838d2bfbeea19759c97edd60de09aecd403af22ce0c7e6fdb6b40"
     },
     {
       "moduleIds": [
@@ -3768,11 +3821,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1270990,
-      "sha256": "622ee9e85b01ad71a330b6e60d0229e70424d5010f05be27695a09b9e20eb231",
-      "osSha256": "7730dfd0922aeb8588ffd31f0bbfb92c7f751f2f7337b67431d8d6bd84112bf6",
-      "maskedOsSha256": "577239ba9fd45fa9c7336797397bbe7a352a4ff227f2618c006617efddf14817",
-      "appendSha256": "814660d46e057862cb39622cc26d386c4b1320dee6ec314af5bca87fcd07a3bd"
+      "bytes": 1268986,
+      "sha256": "aa27a3398a9d5a3f570b00e91ea2aecffac870f54b6046dceb2758a58514c595",
+      "osSha256": "f902f9093f8c2c84c47e124f0f18bc8c352747cc8b88c0278750ac8e0abb9441",
+      "maskedOsSha256": "533069baaaaedcd5076743ecbc9c6b77472307e804035b871b2a0900e2418839",
+      "appendSha256": "61511d8bd09838d2bfbeea19759c97edd60de09aecd403af22ce0c7e6fdb6b40"
     },
     {
       "moduleIds": [
@@ -4177,15 +4230,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "fa94a597b7d7d1dc31305d3f6f9198505581c21553c58c62ee87543db070d004",
-      "osSha256": "280eb5f1cbe2de37da54c1986d27ccbeb5840f68ca95cec77930cbd8403676e9",
-      "maskedOsSha256": "36fc4d9dd66f3f93e5ecaa6c917698cffea0898ccaf99c0570e82aae2c1d1131",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "b99c26864482eceb1a010ab217c61052239d4b010d588df140a5a10436a15601",
+      "osSha256": "1d31bf1ee95f90f6fee64ad22782fb62965ce44b236b4d0b35d0e5d3d03353f4",
+      "maskedOsSha256": "d741170ad21df1d0389a12b5f7cb177f61c071af6129f8f1e543a427c41e3b44",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -4212,11 +4266,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "d56b50239a6536d4d07739c6b0c3ef40b8e704c3e670d8040cf915125d60eee1",
-      "osSha256": "dff9a3c874aec1a34020891e48109f0326292c2f4cd8fe5379fa181f8c04d59b",
-      "maskedOsSha256": "6baa36c5f57a6f063f5943a559e5e55e4c2a08004acba8ccebabcea811922224",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "4f7eb0b20559f2350991fe3f009e8e69f0c737f7b6758dc2c370f8d0dff3cd7d",
+      "osSha256": "b4bfbfcdc4d01a386bbab71b4496448c59f85991e033a052b186aceccce2cd6c",
+      "maskedOsSha256": "86162e0630cdaea622527d836a072d771c938194526a7a000f3f8a906f851fa3",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -4621,15 +4675,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "cc5d65376195dea912377723d0d3c2cedb441e58c2c56b87cc123074196f833e",
-      "osSha256": "401b70ecd435689f33a4979a74fa5ecfe7ab01464e4a0782e176c796ed4de54c",
-      "maskedOsSha256": "87baaa7f3ae95ae46d6f026f5b1e313b49452e99638f7255d9b4d7f31ae8835e",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "fdbd407f9ad5ef070dfe17cab751eb78885ea6d981be9930d59db3863f58377f",
+      "osSha256": "24f959f914c7d8b3f1928916e30224bfd906ca39d741e61fab1c634aa0bbbf9e",
+      "maskedOsSha256": "b9d9a812088dfee4e692b6a9e3a3692ec12c9a3cd918a0063d196d3f351f89de",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -4656,11 +4711,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1268810,
-      "sha256": "7f1e661290af459bd68a42c8266b56715391bf2a24e2aca202210f74ff37e76d",
-      "osSha256": "2eb84a439f3bf673e474ed43e94a1b571b9742e0976e522c0485fbeaa42d9317",
-      "maskedOsSha256": "8ca9530f87088fa29a6c9c6b76b71386a9260a195c08f47b3cf03fc4b270ba6b",
-      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+      "bytes": 1266806,
+      "sha256": "355884ddc613eff58630311d9258dddc3b9deca760e3d91e31b0e26ecf97adef",
+      "osSha256": "1bee922cd4b5f033670e5dcd41c505abba3a99a48e9d2d02e30ed90fe9d8a9d8",
+      "maskedOsSha256": "57ee3b7896fbf37bf4237d389217d6235f5bc8804560a88556bd784ce8e6b127",
+      "appendSha256": "7df0645f2ba8546b8316bcbba2e03f61845f8e1a134896985baecae08f016bc0"
     },
     {
       "moduleIds": [
@@ -5101,15 +5156,16 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ],
         "hidden": []
       },
-      "bytes": 1273662,
-      "sha256": "ca69b0961a30bdb41448e7dacb726be8ba85c937ee3d4de93eea9459f88aadec",
-      "osSha256": "5e39a36aca01bda8ba9f5ce6643a06aeeb46405583774e26d80b21bd68aa6e7e",
-      "maskedOsSha256": "1f8587d05481ec7a904d1c1d0f4d2c986924be4575d6be3c2e3a9977279de945",
-      "appendSha256": "181d77e60af95d3728eb569286305868029e3695a7c4287d81a5be8db27e2402"
+      "bytes": 1271658,
+      "sha256": "90fc5c2d72d04f19f0d0b5cd939e5c4f88aaee31f3528f34e0304d30649551fa",
+      "osSha256": "e9ad93ed8a34631b1523579c5f11d1f391fd2539acd1bc899d0c7c56f6d71bdf",
+      "maskedOsSha256": "2bce140c9dfea475417d9254a480a871645b21f85705c9206f0065517cad3077",
+      "appendSha256": "ec004c755a4b6a2ce0efc9687f1355fc0927947231594f8254b246bcecbd0e0c"
     },
     {
       "moduleIds": [
@@ -5140,11 +5196,11 @@
         ],
         "hidden": []
       },
-      "bytes": 1273662,
-      "sha256": "0be1bf98dcdf48e1e3a7512e9c5955c375ac62f1c3c2de4e198cb5c704e0e317",
-      "osSha256": "d88b1c0099e638260a99c0f2f06c0ed5334f47c21ced923c429ed6bbd5b31951",
-      "maskedOsSha256": "0b7292d635658d115a889e576e3b452404d8586650d90082f8d4c753499ffea9",
-      "appendSha256": "181d77e60af95d3728eb569286305868029e3695a7c4287d81a5be8db27e2402"
+      "bytes": 1271658,
+      "sha256": "ae1391728625e0a80ad1da6f6c398615e3ee5d55f3d29563d8bd5e28cdd284bd",
+      "osSha256": "691525df8ca164d2fa02a000dc6d1516668cf1d7e67da45472246b9ce855bf87",
+      "maskedOsSha256": "83ac2288865f576cd9c91c6966e638b9e29d5cbe85b2e078c634f9055aa857b1",
+      "appendSha256": "ec004c755a4b6a2ce0efc9687f1355fc0927947231594f8254b246bcecbd0e0c"
     },
     {
       "moduleIds": [
@@ -6527,7 +6583,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 200 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266694,
+      "sha256": "d13b1757c19180fa142c261226889304eeb121aa897385d5c6fe92d0839491d6",
+      "osSha256": "d8c8516098da7aada0eaac48718ece39503ff926b20b80a551e8247c90167c63",
+      "maskedOsSha256": "3417010897e4458ef4bf8975e289e579c8efc83bf6f587756b4c7f33056a6539",
+      "appendSha256": "12e77034bb0c8adfcd938608ba43a69db58cd1c20dc528d5f5f87a943afa73e0"
     },
     {
       "moduleIds": [
@@ -6555,7 +6615,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 200 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1266694,
+      "sha256": "8a42b0f3c67cae46c4243343105ce41a3a75e3d9781737b92ba32c8fc469f5ef",
+      "osSha256": "9e5ca9c021fb9eb8befa015b1c5ede8c9a70aceb55f6c7de51baa68de1c8858b",
+      "maskedOsSha256": "de67b56a547173f042de496f320bddaab8dfcf07a91f73076aa76ad3f5fc92db",
+      "appendSha256": "12e77034bb0c8adfcd938608ba43a69db58cd1c20dc528d5f5f87a943afa73e0"
     },
     {
       "moduleIds": [
@@ -6595,7 +6659,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 365 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6625,7 +6689,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 365 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6665,7 +6729,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 195 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368979,
+      "sha256": "b951324b61e76c5668d7e686afb25246eef4e46626583385d21cd7a03713354e",
+      "osSha256": "23a74df45e90f933edbf587468b68435fc382d55a51ed799e2a5381b80b5fbc4",
+      "maskedOsSha256": "dc4db10652f065c80a930d14c7d3aa9ff9d8f76e5063ca666e874efd9b11f071",
+      "appendSha256": "330c5070c71d8f45eb638d3094e6bfc834d55413856d67c1c96faf28ca3718a7"
     },
     {
       "moduleIds": [
@@ -6695,7 +6763,11 @@
         ],
         "hidden": []
       },
-      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 195 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+      "bytes": 1368979,
+      "sha256": "1ef1d22fbb8dc973a5fa2b59603e15bdf15bd00b82412dd6a03f3ce8f6fff634",
+      "osSha256": "a541e4389257848bf061f9abcf58cf7725c0550b1eb4a569a252fa11a3ad735b",
+      "maskedOsSha256": "2986d4f5d108d440316c3d91c50ace80f4789ad96c1aa451e84771cbe0baffa9",
+      "appendSha256": "330c5070c71d8f45eb638d3094e6bfc834d55413856d67c1c96faf28ca3718a7"
     },
     {
       "moduleIds": [
@@ -6737,7 +6809,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 360 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6769,7 +6841,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 360 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6810,7 +6882,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 502 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6841,7 +6913,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 502 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6960,7 +7032,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 497 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -6993,7 +7065,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 497 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -7114,7 +7186,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 475 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -7145,7 +7217,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 475 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -7264,7 +7336,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 470 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [
@@ -7297,7 +7369,7 @@
         ],
         "hidden": []
       },
-      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 470 words are free across 3 separate runs but the largest single opening has only 272; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [

@@ -5,10 +5,10 @@
   "kind": "dsp",
   "cycles": {
     "unit": "instructions/sample",
-    "static": 727,
-    "measured": 387.125,
+    "static": 732,
+    "measured": 394.625,
     "instancesPerCore": 4,
-    "method": "verify_bounds.py: 727 conservative source-word/call units per sample including split setup. benchmark.py: 387.125 observed net executed instructions/sample on both cores, cold/warm history, fixed/moving controls and all splits 0..15. Initialization is separate; chip timing is unmeasured."
+    "method": "verify_bounds.py: 732 conservative source-word/call units per sample including split setup, separate reachable left/right ring paths. benchmark.py: 394.625 observed net executed instructions/sample on both cores, cold/warm history, fixed/moving controls and all splits 0..15. Initialization is separate; chip timing is unmeasured."
   },
   "stock": {
     "comparator": "CHORUS",
@@ -16,7 +16,7 @@
     "dearestWorst": 314,
     "baseline": "evidence/stock-comparison.json",
     "stockSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
-    "justification": "Preserves the full stereo sweep and 1026-word sine table while protecting live stock shared words. 1.233 times matched Spring, 1.322 times stock Chorus; 15.0% above prior beta 336.75. The modeled four-instance split block with initialization is 46892 units. No physical timing or headroom is established."
+    "justification": "Preserves all original sine values and the full stereo sweep while protecting live stock shared words. 1.257 times matched Spring, 1.347 times stock Chorus; 17.2% above prior beta 336.75 and 24.8% below original 0.1.0. Lossless packing reduces shared P storage from 1425 to 795 words per core. The modeled four-instance split block with initialization is 47256 units. No physical timing or headroom is established."
   },
   "stress": {
     "instancesPerCore": 4,

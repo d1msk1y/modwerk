@@ -1,11 +1,12 @@
 {
-  "sourceSha256": "2f164cd4cdbf105334010db1a6a032f2656050472d56fc362c5ea1a9fdfffc15",
+  "sourceSha256": "2a39a3cf0ae9918cf4fffb84d8bb1da73ff09c39895663f815f6b5425000d8e0",
   "results": [
     {
       "track": 3,
       "split": 0,
       "stockWords": 16,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -14,6 +15,7 @@
       "split": 1,
       "stockWords": 16,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -22,6 +24,7 @@
       "split": 8,
       "stockWords": 16,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -30,6 +33,7 @@
       "split": 15,
       "stockWords": 16,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -38,6 +42,7 @@
       "split": 0,
       "stockWords": 72,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -46,6 +51,7 @@
       "split": 1,
       "stockWords": 72,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -54,6 +60,7 @@
       "split": 8,
       "stockWords": 72,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     },
@@ -62,6 +69,7 @@
       "split": 15,
       "stockWords": 72,
       "stockWordsPreserved": true,
+      "stockXOffsets132To255Preserved": true,
       "bitIdenticalToIsolated": true,
       "frames": 32768
     }

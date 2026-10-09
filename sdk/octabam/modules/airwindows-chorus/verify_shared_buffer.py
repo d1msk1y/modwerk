@@ -18,8 +18,10 @@ import tempfile
 import verify
 
 
-def render(work, memory, symbols, audio, slot, base, protected, split=0):
+def render(work, memory, symbols, audio, slot, base, protected, split=0, dump_stock_x=False):
     sentinel = [0x123400] * protected
+    stock_x = [0x765432] * 124
+    stock_x_base = 0x6884  # slot 8: r7=0x6800, stock offsets 0x84..0xff
     # An independent writer refreshes the live shared words before each
     # effect call. Loaded DSP instructions are original fixture code.
     source = work/'writer.asm'
@@ -36,6 +38,7 @@ def render(work, memory, symbols, audio, slot, base, protected, split=0):
     combined = work/'combined.mem'
     combined.write_bytes(memory.read_bytes()[:-9] + verify.rec(0,0x4000,words)
                          + verify.rec(1,0x25a,[base]) + verify.rec(2,base,sentinel)
+                         + verify.rec(1,stock_x_base,stock_x)
                          + memory.read_bytes()[-9:])
     input_file, output, canary = work/'input.raw',work/'output.raw',work/'canary.bin'
     input_file.write_bytes(audio)
@@ -47,10 +50,14 @@ def render(work, memory, symbols, audio, slot, base, protected, split=0):
            '-stereo','-in','-,'+str(input_file),'-out',str(output),
            '-params','127,127,0,0,0,127,0,0,0,0,0,0',
            '-split','0,'+str(split),'-dumpy',f'{base:x},{base+protected:x},{canary}']
+    if dump_stock_x:
+        cmd[-1] = f'{stock_x_base:x},{stock_x_base+len(stock_x):x},@{canary}'
     result = subprocess.run(cmd,capture_output=True,text=True,timeout=600)
     if result.returncode:
         raise RuntimeError(result.stdout[-2000:]+result.stderr[-1000:])
-    return pathlib.Path(str(output)+'.i1').read_bytes(), list(struct.unpack(f'<{protected}I',canary.read_bytes())) == sentinel
+    expected_canary = stock_x if dump_stock_x else sentinel
+    preserved = list(struct.unpack(f'<{len(expected_canary)}I',canary.read_bytes())) == expected_canary
+    return pathlib.Path(str(output)+'.i1').read_bytes(), preserved
 
 
 def main():
@@ -71,11 +78,12 @@ def main():
         for track,base,count in [(3,0x38000,16),(7,0x30000,72)]:
             for split in (0,1,8,15):
                 output,preserved = render(work,memory,symbols,audio,8,base,count,split)
-                equal = output == expected
-                verify.check(f'T{track} live stock words, split {split}',preserved and equal,
-                             f'stock words preserved={preserved}; isolated audio identical={equal}')
+                xoutput,xpreserved = render(work,memory,symbols,audio,8,base,count,split,dump_stock_x=True)
+                equal = output == expected and xoutput == expected
+                verify.check(f'T{track} live stock words, split {split}',preserved and xpreserved and equal,
+                             f'stock Y preserved={preserved}; stock X tail preserved={xpreserved}; isolated audio identical={equal}')
                 rows.append({'track':track,'split':split,'stockWords':count,
-                             'stockWordsPreserved':preserved,'bitIdenticalToIsolated':equal,'frames':n})
+                             'stockWordsPreserved':preserved,'stockXOffsets132To255Preserved':xpreserved,'bitIdenticalToIsolated':equal,'frames':n})
         if args.baseline:
             here = verify.HERE
             try:

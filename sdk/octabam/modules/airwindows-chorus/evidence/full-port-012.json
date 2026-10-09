@@ -1,6 +1,6 @@
 {
   "moduleVersion": "0.1.2-experimental",
-  "mainOsSha256": "dca518d75d623149a7531ae44183596b86221d8324febb779643dabc7f055fee",
+  "mainOsSha256": "5e0cbe6040633dd1eda7de247baeb226f38c1308e9d02cedebdf0fdf35a1d6c6",
   "fixture": "Existing generated T3/T4 FX2 tone project, SPD/RNG 64; T3 MIX 64 and T4 MIDI MIX ramp 0..127.",
   "blocks": 8192,
   "projectLoaded": true,

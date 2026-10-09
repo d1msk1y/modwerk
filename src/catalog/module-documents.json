@@ -1954,27 +1954,27 @@
           "About 16-bit delay-buffer precision; dry bypass retains 24 bits.",
           "Extreme modulation retains pitch and aliasing artifacts.",
           "Beta release: shared DSP mailbox/parameter data are protected. The reported T3 clicking remains unverified on hardware; physical timing, Part/project/reboot persistence and hardware multi-instance audio are owner-waived for this exact source/version.",
-          "Analog BD can be combined with Air Chorus; native/browser placement still refuses selections that exceed available DSP code space. Reverb donors may be removed."
+          "Air Chorus combines with Analog BD and E-Verb. Available DSP code space still limits larger selections; stock reverb donors may be removed."
         ]
       },
       "resources": {
-        "recorded": "9 October 2026: shared-word protection and matched benchmarks; chip timing unmeasured.",
+        "recorded": "9 October 2026: lossless packing and shared-word protection; chip timing unmeasured.",
         "storage": {
           "label": "Per-instance used DSP storage",
-          "display": "16,256 Y + 184 X words",
-          "value": 49320,
+          "display": "16,312 Y + 132 X words",
+          "value": 49332,
           "unit": "bytes at 24 bits/word",
           "method": "static",
-          "conditions": "Uses the existing 16,384-word FX2 buffer and 256-word X state reservation. First 128 virtual ring words move into unused per-instance X state: 56 control + 128 ring words. Shared code/table use 1,492 P words per core. No new allocation.",
+          "conditions": "Uses existing 16,384-word FX2 rings. First 72 virtual ring words use X offsets 60..131; 60 control words. Stock X offsets 132..255 remain untouched. Shared code/table use 795 P words per core (539 program + 256 lossless sine differences). No new allocation.",
           "source": "evidence/bounds.json"
         },
         "processing": {
           "label": "Conservative DSP instruction budget",
-          "display": "727 modeled units/sample",
-          "value": 727,
+          "display": "732 modeled units/sample",
+          "value": 732,
           "unit": "modeled instruction units/sample",
           "method": "static",
-          "conditions": "Conservative source-word/call bound including trigger splits. Four instances plus four bounded initializations: 46,892 modeled units/core/block. Excludes contention stalls; not chip cycles or physical deadline evidence.",
+          "conditions": "Conservative source-word/call bound including trigger splits. Four instances plus four bounded initializations: 47,256 modeled units/core/block. Excludes contention stalls; not chip cycles or physical deadline evidence.",
           "source": "evidence/bounds.json"
         },
         "impact": {
@@ -1988,26 +1988,27 @@
           "dsp": {
             "level": "high",
             "basis": "measured-comparison",
-            "rationale": "Observed maximum 387.125 net executed instructions/sample versus stock Chorus 292.875 and expensive split Spring 314 under matched conditions on both cores. Shared-word protection raises cost from beta 0.1.1 (336.75); still below original 0.1.0 (524.5). Chip timing and physical headroom remain unmeasured.",
+            "rationale": "Observed maximum 394.625 net executed instructions/sample versus stock Chorus 292.875 and expensive split Spring 314 under matched conditions on both cores. Shared-word protection and lossless table decoding increase cost 17.2% from beta 0.1.1 (336.75); still 24.8% below original 0.1.0 (524.5). Chip timing and physical headroom remain unmeasured.",
             "source": "evidence/stock-comparison.json"
           },
           "memory": {
             "level": "high",
             "basis": "source-estimate",
-            "rationale": "Full 16,384-word virtual stereo ring per instance, split between 16,256 Y and 128 X words; 56 additional control X words. Reserves existing 256 X/16,384 Y words, plus 1,492 P code/table words per core. No added sample heap.",
+            "rationale": "Full 16,384-word virtual stereo ring per instance, split between 16,312 Y and 72 X words; 60 additional control X words within safe offsets 0..131. Uses existing reservations and 795 P code/table words per core. No added sample heap.",
             "source": "TESTING.md"
           }
         }
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "Beta 0.1.2 moves the reserved-prefix ring history into unused per-instance X state, preserving the full delay range and controls. Native regression checks refresh stock shared data during playback. Analog BD composition is supported. Current physical hardware remains untested under the owner beta waiver.",
+        "summary": "Beta 0.1.2 protects live stock shared data within safe instance state and losslessly packs the sine table, preserving the full delay range, sound and controls while widening module combinations. Current physical hardware remains untested under the owner beta waiver.",
         "hardwareStatus": "untested",
         "evidenceRevision": "ed61db5cf1ad04331438fd15967b0ba8cdf4b109",
         "gates": [
           "verify.py",
           "verify_controls.py",
           "verify_instances.py",
+          "verify_sine.py",
           "verify_shared_buffer.py",
           "verify_bounds.py"
         ],
@@ -2048,7 +2049,7 @@
             "shows": "location",
             "firmware": "1.40C",
             "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "dca518d75d623149a7531ae44183596b86221d8324febb779643dabc7f055fee",
+            "imageSha256": "5e0cbe6040633dd1eda7de247baeb226f38c1308e9d02cedebdf0fdf35a1d6c6",
             "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         },
@@ -2065,7 +2066,7 @@
             "shows": "location-and-controls",
             "firmware": "1.40C",
             "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "dca518d75d623149a7531ae44183596b86221d8324febb779643dabc7f055fee",
+            "imageSha256": "5e0cbe6040633dd1eda7de247baeb226f38c1308e9d02cedebdf0fdf35a1d6c6",
             "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         },
@@ -2082,7 +2083,7 @@
             "shows": "controls",
             "firmware": "1.40C",
             "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "dca518d75d623149a7531ae44183596b86221d8324febb779643dabc7f055fee",
+            "imageSha256": "5e0cbe6040633dd1eda7de247baeb226f38c1308e9d02cedebdf0fdf35a1d6c6",
             "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         },
@@ -2099,7 +2100,7 @@
             "shows": "controls",
             "firmware": "1.40C",
             "moduleVersion": "0.1.2-experimental",
-            "imageSha256": "dca518d75d623149a7531ae44183596b86221d8324febb779643dabc7f055fee",
+            "imageSha256": "5e0cbe6040633dd1eda7de247baeb226f38c1308e9d02cedebdf0fdf35a1d6c6",
             "setup": "Headless ot_emu; MKII panel; stopped transport; 128×64 LCD at integer scale 6."
           }
         }

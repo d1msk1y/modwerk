@@ -3,7 +3,7 @@
   "kind": "source-packages",
   "sourceCommit": null,
   "nativeRevision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
-  "sourceTreeSha256": "4f495d95ba20a18560f3a62b3e39eeee8ddfdbb51c329dcf0ddbd258e86cfd2c",
+  "sourceTreeSha256": "911c75023f63af9e48fe7d475fac432c8f5b4fefcdecaf3328d76d4e3ee9eeea",
   "compilerSha256": "ee9d2e6da1fae22116d7fcb47cff2ad0b8c2d8eaa9ebb1038516d85965700655",
   "moduleVersions": {
     "spectrum": "0.1.1-experimental",
@@ -32,8 +32,8 @@
   },
   "files": {
     "dsp-packages.json": {
-      "bytes": 64928,
-      "sha256": "4386b3960f983e5b1bd3a9a7bfae51e21a0833765401be177e06e3fdb21c1f88"
+      "bytes": 60735,
+      "sha256": "4398c1355f915f018efd331a7a296a0486a6d2ddbe6cf211ba54a21f775392d1"
     },
     "resident-dsp.json": {
       "bytes": 24851,
@@ -57,7 +57,7 @@
     },
     "descriptor-recipes.json": {
       "bytes": 62699,
-      "sha256": "d6bcbb5513e6fa7c5865d15fd5c6115aa21468cd3c9f02eb31232031c9e96dbe"
+      "sha256": "53c18acf41175010c5a17e5b45a3314bc28b893e5a87f5c1664f27efa084ad1a"
     },
     "platform-writes.json": {
       "bytes": 16915,

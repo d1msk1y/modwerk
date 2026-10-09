@@ -122,13 +122,17 @@ The real ColdFire/DSP playback fixture exercised T3/T4 MIX delivery over 8,192 b
 
 ## Beta 0.1.2 — 9 October 2026
 
-Protects stock shared data in the T3/T7 FX2 buffers by moving the first 128
-virtual delay words into unused per-instance X state. Full delay range, sine
-table, controls and saved parameter layout stay the same. The old collision
-is reproduced and the regression passes; the audible hardware symptom still
-needs confirmation. Physical tests remain owner-waived for this beta.
+Protects stock shared data in the T3/T7 FX2 buffers by keeping the first 72
+virtual delay words in safe per-instance X offsets 60..131. Stock track state
+at offset 132 and above remains untouched. The old collision is reproduced
+and the regression passes; the audible hardware symptom still needs
+confirmation. Physical tests remain owner-waived for this beta.
 
-Air Chorus now supports Analog BD through separate table/code placement.
-The builder removes stock reverb donors as needed and still refuses crowded
-combinations. The protection raises measured DSP cost from 336.75 to 387.125
-net instructions/sample under matched conditions; chip timing is unmeasured.
+All 1,026 original sine values are reconstructed exactly from 256 packed
+second-difference words. The full delay range, sound, controls and saved
+parameter layout stay the same. The code/table total drops from 1,425 to 795
+words per core, enabling E-Verb and more Analog BD companion combinations.
+The builder can place table and code separately, removes stock reverb donors
+as needed and still refuses combinations that exceed available memory.
+See [the current test record](TESTING.md#beta-012--shared-word-protection-and-wider-compatibility)
+for matched DSP cost, native composition evidence and remaining limits.

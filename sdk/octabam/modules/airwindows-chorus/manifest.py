@@ -5,6 +5,8 @@ a sequencer clock. Hardware operation remains untested.
 """
 from remix.schema import (Category, Proof, BusRole, Claims, DspSection,
                           Formatter, Gate, Harness, Kind, MenuEntry, Module, Param, YBase)
+from pathlib import Path
+from runpy import run_path
 
 BLANK = Param(b"", 0, 128, active=False, formatter=Formatter.PLAIN)
 MODULE = Module(
@@ -27,7 +29,7 @@ MODULE = Module(
     dsp=DspSection(asm="modules/airwindows-chorus/chorus.asm", priority=18,
                    bus_role=BusRole.NONE, ybase=YBase.NEVER,
                    split_ptable=True,
-                   ptable=tuple(round(__import__("math").sin(__import__("math").pi*i/2048)*(2**23-1)) for i in range(1025)) + (2**23-1,)),
+                   ptable=run_path(str(Path(__file__).with_name('packed_sine.py')))['packed_table']()),
     claims=Claims(stock_instance_buffer=True, buffer_words=16384),
     harness=Harness(layout_char="5", is_server=False, bus_client=False),
     gates=(Gate("modules/airwindows-chorus/verify.py", remix_arg=False),

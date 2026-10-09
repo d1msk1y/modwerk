@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "moduleId": "airwindows-chorus",
   "moduleVersion": "0.1.2-experimental",
-  "moduleSourceSha256": "751bc366493fede2b2b0bf4d93dafe6f05862db1ce94ceb29f0cac0204c9a75f",
+  "moduleSourceSha256": "2312319e9e009839dbfc135de2f76fa438a82957d62d67aec4e7c47238517fe1",
   "revision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
   "originalOsSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
   "pool": [
@@ -28,10 +28,10 @@
   ],
   "summary": {
     "selections": 122,
-    "built": 50,
-    "identicalOutright": 16,
+    "built": 52,
+    "identicalOutright": 18,
     "identicalOutsidePlatformWrites": 34,
-    "refused": 72,
+    "refused": 70,
     "mismatches": 0
   },
   "selections": [
@@ -66,13 +66,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "58d95433b0feb2e139316b2c75382ebbd46e644913f37b2e70bcee6fb02c4b87",
-        "maskedOsSha256": "58d95433b0feb2e139316b2c75382ebbd46e644913f37b2e70bcee6fb02c4b87"
+        "osSha256": "2f31c73dbbe8a7ef619d92bb998539287ead660288c1fdef4de385f0af018f72",
+        "maskedOsSha256": "2f31c73dbbe8a7ef619d92bb998539287ead660288c1fdef4de385f0af018f72"
       },
       "result": "identical"
     },
@@ -100,8 +101,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "824fdf3c0a02a50e5d9edee50dd9ac9e469a7415ea476a1e0ac4147251a2505c",
-        "maskedOsSha256": "824fdf3c0a02a50e5d9edee50dd9ac9e469a7415ea476a1e0ac4147251a2505c"
+        "osSha256": "9e492fdaefcdfbcd23bb71fb31d320879c4219ff9c32d92220663dfb06443d04",
+        "maskedOsSha256": "9e492fdaefcdfbcd23bb71fb31d320879c4219ff9c32d92220663dfb06443d04"
       },
       "result": "identical"
     },
@@ -136,15 +137,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "MINIVERB",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "35966413cb3e9c7332ad243b1822abb6456d61e6101000761781ae8b0e9036df",
-        "maskedOsSha256": "35966413cb3e9c7332ad243b1822abb6456d61e6101000761781ae8b0e9036df"
+        "osSha256": "e7165b996de291f49abca049674969320518dfce71581dbed20201dad1dcde20",
+        "maskedOsSha256": "e7165b996de291f49abca049674969320518dfce71581dbed20201dad1dcde20"
       },
       "result": "identical"
     },
@@ -174,8 +175,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "fecf69ee0dd00bd7b6a8a2067aa457be4ecb9e5dcc491005b483aaa11205901d",
-        "maskedOsSha256": "fecf69ee0dd00bd7b6a8a2067aa457be4ecb9e5dcc491005b483aaa11205901d"
+        "osSha256": "6c64c4d9ba87fe0522fb5033485980d4e23dd01a78d11134327ff1e656985a53",
+        "maskedOsSha256": "6c64c4d9ba87fe0522fb5033485980d4e23dd01a78d11134327ff1e656985a53"
       },
       "result": "identical"
     },
@@ -211,14 +212,15 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "TAPE ECHO",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1215051,
-        "osSha256": "0a4616a00e36ca8ac3d2c071b451e3faf41605521b3240362061acd24ff6dba0",
-        "maskedOsSha256": "f620b50792ac4e54d26323c6b932fe4fd078984c0a3bca4e9cf1ddda80a28608"
+        "osSha256": "540312a964f1daacfb8fd7a9305e98e646770115467a79b390c0887ce2db14d4",
+        "maskedOsSha256": "6750548465fece2af8b5b62fdfef5ba37867fcf4c18cadf3431f4a9f97ba4309"
       },
       "result": "masked"
     },
@@ -248,8 +250,8 @@
       },
       "native": {
         "bytes": 1215051,
-        "osSha256": "74ab1c3d381c1831d7638df5a51d9b932165cdcfeb2c113eefdcb9419cdc3ac1",
-        "maskedOsSha256": "8ae3aa88a2a00c6a8e6b865ace66f6f1d582fbc952f0d31c1b880933162f80c3"
+        "osSha256": "8d313b8d9ca5d12b5234857b29a8fa2ccc184ea436b8d970334674ab89ba173d",
+        "maskedOsSha256": "6a6a1fb8343ca532d8b9754c1388736a68327ccf6a302926c6729787e0bee1e8"
       },
       "result": "masked"
     },
@@ -285,15 +287,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "EUCLID",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "9ed6f7241b26765192e0afe57f17d5f8bc4b09b269ce67a28e7651eb4b3e8a0a",
-        "maskedOsSha256": "dd73f346476a4a30720708da4a515db5fba83a878a65e14f88121162ea9bbffd"
+        "osSha256": "7b704bdd5224a2b402598bd589ed96c11978da8e16b851dd2ac497d48198f191",
+        "maskedOsSha256": "a95d0c26ceaf36803df6aa9781957a5b3a2775a2d96ae2e948d66e4a0ca1e642"
       },
       "result": "masked"
     },
@@ -324,8 +326,8 @@
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "f1767f43efac92858955ac22f206769aa2141462f8dc2b97d40e2a02ea54b72e",
-        "maskedOsSha256": "b426baf751d601334916b75df4dfdf4e51f9d646844f676dd974f71c1e5d5877"
+        "osSha256": "ff8606d4c77d5f8e9da774d470be1017b0b48ca4ff9ee3671a00f10b0111bfbc",
+        "maskedOsSha256": "0a5987523f2ae868b9c978edbdf5f73ad3cac135b561435ad95431d014fd459e"
       },
       "result": "masked"
     },
@@ -361,13 +363,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "9986c341f5b5c9710a687ee1c04c54e0e4b779e61b2af3aeead4643f661c8ad3",
-        "maskedOsSha256": "9986c341f5b5c9710a687ee1c04c54e0e4b779e61b2af3aeead4643f661c8ad3"
+        "osSha256": "2c42466d1f6ef2148b007f06c9adc87e813110fe22c6662fe224e19a7a69fa92",
+        "maskedOsSha256": "2c42466d1f6ef2148b007f06c9adc87e813110fe22c6662fe224e19a7a69fa92"
       },
       "result": "identical"
     },
@@ -396,8 +399,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "fb7b77e4485d9ae0e9872c2d747d67940a68d870286088175a5e4c107478dff0",
-        "maskedOsSha256": "fb7b77e4485d9ae0e9872c2d747d67940a68d870286088175a5e4c107478dff0"
+        "osSha256": "cd2a04fd2077d515867a24e76f58501373f04fa1397062d1bcf45eced3e0d8b0",
+        "maskedOsSha256": "cd2a04fd2077d515867a24e76f58501373f04fa1397062d1bcf45eced3e0d8b0"
       },
       "result": "identical"
     },
@@ -433,15 +436,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "TAPEHEAD",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "f754555123b468141a09a0dc304c7d744b692a8fd044f2c8488471e02dce4899",
-        "maskedOsSha256": "f754555123b468141a09a0dc304c7d744b692a8fd044f2c8488471e02dce4899"
+        "osSha256": "3e2033ee896eeea0873b89e707009148c64a6ced386f45aa4cc2ad45693420b7",
+        "maskedOsSha256": "3e2033ee896eeea0873b89e707009148c64a6ced386f45aa4cc2ad45693420b7"
       },
       "result": "identical"
     },
@@ -472,8 +475,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "117cf303a37a1d206b526fe0acf170941b5fb177feccf31bfb5d62be39aed3fa",
-        "maskedOsSha256": "117cf303a37a1d206b526fe0acf170941b5fb177feccf31bfb5d62be39aed3fa"
+        "osSha256": "48536018c2874d4f61c5165a7eb4a73e8f542c054890dacb94555411f8cb5005",
+        "maskedOsSha256": "48536018c2874d4f61c5165a7eb4a73e8f542c054890dacb94555411f8cb5005"
       },
       "result": "identical"
     },
@@ -513,9 +516,11 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3080 > 2724 words)"
+        "bytes": 1112560,
+        "osSha256": "1ea06352c54345862bd71347213e3adec120c9a3095fe70f772a29dbc07161dc",
+        "maskedOsSha256": "1ea06352c54345862bd71347213e3adec120c9a3095fe70f772a29dbc07161dc"
       },
-      "result": "refused"
+      "result": "identical"
     },
     {
       "moduleIds": [
@@ -542,9 +547,11 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3080 > 2724 words)"
+        "bytes": 1112560,
+        "osSha256": "db04c532233204cc48f169e0b907c2870c9c8a974215e4ba0503dd15211c8c37",
+        "maskedOsSha256": "db04c532233204cc48f169e0b907c2870c9c8a974215e4ba0503dd15211c8c37"
       },
-      "result": "refused"
+      "result": "identical"
     },
     {
       "moduleIds": [
@@ -577,13 +584,14 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "AIR CHORUS"
         ]
       },
       "native": {
-        "bytes": 1268810,
-        "osSha256": "e8c375d29e1eaf1b6e885e79d1cf38e50a19557e398d636e74ca52bd1c2a03dc",
-        "maskedOsSha256": "b71bd3a71f27afa741d5169ca0c3164ded8aaafa0aafb79a8a195a9e46386da6"
+        "bytes": 1266806,
+        "osSha256": "3b2fae42eb224eb402e7c3b325fc586896b00d868e452cbf6532191b9b0ea4c9",
+        "maskedOsSha256": "2ae2a8c9b41f7b13392577f2dbba2b04fada98d26bd75690f8c10a5af9d1a854"
       },
       "result": "masked"
     },
@@ -611,9 +619,9 @@
         ]
       },
       "native": {
-        "bytes": 1268810,
-        "osSha256": "9c1811d5bc7325a88752902e8528d2a849cef91a388f65fadc00a47976e9da3c",
-        "maskedOsSha256": "0a5060f03099ba3ca1a12d7c6a82ad62c585b05ca4b80730eea22b9b34949810"
+        "bytes": 1266806,
+        "osSha256": "6def828ece8f76ef3c6c1600ad4547e7959cb1698eff45c8f19b2e2b6cbe691a",
+        "maskedOsSha256": "935d8292d09d402df33135b5c0f565933f2086567d7ca3f0350ccb99b2c31f81"
       },
       "result": "masked"
     },
@@ -649,13 +657,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1115534,
-        "osSha256": "a0151769efc16ce5e85da73e77a03562f06dc8e3e908eb4fb10ae7379513dd8a",
-        "maskedOsSha256": "71b334ddc6ef2baece674e6ce6b68d16e0116d8b6065f6fc9950c6acb68f2203"
+        "osSha256": "c855fbfd88fa7dbc379e5d44d048078aebd0e4410dd8652185ab48e359895210",
+        "maskedOsSha256": "5f346516926eb7850ced3f3124d06f5d39ecce5e3f78d91aa2719f23e5e99234"
       },
       "result": "masked"
     },
@@ -684,8 +693,8 @@
       },
       "native": {
         "bytes": 1115534,
-        "osSha256": "d066879bf9b2fdd29ffb799e6da4fc1b7084e6eedba592502d3929001cee30d1",
-        "maskedOsSha256": "c37515b8bb9f86bbdfc8bd44890e34298355ee4a4dc8abdd2abe2b3f57849f70"
+        "osSha256": "e3c0520ba8759bd3bf1bfaa8d213d711d1ecbd164d025ccf833cdb834c9fe774",
+        "maskedOsSha256": "c58ea0bdf107de6e4fac319ffa5f8fc1b798eface7bbaefadb6f3a32a6dbc452"
       },
       "result": "masked"
     },
@@ -721,13 +730,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1115052,
-        "osSha256": "826d557cf40886303f29ed0139d11219f4c0e380d2c817ee095cec68322d2b5d",
-        "maskedOsSha256": "5ddcd67f859be594653c64c6a72cfe9a3cb16166f09780ec8ab506f6a461fbbf"
+        "osSha256": "f08ad31787a69ffacdfe49b60a56d88d0b683d7a56e9eb2e363e1625a67e4daa",
+        "maskedOsSha256": "a45034b0f640a92b86ac614c3036a7ea693ecfa422d9ad6c448bd81567319d1f"
       },
       "result": "masked"
     },
@@ -756,8 +766,8 @@
       },
       "native": {
         "bytes": 1115052,
-        "osSha256": "63211848715b2180c60ebcfb850e861ab3fdf11df1e156aae33ecd133bd30dba",
-        "maskedOsSha256": "090ba2a3f2b02dcfb85fd7a3e57d161e7ab5f1963ff253d122acbd9d186cc0b3"
+        "osSha256": "ab558a067a4783e9acd132e43fa8be381df0bc370370d94697dd0a299383f313",
+        "maskedOsSha256": "76965666fdeadbf5a988b328d1be7e284917e5743e17558ea026e70055904352"
       },
       "result": "masked"
     },
@@ -793,13 +803,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1125240,
-        "osSha256": "cd7da5d6fc3736e85241f30d5f5dfb522e26dbe94e0f46d522d74e4a860d9935",
-        "maskedOsSha256": "5e8a080566c1293d80e325ff40c34e30171970f88c6f1233c099ef912ccb3db5"
+        "osSha256": "ab1c64d3f47bc7509c0c21581a5c8ef497d6d26cefed08c6c245f602a763e293",
+        "maskedOsSha256": "9fe1fdd139a2099ac5e327c69c820d0240859b899af7178a74796c4181dd93c0"
       },
       "result": "masked"
     },
@@ -828,8 +839,8 @@
       },
       "native": {
         "bytes": 1125240,
-        "osSha256": "69271d3581aabe1e674f044efbecbd39510c2769edaa83be2debf9ac65fe6d59",
-        "maskedOsSha256": "9bc05711475e7e48674901f5ed45d36a9948aa6f0a5d672e1258291bca3e4532"
+        "osSha256": "8dc849846962c6deaedbd189b5edde6b3e8cd047ac03f3e9775e7566f14300e1",
+        "maskedOsSha256": "90350df1f497719cc3789bf56fa8e4f411b88e8a1d4ff2515a16fffd44e20db0"
       },
       "result": "masked"
     },
@@ -865,13 +876,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "b4f4bec0efdb240656609fb438928c7ebaf7f8023cd817ed30bb176c5ca728fe",
-        "maskedOsSha256": "b4f4bec0efdb240656609fb438928c7ebaf7f8023cd817ed30bb176c5ca728fe"
+        "osSha256": "5fadd2997eee3045dbeb6bccf6d6932de41aab437702b2075f5de50b54fa6b95",
+        "maskedOsSha256": "5fadd2997eee3045dbeb6bccf6d6932de41aab437702b2075f5de50b54fa6b95"
       },
       "result": "identical"
     },
@@ -900,8 +912,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "509b57cd0556c002abc28ece8eff2c9e9bea40ad0fb8aa3755905fef2432d465",
-        "maskedOsSha256": "509b57cd0556c002abc28ece8eff2c9e9bea40ad0fb8aa3755905fef2432d465"
+        "osSha256": "36b2c68dc184ff53dc3cf9d768e3ba41885b0aca36c07a1c24868b90dbb51465",
+        "maskedOsSha256": "36b2c68dc184ff53dc3cf9d768e3ba41885b0aca36c07a1c24868b90dbb51465"
       },
       "result": "identical"
     },
@@ -937,13 +949,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "490cdc82ee2d94595a935a86acdd40aa44fca8c342866c33325de6e35d050fb3",
-        "maskedOsSha256": "490cdc82ee2d94595a935a86acdd40aa44fca8c342866c33325de6e35d050fb3"
+        "osSha256": "98a36e55fd9a43217050988b184b77e9c5f9a7549e611f5380ee9e9afe0a2581",
+        "maskedOsSha256": "98a36e55fd9a43217050988b184b77e9c5f9a7549e611f5380ee9e9afe0a2581"
       },
       "result": "identical"
     },
@@ -972,8 +985,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "6b5682b8d6f214feb1b50a0a28f2c745eab2439f963668b81a8a340cd591a455",
-        "maskedOsSha256": "6b5682b8d6f214feb1b50a0a28f2c745eab2439f963668b81a8a340cd591a455"
+        "osSha256": "5d8c2dd41242deac97e85460970d808cbf59ea4c398fe25504ad6f0e28941802",
+        "maskedOsSha256": "5d8c2dd41242deac97e85460970d808cbf59ea4c398fe25504ad6f0e28941802"
       },
       "result": "identical"
     },
@@ -1008,14 +1021,14 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "35402218d50e7bfd85e2c49b02da3969e09f3a570695f630cd187a2da304bb68",
-        "maskedOsSha256": "35402218d50e7bfd85e2c49b02da3969e09f3a570695f630cd187a2da304bb68"
+        "osSha256": "745894317e3ca19915ed10cd2b9bc45b2c6f6283d1476a25d455c8c910056507",
+        "maskedOsSha256": "745894317e3ca19915ed10cd2b9bc45b2c6f6283d1476a25d455c8c910056507"
       },
       "result": "identical"
     },
@@ -1045,8 +1058,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "b751ba1d00c26ceed75d8494c3d5761defa64b3eb5c95e6d3e7c3ca0d366183e",
-        "maskedOsSha256": "b751ba1d00c26ceed75d8494c3d5761defa64b3eb5c95e6d3e7c3ca0d366183e"
+        "osSha256": "4259628778edab04fc0a3941946eebb8dc287d21472f352a69781d84b629d18a",
+        "maskedOsSha256": "4259628778edab04fc0a3941946eebb8dc287d21472f352a69781d84b629d18a"
       },
       "result": "identical"
     },
@@ -1082,13 +1095,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1121076,
-        "osSha256": "ff9dabd3dd0fcebe20980657c292368b351d951bae46ec29819b5b01c3ac47de",
-        "maskedOsSha256": "5e2815151641263aa6a6b8ce19117fdd9e5151c25182213091daac1cca00e644"
+        "osSha256": "c68eb93e1346ecb87f711a41018c5fc36468891dd646bf33089453f76e64ea9a",
+        "maskedOsSha256": "42dd305131322c980219ad3970e1e7aa10c2bc798a24f12c22ac51a28e017674"
       },
       "result": "masked"
     },
@@ -1117,8 +1131,8 @@
       },
       "native": {
         "bytes": 1121076,
-        "osSha256": "a44c62c7a8d8ebd58c3ea363c269fa8c0244f56db020d1c89e7c3a128d6d1086",
-        "maskedOsSha256": "031f19aab8e620379600737f41198bbd6fb102d0fab4a7f8828d35e2e1d01dd3"
+        "osSha256": "4435f630bcae5ff52106c8de022c27f9e2c7e12dd4dab03929911eb15193c4f8",
+        "maskedOsSha256": "19e2378caa863e547fa177364d196ce36456b95b35635fbaef8b17d09fbb1d5b"
       },
       "result": "masked"
     },
@@ -1154,13 +1168,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1118019,
-        "osSha256": "35eb5277005b67a208fbce7ffcced54389e5f2ea99d25b34a31e045f344ea94d",
-        "maskedOsSha256": "916ec44d7abf3b785842aae0dfef4ae2f0411d695889a97f503439f36568020f"
+        "osSha256": "e91affcc9af60b0f0033613f0c4c3ef5f3cea76ebcb9f98cc09d39331c37ee8b",
+        "maskedOsSha256": "91a651930ccb831e2aa6f48fdb2d1681d8c87cadbb4c9c87f968c9bb5f540943"
       },
       "result": "masked"
     },
@@ -1189,8 +1204,8 @@
       },
       "native": {
         "bytes": 1118019,
-        "osSha256": "fa420618e2f3bf93656d4eb07f769d7a56f0cbb400170cc2585938f67e06b28d",
-        "maskedOsSha256": "10eb38f098d27e2c987fd99185a15b32232fd131d1c500e44ee25cec78ee22b2"
+        "osSha256": "b2bda0b45f6b672a40371ffc36b588b33358b0f23b6d84d65d21bf2eed2c6dc0",
+        "maskedOsSha256": "c5256416c73161d888c1e2e8266756db673d392c1f388b16996ae37bbf985db3"
       },
       "result": "masked"
     },
@@ -1226,13 +1241,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "9b9aa42de9226662b1786e93a3dae82f3c6fb4f4f3ec5d47058a31a5e628a217",
-        "maskedOsSha256": "9b9aa42de9226662b1786e93a3dae82f3c6fb4f4f3ec5d47058a31a5e628a217"
+        "osSha256": "ac096aa6d28ea827037ecdd3f316edb4dd23492237613620182449388b86efd6",
+        "maskedOsSha256": "ac096aa6d28ea827037ecdd3f316edb4dd23492237613620182449388b86efd6"
       },
       "result": "identical"
     },
@@ -1261,8 +1277,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "a86895bbc7d9ef9cc8b30041224fbaa3e1ccc254093170cd23174a334a957ab1",
-        "maskedOsSha256": "a86895bbc7d9ef9cc8b30041224fbaa3e1ccc254093170cd23174a334a957ab1"
+        "osSha256": "6c2950beff0afa1ddf0dfe2f355a5c8069b72a6cf2bb07dc55a4ac7bd081c845",
+        "maskedOsSha256": "6c2950beff0afa1ddf0dfe2f355a5c8069b72a6cf2bb07dc55a4ac7bd081c845"
       },
       "result": "identical"
     },
@@ -1298,13 +1314,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "5a7424f4ac56d46aba8a95b0a6e567ec27f9a67a5a539f04461db46e7d99002b",
-        "maskedOsSha256": "2f85d6a07be7a097a6829bbc0b859cf911e34ce8273fd5db96b70f4b46093609",
+        "osSha256": "fedc61401490ba96f8719af44ccd06372a35512b914fae43852acad26ecb9dc0",
+        "maskedOsSha256": "e8917092504f19f6cfb1641337a10b5086ddaee6768c8345e6f92d7275efe3d5",
         "platformArena": true
       },
       "result": "masked"
@@ -1334,8 +1351,8 @@
       },
       "native": {
         "bytes": 1112560,
-        "osSha256": "6a5c3dc40d4388982d7f4caa5ad65eac84456fc6364919dd836e697425c299f5",
-        "maskedOsSha256": "5fe59bffa03c088d6e48b2e7caa11da6e813c76fb9e780dbcd2cbc3dfb449ac7",
+        "osSha256": "7561380b19ef9c4e65f258229ec01d551e1a2a0e61bead69184de49140ac2894",
+        "maskedOsSha256": "15e9ce319bf1bbda09edb79ca03584fbe4f05c56cb650714543506714092f4d2",
         "platformArena": true
       },
       "result": "masked"
@@ -1372,13 +1389,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1125712,
-        "osSha256": "083360b345368d4e0da83304f1ca036969f80a465c22078079f991004c07cc02",
-        "maskedOsSha256": "7eac1e995cd377091ed7c8378f40c6965117506b73053f3a18314fd797488ffc"
+        "osSha256": "a21657c625fa5660ffc0a7bb72f6f599ddd66408a7122a7eb58ccaf546fbc792",
+        "maskedOsSha256": "f6f61622f2c31afdbc765d1c05e94e6e47d1815bd5e6483d1b206a149b64ac15"
       },
       "result": "masked"
     },
@@ -1407,8 +1425,8 @@
       },
       "native": {
         "bytes": 1125712,
-        "osSha256": "d892fae9ef219bae8bb2a3555eea2bc42428f8d95a51076d9eb064941c9f488b",
-        "maskedOsSha256": "d6ec741267e41a0d428f8d83b62f8dd9d2f5c52e1c18cacddba4f1f140cca209"
+        "osSha256": "66ba479e1e7fb4746139b2eac690a2d6b2a09bc487bc2722c7e80db43fd807b5",
+        "maskedOsSha256": "a0ab8920cc8a4a35664c8fbb5c71cf82c05760208f366edc9536db4e9bc6b99c"
       },
       "result": "masked"
     },
@@ -3562,6 +3580,7 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "MINIVERB",
           "EUCLID",
           "AIR CHORUS"
@@ -3649,7 +3668,7 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "TAPE ECHO",
           "AIR CHORUS"
         ]
@@ -3732,13 +3751,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1125712,
-        "osSha256": "f38b3415d09f1359d16c30e9b38f531da2bca39b98ec4b0365bab7cd05000eb4",
-        "maskedOsSha256": "ba69c39aa3662db18c98952c5400d72f159daba4d276a5737a86734076da5f43"
+        "osSha256": "787e6b298b78d10dad380eb6fa860ecf38ea5cf23278dd3cb0236bdfc3dbc88e",
+        "maskedOsSha256": "6e38e9505c212d24ff7c0add91e0a62ab5177ee0105485f1ee77b64c00dd5368"
       },
       "result": "masked"
     },
@@ -3768,8 +3788,8 @@
       },
       "native": {
         "bytes": 1125712,
-        "osSha256": "ebe861ef085d4e080c4b491c966620d2fc39127a44bc9c3f22536855df411017",
-        "maskedOsSha256": "454e8573a4044008e47903c76c08cde6636bf3a47797641fd23a722316489c42"
+        "osSha256": "4d2dd18b5fb96dd73b1373308ceb71895a8924ddf67ad8cab94ae558c77168d9",
+        "maskedOsSha256": "aab26de7a9907843d8d94a517e4194e98fb3a4d56d0ec9debbe4e7c6701b33ea"
       },
       "result": "masked"
     },
@@ -3815,7 +3835,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3502 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (2805 > 2724 words)"
       },
       "result": "refused"
     },
@@ -3850,7 +3870,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3502 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (2805 > 2724 words)"
       },
       "result": "refused"
     },
@@ -3890,15 +3910,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "EUCLID",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1130024,
-        "osSha256": "a0410877a1f710b29048cbe798a34d5b1e5cb18bbb8b702ba6b59fdeefeefc3e",
-        "maskedOsSha256": "7048e279d6f89f7305457b0ac941581426339ed88ef507f5ffc8f8cff2e28731"
+        "osSha256": "2d7210c2ab3c59962df135a84dc021f467afbd71afc74b8de12e9d3a4a4c4637",
+        "maskedOsSha256": "6d630d09119c6ecc47fba9deac9eecc351d3be6a24d64aec63d2c99248e532aa"
       },
       "result": "masked"
     },
@@ -3933,8 +3953,8 @@
       },
       "native": {
         "bytes": 1130024,
-        "osSha256": "38bcea23bb5c41e735f92184256ad8cc020c5765210c9e699752ec9376ec226f",
-        "maskedOsSha256": "2bb42798baf1b4dd954a134ad9674e3c7d41de05a1818c8c5da686a0d87d0d74"
+        "osSha256": "8beded839ececa93579a4df81e3a109bdfa8dcd1fc1f00c5faa7f2a6936ab9a1",
+        "maskedOsSha256": "5ea2c0457d9efb027640765e2b3f88411f4826e3c044c45d15bd8a16526e4588"
       },
       "result": "masked"
     },
@@ -4081,14 +4101,14 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1115534,
-        "osSha256": "f5dc956d0916556c6ee784fc64579b875e71ef0568901dc075974b6fe571cee2",
-        "maskedOsSha256": "36896c24d4d0bb58d7651152afbccf41fa2d17e96bd1a8aeba679986017c3043"
+        "osSha256": "2c288b72256a9ed35432f494ec30ce0f1380392bf45530ec0bab36bbbd196b7f",
+        "maskedOsSha256": "4a62977766f32fc217ab106a8e0f5d726061c4451cd7c63de78c645bc1d7c210"
       },
       "result": "masked"
     },
@@ -4120,8 +4140,8 @@
       },
       "native": {
         "bytes": 1115534,
-        "osSha256": "ab10e6b60147485bceac1b7f59527511e9baf482fb47e55345808077e814967e",
-        "maskedOsSha256": "536b3d2cc623f54b00233d35f427e58ec2ca1d9690aff9e805dcbe4c16e661f1"
+        "osSha256": "27b1891440837a3e062170b105cc361e93ee1f8b7ba69bcebc67f664c0332fef",
+        "maskedOsSha256": "f18b00bab80082f88c67d0cead4a62d53ea41ed09b44a0b978e939eefc0f09a9"
       },
       "result": "masked"
     },
@@ -4160,6 +4180,7 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "EUCLID",
           "TAPEHEAD",
           "AIR CHORUS"
@@ -4167,8 +4188,8 @@
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "52fc63deb0304376e5cc525775d2aa34d49f7c3fb3be6434ac0de230be77a9e3",
-        "maskedOsSha256": "ff2c95fb97dd493717844c564cc7ebf1a314da9eebaf2b91b9dd3e4dc6409ca2"
+        "osSha256": "c775883f1569f424ab71e4ae111a61d341d240ec7dc63ea399a57f39da99636c",
+        "maskedOsSha256": "851433d55991d85a83a8eb62b02dba527e1f927e5aacd5a3c430decad580a1dc"
       },
       "result": "masked"
     },
@@ -4204,8 +4225,8 @@
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "5ccceb026bcf69249931571f48369e46661b229a3427f013a368884dd2d6e945",
-        "maskedOsSha256": "6e4e60fb8f1a6aba92ba8c23fea0ebed409270b8b0428645cefddfeaf628c6b8"
+        "osSha256": "8a402d993505b98e1eb4a2e6c255812c03a5fa6753eb9b82d2e3e6c8fed83f60",
+        "maskedOsSha256": "0f58528bb0d7ccfe1ce5b6973420973e6d875013e9b507b74618dd7d2ba98f49"
       },
       "result": "masked"
     },
@@ -4618,6 +4639,7 @@
           "SIDECHAIN_COMPRESSOR",
           "LO-FI",
           "DELAY",
+          "PLATE REV",
           "EUCLID",
           "AIR CHORUS"
         ]
@@ -4696,13 +4718,14 @@
           "LO-FI",
           "DELAY",
           "PLATE REV",
+          "DARK REV",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1115052,
-        "osSha256": "b42fc000812a01d8f961db440f91a81670a8ca8e3f5b56e08190d90cb784f5ec",
-        "maskedOsSha256": "a4f60beb837ac358b789ccbac7f0ef057a07477badea9692cda05628d11cbfeb"
+        "osSha256": "8d93e9750012613752012a8d2c7c22425df838913638897a5cb178cfbc5359ce",
+        "maskedOsSha256": "9364d4a9a0ef7b32d678cf18b2a60ec12196aec37230f71d738a4363a289096c"
       },
       "result": "masked"
     },
@@ -4732,8 +4755,8 @@
       },
       "native": {
         "bytes": 1115052,
-        "osSha256": "184a1b2dac0746d659cbfcc4a488f4b46809aa37e10928381a15e45a935aa26f",
-        "maskedOsSha256": "442d1e92a39f25685c65b39d05c7b31bcc07508fcb3294bba13af83d3e434756"
+        "osSha256": "d162815256a5523ae9f127b8128b0bdb9aae8338990d10a677c62d42bf3d529f",
+        "maskedOsSha256": "d6408d6956e72b4f885a5a2cafa5129bc522a095b89f6cd58a92f31fd877b6ed"
       },
       "result": "masked"
     },
@@ -4886,7 +4909,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (4007 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3310 > 2724 words)"
       },
       "result": "refused"
     },
@@ -4926,7 +4949,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (4007 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3310 > 2724 words)"
       },
       "result": "refused"
     },
@@ -4981,7 +5004,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3507 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (2810 > 2724 words)"
       },
       "result": "refused"
     },
@@ -5026,7 +5049,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (3507 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (2810 > 2724 words)"
       },
       "result": "refused"
     },
@@ -5174,15 +5197,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "EUCLID",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1135777,
-        "osSha256": "7e76035295e726ce46dfb42dc9598646ae302d648a31411513d980d6fd183270",
-        "maskedOsSha256": "1211f495b3ea832b01a72cfbd66246411dce8da2a50af329287c915f1d265d52"
+        "osSha256": "842081042cbf654de6fbd5a86f3c47924113970e770ff414c2855327f0110a39",
+        "maskedOsSha256": "d2d953f0bbd2acd7fd5b6c4171f53ef419be5b33e931e51dedc0f56febacad12"
       },
       "result": "masked"
     },
@@ -5217,8 +5240,8 @@
       },
       "native": {
         "bytes": 1135777,
-        "osSha256": "83f3f8c23b3183d2ba1af411187bf09c957e875dfd0cf9ee9d922486967f3228",
-        "maskedOsSha256": "820d37f3a1c9c35719ffc6b047d088e42d823cfd31ab9614f2b19d97fbac906a"
+        "osSha256": "d4e9c4a6edba17606c964a5a7d57f50e4af280f647e3d2fa7df9a14a119678fe",
+        "maskedOsSha256": "8da99aca6fb440760e34935d09c7192bd4255cc2d99136e683c2cc137981f737"
       },
       "result": "masked"
     },
@@ -5364,15 +5387,15 @@
           "COMPRESSOR",
           "LO-FI",
           "DELAY",
-          "PLATE REV",
+          "DARK REV",
           "EUCLID",
           "AIR CHORUS"
         ]
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "c7b8adbb5f2f462ef5a5f4b05f3f6c25c8bda7cd198f202bbc2969470f965428",
-        "maskedOsSha256": "65d87df3b9a598916b32bdc4d5464d22454bcc786c0fd54b83ee34f4dc931d62",
+        "osSha256": "725ed3605b680998050f9e5332af762f9c703bec8806449d7391243a2de6b8f9",
+        "maskedOsSha256": "960237bced08b282e4ba343ba5526aa9db2c1b1db96bd7d8f9a2fba142a7ac9c",
         "platformArena": true
       },
       "result": "masked"
@@ -5406,8 +5429,8 @@
       },
       "native": {
         "bytes": 1114986,
-        "osSha256": "3547cc2b63cce90aba83cbe56758a65063bcc8db1aaff0b7b4e646fe1574da65",
-        "maskedOsSha256": "6dcd078bbe6dde0c2ad401c314a11ad2810ec956b55da6d0a73e4724cbd1e069",
+        "osSha256": "7b2e31d17caacd6edb42f30fe86906689d513089ecab5b689843e5d1d80e9bc3",
+        "maskedOsSha256": "d67c5ac15c2dc7677a9f8ec158ed52aaea729f0c13577ae9aa56b7039bdebea5",
         "platformArena": true
       },
       "result": "masked"
@@ -5454,7 +5477,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (4034 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3337 > 2724 words)"
       },
       "result": "refused"
     },
@@ -5489,7 +5512,7 @@
         ]
       },
       "native": {
-        "refused": "payload A: EVERB overruns the region (4034 > 2724 words)"
+        "refused": "payload A: EVERB overruns the region (3337 > 2724 words)"
       },
       "result": "refused"
     },

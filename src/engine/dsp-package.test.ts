@@ -29,7 +29,7 @@ describe('independently authored DSP package relocation', () => {
     }
     expect(() => relocateDspPackage(pkg, 0x1000, 0x1000 + pkg.splitTableWords!)).toThrow('overlaps')
     expect(() => relocateDspPackage({ ...pkg, splitTableWords: pkg.words }, 0x1000)).toThrow('split')
-    expect(() => relocateDspPackage({ ...pkg, relocations: [0] }, 0x1000)).toThrow('code relocation')
+    expect(() => relocateDspPackage({ ...pkg, code: '000000' + pkg.code.slice(6), relocations: [0] }, 0x1000)).toThrow('code relocation')
   })
   it('carries Sidechain Compressor as one hooked package per core that leaves stock COMPRESSOR dispatch alone', async () => {
     const fixtures = catalog.packages.filter(pkg => pkg.id === 'sidechain-compressor')

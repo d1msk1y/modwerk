@@ -2,10 +2,11 @@
 ; Copyright (c) 2016 Chris Johnson; port (c) 2026 Jannik Assfalg.
 ; Upstream revision and full MIT licence: upstream/, LICENSE.
 ; FX2 only: two 8192-word rings in the slot's 16384-word Y allocation.
-; The first 128 virtual words use X:(r7+$80)..X:(r7+$ff) instead:
+; The first 72 virtual words use X:(r7+$3c)..X:(r7+$83) instead:
 ; T3's Y:$38000 prefix aliases stock's live cross-core mailbox, and T7's
 ; Y:$30000 prefix aliases per-frame parameter staging. Never touch those
-; Y words. The reserved X state slot is 256 words; no new RAM is allocated.
+; Y words. Stay within the safe $00..$83 instance block; $84+ belongs
+; to stock track state. No new RAM is allocated.
 ; Original ring length 8176 is safely replaced by a wrapped 8192 ring:
 ; the greatest referenced age is ceil(2*4079.824)+2 = 8162.
 ; 8 guard bits keep the alternating air states and buffer writes bounded
@@ -21,7 +22,8 @@
 ; 30 table base,32 phase low,
 ; 33 speed-target low,35 dry coefficient. Other offsets are reserved.
 ; 37 count of valid ring history (0..8192); initial history is logically zero.
-; Init clears the complete 56-word control state, including reserved gaps.
+; 38 sine index,39 value,3a next value,3b temporary first difference.
+; Init clears the complete 60-word control state, including reserved gaps.
 ; Ring history guards every unwritten X shadow word just like the Y ring.
 ; init preserves r1/n1/m1. Proc never reads the allocator pointer again.
 ; CYCLES_FORWARD_BRANCHES
@@ -29,7 +31,7 @@ init:
         move    r7,r5
         move    #>$ffffff,m5
         clr     a
-        do      #56,>ac_zero
+        do      #60,>ac_zero
         move    a,x:(r5)+
 ac_zero:
         nop
@@ -48,6 +50,13 @@ ac_zero:
 ; This avoids a 16384-word clear inside the effect-change dispatcher block.
         move    #>$200000,x0
         move    x0,x:(r7+$03)
+; Initial phase is at the quarter-sine endpoint. Subsequent folded indices
+; change by at most one (maximum phase step is <1 table point/sample).
+        move    #>1024,x0
+        move    x0,x:(r7+$38)
+        move    #>$7fffff,x0
+        move    x0,x:(r7+$39)
+        move    x0,x:(r7+$3a)
         rts
 proc:
         move    x:(r7+$01),a
@@ -239,7 +248,8 @@ ac_endpoint:
 
 ac_sine:
 ; Q23 phase 0..1 -> first quarter position; explicit a1 transfers drop
-; masked accumulator extension bits. Indices never exceed the 1026 words, including the duplicate endpoint.
+; masked accumulator extension bits. The cached endpoints reconstruct the
+; exact original 1026 Q23 values from a lossless 256-word table.
         move    a1,b
         and     #>$1fffff,b
         move    b1,y0
@@ -251,11 +261,8 @@ ac_sine:
 ac_unfold:
         move    y0,a
         asr     #11,a,a
-        move    a1,n5
-        move    x:(r7+$30),r5
-        move    (r5)+n5
-        move    p:(r5)+,x0
-        move    p:(r5),b
+        move    a1,x1
+        bsr     ac_lookup
         sub     x0,b
         move    b,y1
         move    y0,a
@@ -272,6 +279,76 @@ ac_unfold:
         jclr    #22,b1,ac_positive
         neg     a
 ac_positive:
+        rts
+
+ac_lookup:
+; x1=index, y0=original quarter position (both preserved). Endpoints are
+; cached per instance; a changed index advances or reverses one exact delta.
+        move    x:(r7+$38),a
+        sub     x1,a
+        beq     ac_cachedsine
+        bgt     ac_backwardsine
+ac_advancesine:
+        move    x:(r7+$3a),a
+        move    x:(r7+$39),b
+        sub     b,a
+        move    a1,x:(r7+$3b)
+        move    x1,a
+        add     #>1,a
+        bsr     ac_seconddiff
+        move    x:(r7+$3b),a
+        add     x0,a
+        move    x:(r7+$3a),b
+        move    b1,x:(r7+$39)
+        add     b,a
+        move    a1,x:(r7+$3a)
+        bra     ac_cachefinish
+ac_backwardsine:
+        move    x:(r7+$3a),a
+        move    x:(r7+$39),b
+        sub     b,a
+        move    a1,x:(r7+$3b)
+        move    x:(r7+$38),a
+        add     #>1,a
+        bsr     ac_seconddiff
+        move    x:(r7+$3b),a
+        sub     x0,a
+        move    x:(r7+$39),b
+        move    b1,x:(r7+$3a)
+        sub     a,b
+        move    b1,x:(r7+$39)
+ac_cachefinish:
+        move    x1,x:(r7+$38)
+ac_cachedsine:
+        move    x:(r7+$39),x0
+        move    x:(r7+$3a),b
+        rts
+
+ac_seconddiff:
+; a=global second-difference index 2..1025. Four signed six-bit values
+; share each P word. Preserve x1/y0; return the sign-extended value in x0.
+        sub     #>2,a
+        move    a,b
+        and     #>3,b
+        move    b1,y1
+        asr     #2,a,a
+        move    a1,n5
+        move    x:(r7+$30),r5
+        move    (r5)+n5
+        move    y1,a
+        asl     #1,a,a
+        move    a,x0
+        asl     #1,a,a
+        add     x0,a
+        move    a1,y1
+        move    p:(r5),a
+        asr     y1,a,a
+        and     #>63,a
+        asl     #18,a,a
+        move    a1,x0
+        move    x0,a
+        asr     #18,a,a
+        move    a1,x0
         rts
 
 ac_channel:
@@ -341,13 +418,14 @@ ac_deltaready:
         move    x:(r7+$02),n5
         move    r4,r5
         move    (r5)+n5
-; Shadow the slot's first 128 words in its own unused X state. This also
+; Shadow the slot's first 72 words in its own unused X state. This also
 ; works on private-Y slots, preserving one identical virtual ring layout.
         move    r5,b
         and     #>$3fff,b
-        cmp     #>128,b
+        cmp     #>72,b
         bge     ac_writey
-        add     #>128,b
+ac_writeshadow:
+        add     #>60,b
         move    b1,n4
         move    r7,r4
         move    (r4)+n4
@@ -436,7 +514,7 @@ ac_warmread:
 ; triplets need the virtual-word helper; right-ring wrapping stays in Y.
         move    r5,a
         and     #>$3fff,a
-        cmp     #>128,a
+        cmp     #>72,a
         blt     ac_shadowread
         cmp     #>8190,a
         blt     ac_yread
@@ -462,9 +540,10 @@ ac_yread:
 ac_readword:
         move    r5,a
         and     #>$3fff,a
-        cmp     #>128,a
+        cmp     #>72,a
         bge     ac_ready
-        add     #>128,a
+ac_readshadow:
+        add     #>60,a
         move    a1,n4
         move    r7,r4
         move    (r4)+n4
