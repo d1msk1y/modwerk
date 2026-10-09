@@ -9,14 +9,21 @@ describe('compact compatibility checks', () => {
     expect(JSON.stringify(committed) + '\n').toBe(readFileSync(new URL('./compatibility-checks.json', import.meta.url), 'utf8'))
     expect(committed).toEqual(compactChecks(native))
   })
-  it('answers exactly the recorded selections with their recorded notes, in any id order', () => {
-    const compact = compactChecks(native), checked = new Set(compact.checked)
-    expect(compact.checked.length).toBe(Object.keys(native.checks).length)
-    for (const [key, notes] of Object.entries(native.checks)) {
-      const ids = key.split('+')
-      expect(recordedCheck(compact, ids, checked)).toEqual(notes)
-      expect(recordedCheck(compact, [...ids].reverse(), checked)).toEqual(notes)
-    }
+  const compact = compactChecks(native), checked = new Set(compact.checked)
+  const records = Object.entries(native.checks)
+  // Keep every recorded selection/order assertion within the per-test CPU limit.
+  for (let shard = 0; shard < 16; shard++) {
+    it(`answers recorded selections and their notes in either id order (group ${shard + 1}/16)`, () => {
+      expect(compact.checked.length).toBe(records.length)
+      for (let index = shard; index < records.length; index += 16) {
+        const [key, notes] = records[index]
+        const ids = key.split('+')
+        expect(recordedCheck(compact, ids, checked)).toEqual(notes)
+        expect(recordedCheck(compact, [...ids].reverse(), checked)).toEqual(notes)
+      }
+    })
+  }
+  it('leaves unknown and unrecorded selections unchecked', () => {
     expect(recordedCheck(compact, ['unknown-module'], checked)).toBeUndefined()
     expect(recordedCheck(compact, compact.modules, checked)).toBeUndefined()
     const unrecorded = ['midi-scenes', 'spectrum', 'vector'].filter(id => compact.modules.includes(id))
