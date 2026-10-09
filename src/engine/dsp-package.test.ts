@@ -18,6 +18,19 @@ describe('independently authored DSP package relocation', () => {
     }
     expect(await digest(relocateDspPackage(pkg, 0).words)).toBe(pkg.sha256)
   })
+  it('matches fresh native Air Chorus assembly with independently placed table and code', async () => {
+    const pkg = await readDspPackage('airwindows-chorus')
+    expect(pkg.splitProofs).toHaveLength(4)
+    for (const proof of pkg.splitProofs!) {
+      const placed = relocateDspPackage(pkg, proof.programBase - pkg.splitTableWords!, proof.tableBase)
+      expect(await digest(placed.words)).toBe(proof.sha256)
+      expect(placed.init).toBe(proof.programBase + pkg.init - pkg.splitTableWords!)
+      expect(placed.proc).toBe(proof.programBase + pkg.proc - pkg.splitTableWords!)
+    }
+    expect(() => relocateDspPackage(pkg, 0x1000, 0x1000 + pkg.splitTableWords!)).toThrow('overlaps')
+    expect(() => relocateDspPackage({ ...pkg, splitTableWords: pkg.words }, 0x1000)).toThrow('split')
+    expect(() => relocateDspPackage({ ...pkg, code: '000000' + pkg.code.slice(6), relocations: [0] }, 0x1000)).toThrow('code relocation')
+  })
   it('carries Sidechain Compressor as one hooked package per core that leaves stock COMPRESSOR dispatch alone', async () => {
     const fixtures = catalog.packages.filter(pkg => pkg.id === 'sidechain-compressor')
     expect(fixtures.map(pkg => 'tag' in pkg && pkg.tag).sort()).toEqual(['A', 'B'])
