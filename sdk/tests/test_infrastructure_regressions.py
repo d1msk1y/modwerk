@@ -48,6 +48,45 @@ class AssemblyAudit(unittest.TestCase):
             with self.subTest(decode=decode), self.assertRaises(SystemExit):
                 self.audit(source, decode)
 
+class XTablePlacement(unittest.TestCase):
+    def candidates(self, texts, stock_dsp):
+        # Execute the actual candidate-selection block without booting the
+        # firmware-dependent builder. The boundary stops before any image read.
+        candidates = next(node for node in ast.walk(tree) if isinstance(node, ast.Assign)
+                          and any(isinstance(target, ast.Name) and target.id == '_xt_tables'
+                                  for target in node.targets))
+        parent = next(nodes for node in ast.walk(tree)
+                      for _, nodes in ast.iter_fields(node)
+                      if isinstance(nodes, list) and candidates in nodes)
+        start = parent.index(candidates)
+        stop = next(index for index in range(start + 1, len(parent))
+                    if isinstance(parent[index], ast.Assign)
+                    and any(isinstance(target, ast.Name) and target.id == '_pristine'
+                            for target in parent[index].targets))
+        fixture = {'CARRIED': list(reversed(texts)), '_texts': texts,
+                   '_MODS': {key: types.SimpleNamespace(dsp=types.SimpleNamespace(priority=index))
+                             for index, key in enumerate(texts)},
+                   'PTABLE_MARK': '$fab1e0', 'STOCK_DSP': stock_dsp}
+        output = io.StringIO()
+        with contextlib.redirect_stdout(output):
+            exec(compile(ast.Module(body=parent[start:stop], type_ignores=[]),
+                         'xtable_selection_fixture', 'exec'), fixture)
+        return fixture['_xt_tables'], output.getvalue()
+
+    def test_hook_tables_stay_in_p_beside_dispatched_effects(self):
+        texts = {'Spectrum': 'move #$facade,r1', 'Sidechain': 'move #$fab1e0,r1',
+                 'Character': 'move #$facade,r1', 'Air Chorus': 'move #$fab1e0,r1',
+                 'No table': 'rts'}
+        candidates, output = self.candidates(texts, {'Sidechain', 'No table'})
+        self.assertEqual(candidates, ['Spectrum', 'Character', 'Air Chorus'])
+        self.assertIn("Sidechain's table stays in P", output)
+        self.assertNotIn("No table's", output)
+
+    def test_hook_only_selection_never_parks_a_table(self):
+        candidates, output = self.candidates({'Sidechain': '$fab1e0'}, {'Sidechain'})
+        self.assertEqual(candidates, [])
+        self.assertIn('not hardware-proven', output)
+
 class DirtyStateCoverage(unittest.TestCase):
     def test_fill_targets_the_actual_fx2_block(self):
         with tempfile.TemporaryDirectory() as d:

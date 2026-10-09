@@ -469,6 +469,48 @@ on frame one (an old part's crossed-slot byte after a layout change).
 **Fix.** Fit the layout (≤ two heavy stations per core) and stamp the
 project for the current remix before playing.
 
+## Sequencer stuck after one step: Sidechain Compressor's table in the stock curve bank 🔴 seen on the unit (9 Oct 2026), cause open, refused by the build
+
+**Symptom.** A native remix with ANALOG BD, MINIVERB, TAPEHEAD and
+SIDECHAIN_COMPRESSOR and the stock effects except PLATE, SPRING and DARK
+REV, LO-FI and DJ EQ (an `fx1` list without LO-FI and DJ EQ), static stock
+DSP, no loader. On an MKII the sequencer advanced one step and stopped.
+The build had parked Sidechain's 48-word table at X:0x4840..0x486f and
+rewritten its two `move p:(r1+n1),x1` reads to `x:(`. The same remix with
+the table left in P runs. Whether a track had COMPRESSOR selected is not
+recorded. Each image was flashed once.
+
+**What differs.** Both payloads' DSP uploads were compared word by word.
+The only differences are Sidechain's 340 words, 48 words lower, with its
+three hook targets, its two reads (`07e985` -> `45e900`, the correct
+DSP56300 encoding of `move x:(r1+n1),x1`), and the 48 words at X:0x4840.
+The freed P words keep stock DJ EQ bytes, and nothing dispatches to them.
+
+**Measured under the port.** `ot_emu` runs the stopped image without a
+fault: sequencer, audio and Sidechain renders are normal. With Sidechain
+on T3 and T6 (KEY set) and Analog BD playing, a write watch on X:0x4840,
+0x485f and 0x486f of both cores over 300 frames sees one writer, the boot
+record loader (P:0x31025 core 0, P:0x3202d core 1). Nothing writes the
+words at run time. Sidechain uses the table values only as a gain and a
+filter coefficient. Its loops are fixed-count `do #$20`, so a wrong value
+there would sound wrong but would not stop a core.
+
+**What is proven.** A dispatched effect's table in X has run on the unit:
+VOCODER, OCTABAM12, MKII, 4 Oct 2026 (upstream octabam). Before this, no
+code reached only through hooks had read the bank on hardware. Upstream's
+XTABLE took hook-reached tables from 4 Oct 2026 (`cde0467a`), when no
+such module had a table.
+
+**Open.** (1) The pre-boot packed DSP upload that Analog BD uses; (2)
+the X read in Sidechain's hook context (`scdet`, at COMPRESSOR proc+0) on
+the chip; (3) a one-off. Change one variable per image: flash the stopped
+image again, then try Sidechain with its table in X without Analog BD.
+
+**Fix (interim).** `build_bus.py` XTABLE keeps a `stock_dsp` module's
+table in P and says so in the build log. Dispatched effects' tables
+still move to X. The modwerk.app composer places module tables in P
+only, so web builds were not affected.
+
 ## The bus return is "less rich / bit-crushed" on the unit, clean under the port — ✅ gone with the return (20 Sep 2026, images 35 → 38)
 
 **Symptom.** With one track sending, WET 0 on both engines and RET 127 on
