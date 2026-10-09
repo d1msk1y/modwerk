@@ -23,7 +23,7 @@ export function IssueReport({id,author,openRequest=0,embedded=false,workspaceCon
  const report=useRef<HTMLDetailsElement>(null),title=useRef<HTMLInputElement>(null),success=useRef<HTMLDivElement>(null)
  const fileInput=useRef<HTMLInputElement>(null),readRequest=useRef(0),helpId=useId()
  useOpenIssueReport(report,title,openRequest)
- const {draft,clearDraft}=useDiscussionIssueDraft(id)
+ const {draft,clearDraft}=useDiscussionIssueDraft(id,report)
  const savedWorkspace=useWorkspaceReportContext(),workspace=workspaceContext??savedWorkspace
  const [opened,setOpened]=useState(embedded),tracker=useIssueTracker(id,opened)
  const [model,setModel]=useState<OtModel|''>(''),[flash,setFlash]=useState<FlashState>('flashed')
