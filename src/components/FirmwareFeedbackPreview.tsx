@@ -15,8 +15,8 @@ export default function FirmwareFeedbackPreview() {
   const showing = useRef(false)
   function schedule(delay: number) {
     showing.current = false; setActive(null); setWaiting(delay > 0)
-    setNotice(delay ? 'Simulated download started. The check-in opens in eight seconds.' : '')
-    forgetHardwareFeedback(memberId)
+    setNotice(delay ? 'Simulated download started. The guide opens in two seconds.' : '')
+    if (!delay) forgetHardwareFeedback(memberId)
     // Exercise the production deadline without downloading firmware.
     rememberHardwareFeedback(memberId, build, Date.now() - CHECK_IN_DELAY + delay)
   }
@@ -30,8 +30,8 @@ export default function FirmwareFeedbackPreview() {
   }, [])
   return <ReportingPreviewContext>
     <aside className="firmware-feedback-preview" aria-label="Firmware feedback preview controls">
-      <div><strong>Post-download module guide · local preview</strong><p>The overview opens 8 seconds after download, when the tab is visible. This preview uses the same scheduler with a disposable local fixture. No firmware or reports are sent.</p></div>
-      <button type="button" className="button button-quiet" disabled={waiting} onClick={() => schedule(8000)}><Icon name="download" size={15}/>{waiting ? 'Check-in in 8 seconds…' : 'Simulate download · 8 s'}</button>
+      <div><strong>Post-download module guide · local preview</strong><p>The overview opens 2 seconds after every download, when the tab is visible. This preview uses the same scheduler with a disposable local fixture. No firmware or reports are sent.</p></div>
+      <button type="button" className="button button-quiet" disabled={waiting} onClick={() => schedule(CHECK_IN_DELAY)}><Icon name="download" size={15}/>{waiting ? 'Guide in 2 seconds…' : 'Simulate download · 2 s'}</button>
       <button type="button" className="button button-primary" onClick={() => schedule(0)}>Open check-in<Icon name="arrow" size={15}/></button>
       {notice && <p className="firmware-feedback-preview-notice" role="status">{notice}</p>}
     </aside>
