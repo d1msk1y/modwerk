@@ -318,7 +318,7 @@ Modwerk's packager and browser builder had no path for DSP code reached only thr
 
 - **Other modules unchanged.** Every package in `src/engine/assets` is byte-identical apart from provenance labels; the only additions are Output Matrix's DSP package (core 0) and its ColdFire object and patch group. `npm run module:verify -- --all --os <1.40C> --check` gives the same results for every other module on this branch as on untouched main.
 - **The table move.** The first comparison matched native in every DSP word and ColdFire detour but not in seven stock pointers: the AUDIO page's label, getter and action tables and the OUT CFG title were in `.data`, and the browser's runtime places `.data` after the logger it links, so they landed 0x4b8 bytes from native's. They are constants, so they moved into `.text`, which starts at the same address in both. `sent_codes` and `fading` stay in `.data`.
-- **Native comparison** (`sdk/native-comparisons/output-matrix.json`): 118 selections, 54 builds matching native outside the platform writes, 64 matching refusals, 0 mismatches. Beside Analog BD it is refused in both, as for every DSP module not on Analog BD's companion list.
+- **Native comparison** (`sdk/native-comparisons/output-matrix.json`): 122 selections, 56 builds matching native outside the platform writes, 66 matching refusals, 0 mismatches. Beside Analog BD it is refused in both, as for every DSP module not on Analog BD's companion list.
 - **Gate.** `verify.py` on the OUTMTX13 build: 117/117.
 - **Not done.** `evidence/performance.json` has no stress run: `dsp_host -guard -dirty` renders dispatched effect instances on their own and does not run the mixdown these hooks are in.
 
