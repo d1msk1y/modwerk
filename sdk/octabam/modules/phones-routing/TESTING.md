@@ -202,19 +202,16 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 
 ## Hardware: MKII, OS 1.40C base (7 and 8 Oct 2026)
 
-**Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7 and 8 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE); returning to the stock OS by MIDI SysEx from the Startup Menu (through an E-RM MultiClock) was proven once on 7 Oct before any module image was flashed. No image was shared; each is identified by its SHA-256.
+**Tester and unit.** npp1993, on their own Octatrack MKII, OS 1.40C base, in interactive sessions on 7 and 8 October 2026; durations were not timed. Images were flashed from the card (PROJECT > SYSTEM > OS UPGRADE). No image was shared; each is identified by its SHA-256.
 
 | Date | Image | What happened |
 | --- | --- | --- |
 | 7 Oct | PHNROUTE3 | Booted; ROUTED selects; LEVEL and CUE + LEVEL work. Feedback: the knob too fine, names too long, MIX still drawn as a blend (all changed, table above) |
-| 7 Oct | PHNROUTE6 (loader build) | No sound; sequencer stuck on trig 1 in every project, also with MIDI sync off and in a new project; the stock OS ran the same projects |
-| 8 Oct | PHNSTAT8 (static build) | Plays; the routing checks below |
-| 8 Oct | PHNCTRL7 (loader, no module) | Froze as PHNROUTE6 |
-| 8 Oct | PHNSTAT9 (static build, this source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the ROUTING title and the solid master bar |
+| 8 Oct | PHNSTAT8 (stock DSP code built in, SPRING REV harvested) | The routing checks below |
+| 8 Oct | PHNSTAT9 (the same build, this source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the ROUTING title and the solid master bar |
 
-PHNROUTE4 and PHNROUTE5 were built but not flashed.
+Other development images were built in between; only those above were flashed for these results.
 
-**PHNROUTE6 froze; PHNSTAT8 runs.** PHNROUTE6 booted with no sound and the sequencer stuck on trig 1 in every project, sync off; the stock OS ran the same project. Octabam's build adds its experimental stock-effect loader (DSP DYNLOAD STOCK, whose README says it is for the emulator only) to every remix unless the remix keeps the stock code built in (`static_stock`). PHNSTAT8 is the same module built with `static_stock=True`, SPRING REV off both choosers to give core 0 room: it plays. The emulator ran PHNROUTE6 normally, so it does not model this freeze. PHNCTRL7, the same remix without the module (the stock effects and the loader only), froze the same way on 8 Oct 2026: the loader alone causes it.
 
 On PHNSTAT8, by the user, ✅ unless noted:
 
@@ -278,3 +275,4 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in ROUTED (stoc
 - The rewritten rules in Parts other than the current one and in other banks, on hardware (emulator only).
 - A stress run of core 0 at its limit (heavy effects on T5–T8 with every bus in use).
 - Hardware timing of the forms with no stock site: absolute Y moves from address registers, `btst` on x0. Character and BusDelay run absolute Y moves from data registers on hardware.
+

@@ -196,8 +196,7 @@
           "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
           "One MKII; no MKI.",
           "Conversions in Parts other than the current one and in other banks were checked in the emulator only.",
-          "No combination with other modules on the unit.",
-          "Images with octabam's default stock-effect loader froze the unit (no sound, sequencer on trig 1) with or without this module; this module was tested only in static builds."
+          "No combination with other modules on the unit."
         ],
         "report": "TESTING.md"
       },

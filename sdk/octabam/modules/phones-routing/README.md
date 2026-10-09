@@ -76,7 +76,7 @@ To return to stock behaviour, choose NORMAL or STUDIO again.
 - The ROUTED mixdown and headphone path cost core 0 at most about 283 instructions per sample against stock's 67, that is about 216 more (about 7% of the 3,120 a core can spend), measured with every track on ALL, MASTER on and all three bus levels moving. With every track on MAIN the extra is about 20. NORMAL and STUDIO run stock code plus a four-instruction check.
 
 **Building**
-- Build hardware images with the stock DSP code built in (a remix with `static_stock=True`). Octabam's build otherwise adds its experimental stock-effect loader, and on an MKII that image played no sound and froze the sequencer; the loader built without this module froze it the same way.
+- The module is built with the stock DSP code built in (`static_stock`, octabam's default for native images).
 - Built that way, the module needs one stock effect's room on core 0: SPRING REV (1,063 words), DARK REV (1,067), or LO-FI and DJ EQ together (882), taken off both effect menus. The test images give up SPRING REV; which one a release gives up is still open.
 
 **Conflicts**
