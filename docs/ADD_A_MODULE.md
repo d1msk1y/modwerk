@@ -2,6 +2,8 @@
 
 This page is for contributors and for the coding agents they point at this repository. Read it, then the section for your machine. The other module documents are field references; open one only when a step links to it.
 
+Start with the [developer workflow and distribution context](DEVELOPER_WORKFLOW.md) for submission, release verification, report handling and catalogue boundaries. Instruments without an SDK follow [Add a machine](ADD_A_MACHINE.md) before module scaffolding.
+
 For an existing published module, start with [author updates](MODULE_AUTHOR_UPDATES.md). Telling a coding agent “fix issue <link>” in your fork starts the guided fix, version, hardware-test and release flow. The owner approves first releases; registered authors can publish their own later updates after checks pass.
 
 ## Read the guide for your category first
