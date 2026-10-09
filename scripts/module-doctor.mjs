@@ -26,6 +26,9 @@ const json = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'))
 const exists = path => existsSync(resolve(root, path))
 const catalog = json('sdk/catalog.json'), machineModules = ['digitakt', 'digitone'].flatMap(machine => exists('sdk/' + machine + '/modules') ? readdirSync(resolve(root, 'sdk', machine, 'modules'), { withFileTypes: true }).filter(entry => entry.isDirectory() && !entry.name.startsWith('_')).map(entry => ({ id: entry.name, machine })) : [])
 
+// An unknown id is answered before any check runs: the rules below take seconds on a large catalogue.
+if (!all && !exists('sdk/octabam/modules/' + ids[0]) && !machineModules.some(item => item.id === ids[0])) { console.error('No module named ' + ids[0] + ' under sdk/octabam/modules, sdk/digitakt/modules or sdk/digitone/modules.'); process.exit(2) }
+
 // The module and catalog rules every PR already enforces (versions, documentation, qualification, gauges, media): run once.
 const rules = spawnSync(process.execPath, ['scripts/modules.mjs'], { cwd: root, encoding: 'utf8' })
 const rulesProblem = rules.status === 0 ? '' : (rules.stderr.trim().split('\n').filter(line => line && !/^\s+at /.test(line)).slice(-1)[0] ?? 'failed')
