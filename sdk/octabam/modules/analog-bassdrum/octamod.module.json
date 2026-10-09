@@ -98,6 +98,7 @@
     "usage": [
       "Assign ANALOG BD in the track machine chooser or SRC SETUP. Double-tap the track to open its engine browser; choose 808 or 909 with UP/DOWN or LEVEL and confirm with YES.",
       "Shape the drum on SRC. The 808 has TONE and SWEEP; the 909 has TUNE and TDEP. Set accent, LPF and desk bands in SRC SETUP; AMP controls track volume.",
+      "Switching back to FLEX retains SRC values, so drum settings can cause unexpected STRT, RTRG and RTIM sample playback. Select your sample, open SRC and press SRC + PLAY to initialize the page to Flex defaults; repeat immediately to undo. Check SRC SETUP and the sample assignment afterwards, and review any retained SRC parameter locks, scenes or LFO destinations.",
       "Keep a separate project copy for stock firmware: saving an Analog BD project without this module can clamp its controls. Eight voices do not guarantee enough processing room for every effect combination."
     ]
   },
