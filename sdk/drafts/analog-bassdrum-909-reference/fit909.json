@@ -1,0 +1,209 @@
+{
+  "_about": "909 reference candidate for Analog BD 0.1.4-experimental. Independently fitted to Skee Mask\u2019s supplied 70 BPM Tune/Attack sweeps on 9 October 2026. Recordings remain private. No assumption of uniformly spaced physical knob positions; steady harmonics and transient endpoints are the calibration targets.",
+  "nodes": [
+    0,
+    0.125,
+    0.25,
+    0.375,
+    0.5,
+    0.75,
+    1
+  ],
+  "pitch": {
+    "fb_hz": [
+      29.999927,
+      34.238169,
+      39.325205,
+      45.431077,
+      52.759919,
+      72.115144,
+      99.99992
+    ],
+    "A_hz": [
+      114.241607,
+      146.519756,
+      177.650744,
+      207.590987,
+      236.124753,
+      287.799768,
+      329.475975
+    ]
+  },
+  "tune": {
+    "tau_s": [
+      0.0078,
+      0.0083,
+      0.0102,
+      0.014,
+      0.018873,
+      0.027761,
+      0.032356
+    ],
+    "A_hz": [
+      182.5,
+      182.5,
+      182.5,
+      182.5,
+      182.5,
+      182.5,
+      182.5
+    ],
+    "_tune0": "Short-sweep endpoint retuned against aligned recorded trigger edges; excursion no longer doubles at minimum TUNE. Intermediate response is a design interpolation, not a measured knob-position fit."
+  },
+  "depth": {
+    "A_hz": [
+      5.399227,
+      11.689738,
+      48.436843,
+      121.638043,
+      236.124753,
+      604.340892,
+      1178.120485
+    ],
+    "below_0.125_exponent": 2.17
+  },
+  "decay": {
+    "tau_s": [
+      0.008715,
+      0.011514,
+      0.015332,
+      0.02498,
+      0.090666,
+      0.220682,
+      0.453474
+    ]
+  },
+  "body": {
+    "t_r": 0.0007256235827664399,
+    "x_r": 0.0064734,
+    "G": 0.3520131,
+    "tau_a": 0.0007297,
+    "t_h": 0.0599209,
+    "tau_droop": 1.4004067,
+    "k0": 0.2899999999999999,
+    "k_dc": 0.1245546,
+    "tau_dc": 0.4053796,
+    "c0": 0.04175095888782736,
+    "c": [
+      1.8467582101102584,
+      -0.07665025654087017,
+      -1.2663898926015302,
+      -1.274821218790721,
+      1.6392862147319849,
+      3.449434848886963,
+      -2.633739745369468,
+      -3.624803577154702,
+      2.9569478627291472,
+      1.3766187192215582,
+      -1.3505771904166328
+    ],
+    "c_note": "Degree-11 body harmonic-magnitude fit to the supplied 70 BPM Attack sweep. Fundamental gain and steady DC retained; minimum-attack hits 2..13 (one-based) fit the shape independently of transient noise. Original pitch/decay/accent/desk curves retained.",
+    "phase_reset": 0.9999998807907104,
+    "release_fraction": 0
+  },
+  "theta": 0.505,
+  "thump_vs_A": {
+    "a": 0.0036,
+    "b": 0.0125,
+    "A0_hz": 100.0,
+    "A_ref_hz": 236.12
+  },
+  "pulse": {
+    "f_hp": 355.90124459364614,
+    "f0": 5086.755820537247,
+    "q": 2.625601290703804,
+    "k_w": 25.194437696396285,
+    "k_u": 0.14156874515117912,
+    "f_u": 318.5061172359394,
+    "tau_decay": 0.005,
+    "f_output": 3936.0511266304297,
+    "jitter_base": 0.94,
+    "jitter_depth": 0.06,
+    "_note": "Two discharges share the unchanged HP/resonant LP/output pole. Fast onset decays in 30 us; longer Attack discharge is 5 ms. Fit endpoints hit stated bounds and are model choices. Quarter-scale mixed excitation preserves native filter headroom. jitter_* vary strength, never timing.",
+    "fast_tau": 3.0000000000000004e-05,
+    "fast_gain": 0.6264905072063514
+  },
+  "noise": {
+    "f_hp": 230.4262419,
+    "f_lp1": 2366.7993977,
+    "f_lp2": 2367.055884,
+    "t1": 0.0051245,
+    "t2": 0.0043282,
+    "g": 0.014,
+    "attack_floor": 0.45
+  },
+  "velocity": {
+    "body": "(v/100)^2",
+    "attack_v": [
+      1,
+      20,
+      40,
+      60,
+      80,
+      100,
+      110,
+      127
+    ],
+    "attack_gain": [
+      0.0001,
+      0.0284,
+      0.1196,
+      0.2907,
+      0.5707,
+      1.0,
+      1.2864,
+      1.9103
+    ]
+  },
+  "mackie": {
+    "_note": "SAT / LOW / HIGH: a Mackie-desk stage after the 909's output, with airwindows MackEQ (Chris Johnson, MIT) as the reference, not a port: its clip + x - k_sat x^5 curve at the input, in the bass and high bands and at the output stage, its band drive law 4u^2 and its one-pole crossover coefficients, and its output stage 9 dB (stage) above its input stage. Unlike MackEQ the split is complementary and each band's output is sqrt(2u), so LOW 64 / HIGH 64 is flat and SAT 0 is transparent (-75 dB from dry on the init patch).",
+    "k_sat": 0.1768,
+    "kb": 0.159,
+    "km": 0.236,
+    "stage": 2.8284271,
+    "top_db": 36.0,
+    "rise_note": "Unpadded RMS (0-300 ms, init patch, LOW/HIGH 64) above SAT 0, measured on the float design; the make-up table holds the rise to target_rise_db at SAT 127.",
+    "rise_knots": [
+      0,
+      8,
+      16,
+      24,
+      32,
+      40,
+      48,
+      56,
+      64,
+      72,
+      80,
+      88,
+      96,
+      104,
+      112,
+      120,
+      127
+    ],
+    "rise_db": [
+      0.0,
+      2.27,
+      4.53,
+      6.79,
+      9.04,
+      11.26,
+      13.42,
+      15.41,
+      16.96,
+      17.76,
+      18.37,
+      18.89,
+      19.35,
+      19.8,
+      20.32,
+      20.91,
+      21.47
+    ],
+    "target_rise_db": 6.0,
+    "k_hp": 0.001860867,
+    "hp_note": "The desk's input is AC-coupled (MackEQ's k_hp, ~13 Hz at 44.1 kHz); without it the 909's DC thump, times SAT's drive, pins the input stage and leaves a DC shelf after every hit. Its coefficient ramps from 0 at SAT 0 (DC-coupled, the calibrated 909) to k_hp at SAT hp_full, so the knob has no step.",
+    "hp_full": 16
+  }
+}

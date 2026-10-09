@@ -1,0 +1,43 @@
+{
+  "schema": 1,
+  "id": "analog-bassdrum",
+  "version": "0.1.4-experimental",
+  "status": "pending-audition-and-qualification",
+  "approvedVersion": "0.1.3-experimental",
+  "baseFiles": {
+    "modules/analog-bassdrum/control.s": "644f10fbc534d8351424e55ee96c2d0ff2f39a1b691ad8a695422d1c05e37a3f",
+    "modules/analog-bassdrum/engine.s": "c86a6ac24326fb52f71dd766b1ccc25e5dfd8511028b162459447c279da48425",
+    "modules/analog-bassdrum/machine.s": "07dc37b1c0bd0f061aabe27782c67df9dcd22769e9c080efbfdf354530d83b8d",
+    "modules/analog-bassdrum/manifest.py": "20fa1f744630354b3986a3ad82ac6a41744345796dc783891a4c9f0bd81c787e",
+    "modules/analog-bassdrum/ab_glue.asm": "c78dc31dfcfc7a0c6f10ae24b39744a88bed5211346bcae4f6931e2e6489223c",
+    "modules/analog-bassdrum/dsp808.py": "3d61ba9c258c319d90d7beb47f6cbc7dafb7336c49d8386912478d284cef603d",
+    "modules/analog-bassdrum/dsp909.py": "480a064a304380079019125eef98e9c68da26bd5408bbe38845563ccac94d2e4",
+    "modules/analog-bassdrum/octamod.module.json": "9c3df5028dbf4e604b4c4523555ccddebb9eac42a2ec4dee6ff87d8647d0c8a0",
+    "modules/analog-bassdrum/fit909.json": "e1e97b493b6c232bf6602ca224212e19f2aef3cff65fff404e7876648d228390",
+    "modules/analog-bassdrum/control.c": "29f392c7e007aaa695076eff0c897729a941676ff582e4bb17957074d56ceac5",
+    "modules/analog-bassdrum/bd909.asm": "66f1abde9715b49a145daa1868d00b1ea73989bee2a8e904b9c44149a4d4afc8",
+    "modules/analog-bassdrum/bd808.asm": "e7306bd284e9bca067cffc54dcbfb18ae7a0fc7b3a27253a246e58898ae9ee92",
+    "tools/harness/bd909.py": "a317bf0aab93a1465cb8e9900b6672ed72e6d91a5b4eee1778e481d8b863d534",
+    "tools/harness/bd808.py": "540f2ee7c4d79bca0970abe2937ffd294c695aa623e711875778295252017598",
+    "tools/harness/bd909_host/bd909_host.cpp": "1c25ff9be510d6941efe504a6eae7ebbcd9028a555a2b8c160290fcf02ad3195",
+    "tools/build/ab_image.py": "d51e8face61e0642f24743cc8081b1d258943f5040a3b34d003cf34a4f797c14",
+    "tools/build/ab_records.py": "71f44c4c54b281b5c813ffbab3abb98501620ad980582367004a1daeb2eeca45"
+  },
+  "candidateFiles": {
+    "dsp909.py": "e1202c3e43f25fd3a745152a0e6226f2a48dd6deb42ad8e8c060ef83fd4d038a",
+    "fit909.json": "ef56a49a47281a96e9bd335ee95f8eb69fb1d28a83f392742e5160765d17d70d",
+    "bd909.asm": "966ccb67b2e55eda7645056fd05ac3f88240fbdb048b114b03cd62fff5578b54",
+    "apply.py": "c4e2db723e9a70aacd4c915bdf73efdb76ce057914b6b25c614d126aa5626ce8",
+    "run.py": "7012fd63ccf7fc322914dc2658ab3dd4ecfb8fa1c112885decc524d88595adb4",
+    "calibrate.py": "eb42f033769b9ca0e479a77efe37c11ca91145978c6301b9caade99c70c077ce",
+    "qualification/multi_host.cpp": "c49d11ead0705bd9b3f92f8e22735f1ff22fdd430ab3cbe1e03355641cb71888",
+    "qualification/multi-test.py": "e209ed619bfc1ff9e2c44a2914ed59e2d96ebb144aca677886b658cb9065cfd9",
+    "compare.py": "3bec28f3aeb971d01aa4e05ba5987374cf9ed9eb2115f6a09716f196d797d649"
+  },
+  "publication": "Private reference candidate only; excluded from discovery, catalogue and downloadable packages. Prior hardware approval does not apply.",
+  "audition": {
+    "firstRevision": "Owner liked the direction, body and resonance in the bundled preview; attack sounded smoother. Attack/Tune were then split for an unambiguous audition.",
+    "secondRevision": "Fast onset, same body shaper and resonance; Attack-only audition pending.",
+    "bundledClipClarification": "The first clip bundled Attack and Tune. Separate fixed-control sweeps supplied for review."
+  }
+}
