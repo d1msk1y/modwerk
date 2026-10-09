@@ -2,6 +2,28 @@
 
 **Owner-approved logger release (3 October 2026):** the owner explicitly lifted the logger addition’s qualification restrictions, authorized local firmware/DSP checks, approved the current module versions and logger for release, and waived hardware testing. Downloads are enabled with the logger included. This exception does not claim measured chip timing, complete stress qualification or new hardware evidence. Existing firmware isolation, original-source provenance, compatibility checks, stock fingerprint guards and packaging integrity remain in force. MIDI Scenes keeps its pinned standalone code and 12-page reservation; the logger occupies the top 16 pages of the arena, and a one-page guard separates it from the sample arena; guarded arena updates reserve all 29 pages. Mixed MIDI Scenes configurations remain incompatible. The earlier full-image proofs below predate logger integration; local verification of this change is recorded separately. See [logger evidence and limitations](../sdk/runtime/logging/TESTING.md).
 
+## Analog BD 0.1.4 — 9 October 2026
+
+The owner accepted actual AB014REF05 firmware-emulator audio, then explicitly
+waived fresh physical hardware/persistence, worst-case chip timing and complete
+memory bounds for this exact source. Current hardware remains untested. The
+909 body, Tune endpoints and direct-out Attack response follow Skee Mask's
+private recordings more closely; transient-shape variation remains smaller than
+the reference and intermediate knob positions are an interpolation.
+
+Native and browser composition agree across 112 configurations: 36 matching
+builds outside existing shared platform writes, 76 matching refusals and zero
+mismatches. Both-core DSP gates cover all 128 values of ten controls, moving
+controls, all 16 trigger offsets, distinct interleaved voices and exact-image
+source/stock AMP output. Matched 909 executed instructions increase by 6.22%
+on average, with unchanged 808 output/cost and unchanged memory allocation.
+Counts are not measured chip timing. Fresh DSP-enabled control/assignment
+captures were opened and reviewed. The required Node 24 check passes 1,402
+app tests in 200 files and 86 SDK tests, catalogue/licences, lint, types and the
+production bundle. Firmware and reference audio remain private.
+See [the exact-source approval](../sdk/analog-bassdrum-build-approval.json) and
+[the testing record](../sdk/octabam/modules/analog-bassdrum/TESTING.md).
+
 ## USB Audio 0.2 / Outbox 8 — 8 October 2026
 
 Version `0.2.0-experimental` adds six selectable USB output layouts and an

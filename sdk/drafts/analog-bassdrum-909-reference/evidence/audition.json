@@ -46,13 +46,13 @@
     "Distinct track/core/FX isolation on a physical unit",
     "Full-chain/maximum-FX load and worst-case chip timing"
   ],
-  "note": "The earlier reply remains as history for its exact audio/source. Later feedback withdrew that assessment. No current sound approval or physical hardware approval is inferred.",
+  "note": "The earlier reply remains as history for its exact AB014REF02 audio/source. Later feedback withdrew that assessment. Current AB014REF05 acceptance is recorded separately; no physical hardware result is inferred.",
   "subsequentOwnerFeedback": [
     "hm I feel like it doesn't really sound like a 909 anymore now weirdly. check the emulator output",
     "the attack is quite good, but everything else...",
     "actually not even the attack sounds that good lol"
   ],
-  "currentStatus": "AB014REF05 refits pulse at LPF bypass and reduces excessive strength spread. Body/Tune model and instruction cost remain unchanged from AB014REF04. Transient-shape variation is still smaller than observed reference variation; exact physical mechanism and held controls are not established. Listening and physical qualification pending.",
+  "currentStatus": "Owner accepted AB014REF05 actual firmware-emulator comparison and authorized release with fresh physical hardware/persistence, worst-case chip timing and complete memory bounds waived. Transient-shape variation remains smaller than the reference; physical hardware remains untested.",
   "historyAB014REF04": {
     "privateFirmwareLabel": "AB014REF04",
     "sourceFiles": {
@@ -127,7 +127,7 @@
       "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
       "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
     },
-    "status": "Awaiting owner audition; no sound or hardware approval inferred.",
+    "status": "Owner accepted the exact repeated-hit clip and authorized release with the stated qualification limits.",
     "endpointClips": [
       {
         "name": "minimum",
@@ -225,6 +225,13 @@
       "wavSha256": "069836e899edd3e00368a2a3663132cea79018f30ea3563d13ffb7720f5fdf18",
       "order": "four original direct-out reference hits, pause, four actual firmware-emulator hits, LPF bypass"
     },
-    "variationAssessment": "Improved strength spread, but neighboring transient shapes remain too consistent. See neighbors.json; possible endpoint knob motion and ADC/interpolation phase remain confounders."
+    "variationAssessment": "Improved strength spread, but neighboring transient shapes remain too consistent. See neighbors.json; possible endpoint knob motion and ADC/interpolation phase remain confounders.",
+    "ownerReply": "it's ok, let's release it",
+    "ownerWaiverReply": "Yes\u2014waive those limits and release",
+    "waived": [
+      "current-build-hardware",
+      "chip-worst-case-cycles",
+      "complete-memory-bounds"
+    ]
   }
 }

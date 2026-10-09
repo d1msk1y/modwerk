@@ -113,17 +113,17 @@ python qualification/reference.py --reference-dir '<private-909-folder>' \
 
 `calibrate.py` reproduces the complex harmonic and initial differential-pulse stages, not every subsequent private optimization. Fitting inputs, bounds and implemented outputs are recorded in full-hit-fit/direct-out-fit evidence.
 
-## Qualification before promotion
+## Owner acceptance and physical qualification limits
 
-The earlier “Yes, keep this attack” applied to AB014REF02 and was withdrawn. AB014REF04 was described as close, then the direct comparison was rejected as a 1:1 match. AB014REF05 has **no owner listening approval or physical results** yet. Use the exact saved upgrade matching private-build evidence.
+The earlier “Yes, keep this attack” applied to AB014REF02 and was withdrawn. AB014REF04 was described as close, then the direct comparison was rejected as a 1:1 match. The owner accepted the AB014REF05 four-reference/four-emulator clip: “it's ok, let's release it”. They then explicitly waived fresh physical hardware/persistence, worst-case chip timing and complete memory bounds for this exact source: “Yes—waive those limits and release”. No physical results are inferred. The following hardware steps remain an unexecuted test plan for the exact saved upgrade matching private-build evidence.
 
 1. At 70 BPM use PITCH 49, DECAY 100, TUNE 0, TDEP 64, SAT 0, ACCNT 72, LPF **0**, LOW/HIGH 64. Sweep ATK alone, then TUNE alone, including endpoints and repeated equal-control hits. Compare direct-out references; test LPF separately and normal musical settings.
 2. Use distinct 808/909 tracks on both cores. Exercise locks/LFOs/scenes, TDEP/SAT changes and retriggers; edit/reset/replace one instance while checking the others. Test stock AMP, retained FX including PLATE/DARK and demanding loads.
 3. Save distinct engines/parameters, make unsaved edits, and verify Part/project reload independently. Power-cycle the physical unit and verify restoration separately; emulator loading is not reboot evidence.
 4. Record unit model, exact build hash, duration, audio, isolation/load and each persistence result. Keep missing results explicit. Promote through the module guide only after version-matched qualification or an explicit owner exception naming the exact source and limits.
 
-No prior hardware report or waiver extends to this candidate. The green public-module doctor does not qualify the draft. Skee Mask's credit remains in the pending notes and public development note; private recordings are not distributed.
+The new approval is in `sdk/analog-bassdrum-build-approval.json`; prior 0.1.3 hardware results remain historical. Skee Mask's credit and the current limitations are in the public 0.1.4 changelog. Private recordings are not distributed. Reproduce these original native gates from commit `d96ae7f` and its approved 0.1.3 base snapshot, because the public folder now contains the promoted DSP files.
 
 ## Repository validation
 
-Node 24.21.0 `npm run check -- --base origin/main` passed in 41.27 seconds: 197 test files / 1,377 app tests, SDK checks, catalogue/licence checks, lint, types and production bundle. Existing lint/build warnings remain. Approved public Analog BD module doctor is green at 0.1.3. Native compilation and focused image tests above qualify the private code path only; these repository checks do not qualify the candidate for publication.
+Node 24.21.0 `npm run check -- --base origin/main` passed in 41.27 seconds: 197 test files / 1,377 app tests, SDK checks, catalogue/licence checks, lint, types and production bundle. Existing lint/build warnings remain. Approved public Analog BD module doctor is green at 0.1.3. This paragraph records the pre-promotion draft check. Current public release checks are recorded in the public module TESTING.md; the new owner exception is required independently of these software checks.

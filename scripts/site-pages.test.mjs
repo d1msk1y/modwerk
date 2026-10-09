@@ -13,6 +13,9 @@ it('gives the page its own title, description, canonical URL and card', () => {
   expect(page).toContain('<meta property="og:image" content="https://modwerk.app/page-thumbnails/submit-abc.jpg" />')
   expect(page).toContain('<meta name="twitter:image" content="https://modwerk.app/page-thumbnails/submit-abc.jpg" />')
   expect(page).not.toContain('modwerk-social-preview-v2.jpg')
+  expect(page.match(/rel="canonical"/g)).toHaveLength(1)
+  expect(page).toContain('<h1>Start developing</h1>')
+  expect(page).toContain('Every new module currently needs owner review.')
   expect(sitePageHtml(html, SITE_PAGES[0], 'x.jpg', '/octamod/')).toContain('<base href="/octamod/" />')
 })
 

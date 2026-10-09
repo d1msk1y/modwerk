@@ -3,6 +3,18 @@
   "modules": {
     "analog-bassdrum": [
       {
+        "version": "0.1.4-experimental",
+        "date": "2026-10-09",
+        "changes": [
+          "Match the 909 body’s harmonic phase/asymmetry and complete envelope/DC response more closely to the supplied direct-out recordings.",
+          "Refit minimum/maximum Attack at LPF bypass and correct both Tune endpoints, including their small settled-pitch difference. Intermediate physical knob positions remain a design interpolation.",
+          "Add subtle attack strength/noise differences between hits, without random pitch or trigger delay. Transient-shape variation remains more consistent than in the recordings.",
+          "Many thanks to Skee Mask, who kindly recorded his TR-909 so we could match Analog BD more closely. His instrument has a decay modification; its full modified-decay range is not reproduced.",
+          "Preserve 808, saved controls, assignment defaults, shared desk and existing TDEP/SAT smoothing. 909 executed instruction counts increase about 6.2%; 808 cost and X/Y/ColdFire allocations are unchanged.",
+          "Owner-approved experimental release with fresh physical hardware/persistence testing, worst-case chip timing and complete memory bounds explicitly waived for this source. Maximum FX load remains untested; high ACCNT/LOW settings can still reach the output limiter."
+        ]
+      },
+      {
         "version": "0.1.3-experimental",
         "date": "2026-10-08",
         "changes": [

@@ -1,3 +1,11 @@
+# Analog BD 0.1.4 load measurements
+
+Matched both-core native tests: 909 mean 6524.07 / peak 6563 executed instructions per 16-sample block (410.1875/sample peak), versus approved 0.1.3 mean 6141.77 / peak 6176. Mean increase 6.22%; maximum matched-block increase 6.27%. 808 is unchanged at mean 4268.47 / peak 4294 (268.375/sample). The tests include control endpoints, moving controls and all 16 trigger splits.
+
+Combined code is 997 P words/core plus the separate 35-word stock helper. Existing X upload remains 3776 words/core with four 64-word voices/core; Y and ColdFire allocation are unchanged. These are executed instruction counts, not worst-case chip cycles, wall-clock timing or full-chain headroom. Complete lifetime/stack bounds and maximum FX load remain unmeasured. See [current cost evidence](evidence/909-reference-costs.json) and [TESTING.md](TESTING.md).
+
+## Historical measurements
+
 # Analog BD load measurements
 
 ## Modulation smoothing, 8 October 2026 — 0.1.3-experimental
