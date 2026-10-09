@@ -5739,24 +5739,27 @@
         "firmware": "1.40C",
         "effectId": null,
         "location": "Audio tracks",
-        "conflicts": [],
+        "conflicts": [
+          "analog-bassdrum"
+        ],
         "limitations": [
-          "Builds with the stock DSP code built in (static_stock) and takes SPRING REV's program memory on core 0: SPRING REV leaves both effect menus while the module is installed.",
+          "Builds with the stock DSP code built in and takes a given-up stock effect's program memory on core 0. The builder chooses it: SPRING REV first, then PLATE REV or DARK REV when other modules also need room. The given-up effect leaves the FX2 menu.",
           "The MATRIX mixdown costs core 0 up to about 210 more instructions per sample than stock (every track on ALL, MASTER on, bus levels moving); every track on MAIN adds about 20.",
           "Switching to or from MATRIX rewrites every Part's LEVEL and cue bytes (and, into NORMAL, the project's cue settings) by documented rules; save to keep it.",
           "A MATRIX project opened on a stock OS loads as STUDIO with tiny cue levels; switch to NORMAL or STUDIO before flashing another OS.",
-          "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger."
+          "Changes core 0's mixdown and headphone crossfade; other modules that hook those sites are refused by the ledger.",
+          "Not yet combinable with Analog BD, whose builder places DSP code only beside a reviewed list of effects."
         ]
       },
       "resources": {
         "recorded": "Measured in the ColdFire port (instructions) and from the build report",
         "storage": {
           "label": "Memory",
-          "display": "1,498 B DRAM + 769 DSP P words + 193 DSP Y words",
-          "value": 4423,
+          "display": "1,610 B DRAM + 769 DSP P words + 193 DSP Y words",
+          "value": 4496,
           "unit": "bytes",
           "method": "static",
-          "conditions": "ColdFire unit .text 1,272 B and .data 226 B (runtime ELF); DSP P code 727 words and a 42-word table in SPRING REV's harvested span on core 0; DSP Y $c00..$cc0. No per-track copies, no audio buffers.",
+          "conditions": "ColdFire unit .text 1,464 B and .data 146 B (runtime ELF); DSP P code 727 words and a 42-word table in SPRING REV's harvested span on core 0; DSP Y $c00..$cc0. No per-track copies, no audio buffers.",
           "source": "TESTING.md"
         },
         "processing": {
@@ -5785,7 +5788,7 @@
           "memory": {
             "level": "low",
             "basis": "measured-comparison",
-            "rationale": "1,498 bytes of DRAM code and data, 769 DSP program words reused from SPRING REV and 193 DSP Y words.",
+            "rationale": "1,610 bytes of DRAM code and data, 769 DSP program words reused from SPRING REV and 193 DSP Y words.",
             "source": "TESTING.md"
           }
         }
@@ -5794,7 +5797,7 @@
         "report": "TESTING.md",
         "summary": "The image gate passes 117 checks under the ColdFire port: every destination, mono sums, MAIN against stock, the level law, MKII, MASTER, mute, DIR, the declick, every mode-conversion rule by the keys (including track 8 as the master and the power-cycle copies), CC 51 out and a power cycle. On an MKII the author tested routing, levels, the MIXER, everyday flows, saving and power and the conversion (functional report, 7–9 Oct 2026). No timed stress run, no chip timing.",
         "hardwareStatus": "reported",
-        "evidenceRevision": "c75ef30178ceb62dbabeacfc6e682a0dfdf17281",
+        "evidenceRevision": "a118cf12c801921196854c15608654b460946c4a",
         "gates": [
           "modules/output-matrix/verify.py"
         ],
@@ -5817,8 +5820,8 @@
             "screenshotStyle": "black-and-white"
           },
           "moduleVersion": "0.1.0-experimental",
-          "sourceSha256": "dd38755b04d2eaa554b2b83d27d5e4912fb82a0f54fad0b61167cc3a023ce4fd",
-          "imageSha256": "71d6c3596cd43b82f275c0050c39601b4003eda5baea8d93ac63de15578774b6",
+          "sourceSha256": "7d77ed52e9571afc0122dc86624382858ac3ffe495861887d14d0c9fe3643cd0",
+          "imageSha256": "3e883adbaff67781f526e6e2c01a7833bdcd0696be79df296b624937b969e514",
           "cycles": [
             {
               "processor": "dsp",
@@ -5858,19 +5861,19 @@
           "memory": {
             "regions": [
               {
-                "name": "ColdFire code (DRAM unit .text)",
+                "name": "ColdFire code and the AUDIO page tables stock code points at (DRAM unit .text)",
                 "space": "sdram",
-                "words": 1272,
+                "words": 1464,
                 "wordBits": 8,
-                "bytes": 1272,
+                "bytes": 1464,
                 "scope": "shared"
               },
               {
-                "name": "ColdFire data: tables, names, routing state (DRAM unit .data)",
+                "name": "ColdFire data: routing state and names (DRAM unit .data)",
                 "space": "sdram",
-                "words": 226,
+                "words": 146,
                 "wordBits": 8,
-                "bytes": 226,
+                "bytes": 146,
                 "scope": "shared"
               },
               {
@@ -5899,9 +5902,9 @@
               }
             ],
             "perInstanceBytes": 0,
-            "sharedBytes": 4384,
+            "sharedBytes": 4496,
             "maxInstances": 1,
-            "totalBytes": 4384,
+            "totalBytes": 4496,
             "conditions": "From the static build's runtime ELF and the DSP placement report. Detours patch stock instructions in place; the level-page words and battery-RAM copies the module uses are stock's. No heap; ColdFire stack use is the callers' frames plus at most 48 bytes (set_mode's saved registers and the conversion's call chain).",
             "report": "TESTING.md"
           },
@@ -5911,9 +5914,9 @@
             "model": "MKII",
             "testedOn": "2026-10-09",
             "tester": "npp1993",
-            "sourceRevision": "c75ef30178ceb62dbabeacfc6e682a0dfdf17281",
-            "imageSha256": "71d6c3596cd43b82f275c0050c39601b4003eda5baea8d93ac63de15578774b6",
-            "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10 (the renaming only: the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX) then OUTMTX11, which adds the review fixes: with track 8 as the master routed to M+C, switching to NORMAL leaves it uncued with the master still on MAIN, and switching back shows MN; a track routed to PHN plays only in the headphones. Then OUTMTX12, this source, which loads each routing list's length in one instruction (-12 DSP words): tracks on MN, CUE and PHN, several on one output, the mono jacks, M+P and ALL, the master track and destination changes during playback all played as before.",
+            "sourceRevision": "a118cf12c801921196854c15608654b460946c4a",
+            "imageSha256": "3e883adbaff67781f526e6e2c01a7833bdcd0696be79df296b624937b969e514",
+            "summary": "On an Octatrack MKII the author flashed PHNSTAT8 and PHNSTAT9 (7-8 Oct, the module under its earlier name, stock DSP code built in, SPRING REV off the menus) and checked: tracks reach MAIN, CUE and PHONES separately, mono jacks and sides, LEVEL on every output, the MIXER's MAIN, CUE and PHN, the headphone knob, no zipper noise, a semi-busy project with tracks on PHONES without dropouts, mute and solo, page resets, Parts and Part reload, patterns, XVOL, metronome, inputs, the master track, save and power cycle with unsaved routing, project reload, the stock NORMAL and STUDIO flows, and the mode conversion to STUDIO and NORMAL and back. On 9 Oct the author flashed OUTMTX10 (the renaming only: the AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX) then OUTMTX11, which adds the review fixes: with track 8 as the master routed to M+C, switching to NORMAL leaves it uncued with the master still on MAIN, and switching back shows MN; a track routed to PHN plays only in the headphones. Then OUTMTX12, which loads each routing list's length in one instruction (-12 DSP words): tracks on MN, CUE and PHN, several on one output, the mono jacks, M+P and ALL, the master track and destination changes during playback all played as before. Then OUTMTX13, this source, which moves the AUDIO page's tables into the unit's code section so the website builder places them where native does: the first boot after flashing froze the sequencer on a project last saved by an image with Analog BD, and after a power cycle it ran; OUT CFG with NORMAL, STUDIO and MATRIX, track 8 as the master (MASTER and NORMAL rows), MATRIX to NORMAL and back, routing changes, and routing kept over a power cycle.",
             "limitations": [
               "A functional interactive report, not a timed stress run; no audio or timing measurement on the chip.",
               "One MKII; no MKI.",

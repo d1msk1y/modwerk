@@ -222,7 +222,8 @@ The gate passes on this build. PHNROUTE4 had a 4-detent count instead of stock's
 | 8 Oct | PHNSTAT9 (the same build, source `de1f89b`, SHA-256 `0e0d1507…c40e`) | The rewritten conversion, the box title and the solid master bar |
 | 9 Oct | OUTMTX10 (source `d98a254`, SHA-256 `fa05f59f…ec11`; the rename only) | The AUDIO page reads OUT CFG with NORMAL, STUDIO and MATRIX; the tester reported everything looked good |
 | 9 Oct | OUTMTX11 (source `707bf7a`, SHA-256 `b8ff149b…2448`; the review fixes) | Track 8 as the master, routed to M+C: after switching to NORMAL it is not cued and the master plays on MAIN; back in MATRIX it shows MN. A track on PHN plays only in the headphones. CC 51 out not checked (no controller connected) |
-| 9 Oct | OUTMTX12 (this source `c75ef30`, SHA-256 `71d6c359…74b6`; the 12-word trim) | In MATRIX with several tracks playing: MN, CUE and PHN on the right outputs, several tracks on one output, the mono jacks, M+P and ALL, the master track, destination changes during playback; all as before |
+| 9 Oct | OUTMTX12 (source `c75ef30`, SHA-256 `71d6c359…74b6`; the 12-word trim) | In MATRIX with several tracks playing: MN, CUE and PHN on the right outputs, several tracks on one output, the mono jacks, M+P and ALL, the master track, destination changes during playback; all as before |
+| 9 Oct | OUTMTX13 (this source `a118cf1`, SHA-256 `3e883adb…e514`; the AUDIO page tables moved into `.text`, below) | The first boot after flashing froze the sequencer, on a project last saved by an image with Analog BD; after a power cycle the sequencer ran. OUT CFG lists NORMAL, STUDIO and MATRIX; track 8 as the master shows its MASTER and NORMAL rows and works; MATRIX to NORMAL and back converts the routing; routing changes are kept over a power cycle |
 
 Other development images were built in between; only those above were flashed for these results.
 
@@ -278,7 +279,7 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in MATRIX (stoc
 
 **ColdFire**, `--watch-pc` on `page_levels` entry and its `rts`, 241 calls per run: 189 executed instructions typical, 229 at most (the frame where all eight tracks change destination). The mode conversion runs once per switch in the UI task.
 
-**Memory**, from the runtime ELF and the placement report: `.text` 1,272 B and `.data` 226 B in DRAM; DSP core 0 program 739 words at P:$127c..$155f and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,420 bytes. Since the 12-word trim below: 727 words at P:$127c..$1553, total 4,384 bytes.
+**Memory**, from the runtime ELF and the placement report of OUTMTX13: `.text` 1,464 B and `.data` 146 B in DRAM; DSP core 0 program 727 words at P:$127c..$1553 and the 42-word table at P:$1252, both in SPRING REV's span; DSP Y $c00..$cc0 (193 words). Total 4,496 bytes. (Earlier records gave `.text` 1,272 B and `.data` 226 B, a figure from before the review fixes; the table move below shifts 80 bytes from `.data` to `.text`.)
 
 ## Screenshots (9 Oct 2026)
 
@@ -295,7 +296,7 @@ The headphone crossfade (`0:0x30a:0x35a`): at most 192 per frame in MATRIX (stoc
 
 Each of the twelve routing-list loops loaded its length with `move y:>$c1x,x0` then `move x0,n7`; they now load it with `move y:>$c1x,n7` (`7ff000`). P code 739 → 727 words. `x0` is not read after any of these loops before it is written.
 
-- **Form.** Stock 1.40C has no long-absolute Y move. Its X twin `move x:>$20d,n7` (`77f000`) occurs 61 times. OUTMTX11, run on the unit, already uses `move y:>$c11,x0` and `move y:(r7)+,r4`. The trimmed form differs from both only in the field that each of them has already proved. It has not run on the chip yet; the combination test image OMXALL02 carries it, and OMXALL01 is the untrimmed control.
+- **Form.** Stock 1.40C has no long-absolute Y move. Its X twin `move x:>$20d,n7` (`77f000`) occurs 61 times. OUTMTX11, run on the unit, already uses `move y:>$c11,x0` and `move y:(r7)+,r4`. The trimmed form differs from both only in the field that each of them has already proved. OUTMTX12 and OUTMTX13 run it on the unit (timeline above).
 - **Gate.** `verify.py` on the Output Matrix image (SPRING REV harvested): 117/117, and all 117 lines are identical to the untrimmed image's, including every measured level.
 - **Beside Analog BD, Mini Verb, TapeHead and Sidechain.** 117/117. The untrimmed gate reproduces itself exactly, and four lines move by at most 0.012%. A control build with a `nop` in place of each removed instruction restores the two stock-path lines; the two MASTER lines stay moved. These are attributed to frame timing (the PHONES level of "T1 → PHNS" moves, and its path does not run the changed loops), not proved.
 - **Cost.** `--dsp-stopwatch 0:0x257:0x2d5`, one run per case: fixture as the gate, 200 frames, CUE CFG and every destination poked at load, levels static. Executed instructions per 16-sample frame, mean / max:
@@ -310,3 +311,14 @@ Each of the twelve routing-list loops loaded its length with `move y:>$c1x,x0` t
 | Every track MAIN | on | 1,911 / 2,598 | 1,859 / 2,534 |
 
 The maxima before the trim equal the qualification table's (3,995 and 4,336), so the worst case becomes (4,240 + 192) / 16 = 277 instructions per sample, from 283. The means differ from that table's because these runs hold the levels still.
+
+## Builder integration (9 Oct 2026)
+
+Modwerk's packager and browser builder had no path for DSP code reached only through hooks with no FX menu entry. `scripts/build-module-packages.py` now compiles Output Matrix as a requested ColdFire module and as a hooked DSP module; a hooked package with no menu entry has no effect id or stock key. `src/engine/static-dsp.ts` places hooked code only on the payloads its packages name, as native `build_bus.py` does (core 0 here), and the loader path refuses the module.
+
+- **Other modules unchanged.** Every package in `src/engine/assets` is byte-identical apart from provenance labels; the only additions are Output Matrix's DSP package (core 0) and its ColdFire object and patch group. `npm run module:verify -- --all --os <1.40C> --check` gives exactly the same rows on this branch as on untouched main `cfa000f` (the same 143 stale USB Audio rows on both).
+- **The table move.** The first comparison matched native in every DSP word and ColdFire detour but not in seven stock pointers: the AUDIO page's label, getter and action tables and the OUT CFG title were in `.data`, and the browser's runtime places `.data` after the logger it links, so they landed 0x4b8 bytes from native's. They are constants, so they moved into `.text`, which starts at the same address in both. `sent_codes` and `fading` stay in `.data`.
+- **Native comparison** (`sdk/native-comparisons/output-matrix.json`): 114 selections, 50 builds matching native outside the platform writes, 64 matching refusals, 0 mismatches. Beside Analog BD it is refused in both, as for every DSP module not on Analog BD's companion list.
+- **Gate.** `verify.py` on the OUTMTX13 build: 117/117.
+- **Not done.** `evidence/performance.json` has no stress run: `dsp_host -guard -dirty` renders dispatched effect instances on their own and does not run the mixdown these hooks are in.
+
