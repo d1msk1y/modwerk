@@ -50,6 +50,8 @@ Open `http://127.0.0.1:5173/?preview=reporting` to compare the module-page feedb
 
 Reporting actions share the neutral **Works for me** button (plus before submission, green check and **Reported working** after success) and amber **Report an issue** button. Download follow-ups and return reminders offer these actions directly on each module; bulk confirmation is optional and never preselects companions. Downloaded builds carry their original versions. Digi reports with a known model and OS keep those prefilled fields under **More details**, where the reporter can correct them. The release-follow checkbox stays a horizontal row in inline forms and dialogs.
 
+Module-page working buttons restore the signed-in member’s confirmation across navigation, reloads and devices. They become available again for a new module version; the distinct-member count across versions stays intact. A quick confirmation without a matching current download records the displayed catalog version only as button state, while the installed firmware version remains unknown. Existing quick confirmations recover that state from the deployed release history at their original save time.
+
 ## Optional site support
 
 The Ko-fi page is configured in `src/config/support.ts`. Set it to an empty string to hide the support entry.

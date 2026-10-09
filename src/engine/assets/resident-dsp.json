@@ -335,7 +335,7 @@
       ]
     }
   ],
-  "sourceCommit": null,
+  "sourceCommit": "3269db056795ec4942e05046d88310a4066f5337",
   "moduleVersions": {
     "spectrum": "0.1.1-experimental",
     "modulation": "0.1.1-experimental",
