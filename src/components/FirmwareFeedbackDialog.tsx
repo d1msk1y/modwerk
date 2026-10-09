@@ -6,6 +6,7 @@ import type { DownloadedBuild } from '../community/hardware-feedback'
 import { assetUrl } from '../hosting'
 import { Icon } from './Icon'
 import { ModulePreview } from './ModulePreview'
+import { FirmwareScreenshotCarousel } from './FirmwareScreenshotCarousel'
 import './firmware-feedback.css'
 
 type Props = {
@@ -98,40 +99,19 @@ function GuideThumbnail({ module, guide }: { module: BuiltModule; guide?: Downlo
 
 function ModuleGuide({ module, enlarged, onEnlarged, children }: { module: BuiltModule; enlarged: boolean; onEnlarged: (value: boolean) => void; children: ReactNode }) {
   const guide = downloadedModuleGuide(module)
-  const [index, setIndex] = useState(guide?.initialScreenshot ?? 0)
-  const [failed, setFailed] = useState<string[]>([])
-  const imageButton = useRef<HTMLButtonElement>(null), restoreFocus = useRef(false)
-  useEffect(() => {
-    if (enlarged) restoreFocus.current = true
-    else if (restoreFocus.current) { imageButton.current?.focus(); restoreFocus.current = false }
-  }, [enlarged])
-  function collapse() { onEnlarged(false) }
-  const screenshot = guide?.screenshots[index]
-  const url = screenshot ? assetUrl('module-media/' + module.id + '/' + module.version + '/' + screenshot.path) : ''
   if (!guide) return <><h3>Try {module.name}</h3><p className="firmware-feedback-unavailable">The usage guide for your downloaded version ({module.version}) isn’t available here. Your feedback will still include that exact version.</p>{children}</>
-  const caption = screenshot && ('otUi' in screenshot && screenshot.otUi ? screenshot.otUi.page : screenshot.alt)
   return <div className={'firmware-feedback-module-guide' + (enlarged ? ' is-enlarged' : '')}>
     <h3>{enlarged ? module.name + ' screenshots' : 'Try ' + module.name}</h3>
     {!enlarged && <p className="firmware-feedback-summary">{guide.summary}</p>}
-    <div className="firmware-feedback-media">
-      {!enlarged && <GuideThumbnail module={module} guide={guide}/>}
-      {screenshot ? <figure>
-        {enlarged && <button type="button" className="text-button firmware-feedback-collapse" autoFocus onClick={collapse}><Icon name="back" size={15}/>Back to quick test</button>}
-        {failed.includes(url) ? <p className="firmware-feedback-image-error" role="status">This screenshot could not be loaded. The usage steps are still available below.</p> : <button ref={imageButton} type="button" className="firmware-feedback-screen" aria-label={enlarged ? 'Return to quick test' : 'Enlarge ' + module.name + ' screenshot'} onClick={() => enlarged ? collapse() : onEnlarged(true)}>
-          <img className={screenshot.lcd ? 'ot-ui-capture' : undefined} src={url} alt={screenshot.alt} onError={() => setFailed(current => [...current, url])}/><span className="firmware-feedback-zoom"><Icon name={enlarged ? 'close' : 'search'} size={16}/></span>
-        </button>}
-        <figcaption><span>{caption}</span>{guide.screenshots.length > 1 && <span className="firmware-feedback-screen-paging"><button type="button" className="icon-button" aria-label="Previous screenshot" disabled={index === 0} onClick={() => setIndex(value => value - 1)}><Icon name="back" size={14}/></button><span>{index + 1} / {guide.screenshots.length}</span><button type="button" className="icon-button" aria-label="Next screenshot" disabled={index === guide.screenshots.length - 1} onClick={() => setIndex(value => value + 1)}><Icon name="arrow" size={14}/></button></span>}</figcaption>
-      </figure> : <div className="firmware-feedback-no-screen"><Icon name="help" size={24}/><p>{guide.noUiReason ?? 'This module has no screenshots yet. Follow its usage steps below.'}</p></div>}
-    </div>
-    {screenshot && enlarged && <p className="firmware-feedback-screen-caption">{screenshot.caption}</p>}
+    <FirmwareScreenshotCarousel module={module} guide={guide} enlarged={enlarged} onEnlarged={onEnlarged}>
     {!enlarged && <>
       <div className="firmware-feedback-quick-test"><h4>Quick test</h4><ol>{guide.steps.map((step, i) => <li key={i}><span className="firmware-feedback-step-number" aria-hidden="true">{i + 1}</span><div>{step.title && <strong>{step.title}</strong>}<p>{step.text}</p></div></li>)}</ol></div>
       {children}
-      {screenshot && <details className="firmware-feedback-details"><summary>Tips for this screen</summary><p>{screenshot.caption}</p></details>}
       {!!guide.access.length && <details className="firmware-feedback-details"><summary>Full setup steps</summary><ol>{guide.access.map((step, i) => <li key={i}>{step}</li>)}</ol></details>}
+      {guide.hasQuickTest && <details className="firmware-feedback-details"><summary>Full instructions &amp; more controls</summary><ol>{guide.usage.map((step, i) => <li key={i}>{step}</li>)}</ol></details>}
       {!!guide.audio.length && <details className="firmware-feedback-details"><summary>Audio previews</summary>{guide.audio.map(item => <figure key={item.path}><audio controls preload="none" src={assetUrl('module-media/' + module.id + '/' + module.version + '/' + item.path)}/><figcaption>{item.caption}</figcaption></figure>)}</details>}
     </>}
-    {screenshot && <details className="firmware-feedback-details firmware-feedback-capture-details"><summary>Screenshot credits</summary><p>{screenshot.captureType === 'hardware' ? 'Hardware capture' : screenshot.captureType === 'emulator' ? 'Emulator capture' : 'Image'} · {screenshot.credit} · {screenshot.license}</p></details>}
+    </FirmwareScreenshotCarousel>
   </div>
 }
 

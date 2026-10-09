@@ -554,6 +554,12 @@ select:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
 .resource-note a, .quality-note a { color: #a8b0ff; text-decoration: underline; text-underline-offset: 3px; }
 .usage-list { padding-left: 22px; display: flex; flex-direction: column; gap: 14px; color: #b3b3c2; font-size: 14px; line-height: 1.8; }
 .usage-list li { padding-left: 6px; }
+.module-quick-test strong { display: block; color: var(--text); font-weight: 600; margin-bottom: 3px; }
+.module-quick-test p { margin: 0; }
+.module-full-instructions { margin-top: 16px; color: #b3b3c2; font-size: 13px; }
+.module-full-instructions > summary { cursor: pointer; padding-block: 8px; }
+.module-full-instructions > summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.module-full-instructions .usage-list { margin-top: 12px; }
 .quality-note, .risk-note { padding: 20px 22px; border: 1px solid #494650; border-radius: 8px; background: #27262e; margin-bottom: 27px; }
 .quality-note { background: #242728; border-color: #394849; }
 .quality-note h2 { margin-bottom: 12px; }

@@ -34,17 +34,24 @@
 .firmware-feedback-guide { min-width: 0; overflow-y: auto; scrollbar-width: thin; padding: 4px 0 24px 24px; overscroll-behavior: contain; }
 .firmware-feedback-guide h3 { margin: 0 0 6px; font-size: 24px; font-weight: 600; letter-spacing: -.4px; }
 .firmware-feedback-dialog .firmware-feedback-summary { color: #b3b3c0; font-size: 14px; line-height: 1.5; }
-.firmware-feedback-media { display: grid; grid-template-columns: minmax(0, .65fr) minmax(0, 1fr); align-items: start; gap: 18px; margin-top: 16px; }
-.firmware-feedback-media > .firmware-feedback-thumbnail { aspect-ratio: 1.8; }
-.firmware-feedback-media .module-preview .signal-art { height: calc(100% - 24px); }
+.firmware-feedback-carousel { margin-top: 16px; }
+.firmware-feedback-media { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); align-items: start; gap: 16px; }
+.firmware-feedback-media.is-single { grid-template-columns: 1fr; }
 .firmware-feedback-media figure { min-width: 0; margin: 0; }
 .firmware-feedback-screen { display: block; position: relative; padding: 0; width: 100%; border: 1px solid #45454e; border-radius: 5px; background: #19191c; overflow: hidden; }
-.firmware-feedback-screen img { display: block; width: 100%; height: auto; max-height: 170px; object-fit: contain; }
+.firmware-feedback-screen img { display: block; width: 100%; height: auto; aspect-ratio: 2; max-height: 210px; object-fit: contain; }
+.firmware-feedback-screen:focus-visible { outline-offset: 3px; }
 .firmware-feedback-screen img.ot-ui-capture { image-rendering: pixelated; filter: grayscale(1) brightness(1.15); }
 .firmware-feedback-zoom { position: absolute; top: 8px; right: 8px; display: grid; place-items: center; width: 30px; height: 30px; border: 1px solid #555560; border-radius: 5px; background: #24242be6; color: #d8d8e4; }
-.firmware-feedback-media figcaption { display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 8px 12px; color: #a6a6b6; font-size: 11px; line-height: 1.5; margin-top: 7px; }
-.firmware-feedback-screen-paging { display: inline-flex; align-items: center; gap: 5px; white-space: nowrap; }
-.firmware-feedback-screen-paging .icon-button { width: 28px; height: 28px; }
+.firmware-feedback-media figcaption { display: flex; align-items: baseline; gap: 8px; color: #bdbdcc; font-size: 12px; line-height: 1.5; margin-top: 8px; }
+.firmware-feedback-screen-number { flex-shrink: 0; color: #dedee8; font-variant-numeric: tabular-nums; }
+.firmware-feedback-carousel-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 10px; }
+.firmware-feedback-dialog .firmware-feedback-carousel-toolbar p { color: #bdbdcc; font-size: 12px; }
+.firmware-feedback-screen-paging { display: inline-flex; align-items: center; gap: 8px; white-space: nowrap; }
+.firmware-feedback-screen-paging button { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-width: 44px; min-height: 44px; padding: 8px 12px; border: 1px solid #555560; border-radius: 6px; background: #303038; color: #ececf1; font-size: 12px; }
+.firmware-feedback-screen-paging button:hover:not([aria-disabled="true"]) { background: #3b3b47; border-color: #9393aa; }
+.firmware-feedback-screen-paging button[aria-disabled="true"] { color: #9999aa; background: transparent; cursor: default; }
+.firmware-feedback-dialog .firmware-feedback-carousel-help { color: #b0b0bf; font-size: 11px; line-height: 1.5; margin-top: 8px; }
 .firmware-feedback-dialog .firmware-feedback-screen-caption { color: #a6a6b6; font-size: 12px; line-height: 1.6; margin-top: 12px; }
 .firmware-feedback-no-screen { display: flex; align-items: flex-start; gap: 12px; padding: 18px 0; color: var(--muted); }
 .firmware-feedback-dialog .firmware-feedback-no-screen p, .firmware-feedback-dialog .firmware-feedback-image-error { font-size: 13px; }
@@ -56,6 +63,8 @@
 .firmware-feedback-dialog .firmware-feedback-quick-test p { color: #b0b0bf; font-size: 13px; line-height: 1.5; }
 .firmware-feedback-details { color: #b0b0bf; font-size: 12px; line-height: 1.65; margin-top: 14px; }
 .firmware-feedback-details summary { cursor: pointer; width: fit-content; padding-block: 5px; }
+.firmware-feedback-details summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.firmware-feedback-details p + p { margin-top: 10px; }
 .firmware-feedback-details ol { display: grid; gap: 10px; padding-left: 22px; }
 .firmware-feedback-capture-details { font-size: 11px; }
 .firmware-feedback-dialog .firmware-feedback-capture-details p { font-size: 11px; margin: 8px 0; }
@@ -74,7 +83,6 @@
 .firmware-feedback-install li { padding-left: 6px; color: #b0b0bf; font-size: 14px; line-height: 1.7; }
 .firmware-feedback-install li strong, .firmware-feedback-install li span { display: block; }
 .firmware-feedback-install li strong { color: #ececf1; margin-bottom: 5px; }
-.firmware-feedback-module-guide.is-enlarged .firmware-feedback-media { grid-template-columns: 1fr; }
 .firmware-feedback-module-guide.is-enlarged .firmware-feedback-screen img { max-height: 540px; }
 .firmware-feedback-collapse { display: flex; gap: 6px; align-items: center; margin-bottom: 16px; color: var(--accent); font-size: 13px; }
 .firmware-feedback-preview { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-bottom: 24px; padding: 18px; border: 1px dashed #686891; border-radius: 9px; background: #8785e70b; }
@@ -98,8 +106,6 @@
   .firmware-feedback-choice { gap: 12px; padding: 14px 10px; }
   .firmware-feedback-choice .firmware-feedback-thumbnail { flex-basis: 72px; height: 58px; }
   .firmware-feedback-guide { padding-left: 24px; }
-  .firmware-feedback-media { grid-template-columns: 1fr; gap: 16px; }
-  .firmware-feedback-media > .firmware-feedback-thumbnail { display: none; }
   .firmware-feedback-footer { padding-inline: 28px; }
   .firmware-feedback-footer-actions { gap: 14px; }
 }
@@ -122,7 +128,8 @@
   .firmware-feedback-guide { overflow: visible; padding: 8px 0 24px; }
   .firmware-feedback-guide h3 { font-size: 23px; }
   .firmware-feedback-dialog .firmware-feedback-summary { font-size: 13px; }
-  .firmware-feedback-media { margin-top: 18px; }
+  .firmware-feedback-carousel { margin-top: 18px; }
+  .firmware-feedback-carousel-toolbar { flex-wrap: wrap; }
   .firmware-feedback-quick-test li { gap: 12px; }
   .firmware-feedback-step-number { width: 28px; height: 28px; }
   .firmware-feedback-dialog .firmware-feedback-quick-test p { font-size: 13px; }
@@ -137,19 +144,16 @@
 .downloaded-module-overview { display: flex; align-items: center; justify-content: space-between; gap: 18px; }
 .downloaded-module-overview .button { flex-shrink: 0; }
 @media (max-width: 600px) { .downloaded-module-overview { align-items: flex-start; flex-direction: column; } }
-/* Keep the catalogue artwork at its natural full-container size in both guide placements. */
+/* Keep sidebar artwork at its natural full-container size. */
 .firmware-feedback-thumbnail .module-preview.compact-preview { width: 100%; height: 100%; border: 0; border-radius: 0; }
-.firmware-feedback-media .module-preview .preview-label { display: flex; font-size: 8px; height: 24px; padding: 10px 12px 0; }
-.firmware-feedback-media .module-preview .signal-art text { display: inline; }
 .firmware-feedback-thumbnail .signal-secondary { opacity: .7; }
 @media (min-width: 721px) and (max-height: 800px) {
   .firmware-feedback-header { padding-top: 12px; padding-bottom: 12px; }
   .firmware-feedback-dialog .firmware-feedback-header h2 { font-size: 24px; margin-bottom: 5px; }
   .firmware-feedback-dialog .firmware-feedback-intro { font-size: 13px; }
   .firmware-feedback-dialog .firmware-feedback-build { font-size: 11px; margin-top: 5px; }
-  .firmware-feedback-media { margin-top: 12px; }
-  .firmware-feedback-media > .firmware-feedback-thumbnail { aspect-ratio: auto; height: 105px; }
-  .firmware-feedback-screen img { max-height: 105px; }
+  .firmware-feedback-carousel { margin-top: 12px; }
+  .firmware-feedback-screen img { max-height: 150px; }
   .firmware-feedback-choice { padding-block: 12px; }
   .firmware-feedback-choice-copy > span:not(.firmware-feedback-result) { display: none; }
   .firmware-feedback-quick-test { padding-top: 12px; margin-top: 12px; }

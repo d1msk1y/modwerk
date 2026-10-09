@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest'
 import { MODULE_DOCUMENTS_BY_ID } from '../catalog/documents'
 import MACHINE_MODULES from '../catalog/machine-modules.json'
 import { FirmwareFeedbackDialog } from '../components/FirmwareFeedbackDialog'
+import { ModuleUsageInstructions } from '../components/ModuleUsageInstructions'
 import { builtModules } from './build-follow-up'
 import { downloadedModuleGuide } from './downloaded-module-guide'
 import { moduleMediaDocument } from './module-media'
@@ -42,6 +43,22 @@ describe('downloaded module guides', () => {
     expect(guide.noUiReason).toBeTruthy()
     expect(guide.noUiReason).not.toMatch(/reviewer/i)
   })
+  it('gives longer guides titled first tests without losing their full instructions', () => {
+    for (const module of builtModules(['vector', 'synth', 'digitakt-digislicer', 'digitakt-digineighbor', 'digitakt-digisophie', 'digitakt-digimono', 'digitakt-digiutils'])) {
+      const guide = downloadedModuleGuide(module)!
+      expect(guide.hasQuickTest, module.id).toBe(true)
+      expect(guide.steps.every(step => step.title && step.text), module.id).toBe(true)
+      expect(guide.steps.length, module.id).toBeLessThanOrEqual(5)
+      const html = renderToStaticMarkup(createElement(ModuleUsageInstructions, { module, steps: guide.usage }))
+      expect(html, module.id).toContain('Quick test')
+      expect(html, module.id).toContain('Full instructions &amp; more controls')
+      for (const step of guide.usage) expect(html, module.id).toContain(renderToStaticMarkup(createElement('li', null, step)))
+    }
+    const [slicer, sophie, neighbor] = builtModules(['digitakt-digislicer', 'digitakt-digisophie', 'digitakt-digineighbor'])
+    expect(downloadedModuleGuide(slicer)?.steps.map(step => step.text).join(' ')).toContain('wait at least one second')
+    expect(downloadedModuleGuide(sophie)?.steps.map(step => step.text).join(' ')).toContain('finite DEC; avoid INF')
+    expect(downloadedModuleGuide(neighbor)?.steps.map(step => step.text).join(' ')).toContain('restore T1 AMP VOL')
+  })
 })
 
 function render(modules = builtModules(['miniverb', 'tapeecho', 'euclid', 'repitch']), pendingIds?: string[]) {
@@ -75,5 +92,26 @@ describe('downloaded firmware overview', () => {
     expect(html).toContain('Report an issue with Mini Verb')
     expect(html).not.toContain('module-media/')
     expect(html).not.toContain('TONE 64')
+  })
+  it('shows two real captures and keeps the artwork only in the module chooser', () => {
+    const html = render(builtModules(['miniverb']))
+    expect(html.match(/aria-roledescription="slide"/g)).toHaveLength(2)
+    expect(html.match(/class="firmware-feedback-thumbnail"/g)).toHaveLength(1)
+    expect(html).toContain('media/ot-location.png')
+    expect(html).toContain('media/ot-controls.png')
+    expect(html).toContain('Screenshots 1–2 of 2')
+    expect(html).not.toContain('aria-label="Next screenshot"')
+  })
+  it('names the carousel, individual captures and keyboard navigation for larger galleries', () => {
+    const html = render(builtModules(['digitakt-digimono']))
+    expect(html).toContain('aria-roledescription="carousel" aria-label="Digi Mono screenshots"')
+    expect(html.match(/aria-roledescription="slide"/g)).toHaveLength(2)
+    expect(html).toContain('Screenshots 1–2 of 7')
+    expect(html).toContain('aria-label="Previous screenshot"')
+    expect(html).toContain('aria-disabled="true"')
+    expect(html).toContain('aria-label="Next screenshot"')
+    expect(html).toContain('Use ← / → to browse.')
+    expect(html).toContain('Home / End jumps to the first / last screen.')
+    expect(html).toContain('role="status" aria-atomic="true"')
   })
 })
