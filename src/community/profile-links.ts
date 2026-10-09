@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 export const PROFILE_LINK_FIELDS = [
   { key: 'instagramUrl', label: 'Instagram', placeholder: 'https://www.instagram.com/yourname/' },
   { key: 'soundcloudUrl', label: 'SoundCloud', placeholder: 'https://soundcloud.com/yourname' },

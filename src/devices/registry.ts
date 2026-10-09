@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 // Every Elektron machine Modwerk knows about, with what is known about modding its firmware.
 // Facts about devices other than the Octatrack come from public research projects and are linked from each profile.
 import MACHINES from './machines.generated.json'

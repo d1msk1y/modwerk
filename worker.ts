@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 import { cleanupPush, startPush } from './server/push'
 import { sendMemberWelcomes } from './server/welcome-mail'
 import { cleanupDeveloperAuth } from './server/developer-auth'
