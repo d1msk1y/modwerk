@@ -4,11 +4,11 @@
   "sourceSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
   "staticStock": true,
   "builderSources": {
-    "tools/build/build_bus.py": "e5c96c308a4018c0d0c9cfd2bcc02d64802a1a3b3746c9797c26feb860a39d67",
-    "tools/build/ab_image.py": "d51e8face61e0642f24743cc8081b1d258943f5040a3b34d003cf34a4f797c14",
+    "tools/build/build_bus.py": "61b00556870b6cb1de4fe28620f82927cd2fcb30dee6f1ac1304ac6a6fff3872",
+    "tools/build/ab_image.py": "c4573d4e0715961f7081dc1d5a0639d42ac63313ccc9e50a0737ac0685e2fc14",
     "tools/remix/loader.S": "32e09fd813ddc65511390faaebc3b86d963b2700f304b35cdb1ec48f90449287"
   },
-  "moduleSourceTreeSha256": "aefed635c98fb76c1c46cfc1bedc95f77a8cb3ff2586911decac8bcb9ea7e146",
+  "moduleSourceTreeSha256": "4f495d95ba20a18560f3a62b3e39eeee8ddfdbb51c329dcf0ddbd258e86cfd2c",
   "packing": null,
   "proofs": [
     {
@@ -1631,6 +1631,1263 @@
     },
     {
       "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "6b42821529b4f18ec23794a1d713f10236e0bdb8771ffd9582cd573452daca32",
+      "osSha256": "e8c375d29e1eaf1b6e885e79d1cf38e50a19557e398d636e74ca52bd1c2a03dc",
+      "maskedOsSha256": "b71bd3a71f27afa741d5169ca0c3164ded8aaafa0aafb79a8a195a9e46386da6",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "8ce36c5fb8c9ccf1c44a1f0cb31707d26ec85c31f63335b6ae5a98ef2ad8b2a4",
+      "osSha256": "9c1811d5bc7325a88752902e8528d2a849cef91a388f65fadc00a47976e9da3c",
+      "maskedOsSha256": "0a5060f03099ba3ca1a12d7c6a82ad62c585b05ca4b80730eea22b9b34949810",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1371091,
+      "sha256": "883ef921955f2bb006af675a544d7b01f8f2b117a30e901853eb7ce385d4b184",
+      "osSha256": "4739c9afdf4cfba7a23fd40135f154eeb6fc30d7b0665a6451caed4c271decf9",
+      "maskedOsSha256": "b46737dc1f345fb8bdd077aac56cd5e621b4a1d26250d537beb280aac5c04de7",
+      "appendSha256": "8e31a5112ae0968167b3dbe3992152ca654ad79c4f9f2c6f15e73497e4ba3836"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1371091,
+      "sha256": "6690c5d0d56e825c4f1057b1ee857e8568475f9fbb095346ed37f4bb27fadb85",
+      "osSha256": "7044aaa64c0f115fa8e7f7fb9b276b135746b712be5f5fabd2d3be24ea36ce46",
+      "maskedOsSha256": "ff8ab5785b1456a97eed423068733e5331ecdde0ee907609035372384bfc9928",
+      "appendSha256": "8e31a5112ae0968167b3dbe3992152ca654ad79c4f9f2c6f15e73497e4ba3836"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 765 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 765 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 760 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 760 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "aca9398dc09a6e92b89c73064d7e64f87b3561795e9ba98e5aa47d363e658cfd",
+      "osSha256": "764399a0c9237fafaf773bd833c3fbb5a7c7fb10935665c5d248bd11d9e81fe7",
+      "maskedOsSha256": "eb70ece211117072ce7377df8b6705aba850f342ecc1ded3ca94a702f8016748",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "ddaee8ff1d5bd96c1abba3acbd80f36ccd7e74816d72f65e8a93bb21df9c9ee2",
+      "osSha256": "b41227aa534c16b6afe5d7e8fef34c16ea86ad2bc32909d6eebef735941d34e0",
+      "maskedOsSha256": "99be189eb92f5abd84d673341f394de1fe3ffccaead47615f4080a82eb6c9c3a",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 738 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 738 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 733 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 733 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 875 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 875 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 343 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 343 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 870 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 870 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 338 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 338 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
         "analog-bassdrum",
         "usb-audio-out-tracks-main-cue"
       ],
@@ -1999,6 +3256,79 @@
       "osSha256": "3d09ef728f4d5444f62d638bca967522da2779003bc3ef30c316b0879fdfdbf5",
       "maskedOsSha256": "31e633d42d570731c8052356712e29e1d3fa7455f99944f5f7924366c87631ca",
       "appendSha256": "531e76474134044a110921af4bb07901bab033e8e4dfe884b808f630275ab55b"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "usb-audio-out-tracks-main-cue"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1271478,
+      "sha256": "bf91e1b7315c69d01115af067491e1866b3fc8c9311eba384b395a945ae493b2",
+      "osSha256": "a7b241b73f8da1a74c50ca6ebc5f14d2bdf9c62bac02b7df2b4674cf874b8bc5",
+      "maskedOsSha256": "be1715c483f2f221f0dc66db3cd4b934a352ea14ab79458affca7bdd8e444ac4",
+      "appendSha256": "a292f56cd9f77587b00e9784dd970a5e21461eef9b22b8085d9ed13e5db408df"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "usb-audio-out-tracks-main-cue"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1271478,
+      "sha256": "be56088dd04208375f861cbeb1919e995a0ae312bedeed92789791ad336f0741",
+      "osSha256": "2edec502495e8c931db11443f9718666292e38dfbba5f2db334e7c190c665586",
+      "maskedOsSha256": "314b9fa5f614c84886b485d9235dab4b84b4496acaf2e671b3c0130ddee63ca0",
+      "appendSha256": "a292f56cd9f77587b00e9784dd970a5e21461eef9b22b8085d9ed13e5db408df"
     },
     {
       "moduleIds": [
@@ -2373,6 +3703,79 @@
     },
     {
       "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "quantizer"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1270990,
+      "sha256": "d224bc5fb7f12a4717c0f5f7bd02609308ecc4d90b8a1bad33df0477d472e78a",
+      "osSha256": "b403abd76f036f523e3e231fddbe87afd607c28a8fad454d56c77d2c080dd1e1",
+      "maskedOsSha256": "9dd3c34f0d95fcbb1f87e8d7afc64d5660acdc5a4de868acf494c8e284fcf178",
+      "appendSha256": "814660d46e057862cb39622cc26d386c4b1320dee6ec314af5bca87fcd07a3bd"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "quantizer"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1270990,
+      "sha256": "622ee9e85b01ad71a330b6e60d0229e70424d5010f05be27695a09b9e20eb231",
+      "osSha256": "7730dfd0922aeb8588ffd31f0bbfb92c7f751f2f7337b67431d8d6bd84112bf6",
+      "maskedOsSha256": "577239ba9fd45fa9c7336797397bbe7a352a4ff227f2618c006617efddf14817",
+      "appendSha256": "814660d46e057862cb39622cc26d386c4b1320dee6ec314af5bca87fcd07a3bd"
+    },
+    {
+      "moduleIds": [
         "analog-bassdrum",
         "previewvol"
       ],
@@ -2744,6 +4147,79 @@
     },
     {
       "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "previewvol"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "fa94a597b7d7d1dc31305d3f6f9198505581c21553c58c62ee87543db070d004",
+      "osSha256": "280eb5f1cbe2de37da54c1986d27ccbeb5840f68ca95cec77930cbd8403676e9",
+      "maskedOsSha256": "36fc4d9dd66f3f93e5ecaa6c917698cffea0898ccaf99c0570e82aae2c1d1131",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "previewvol"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "d56b50239a6536d4d07739c6b0c3ef40b8e704c3e670d8040cf915125d60eee1",
+      "osSha256": "dff9a3c874aec1a34020891e48109f0326292c2f4cd8fe5379fa181f8c04d59b",
+      "maskedOsSha256": "6baa36c5f57a6f063f5943a559e5e55e4c2a08004acba8ccebabcea811922224",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
         "analog-bassdrum",
         "cc-map"
       ],
@@ -3112,6 +4588,79 @@
       "osSha256": "52ae167e195b75b86b6d45e93c2aad857411c56c81e14409c24451b1b4aa7004",
       "maskedOsSha256": "53ca9c619531e57f4975d53102eef0b5161dd7c708a740e545e4a83e6b481042",
       "appendSha256": "ee40a116e5466496b1ce9b342f328c40e1bb1eecb10160d1408150a591878732"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "cc-map"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "cc5d65376195dea912377723d0d3c2cedb441e58c2c56b87cc123074196f833e",
+      "osSha256": "401b70ecd435689f33a4979a74fa5ecfe7ab01464e4a0782e176c796ed4de54c",
+      "maskedOsSha256": "87baaa7f3ae95ae46d6f026f5b1e313b49452e99638f7255d9b4d7f31ae8835e",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "cc-map"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1268810,
+      "sha256": "7f1e661290af459bd68a42c8266b56715391bf2a24e2aca202210f74ff37e76d",
+      "osSha256": "2eb84a439f3bf673e474ed43e94a1b571b9742e0976e522c0485fbeaa42d9317",
+      "maskedOsSha256": "8ca9530f87088fa29a6c9c6b76b71386a9260a195c08f47b3cf03fc4b270ba6b",
+      "appendSha256": "7619c58770b1dd9e8875900fa90368f6ff5861adf5b99cd8c414fdeaa7fff55e"
     },
     {
       "moduleIds": [
@@ -3515,6 +5064,87 @@
       "osSha256": "b878882ed5722c7a360231e7979dfb461b59795a073b0d2a1f7968403f734e8e",
       "maskedOsSha256": "a6e56df6d93ea22d1b7152a224f972db11bfa75adc8a2d300663920baf3e2504",
       "appendSha256": "4db3f26aeb699637ba8bed23cb85593e1ce79fb19c3ad716c11de0259d8d6b34"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "usb-audio-out-tracks-main-cue",
+        "quantizer",
+        "previewvol",
+        "cc-map"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1273662,
+      "sha256": "ca69b0961a30bdb41448e7dacb726be8ba85c937ee3d4de93eea9459f88aadec",
+      "osSha256": "5e39a36aca01bda8ba9f5ce6643a06aeeb46405583774e26d80b21bd68aa6e7e",
+      "maskedOsSha256": "1f8587d05481ec7a904d1c1d0f4d2c986924be4575d6be3c2e3a9977279de945",
+      "appendSha256": "181d77e60af95d3728eb569286305868029e3695a7c4287d81a5be8db27e2402"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "usb-audio-out-tracks-main-cue",
+        "quantizer",
+        "previewvol",
+        "cc-map"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "bytes": 1273662,
+      "sha256": "0be1bf98dcdf48e1e3a7512e9c5955c375ac62f1c3c2de4e198cb5c704e0e317",
+      "osSha256": "d88b1c0099e638260a99c0f2f06c0ed5334f47c21ced923c429ed6bbd5b31951",
+      "maskedOsSha256": "0b7292d635658d115a889e576e3b452404d8586650d90082f8d4c753499ffea9",
+      "appendSha256": "181d77e60af95d3728eb569286305868029e3695a7c4287d81a5be8db27e2402"
     },
     {
       "moduleIds": [
@@ -4860,6 +6490,1222 @@
         "hidden": []
       },
       "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 338 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 200 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 200 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1160 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 195 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: SIDECHAIN_COMPRESSOR does not fit any harvested run -- 195 words are free across 3 separate runs but the largest single opening has only 128; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1155 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "EUCLID",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1297 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 765 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "EUCLID",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 765 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1292 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 760 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 760 words are free across 3 separate runs but the largest single opening has only 672; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1270 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 738 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 738 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 1265 words are free across 3 separate runs but the largest single opening has only 1067; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 733 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 733 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 875 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 875 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 343 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 343 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 870 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 870 words are free across 3 separate runs but the largest single opening has only 645; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 338 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
+    },
+    {
+      "moduleIds": [
+        "miniverb",
+        "tapeecho",
+        "euclid",
+        "tapehead",
+        "airwindows-chorus",
+        "analog-bassdrum",
+        "sidechain-compressor"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "EUCLID",
+          "TAPEHEAD"
+        ],
+        "fx2": [
+          "MINIVERB",
+          "TAPE ECHO",
+          "EUCLID",
+          "TAPEHEAD",
+          "AIR CHORUS",
+          "SIDECHAIN_COMPRESSOR"
+        ],
+        "hidden": []
+      },
+      "error": "payload A: AIR CHORUS does not fit any harvested run -- 338 words are free across 3 separate runs but the largest single opening has only 250; harvest an effect BETWEEN two runs to join them into one"
     },
     {
       "moduleIds": [

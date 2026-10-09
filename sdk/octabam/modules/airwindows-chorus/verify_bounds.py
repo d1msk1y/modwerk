@@ -25,7 +25,8 @@ def main():
         spans={"sample":source.split("ac_sample:\n")[1].split("ac_frameend:\n")[0],
                "sine":source.split("ac_sine:\n")[1].split("ac_channel:\n")[0],
                "channel":source.split("ac_channel:\n")[1].split("ac_maskedread:\n")[0],
-               "tap":source.split("ac_maskedread:\n")[1]}
+               "tap":source.split("ac_maskedread:\n")[1].split("ac_readword:\n")[0],
+               "readword":source.split("ac_readword:\n")[1]}
         calls=lambda text:re.findall(r"^\s*bsr\s+(\w+)",text,re.M)
         assert calls(spans['sample'])==['ac_sine','ac_channel','ac_channel']
         assert not calls(spans['channel'])
@@ -33,7 +34,8 @@ def main():
         assert re.findall(r'^\s*move\s+#>(\w+),r2',source,re.M)==['ac_maskedread','ac_warmread']
         assert not re.search(r'\br2\b',spans['sample']+spans['sine']+spans['tap'])
         assert len(re.findall(r'\br2\b',spans['channel']))==1
-        assert not calls(spans['sine']) and not calls(spans['tap'])
+        assert not calls(spans['sine']) and not calls(spans['readword'])
+        assert calls(spans['tap']) == ['ac_readword'] * 6
         for text in spans.values():
             labels={m.group(1):m.start() for m in re.finditer(r"^(\w+):",text,re.M)}
             for m in re.finditer(r"^\s*b(?:ra|cc|cs|eq|ne|ge|lt|gt|le|mi|pl)\s+(\w+)",text,re.M):
@@ -43,7 +45,17 @@ def main():
         for m in re.finditer(r'^\s*jclr\s+#[^,]+,[^,]+,(\w+)',spans['sine'],re.M):
             assert spans['sine'].index(m.group(1)+':') > m.start(), 'Non-forward bit branch needs a new bound'
         branch_cost=lambda text:4*len(re.findall(r"^\s*(?:b(?:ra|cc|cs|eq|ne|ge|lt|gt|le|mi|pl)|jclr)\b",text,re.M))
-        tap=verify.ORG+words-s['ac_maskedread']+branch_cost(spans['tap'])
+        # The partial-read and full-triplet arms are mutually exclusive.
+        # Price the largest path; each read helper still charges both of its
+        # forward arms. Count all branch surcharges conservatively.
+        helper=verify.ORG+words-s['ac_readword']+branch_cost(spans['readword'])
+        partial=max(s['ac_emptyread']-s['ac_tworead']+2*(helper+4),
+                    s['ac_oneread']-s['ac_emptyread'],
+                    s['ac_warmread']-s['ac_oneread']+(helper+4))
+        warm=s['ac_shadowread']-s['ac_warmread']+max(
+            s['ac_yread']-s['ac_shadowread']+3*(helper+4),
+            s['ac_readword']-s['ac_yread'])
+        tap=s['ac_tworead']-s['ac_maskedread']+max(partial,warm)+branch_cost(spans['tap'])
         channel=s['ac_maskedread']-s['ac_channel']+(tap+4)+branch_cost(spans['channel'])
         sine=s['ac_channel']-s['ac_sine']+branch_cost(spans['sine'])
         sample=s['ac_frameend']+1-s['ac_sample']+(sine+4)+2*(channel+4)+branch_cost(spans['sample'])
@@ -64,6 +76,7 @@ def main():
                 'perInstanceBlockWithSplitAndInitUpperBound':16*sample+2*control+init,
                 'fourInstanceCoreBlockWithSplitAndInitUpperBound':4*(16*sample+2*control+init),
                 'stateSpanWords':56,'stereoBufferWordsPerInstance':16384,
+                'shadowRingWordsPerInstance':128,'usedStateWordsPerInstance':184,
                 'perCoreFourInstanceReservedWords':4*(0x100+16384),
                 'coldfire':'No authored ColdFire routine; existing platform and stock editor paths not bounded here.',
                 'hardwareTiming':'unmeasured'}

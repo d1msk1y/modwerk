@@ -2,6 +2,10 @@
 ; Copyright (c) 2016 Chris Johnson; port (c) 2026 Jannik Assfalg.
 ; Upstream revision and full MIT licence: upstream/, LICENSE.
 ; FX2 only: two 8192-word rings in the slot's 16384-word Y allocation.
+; The first 128 virtual words use X:(r7+$80)..X:(r7+$ff) instead:
+; T3's Y:$38000 prefix aliases stock's live cross-core mailbox, and T7's
+; Y:$30000 prefix aliases per-frame parameter staging. Never touch those
+; Y words. The reserved X state slot is 256 words; no new RAM is allocated.
 ; Original ring length 8176 is safely replaced by a wrapped 8192 ring:
 ; the greatest referenced age is ceil(2*4079.824)+2 = 8162.
 ; 8 guard bits keep the alternating air states and buffer writes bounded
@@ -17,7 +21,8 @@
 ; 30 table base,32 phase low,
 ; 33 speed-target low,35 dry coefficient. Other offsets are reserved.
 ; 37 count of valid ring history (0..8192); initial history is logically zero.
-; Init clears the complete 56-word state span, including reserved gaps.
+; Init clears the complete 56-word control state, including reserved gaps.
+; Ring history guards every unwritten X shadow word just like the Y ring.
 ; init preserves r1/n1/m1. Proc never reads the allocator pointer again.
 ; CYCLES_FORWARD_BRANCHES
 init:
@@ -336,7 +341,21 @@ ac_deltaready:
         move    x:(r7+$02),n5
         move    r4,r5
         move    (r5)+n5
+; Shadow the slot's first 128 words in its own unused X state. This also
+; works on private-Y slots, preserving one identical virtual ring layout.
+        move    r5,b
+        and     #>$3fff,b
+        cmp     #>128,b
+        bge     ac_writey
+        add     #>128,b
+        move    b1,n4
+        move    r7,r4
+        move    (r4)+n4
+        move    a,x:(r4)
+        bra     ac_writeend
+ac_writey:
         move    a,y:(r5)
+ac_writeend:
 ; Advance from the write address to age with the hardware modulo AGU.
 ; Allocator bases are 8192-word aligned. Restore linear mode for the sine.
         move    x:(r7+$12),n5
@@ -393,8 +412,13 @@ ac_maskedread:
         ble     ac_emptyread
         cmp     #>1,a
         beq     ac_oneread
-        move    y:(r5)+,x0
-        move    y:(r5)+,y0
+ac_tworead:
+        bsr     ac_readword
+        move    x0,y0
+        bsr     ac_readword
+        move    x0,y1
+        move    y0,x0
+        move    y1,y0
         move    #>0,y1
         rts
 ac_emptyread:
@@ -403,12 +427,50 @@ ac_emptyread:
         move    #>0,y1
         rts
 ac_oneread:
-        move    y:(r5)+,x0
+        bsr     ac_readword
         move    #>0,y0
         move    #>0,y1
         rts
 ac_warmread:
+; Most triplets remain entirely in Y. Only left-ring prefix/boundary
+; triplets need the virtual-word helper; right-ring wrapping stays in Y.
+        move    r5,a
+        and     #>$3fff,a
+        cmp     #>128,a
+        blt     ac_shadowread
+        cmp     #>8190,a
+        blt     ac_yread
+        cmp     #>8192,a
+        bge     ac_yread
+ac_shadowread:
+        bsr     ac_readword
+        move    x0,y0
+        bsr     ac_readword
+        move    x0,y1
+        bsr     ac_readword
+        move    x0,x1
+        move    y0,x0
+        move    y1,y0
+        move    x1,y1
+        rts
+ac_yread:
         move    y:(r5)+,x0
         move    y:(r5)+,y0
         move    y:(r5)+,y1
+        rts
+
+ac_readword:
+        move    r5,a
+        and     #>$3fff,a
+        cmp     #>128,a
+        bge     ac_ready
+        add     #>128,a
+        move    a1,n4
+        move    r7,r4
+        move    (r4)+n4
+        move    x:(r4),x0
+        move    (r5)+
+        rts
+ac_ready:
+        move    y:(r5)+,x0
         rts

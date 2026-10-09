@@ -2815,7 +2815,7 @@
           "value": ""
         }
       ],
-      "sourceSha256": "9257a83bed59cbd5c4d8aa898639c939f7987fdb0a0e759e30758d51d876da1a"
+      "sourceSha256": "23792a8b4425be66b6e39d00378e97f314ccb37dc42ac197ebfb266ebb751e93"
     },
     {
       "id": "everb",
@@ -3283,7 +3283,7 @@
     "euclid": "0.1.4-experimental",
     "repitch": "0.1.2-experimental",
     "tapehead": "0.1.2-experimental",
-    "airwindows-chorus": "0.1.1-experimental",
+    "airwindows-chorus": "0.1.2-experimental",
     "everb": "0.1.0-experimental",
     "analog-bassdrum": "0.1.5-experimental",
     "midi-scenes": "0.2.4-experimental",

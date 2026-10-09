@@ -18,13 +18,15 @@ describe('loader-free DSP placement (native static stock)', () => {
       .toEqual(['spectrum', 'character', 'modulation', 'tapeecho', 'miniverb', 'euclid'])
     expect(() => staticModulePlan(['unknown'])).toThrow('Unknown module')
   })
-  it('places Air Chorus including its sine table and refuses it beside Analog BD', () => {
+  it('places the full Air Chorus table separately beside Analog BD', () => {
     const selected = plan(['airwindows-chorus'])
     expect(selected).toHaveLength(1)
     expect(selected[0].words).toBeGreaterThan(1026)
     for (const tag of ['A', 'B']) {
       expect(planSelectionDsp(tag, core(tag), fx2Off, selected, ['airwindows-chorus']).placed).toHaveLength(1)
-      expect(() => planSelectionDsp(tag, core(tag), fx2Off, selected, ['airwindows-chorus', 'analog-bassdrum'])).toThrow('ANALOG BD cannot share DSP memory with AIR CHORUS')
+      const combined = planSelectionDsp(tag, core(tag), fx2Off, selected, ['airwindows-chorus', 'analog-bassdrum'])
+      expect(combined.placed[0].table?.words).toBe(1026)
+      expect(combined.placed[0].words + combined.placed[0].table!.words).toBe(selected[0].words)
       expect(() => planStaticPlacement(tag, core(tag), everyStock, selected)).toThrow('nowhere to place AIR CHORUS')
     }
   })
