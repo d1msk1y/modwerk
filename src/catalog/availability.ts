@@ -1,7 +1,7 @@
 import { MODULES, resolveSelection } from './modules.ts'
 
 // Temporary frontend suspension. Keep the full source catalog and saved pins intact.
-export const PAUSED_MODULE_IDS: readonly string[] = ['spectrum', 'modulation', 'character']
+export const PAUSED_MODULE_IDS: readonly string[] = ['spectrum', 'modulation', 'character', 'airwindows-chorus']
 export function isModulePaused(id: string) { return PAUSED_MODULE_IDS.includes(id) }
 // Every module in sdk/catalog.json is offered unless it is paused; build support separately gates firmware.
 export const AVAILABLE_MODULES = MODULES.filter(module => !isModulePaused(module.id))
