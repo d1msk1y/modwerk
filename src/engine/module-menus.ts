@@ -58,7 +58,7 @@ export async function composeModuleMenus(original: Uint8Array, ids: readonly str
     }
   }
   for (const descriptor of baseline.descriptors) if (leading.includes(descriptor.id)) await placeRawPointers(descriptor)
-  if (modules.some(module => module.id === 'repitch')) {
+  if (!ids.includes('poly8') && modules.some(module => module.id === 'repitch')) {
     const address = align(cursor, 128), linked = linkRomText(await readRomPackage('repitch'), address)
     await cave(address, linked.bytes, 'Repitch ROM unit'); cursor = address + linked.bytes.length
     for (const patch of recipes.repitchPatches) {

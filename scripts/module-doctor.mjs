@@ -15,7 +15,7 @@ import { parseModuleDocument } from '../src/catalog/module-contract.ts'
 import { COMPARED_BEFORE_RECORDS, NOT_COMPOSED } from './module-coverage.mjs'
 import { moduleSourceFingerprint } from './module-source.mjs'
 import { moduleNativeSourceSha256 } from './module-qualification.mjs'
-import { judgeRecord } from './perf-audit-analysis.mjs'
+import { judgeRecord, ownerWaivedPerformanceRow } from './perf-audit-analysis.mjs'
 
 // Modules first listed on or after this day carry a measured performance record (docs/module-guides/README.md, "Performance"); earlier ones keep their qualification evidence.
 const PERFORMANCE_REQUIRED_FROM = '2026-10-07'
@@ -64,16 +64,15 @@ function octatrack(id) {
   // Cycles, a benchmark against stock and a stress run. Required for a module listed from PERFORMANCE_REQUIRED_FROM; older modules are told.
   const approvalPath = 'sdk/' + id + '-build-approval.json'
   const hardwareApproval = exists(approvalPath) ? json(approvalPath) : null
-  const hardwareWaived = hardwareApproval?.kind === 'owner-approved-update' && hardwareApproval.approvedBy === 'repeat98' && hardwareApproval.id === id && hardwareApproval.version === document.version && hardwareApproval.sourceSha256 === nativeHashes.get(id) && hardwareApproval.waived?.includes('current-build-hardware')
   const performanceRequired = entry && (entry.addedAt ?? '').slice(0, 10) >= PERFORMANCE_REQUIRED_FROM
   if (exists(folder + '/evidence/performance.json')) {
     const record = json(folder + '/evidence/performance.json'), rows = judgeRecord(record)
     if (record.module !== id || record.version !== document.version) fail('performance', 'evidence/performance.json is for ' + record.module + '@' + record.version + ', not ' + id + '@' + document.version, 'measure again for this version, then npm run perf:audit -- check ' + folder + '/evidence/performance.json')
     else for (const row of rows.filter(item => item.state === 'fail')) {
-      if (hardwareWaived && (row.name === 'stock benchmark' ? ['stockLongestUs', 'moduleLongestUs', 'stockIdlePercent', 'moduleIdlePercent'].every(key => record.load?.[key] === null) : row.name === 'stress' && ['floodMessagesPerSecond', 'clockBpm', 'seconds', 'stuckNotes', 'hangs', 'dropped'].every(key => record.stress?.[key] === null))) info('hardware performance', row.name + ' evidence is missing and explicitly owner-waived; retained hardware reports and model limits are in TESTING.md')
+      if (ownerWaivedPerformanceRow(record, row, hardwareApproval, nativeHashes.get(id))) info('performance exception', row.name + ' evidence is missing and explicitly owner-waived at this exact version/source; limits are in TESTING.md')
       else fail('performance', row.name + ': ' + row.detail, row.fix ?? 'npm run perf:audit -- check ' + folder + '/evidence/performance.json')
     }
-    if (!lines.some(line => line.name === 'performance')) ok('performance', rows.filter(item => item.name !== 'record' && !(hardwareWaived && ['stock benchmark', 'stress'].includes(item.name))).map(item => item.name + ' ' + item.state).join(', ') + ' (npm run perf:audit)')
+    if (!lines.some(line => line.name === 'performance')) ok('performance', rows.filter(item => item.name !== 'record' && !ownerWaivedPerformanceRow(record, item, hardwareApproval, nativeHashes.get(id))).map(item => item.name + ' ' + item.state).join(', ') + ' (npm run perf:audit)')
   } else if (performanceRequired) fail('performance', 'a new module needs ' + folder + '/evidence/performance.json: worst-case cycles, a benchmark against stock and a stress run', 'npm run perf:audit -- template dsp|coldfire, measure (docs/module-guides/README.md, "Performance"), then npm run perf:audit -- check')
   else info('performance', 'no evidence/performance.json. Not required before ' + PERFORMANCE_REQUIRED_FROM + '; npm run perf:audit measures the same three things')
 

@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 import { LIBRARY_CATEGORIES } from '../catalog/modules'
 import { DEVICES, parseDeviceRoute } from '../devices/registry'
 import { COMMUNITY_MODULES, nativeModule } from './modules'

@@ -1,5 +1,19 @@
 # Architecture decisions
 
+## Independent platform backend licensing — 9 October 2026
+
+The owner selected Elastic License 2.0 for the independent Modwerk API/backend
+in `server/`, `worker.ts`, `functions/` and `migrations/` to restrict hosted or
+managed reuse of its substantial functionality. The explicit owner-authored
+shared-helper inventory offers GPL-3.0-or-later OR Elastic-2.0 so the GPL browser
+frontend and ELv2 backend can each use it. The frontend, SDKs, modules, vendored
+builders and third-party contributions retain their existing licences. Earlier
+GPL revisions retain their rights. See [licence scope](../LICENSE) and the
+[ownership/dependency audit and limits](PLATFORM_LICENSING.md).
+
+This supersedes the blanket Modwerk GPL statements in the dated decisions
+below; it does not relicense upstream GPL code or extend to the frontend.
+
 ## Repository and source provenance
 
 The React frontend, community API, Octamod SDK, module sources, developer documentation and release tooling live in one repository. The SDK is a distinct directory and developer entry point. Preserve upstream octabam provenance, module authorship and applicable licences. Firmware, downloads, native build outputs, caches, secrets and local development notes do not belong in the public source tree.

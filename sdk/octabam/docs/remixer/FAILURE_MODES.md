@@ -3,6 +3,76 @@
 Symptom → cause (measured, inferred or open) → fix. Add an entry the moment
 a mode is seen on hardware.
 
+## POLY8T03 stops transport at step 1 and silences every channel — reported 8 October 2026, cause open
+
+**Hardware report.** After testing the private POLY8T03 image, the owner reports
+that the sequencer remains on step 1, no channel plays audio and sample
+preview is silent. Whether this starts at boot or after a POLY operation is
+still being established. Reinstalling stock 1.40C restores playback and
+sample preview in the same project, according to the owner. Treat this as a
+new blocking regression, distinct
+from POLY8T02's missing recording and clipping reports.
+
+**Validation gap.** The 0.2.2 battery-only emulator gate checked restored Part
+identity and frame progress, but did not exercise PLAY or assert audio after
+restart. Those checks do not establish working hardware transport/audio.
+A warm-start probe produces POLY/FLEX key audio and records notes on steps
+2, 4 and 6 in both T02 and T03 with the same restored battery RAM. This does
+not reproduce the hardware stall. The sample-preview probe fails to confirm
+the expected tone even in unmodified stock, so that test is unqualified. The
+cause and a physical fix remain unconfirmed.
+
+**Next experiment.** Private 0.2.3 / POLY8T04 adds the existing core logger and bounded POLY state/counters, reserves scratch for all physical selectors while retaining eight active voices, and times out the one-machine modal after 120 native UI ticks. Native key audio, recording and rapid presses pass; this does not resolve the hardware report. Copy both CF checkpoints after a stopped, completed SAVE job; hard lockup/reset-tail recovery remains unproven.
+
+**T04 hardware follow-up, 8 October 2026.** On the MKII, the owner reports: "loaded the poly machine, pressed play, sequencer is stuck" and "earlier couldn't even cue samples". T04 has not resolved the transport failure. The timing of the earlier cue failure and its image are unspecified; do not treat it as a measured T04 audition result.
+
+**Physical logs.** Both Desktop copies validate as complete v2 checkpoints with the exact T04 configuration/source identity. They share the first boot's history; the larger checkpoint also recovers that history into a second logger boot. No records were dropped and no exception or error is stored. At UI tick 480 the transport snapshot is 1, live/grid REC and modal bits are zero, and render-entry/completion, fetch, panel-key and record counts remain zero. At tick 540 transport is zero and those counts remain zero. UI jobs and a SAVE PROJECT begin/end are recorded later, so this capture does not show a permanently blocked UI or a stuck one-machine modal. The last first-boot event is a transport request at tick 7570; no later engine progress is captured. Zero render calls locates the captured failure before POLY mixing, but does not by itself identify its cause; no sample trigger is recorded and the existing logger does not trace DSP/ISR progress.
+
+**Dependency candidate, not a confirmed cause.** The exact native T04 build implicitly includes DSP DYNLOAD STOCK on both cores, replacing resident stock effect uploads and adding frame/project/Part hooks, although POLY itself is ColdFire-only. Private 0.2.4 / POLY8T05 selects the SDK's existing static-stock profile, asserts both DSP upload spans are byte-identical to original 1.40C and records native command-consumer/AMP-builder call counts. No physical T05 result is available. The existing MKII recording, rapid-key responsiveness and persistence failures remain open.
+
+## POLY rapid chromatic trigs stall the MKII until voices end — reported 8 October 2026, cause open
+
+**Symptom.** The owner reports temporary unresponsiveness in the private POLY
+32-voice experiment while rapidly pressing trig keys, usually with AMP HOLD
+and REL at INF. Polyphonic panel recording also failed. This is a hardware
+report, not a reproduced physical measurement.
+
+**Candidate mitigation.** The then-unpublished `sdk/drafts/poly-machine` 0.2.1
+test limits admission to eight shared heads with a pitch-weighted fetch budget,
+steals release tails first, ignores duplicate held-key presses and defaults
+new assignments to LOOP OFF. Existing saved LOOP choices remain unchanged.
+The native MKII port records a four-note chord and completes 128 rapid presses
+with HOLD/REL INF. Emulator progress does not certify physical deadlines.
+
+**Still open.** Retest this exact candidate on the MKII with the owner's sample
+and AMP settings; confirm UI response during notes and save/reload. The
+reported hang remains unconfirmed as fixed until that hardware result exists.
+
+## POLY8T02 loses identity on reboot, records no hardware trigs and clips chords — reported 8 October 2026
+
+**Observed on MKII.** Chromatic keys sound during REC+PLAY with REC flashing
+and the playhead advancing, but the owner reports no recorded trigs. Reboot
+shows FLEX. More than one sounding voice clips. No physical success is claimed.
+
+**Reboot cause measured.** The three-byte PL/1 marker is valid in the live
+Part but becomes `00 50 4c` in battery RAM. The compiler combines the copy loop
+into a source-postincrement / indexed-destination byte move, shifting stores.
+0.2.2 stages all three reads before stores; both copies match after actual
+panel assignment. Battery-only emulator restart is separate from explicit
+project-load testing. The persistence-audit source patch on main records the
+same defect. Physical reboot remains to be retested on this candidate.
+
+**Gain candidate.** Fixed 1/8 gain in the single-head fast path and both unity
+and ramped accumulation paths leaves headroom for eight coherent full-scale
+voices. Native positive/negative DC probes fit the Q25 mix range. One POLY
+assignment per Part is admitted; the second is refused before settings/sample
+writes and opens a native modal dismissed with NO.
+
+**Recording cause open.** Both POLY8T02 and 0.2.2 record four panel notes from
+fresh native assignment with REC+PLAY. The previous project-reload fixture did
+not prove hardware recording or ordinary reboot. Keep the MKII recording
+failure open; do not attribute a recording fix to the gain/marker changes.
+
 ## Pops and clicks from T1 with BusDelay when T1 plays its own trigs 🔴 reported (29 Sep 2026), cause open
 
 **Symptom.** Reported on Discord by Arcdmd_, 29 Sep 2026: sounds programmed

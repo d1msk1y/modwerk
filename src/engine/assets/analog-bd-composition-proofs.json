@@ -4,11 +4,11 @@
   "sourceSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
   "staticStock": true,
   "builderSources": {
-    "tools/build/build_bus.py": "d53381cb0b931319d62de1493c3292ac3a4b98afae4d64e9b715ed3f740e3289",
+    "tools/build/build_bus.py": "e5c96c308a4018c0d0c9cfd2bcc02d64802a1a3b3746c9797c26feb860a39d67",
     "tools/build/ab_image.py": "d51e8face61e0642f24743cc8081b1d258943f5040a3b34d003cf34a4f797c14",
     "tools/remix/loader.S": "32e09fd813ddc65511390faaebc3b86d963b2700f304b35cdb1ec48f90449287"
   },
-  "moduleSourceTreeSha256": "b43202fc97da4cab96a04a52f7aa8ee87fa63090ffd3184a977717de841128ec",
+  "moduleSourceTreeSha256": "cde470186c57b5f614415bb1d6f7a4161cc07df2d8dd6dc892a7f15df0938394",
   "packing": null,
   "proofs": [
     {

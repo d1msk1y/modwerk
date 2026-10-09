@@ -149,6 +149,25 @@ class ToolSyntax(unittest.TestCase):
                 ast.parse(source.read_text(encoding='utf-8'), str(source))
 
 class SelectiveImport(unittest.TestCase):
+    def assert_current_builder_identity(self, path, historical):
+        import hashlib, json
+        record = json.loads((ROOT.parent / 'infrastructure-verification/poly8-shared-builder.json').read_text())
+        adaptation = record['builderAdaptations'].get(path)
+        if adaptation:
+            self.assertEqual(adaptation['before'], historical)
+        current = adaptation['after'] if adaptation else historical
+        self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), current)
+
+    def test_poly8_builder_preserves_current_main_without_poly8(self):
+        import json
+        record = json.loads((ROOT.parent / 'infrastructure-verification/poly8-shared-builder.json').read_text())
+        self.assertEqual(record['kind'], 'poly8-guarded-builder-regression')
+        self.assertEqual(set(record['builderAdaptations']), {'tools/build/build_bus.py', 'tools/remix/ledger.py', 'tools/remix/platform_build.py', 'tools/remix/schema.py'})
+        self.assertEqual(len(record['selections']), 38)
+        for row in record['selections']:
+            self.assertNotIn('poly8', row['moduleIds'])
+            self.assertEqual(row['before'], row['after'])
+
     def test_exact_adapted_file_identities_and_scope(self):
         import hashlib, json
         sdk = ROOT.parent
@@ -159,7 +178,7 @@ class SelectiveImport(unittest.TestCase):
         for file in record['files']:
             with self.subTest(path=file['path']):
                 self.assertFalse(file['path'].startswith('modules/'))
-                self.assertEqual(hashlib.sha256((ROOT / file['path']).read_bytes()).hexdigest(), file['vendoredSha256'])
+                self.assert_current_builder_identity(file['path'], file['vendoredSha256'])
 
     def test_native_comparison_keeps_images_and_refusals_exact(self):
         import hashlib, json
@@ -168,4 +187,4 @@ class SelectiveImport(unittest.TestCase):
         for row in record['selections']:
             self.assertEqual(row['before'], row['after'])
         for path, fingerprint in record['builderSourcesAfter'].items():
-            self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), fingerprint)
+            self.assert_current_builder_identity(path, fingerprint)

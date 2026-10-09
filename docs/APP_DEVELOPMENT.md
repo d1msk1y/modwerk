@@ -1,5 +1,9 @@
 # App development and operations
 
+The independent API/backend is source available under Elastic-2.0; the browser
+frontend remains GPL-3.0-or-later. Read [platform licensing](PLATFORM_LICENSING.md)
+for the scope and dependency boundary before sharing code between them.
+
 Existing published module authors may use the [automatic author-update workflow](MODULE_AUTHOR_UPDATES.md): verified ownership, changes confined to their modules, explicit evidence review and successful checks on the exact source/base permit bot merge and publication. Other changes retain owner review. Existing qualification gates and exact-version owner exceptions are unchanged.
 
 For module development, start with the [repository quickstart](../README.md) and [SDK guide](../sdk/README.md). Run commands below from the repository root.
