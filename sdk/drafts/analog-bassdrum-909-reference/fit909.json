@@ -1,5 +1,5 @@
 {
-  "_about": "Private Analog BD 909 reference candidate, revision AB014REF03. Fit to Skee Mask’s supplied 70 BPM recordings, including complex body harmonics and full-hit envelope/DC. The supplied audio report identifies a decay-modified 909, decay a little above halfway, knob changes after hits and occasional final endpoint repeats. Physical intermediate knob positions remain unknown.",
+  "_about": "Private Analog BD 909 reference candidate, revision AB014REF03. Fit to Skee Mask\u2019s supplied 70 BPM recordings, including complex body harmonics and full-hit envelope/DC. The supplied audio report identifies a decay-modified 909, decay a little above halfway, knob changes after hits and occasional final endpoint repeats. Physical intermediate knob positions remain unknown.",
   "nodes": [
     0,
     0.125,
@@ -82,7 +82,7 @@
     "tau_a": 0.0007297,
     "t_h": 0.06542947363437386,
     "tau_droop": 3.2180836826396075,
-    "k0": 3.90177172659982,
+    "k0": 3.651396927791929,
     "k_dc": 0.06426235687426331,
     "tau_dc": 0.010509280031516405,
     "c0": 0.19954536666509812,
@@ -118,21 +118,21 @@
     "A_ref_hz": 236.12
   },
   "pulse": {
-    "f_hp": 156.29334133698268,
-    "f0": 5246.2403289106405,
-    "q": 3.110601797079247,
-    "k_w": 35.73674612260486,
-    "k_u": 11.715499311771675,
-    "f_u": 7999.999999999995,
-    "tau_decay": 0.0047587373346560735,
-    "f_output": 21999.99999999644,
-    "jitter_base": 0.94,
-    "jitter_depth": 0.06,
-    "_note": "Long and fast discharges both follow ATK. Joint low/high fit includes the native LPF and complete body model. Input gains divided by 16 and filter gains multiplied by 16 preserve headroom; the mixer also retains its quarter scale. Coupling and output poles reached upper bounds; values describe a fitted model, not measured component constants. jitter_* vary strength, never timing.",
-    "fast_tau": 0.0003862917247062526,
-    "fast_gain": -14.203942870021331,
+    "f_hp": 156.4321571330062,
+    "f0": 4782.764505445681,
+    "q": 1.5638021720075013,
+    "k_w": 32.37103901058115,
+    "k_u": 12.72490950682746,
+    "f_u": 1260.8417814341421,
+    "tau_decay": 0.004720122620248985,
+    "f_output": 21999.999999999996,
+    "jitter_base": 0.96,
+    "jitter_depth": 0.04,
+    "_note": "Joint minimum/maximum Attack fit to the owner-confirmed TR-909 direct-out recording at LPF bypass. Complete body/Tune model held fixed. Full-onset spectral energy includes pre-roll; edge-aligned time residual is a fit metric, not measured trigger alignment. Existing long/fast discharge and filter structure retained. Input/filter gain scale 16 preserves fixed-point headroom. Jitter strength range is 0.92..1.0; it is an approximation, not a measured circuit mechanism.",
+    "fast_tau": 0.0003961454201205716,
+    "fast_gain": -13.522104134308124,
     "gain_scale": 16,
-    "fast_depth": 3.868955600097328
+    "fast_depth": 3.9989999999999997
   },
   "noise": {
     "f_hp": 230.4262419,

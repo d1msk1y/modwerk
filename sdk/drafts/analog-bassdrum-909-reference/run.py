@@ -176,7 +176,7 @@ def main():
         with wave.open(str(path),'wb') as w:
             w.setnchannels(1);w.setsampwidth(3);w.setframerate(44100)
             w.writeframes(b''.join((v&0xffffff).to_bytes(3,'little') for v in values))
-    k=[49,100,0,0,64,0,1,72,48,64,64,0]
+    k=[49,100,0,0,64,0,1,72,0,64,64,0]
     # Five rising Attack levels, eight equal high-Attack hits, then Tune.
     hit_knobs=[(0,a) for a in (0,32,64,96,127)]+[(0,127)]*8+[(t,64) for t in (0,32,64,96,127)]
     # Construct the audition script directly to avoid dropping the offset-8
@@ -204,7 +204,7 @@ def main():
             report['neighborVariation']={'equalControlHits':8,'peakValues':peaks,
                                          'peakCoefficientOfVariation':spread,
                                          'deterministicReplayBitIdentical':True,
-                                         'pulseSeedRange':[.88,1],
+                                         'pulseSeedRange':[dsp909.PU['jitter_base']-dsp909.PU['jitter_depth'], dsp909.PU['jitter_base']+dsp909.PU['jitter_depth']],
                                          'randomTriggerDelay':False,'randomPitch':False}
     evidence={'schema':1,'moduleId':'analog-bassdrum','candidateVersion':record['version'],'date':'2026-10-09',
               'baseFiles':record['baseFiles'],'candidateFiles':record['candidateFiles'],

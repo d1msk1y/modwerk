@@ -2,7 +2,7 @@
 
 python calibrate.py --reference-dir '.../909 70BPM' --output new-report.json
 Requires numpy and scipy in a separate analysis environment. Physical knob
-positions and signal-chain provenance are unavailable; no linear knob sweep
+positions remain unknown; direct-out capture is owner-confirmed. No linear knob sweep
 or physical-unit measurement is inferred from filenames.
 """
 import argparse

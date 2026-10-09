@@ -4,8 +4,8 @@
   "candidateVersion": "0.1.4-experimental",
   "sourceFiles": {
     "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-    "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f",
-    "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b"
+    "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
+    "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
   },
   "baselineFiles": {
     "dsp909.py": "480a064a304380079019125eef98e9c68da26bd5408bbe38845563ccac94d2e4",
@@ -111,5 +111,5 @@
   "xAllocationChanged": false,
   "maximumFxLoad": "untested",
   "physicalHardwareTiming": "unmeasured",
-  "toolSha256": "f27f6519324670caaca87bdad71fe18cea791e150e2becff47a3624b1eedc916"
+  "privateFirmwareLabel": "AB014REF05"
 }

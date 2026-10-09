@@ -349,5 +349,7 @@
     "Coupling/output pole bounds are model choices, not measured circuit constants.",
     "Decay mapping outside the recorded modified-909 setting retains the existing curve.",
     "Physical intermediate knob positions are unknown; control interpolation remains a design choice."
-  ]
+  ],
+  "scope": "Historical AB014REF04 body/Tune/whole-hit fit. Its pulse coefficients and minimum-pulse gain are superseded by direct-out-fit.json; body and Tune values remain current.",
+  "privateFirmwareLabel": "AB014REF04"
 }

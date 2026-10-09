@@ -25,24 +25,27 @@
   },
   "candidateFiles": {
     "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-    "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+    "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
     "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f",
     "apply.py": "c4e2db723e9a70aacd4c915bdf73efdb76ce057914b6b25c614d126aa5626ce8",
-    "run.py": "54abca87e5c3434c0935b03734b4c117766a7db325bcb7ba52be753f2e07091a",
-    "calibrate.py": "5ce4b5b7bf9125291f9dd672d5bd455718609f405875dc81eaa8cba8bad376b4",
+    "run.py": "360660d8e74c7fe8d0fa4496660235a9d5a28e2f2a4dde7baa3cba47d599e3da",
+    "calibrate.py": "4af41b490ee41579ed5fc794ae22c8f0f381920b3a0c8848acd7412a7018c7aa",
     "qualification/multi_host.cpp": "c49d11ead0705bd9b3f92f8e22735f1ff22fdd430ab3cbe1e03355641cb71888",
     "qualification/multi-test.py": "e209ed619bfc1ff9e2c44a2914ed59e2d96ebb144aca677886b658cb9065cfd9",
-    "compare.py": "b2fe62a216cd0cb845c8b09425aa1570fc2c37a01c2317344b702b65ffeb10f5",
-    "qualification/port.py": "ca5c95c535ec6c8f86b32907067c8b6e1a5f29f63ba5e04a1ba3934c42e4c045",
+    "compare.py": "303b7de19c4c00e35c6d5233211bb0bb5aa788250900c0b53aa2d965d5eb781a",
+    "qualification/port.py": "701876d0fd8ee26eb798d743cffd4d18fad1e603994a78b80bb359e17046a4f9",
     "qualification/source_probe.py": "dc3e3411243a8b0b293b25702ae32a17942cd048699e0fb77618d60bd4008488",
-    "qualification/ranges.py": "44539c6d92ce45014e3895fe1e41239f7eda6d0cb5bffb9f8289a9fe6706f5af",
-    "qualification/costs.py": "f27f6519324670caaca87bdad71fe18cea791e150e2becff47a3624b1eedc916"
+    "qualification/ranges.py": "91f5e1ec30ab9dd7ba67e7a090960d1e2c9f0b5fb8aebabb6b26c5bd59b3a0b1",
+    "qualification/costs.py": "f27f6519324670caaca87bdad71fe18cea791e150e2becff47a3624b1eedc916",
+    "qualification/reference.py": "099c14968b3efe1699fc30bfd6853997010b85f10dd146a159587e83469afd27"
   },
   "publication": "Private reference candidate only; excluded from discovery, catalogue and downloadable packages. Prior hardware approval does not apply.",
   "audition": {
     "firstRevision": "Owner liked the direction, body and resonance in the bundled preview; attack sounded smoother. Attack/Tune were then split for an unambiguous audition.",
     "secondRevision": "Owner initially accepted the Attack-only clip, then withdrew that assessment: the full sound and attack do not sound sufficiently like the 909.",
     "bundledClipClarification": "The first clip bundled Attack and Tune. Separate fixed-control sweeps supplied for review.",
-    "thirdRevision": "Whole-hit body phase, DC/envelope, both Tune endpoints and joint Attack fit; new native/full-image audition pending."
+    "thirdRevision": "Owner describes the AB014REF04 whole-hit/endpoints revision as pretty close, with the high end of Attack still sounding cut off.",
+    "lpfInvestigation": "AB014REF04 tested at LPF48/64/127/0. Owner confirms real 909 direct-out reference with main-out LPF excluded, and rejects a 1:1 match. Full-onset analysis corrects the earlier cropped-onset upper-band measurements. AB014REF05 refits pulse for bypass.",
+    "directOutRevision": "AB014REF05 refits only pulse coefficients and minimum pulse gain for LPF bypass, and reduces strength range to 0.92..1.0; body/Tune and DSP instructions unchanged from AB014REF04. Listening/physical qualification pending."
   }
 }

@@ -59,7 +59,7 @@ def main():
     report={'schema':1,'date':'2026-10-09','comparisons':results,
             'method':'Native PCM; 70 BPM; low hits 2..9 and final four high-Attack medians; full-hit error from 20..700 ms; one fixed tail-RMS level factor per engine, no phase search. H2-H5 body magnitudes checked against four held-out Attack hits (25,33,41,48).',
             'limits':['Attack endpoint medians also informed fitting and are not an independent validation set.',
-                      'Knob positions, recording chain and exact hardware component tolerances were not documented.',
+                      'Direct-out capture is owner-confirmed; intermediate physical knob positions, external processing and exact component tolerances remain unspecified.',
                       'Harmonic magnitude agreement does not prove temporal phase or full waveform agreement.',
                       'The two native previews use identical controls; the old high-Attack signal reaches its output limit.']}
     args.output.write_text(json.dumps(report,indent=2)+'\n')

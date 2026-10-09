@@ -24,17 +24,18 @@
   },
   "candidateFiles": {
     "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-    "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+    "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
     "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f",
     "apply.py": "c4e2db723e9a70aacd4c915bdf73efdb76ce057914b6b25c614d126aa5626ce8",
-    "run.py": "54abca87e5c3434c0935b03734b4c117766a7db325bcb7ba52be753f2e07091a",
-    "calibrate.py": "eb42f033769b9ca0e479a77efe37c11ca91145978c6301b9caade99c70c077ce",
+    "run.py": "360660d8e74c7fe8d0fa4496660235a9d5a28e2f2a4dde7baa3cba47d599e3da",
+    "calibrate.py": "5ce4b5b7bf9125291f9dd672d5bd455718609f405875dc81eaa8cba8bad376b4",
     "qualification/multi_host.cpp": "c49d11ead0705bd9b3f92f8e22735f1ff22fdd430ab3cbe1e03355641cb71888",
     "qualification/multi-test.py": "e209ed619bfc1ff9e2c44a2914ed59e2d96ebb144aca677886b658cb9065cfd9",
-    "compare.py": "3bec28f3aeb971d01aa4e05ba5987374cf9ed9eb2115f6a09716f196d797d649",
-    "qualification/port.py": "ca5c95c535ec6c8f86b32907067c8b6e1a5f29f63ba5e04a1ba3934c42e4c045",
+    "compare.py": "b2fe62a216cd0cb845c8b09425aa1570fc2c37a01c2317344b702b65ffeb10f5",
+    "qualification/port.py": "701876d0fd8ee26eb798d743cffd4d18fad1e603994a78b80bb359e17046a4f9",
     "qualification/source_probe.py": "dc3e3411243a8b0b293b25702ae32a17942cd048699e0fb77618d60bd4008488",
-    "qualification/ranges.py": "44539c6d92ce45014e3895fe1e41239f7eda6d0cb5bffb9f8289a9fe6706f5af"
+    "qualification/ranges.py": "91f5e1ec30ab9dd7ba67e7a090960d1e2c9f0b5fb8aebabb6b26c5bd59b3a0b1",
+    "qualification/costs.py": "f27f6519324670caaca87bdad71fe18cea791e150e2becff47a3624b1eedc916"
   },
   "toolchainFiles": {
     "build/source/dsp_host/dsp_asm": "cea81ed254112d49743ec9f25d753308e11e4011fd158a4612cf1e3db70b3fec",
@@ -45,9 +46,9 @@
       {
         "engine": "909",
         "patch": "sat0",
-        "errorDb": -77.55579367754346,
-        "rmsAbsoluteError": 3.35527385145581e-05,
-        "peakAbsoluteError": 8.487701416015625e-05,
+        "errorDb": -76.92644084942158,
+        "rmsAbsoluteError": 3.606331439959316e-05,
+        "peakAbsoluteError": 8.296966552734375e-05,
         "quietQuantizationCase": false,
         "maxInstructionsPerBlock": 6523,
         "baselineMaxInstructionsPerBlock": 6136
@@ -55,9 +56,9 @@
       {
         "engine": "909",
         "patch": "sat64",
-        "errorDb": -88.50482702244001,
-        "rmsAbsoluteError": 1.3060432615980855e-05,
-        "peakAbsoluteError": 8.821487426757812e-05,
+        "errorDb": -89.50695848652205,
+        "rmsAbsoluteError": 1.164561874797531e-05,
+        "peakAbsoluteError": 8.249282836914062e-05,
         "quietQuantizationCase": false,
         "maxInstructionsPerBlock": 6523,
         "baselineMaxInstructionsPerBlock": 6136
@@ -65,9 +66,9 @@
       {
         "engine": "909",
         "patch": "sat127",
-        "errorDb": -85.05480914363727,
-        "rmsAbsoluteError": 2.2627525857725144e-05,
-        "peakAbsoluteError": 0.00044155120849609375,
+        "errorDb": -86.1990110032755,
+        "rmsAbsoluteError": 1.9835776724993784e-05,
+        "peakAbsoluteError": 0.0004711151123046875,
         "quietQuantizationCase": false,
         "maxInstructionsPerBlock": 6523,
         "baselineMaxInstructionsPerBlock": 6136
@@ -75,9 +76,9 @@
       {
         "engine": "909",
         "patch": "endpoint0",
-        "errorDb": -1.8023909939602543,
-        "rmsAbsoluteError": 1.215717952918281e-06,
-        "peakAbsoluteError": 1.33514404296875e-05,
+        "errorDb": -0.8684483155386618,
+        "rmsAbsoluteError": 1.2866153062669508e-06,
+        "peakAbsoluteError": 1.430511474609375e-05,
         "quietQuantizationCase": true,
         "maxInstructionsPerBlock": 6523,
         "baselineMaxInstructionsPerBlock": 6136
@@ -85,9 +86,9 @@
       {
         "engine": "909",
         "patch": "endpoint127",
-        "errorDb": -89.0313507248945,
-        "rmsAbsoluteError": 2.3533848672799835e-05,
-        "peakAbsoluteError": 0.000885009765625,
+        "errorDb": -91.24879812113419,
+        "rmsAbsoluteError": 1.823870494728516e-05,
+        "peakAbsoluteError": 0.0008831024169921875,
         "quietQuantizationCase": false,
         "maxInstructionsPerBlock": 6523,
         "baselineMaxInstructionsPerBlock": 6136
@@ -95,7 +96,7 @@
       {
         "engine": "909",
         "patch": "moving-depth-sat-retriggers",
-        "errorDb": -87.94520880056781,
+        "errorDb": -89.11756815458745,
         "maxInstructionsPerBlock": 6529
       },
       {
@@ -216,8 +217,8 @@
       {
         "name": "current-013",
         "peak": 0.9999998807907104,
-        "limitedSamples": 47,
-        "sha256": "0255042000090a6da78540747eb5d9137c96b17bf755cea3bb6f1887576f9b94",
+        "limitedSamples": 52,
+        "sha256": "d67ca4bb0e1e5db040d668383cca7835985579483c6273b16b7a62fa8f3080e0",
         "controls": [
           49,
           100,
@@ -227,7 +228,7 @@
           0,
           1,
           72,
-          48,
+          0,
           64,
           64,
           0
@@ -310,9 +311,9 @@
       },
       {
         "name": "candidate-014",
-        "peak": 0.6920204162597656,
+        "peak": 0.6597061157226562,
         "limitedSamples": 0,
-        "sha256": "3e8313fc91871c7aaf9bf438911b1487018263e0e56ffaf0c56c9b5f3feba043",
+        "sha256": "af9cdcad02e80e88aa000ad516789177d930f3955eb88671ace63f520f76a08b",
         "controls": [
           49,
           100,
@@ -322,7 +323,7 @@
           0,
           1,
           72,
-          48,
+          0,
           64,
           64,
           0
@@ -519,20 +520,20 @@
     "neighborVariation": {
       "equalControlHits": 8,
       "peakValues": [
-        0.6920204162597656,
-        0.686314582824707,
-        0.6377105712890625,
-        0.6391768455505371,
-        0.6877026557922363,
-        0.6440386772155762,
-        0.6646914482116699,
-        0.6910228729248047
+        0.6597061157226562,
+        0.6560206413269043,
+        0.625554084777832,
+        0.6264944076538086,
+        0.657050609588623,
+        0.629427433013916,
+        0.6424965858459473,
+        0.6591558456420898
       ],
-      "peakCoefficientOfVariation": 0.03416081550124278,
+      "peakCoefficientOfVariation": 0.022287523769395457,
       "deterministicReplayBitIdentical": true,
       "pulseSeedRange": [
-        0.88,
-        1
+        0.9199999999999999,
+        1.0
       ],
       "randomTriggerDelay": false,
       "randomPitch": false
@@ -543,5 +544,10 @@
   "worstCaseChipCycles": "unmeasured",
   "fullChainAndMaximumFxLoad": "untested",
   "publication": "Private candidate; approved public 0.1.3 remains unchanged",
-  "sourceIdentityScope": "Immutable native-run input snapshot. The three DSP/fit inputs, run.py and multi-voice tools match this revision. Unused calibrate.py/compare.py were subsequently revised for the whole-hit analysis; current analysis/qualification tools are pinned separately in draft.json."
+  "privateFirmwareLabel": "AB014REF05",
+  "sourceFiles": {
+    "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
+    "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
+    "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
+  }
 }

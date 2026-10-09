@@ -10,6 +10,8 @@ parser.add_argument('--output',type=pathlib.Path,required=True)
 parser.add_argument('--project',type=pathlib.Path,required=True)
 parser.add_argument('--attack',type=int,choices=range(128),default=0)
 parser.add_argument('--tune',type=int,choices=range(128),default=0)
+parser.add_argument('--lpf',type=int,choices=range(128),default=0)
+parser.add_argument('--frames',type=int,choices=range(5000,20001),default=5000)
 parser.add_argument('--reverse',action='store_true')
 parser.add_argument('--emu-build',type=pathlib.Path,default=pathlib.Path('/opt/toolchain/emu-build'))
 args=parser.parse_args()
@@ -23,7 +25,7 @@ import recloop as rl
 import source_probe as ab_source_probe
 from ab_fixture import prepare
 from analog_bassdrum import wav
-DEFAULTS=[49,100,args.tune,args.attack,64,0,1,72,48,64,64,0]
+DEFAULTS=[49,100,args.tune,args.attack,64,0,1,72,args.lpf,64,64,0]
 SAMPLE808=False
 REVERSE=args.reverse
 MODELS=((0,1),(4,0)) if REVERSE else ((0,0),(4,1))
@@ -71,14 +73,14 @@ def main():
     spans=';'.join(f'{symbols[name]:#x},4={OUT}/{name}.bin' for name in ('ab_render_calls','ab_hits'))
     spans+=f';0x40170f60,6322={OUT}/part.bin'
     emu=ab_source_probe.build(ROOT,args.emu_build,OUT/'probe',core,cont,knobbase,entries['zq01'])
-    cmd=[str(emu),'--image',str(image),'--card',str(card),'--set','OCTABAM','--project','RIG','--load-ms','20000','--sequencer','--internal-clock','--bank','0','--frames','5000','--dsp','--main-level','64','--audio-out',str(basewav),'--block-dump',str(dump),'--mem-dump',spans]
+    cmd=[str(emu),'--image',str(image),'--card',str(card),'--set','OCTABAM','--project','RIG','--load-ms','20000','--sequencer','--internal-clock','--bank','0','--frames',str(args.frames),'--dsp','--main-level','64','--audio-out',str(basewav),'--block-dump',str(dump),'--mem-dump',spans]
     cmd+=['--dsp-pcwatch',f'{core}:{cont:x}']
     with open(OUT/'port.log','w') as log:
         log.write(' '.join(cmd)+'\n');log.flush()
         subprocess.run(cmd,env={**os.environ,'AB_SOURCE_TRACE':str(sampler)},
                        stdout=log,stderr=subprocess.STDOUT,cwd=ROOT,check=True,timeout=600)
     log=(OUT/'port.log').read_text()
-    assert re.search(r'frames run : 5000 .*run ended REACHED',log),log[-2000:]
+    assert re.search(rf'frames run : {args.frames} .*run ended REACHED',log),log[-2000:]
     hits=int.from_bytes((OUT/'ab_hits.bin').read_bytes(),'big')
     assert hits>=2,('both tracks must trigger',hits)
     c=bd.classes(bd.read(dump));outputs=[]; actual=[];error_db=None
@@ -151,7 +153,7 @@ def main():
     residual,lag,gain=min(candidate)
     amp_error=10*math.log10(max(residual,1e-30))
     assert amp_error < -70, ('stock AMP/source',amp_error)
-    values=track[lag:lag+min(75600,len(actual))]
+    values=track[lag:lag+min((args.frames*16//37800)*37800,len(actual))]
     wav(OUT/'actual-emulator-909.wav',values)
     # One fixed gain compensates stock AMP attenuation for listening only.
     matched=[round(value/gain) for value in values]
@@ -160,7 +162,7 @@ def main():
     sha=lambda path:hashlib.sha256(path.read_bytes()).hexdigest()
     report={'schema':1,'date':'2026-10-09','candidateVersion':'0.1.4-experimental',
             'sourceFiles':{name:sha(ROOT/'modules/analog-bassdrum'/name) for name in ('dsp909.py','fit909.json','bd909.asm')},
-            'mainOsSha256':sha(image),'controls':DEFAULTS,'bpm':70,'frames':5000,
+            'mainOsSha256':sha(image),'controls':DEFAULTS,'bpm':70,'frames':args.frames,
             'core':core,'bothEnginesHavePostAmpAudio':True,'mainStereoNonzero':True,
             'triggerCount':hits,'sourceReferenceErrorDb':error_db,
             'stockAmpGain':gain,'stockAmpDelaySamples':lag,'stockAmpSourceResidualDb':amp_error,

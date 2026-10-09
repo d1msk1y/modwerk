@@ -2,14 +2,14 @@
 
 A private `0.1.4-experimental` candidate based on the three 70 BPM TR-909 recordings supplied by the owner. Thanks to **Skee Mask**, who kindly recorded his TR-909 so we could match Analog BD more closely. His recording-context report identifies a decay-modified instrument, with decay a little above halfway.
 
-This overlay changes the 909 body, Attack and Tune response. It stays outside module discovery, the catalogue and downloadable packages; the approved public version remains `0.1.3-experimental`. The owner withdrew the earlier Attack-only acceptance after reviewing the complete sound. The current whole-hit/endpoints revision, privately packaged as `AB014REF04`, awaits listening feedback and physical qualification. [Audition history](evidence/audition.json) preserves both the earlier acceptance and its withdrawal.
+This overlay changes the 909 body, Attack and Tune response. It stays outside module discovery, the catalogue and downloadable packages; the approved public version remains `0.1.3-experimental`. The current private image is `AB014REF05`. It refits the pulse for the owner-confirmed **direct-out reference with LPF bypass** and reduces excessive strength variation. The body and Tune model remain unchanged from AB014REF04. Neighboring transient shapes are still more consistent than those in the recording, so faithful hit-to-hit reproduction is not established. Listening and physical qualification remain pending. [Audition history](evidence/audition.json) preserves earlier feedback and its withdrawal.
 
 ## Sound changes
 
 - Fit both harmonic magnitude and phase/asymmetry, correcting the body waveform rather than its spectrum alone. Refit the complete hit's gain, envelope droop and DC/coupling response.
-- Fit low and high Attack together, including the native LPF. Both the fast onset and longer resonant discharge now follow Attack, retaining a small minimum pulse.
+- Fit low and high Attack together, at LPF bypass. Both the fast onset and longer resonant discharge now follow Attack, retaining a small minimum pulse.
 - Correct both Tune endpoints, including the small measured settled-pitch shift. The final recorded hits identify the high endpoint; the recordings are not treated as evenly spaced knob positions. Intermediate control response remains a monotone design interpolation.
-- Vary pulse strength subtly using the existing free-running noise state. Trigger timing and pitch receive no random variation.
+- Vary pulse strength from 0.92 to 1.0 using the existing free-running noise state, with the existing shaped noise burst. This is an approximation: endpoint knob motion is a confounder, and normalized transient-shape spread remains too small. Trigger timing and pitch receive no random variation.
 
 The 808 engine, saved controls, ColdFire integration, shared desk and 0.1.3 TDEP/SAT smoothing remain unchanged. The voice allocation is still 64 words. Combined DSP code uses 997 P words/core; the matched 909 instruction increase is 6.22% on average and at most 6.27% in the tested blocks. The 808 instruction counts and tested audio are unchanged. These are executed instructions, not hardware timing.
 
@@ -21,9 +21,11 @@ The 808 engine, saved controls, ColdFire integration, shared desk and 0.1.3 TDEP
 
 ## Audition and promotion
 
-The native 70 BPM preview uses PITCH 49, DECAY 100, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. Its first 13 hits change Attack with Tune fixed at 0; its last five change Tune with Attack fixed at 64. Do not present the bundled clip as a single sweep.
+The native 70 BPM preview uses PITCH 49, DECAY 100, TDEP 64, SAT 0, ACCNT 72, LPF 0 (bypass) and LOW/HIGH 64. Its first 13 hits change Attack with Tune fixed at 0; its last five change Tune with Attack fixed at 64. Do not present the bundled clip as a single sweep.
 
 Separate listening clips use actual firmware-emulator track output: two original reference hits, a short pause, then two emulator hits. Conditions are TUNE/ATK 0/0, 0/127 and 127/0. One common tail-RMS gain follows fixed stock AMP compensation; no independent peak normalization is used. The Tune maximum clip uses the final two recorded Tune hits.
+
+The original AB014REF04 comparison patch used LPF 48 (~3.4 kHz). The machine assignment default remains 127 (18 kHz); 0 bypasses LPF. The owner confirms the reference was recorded from the 909 direct out, without its main-out LPF. Bypass is therefore the current reference condition. [LPF evidence](evidence/lpf.json) preserves the historical filter investigation and corrects an analysis window that cut partway into the recorded attack. [Direct-out fit](evidence/direct-out-fit.json) and [neighbor measurements](evidence/neighbors.json) document the current pulse adjustment and its remaining limits. This follow-up adds no DSP instructions or memory.
 
 Before promotion, obtain results for the exact private image: physical audio, parameter locks/LFOs/scenes, distinct instances across cores, demanding FX loads and Part/project/reboot persistence. Follow [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md) for the manifest, catalogue, public release notes, qualification, generated metadata and packages. The earlier version's approval does not qualify this source.
 

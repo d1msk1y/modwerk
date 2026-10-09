@@ -14,7 +14,7 @@ host=a.sdk/'out/bd909/bd909_host';folder=a.sdk/'out/bd909'
 verified_code=a.output/'verified-code.bin'
 syms,_=m.assemble(0x2000,m.default_layout(0x1000),verified_code)
 assert verified_code.read_bytes()==(folder/'bd909.bin').read_bytes(),'Code changed after native gates'
-knobs=[49,100,0,0,64,0,1,72,48,64,64,0]
+knobs=[49,100,0,0,64,0,1,72,0,64,64,0]
 names={0:'PITCH',1:'DECAY',2:'TUNE',3:'ATK',4:'TDEP',5:'SAT',7:'ACCNT',8:'LPF',9:'LOW',10:'HIGH'}
 report=[]
 for index,name in names.items():

@@ -3,24 +3,25 @@
   "candidateVersion": "0.1.4-experimental",
   "candidateFiles": {
     "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-    "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+    "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
     "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f",
     "apply.py": "c4e2db723e9a70aacd4c915bdf73efdb76ce057914b6b25c614d126aa5626ce8",
-    "run.py": "54abca87e5c3434c0935b03734b4c117766a7db325bcb7ba52be753f2e07091a",
-    "calibrate.py": "eb42f033769b9ca0e479a77efe37c11ca91145978c6301b9caade99c70c077ce",
+    "run.py": "360660d8e74c7fe8d0fa4496660235a9d5a28e2f2a4dde7baa3cba47d599e3da",
+    "calibrate.py": "5ce4b5b7bf9125291f9dd672d5bd455718609f405875dc81eaa8cba8bad376b4",
     "qualification/multi_host.cpp": "c49d11ead0705bd9b3f92f8e22735f1ff22fdd430ab3cbe1e03355641cb71888",
     "qualification/multi-test.py": "e209ed619bfc1ff9e2c44a2914ed59e2d96ebb144aca677886b658cb9065cfd9",
-    "compare.py": "3bec28f3aeb971d01aa4e05ba5987374cf9ed9eb2115f6a09716f196d797d649",
-    "qualification/port.py": "ca5c95c535ec6c8f86b32907067c8b6e1a5f29f63ba5e04a1ba3934c42e4c045",
+    "compare.py": "b2fe62a216cd0cb845c8b09425aa1570fc2c37a01c2317344b702b65ffeb10f5",
+    "qualification/port.py": "701876d0fd8ee26eb798d743cffd4d18fad1e603994a78b80bb359e17046a4f9",
     "qualification/source_probe.py": "dc3e3411243a8b0b293b25702ae32a17942cd048699e0fb77618d60bd4008488",
-    "qualification/ranges.py": "44539c6d92ce45014e3895fe1e41239f7eda6d0cb5bffb9f8289a9fe6706f5af"
+    "qualification/ranges.py": "91f5e1ec30ab9dd7ba67e7a090960d1e2c9f0b5fb8aebabb6b26c5bd59b3a0b1",
+    "qualification/costs.py": "f27f6519324670caaca87bdad71fe18cea791e150e2becff47a3624b1eedc916"
   },
   "stockMainOsSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
-  "mainOsSha256": "4d18dbebb6278e24beb5d4be7867494a1864c2f1d3ca109c4fa4abc079de2f60",
-  "mainOsBytes": 1266158,
+  "mainOsSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
+  "mainOsBytes": 1266167,
   "nativeDspCodeSha256": {
-    "A": "64d538e5115c6fa416d0943455542bdf3288bb89fc5ab33497c709b1687185d3",
-    "B": "9b483611748c5818ca6d64b2045544d080eaad68d3f91520fa78a489256fff32"
+    "A": "619c9f4c6b328b5569c7a30ae3bc5c760082da73b175e07954662859160f0c6d",
+    "B": "167491c09433ffbb879731a29929c6dccc7086a431cef8c7fa35efde0867989a"
   },
   "testedDspCodeBitIdentical": true,
   "fx1": [
@@ -51,15 +52,15 @@
     "DARK REV"
   ],
   "physicalHardware": "untested",
-  "imageRuntimeQualification": "Focused exact-image emulator source/stock AMP/main-output checks on both cores passed; see port.json. Physical persistence and maximum-FX-load qualification remain pending.",
+  "imageRuntimeQualification": "Focused exact-image LPF-bypass source/stock AMP/main-output checks on both cores passed; see port.json. Physical persistence, maximum FX load and timing remain untested.",
   "firmware": {
-    "label": "AB014REF04",
-    "bytes": 570672,
-    "sha256": "a88784dacb26f5bcb3465ec4ce58168f887414849487a14f37e5f2d3c1ca5357",
+    "label": "AB014REF05",
+    "bytes": 568884,
+    "sha256": "1985f653e2c604a8f7c34721d5cf4ff6523b3bbdefe9a2d31f1fe93067a96047",
     "stockUpgradeSha256": "34695b606eb00e1b4dded5fd0c4b66f3a460522a632e47d7416dbd220599e1ad",
     "savedFileDecodedMainOsMatchesNative": true
   },
-  "builderScriptSha256": "7bf9fd3a2fbdd0cdef40061d8461ba0ddaa7e031e7f98586cfc2f899386b1f0f",
-  "packagerScriptSha256": "6f1f8cd280547a2324e4e0cc0873b2f55d78c24fba74acd069c5e125f003922b",
-  "sourceIdentityScope": "Immutable native-run input snapshot. The three DSP/fit inputs, run.py and multi-voice tools match this revision. Unused calibrate.py/compare.py were subsequently revised for the whole-hit analysis; current analysis/qualification tools are pinned separately in draft.json."
+  "builderScriptSha256": "b91e788d128c78903b41a2940ad6159342c91aca02ea348146c80cf2c6fd42ac",
+  "packagerScriptSha256": "b3b454e2d0ef11e033ba5442c4e1b5e6cf71488b408b28e2ec3045d71b01854a",
+  "sourceIdentityScope": "Immutable native-run inputs; qualification/reference.py was subsequently added for waveform analysis and records its own hash. All three current DSP/fit inputs match the tested image."
 }

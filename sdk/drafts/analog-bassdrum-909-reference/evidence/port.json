@@ -1,13 +1,14 @@
 {
   "schema": 1,
   "candidateVersion": "0.1.4-experimental",
+  "privateFirmwareLabel": "AB014REF05",
   "conditions": [
-    "TUNE 0 / ATK 0 on core A",
-    "TUNE 0 / ATK 127 on core A",
-    "TUNE 127 / ATK 0 on core B"
+    "LPF bypass: TUNE 0 / ATK 0 on core A",
+    "LPF bypass: TUNE 0 / ATK 127 on core A, eight complete repeated hits",
+    "LPF bypass: TUNE 127 / ATK 0 on core B"
   ],
   "toolFiles": {
-    "port.py": "ca5c95c535ec6c8f86b32907067c8b6e1a5f29f63ba5e04a1ba3934c42e4c045",
+    "port.py": "701876d0fd8ee26eb798d743cffd4d18fad1e603994a78b80bb359e17046a4f9",
     "source_probe.py": "dc3e3411243a8b0b293b25702ae32a17942cd048699e0fb77618d60bd4008488"
   },
   "reports": [
@@ -17,10 +18,10 @@
       "candidateVersion": "0.1.4-experimental",
       "sourceFiles": {
         "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-        "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+        "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
         "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
       },
-      "mainOsSha256": "4d18dbebb6278e24beb5d4be7867494a1864c2f1d3ca109c4fa4abc079de2f60",
+      "mainOsSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
       "controls": [
         49,
         100,
@@ -30,7 +31,7 @@
         0,
         1,
         72,
-        48,
+        0,
         64,
         64,
         0
@@ -41,14 +42,14 @@
       "bothEnginesHavePostAmpAudio": true,
       "mainStereoNonzero": true,
       "triggerCount": 6,
-      "sourceReferenceErrorDb": -73.86165610349055,
-      "stockAmpGain": 0.2539310459296888,
+      "sourceReferenceErrorDb": -72.10684175297072,
+      "stockAmpGain": 0.2539310425334204,
       "stockAmpDelaySamples": 48,
-      "stockAmpSourceResidualDb": -118.58661846699299,
-      "sourcePeak": 0.3742060661315918,
-      "actualTrackPeak": 0.09373390674591064,
-      "listeningCompensationGain": 3.9380769544693286,
-      "listeningWavSha256": "57c109b1bc4f99716366a08855c4b965de71af8ac3a2c3ed2ae1120028027cca",
+      "stockAmpSourceResidualDb": -118.58422149334157,
+      "sourcePeak": 0.3517417907714844,
+      "actualTrackPeak": 0.08835399150848389,
+      "listeningCompensationGain": 3.938077007140188,
+      "listeningWavSha256": "6a99877c1ff185859d0056cb4969cfb7c99620aa26322899bdc00716f9baf75c",
       "physicalHardware": "untested",
       "maximumFxLoad": "untested"
     },
@@ -58,10 +59,10 @@
       "candidateVersion": "0.1.4-experimental",
       "sourceFiles": {
         "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-        "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+        "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
         "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
       },
-      "mainOsSha256": "4d18dbebb6278e24beb5d4be7867494a1864c2f1d3ca109c4fa4abc079de2f60",
+      "mainOsSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
       "controls": [
         49,
         100,
@@ -71,25 +72,25 @@
         0,
         1,
         72,
-        48,
+        0,
         64,
         64,
         0
       ],
       "bpm": 70,
-      "frames": 5000,
+      "frames": 20000,
       "core": 0,
       "bothEnginesHavePostAmpAudio": true,
       "mainStereoNonzero": true,
-      "triggerCount": 6,
-      "sourceReferenceErrorDb": -73.84700465595014,
-      "stockAmpGain": 0.2539310458651288,
+      "triggerCount": 18,
+      "sourceReferenceErrorDb": -72.70344993406172,
+      "stockAmpGain": 0.25393104270333433,
       "stockAmpDelaySamples": 48,
-      "stockAmpSourceResidualDb": -118.62665414839802,
-      "sourcePeak": 0.687014102935791,
-      "actualTrackPeak": 0.17245447635650635,
-      "listeningCompensationGain": 3.9380769554705535,
-      "listeningWavSha256": "edbf53872f922ac9d7d63efd577a9d7902adaf956ad884f2530c500c510fa12d",
+      "stockAmpSourceResidualDb": -118.13428784024711,
+      "sourcePeak": 0.6597061157226562,
+      "actualTrackPeak": 0.16751980781555176,
+      "listeningCompensationGain": 3.9380770045050864,
+      "listeningWavSha256": "e7a9a79a37c0043dbd89beed11062354a21c812466bd904c8b8cc4adc681db3f",
       "physicalHardware": "untested",
       "maximumFxLoad": "untested"
     },
@@ -99,10 +100,10 @@
       "candidateVersion": "0.1.4-experimental",
       "sourceFiles": {
         "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
-        "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+        "fit909.json": "6917d613b5033069f226b9f6a440f6eefd935e596452546d5bc27b73c5e3dd08",
         "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
       },
-      "mainOsSha256": "4d18dbebb6278e24beb5d4be7867494a1864c2f1d3ca109c4fa4abc079de2f60",
+      "mainOsSha256": "84c5a0fa1101dd531ea4e03cb60224c194cb9b5d8b77fae3754d9412a26b5c91",
       "controls": [
         49,
         100,
@@ -112,7 +113,7 @@
         0,
         1,
         72,
-        48,
+        0,
         64,
         64,
         0
@@ -123,21 +124,16 @@
       "bothEnginesHavePostAmpAudio": true,
       "mainStereoNonzero": true,
       "triggerCount": 6,
-      "sourceReferenceErrorDb": -73.83442709811374,
-      "stockAmpGain": 0.2539310465866243,
+      "sourceReferenceErrorDb": -72.08661099430805,
+      "stockAmpGain": 0.25393104671623895,
       "stockAmpDelaySamples": 48,
-      "stockAmpSourceResidualDb": -118.55866911602578,
-      "sourcePeak": 0.3745555877685547,
-      "actualTrackPeak": 0.09373486042022705,
-      "listeningCompensationGain": 3.938076944281277,
-      "listeningWavSha256": "9e4e6b49232906824f86660aa4099a94da41d1d6d58b8e3bfb27536a07278691",
+      "stockAmpSourceResidualDb": -118.56408286263093,
+      "sourcePeak": 0.35181713104248047,
+      "actualTrackPeak": 0.08835470676422119,
+      "listeningCompensationGain": 3.9380769422711546,
+      "listeningWavSha256": "6ffbbef2786e35813ac92eaa65fc1bcc6d2c508172f4f3f7571d5a7d5350dde9",
       "physicalHardware": "untested",
       "maximumFxLoad": "untested"
     }
-  ],
-  "limits": [
-    "Stock AMP and both engines were exercised with both FX slots off.",
-    "Stored Part model selection and emulator project load are checked; physical Part/project/reboot persistence is not verified.",
-    "Maximum FX load and physical timing remain untested."
   ]
 }
