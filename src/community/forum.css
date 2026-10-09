@@ -874,7 +874,6 @@ li[data-status="error"] .forum-media-status { color: #f0a6ad; }
 .forum-since-visit li a:hover { color: #ffffff; }
 .forum-since-visit li strong { font-size: 16px; font-variant-numeric: tabular-nums; }
 .forum-since-visit > .button { margin-left: auto; }
-.forum-since-quiet { margin: 0; color: var(--muted); font-size: 13px; }
 /* Recognition: the maintainer badge, profile counts, the forum home's "This month" block and the members online. */
 .forum-maintainer-badge { color: #9cc6b1; border-color: #456354; }
 .forum-profile h2 .forum-author-badge { margin-left: 10px; vertical-align: middle; }
