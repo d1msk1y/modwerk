@@ -1,3 +1,5 @@
+// SPDX-License-Identifier: GPL-3.0-or-later OR Elastic-2.0
+// Copyright (c) 2026 Jannik Aßfalg (repeat98)
 import { compareModuleVersions } from './versions.ts'
 import { parseModuleContributors, type ModuleContributor } from './module-authors.ts'
 // Shared by the web catalog and stock-free PR validation. No Python is evaluated.

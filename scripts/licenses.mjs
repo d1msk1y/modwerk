@@ -1,7 +1,7 @@
 import { readFile, mkdir, writeFile } from 'node:fs/promises'
 import { dirname, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { NOTICE_NAME, NOTICE_PAGE, renderLicenseNotices, renderLicensePage, renderVendorNotices } from './license-notices.mjs'
+import { NOTICE_NAME, NOTICE_PAGE, renderLicenseNotices, renderLicensePage, renderVendorNotices, renderPlatformNotices } from './license-notices.mjs'
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '..')
 const write = process.argv.includes('--write')
@@ -13,7 +13,7 @@ const audioPackage = JSON.parse(await readFile(resolve(root, 'node_modules/waves
 const audioCredits = ['WaveSurfer.js ' + audioPackage.version, 'SPDX: BSD-3-Clause',
   'Used in: website audio players', 'Notice source: https://github.com/katspaugh/wavesurfer.js/blob/' + audioPackage.version + '/LICENSE', '',
   (await readFile(resolve(root, 'node_modules/wavesurfer.js/LICENSE'), 'utf8')).trimEnd()].join('\n') + '\n'
-const site = notices + '\n' + '='.repeat(72) + '\n\n' + await renderVendorNotices(root)
+const site = await renderPlatformNotices(root) + '\n' + '='.repeat(72) + '\n\n' + notices + '\n' + '='.repeat(72) + '\n\n' + await renderVendorNotices(root)
   + '\n' + '='.repeat(72) + '\n\n' + usbCredits
   + '\n' + '='.repeat(72) + '\n\n' + audioCredits
 for (const [relativePath, content] of [
