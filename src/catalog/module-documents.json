@@ -5702,7 +5702,7 @@
       "id": "poly8",
       "key": "POLY8",
       "name": "POLY8",
-      "version": "0.2.5-experimental",
+      "version": "0.2.6-experimental",
       "category": "machines",
       "source": {
         "repository": "https://github.com/repeat98/octamad",
@@ -5714,16 +5714,18 @@
         "steps": [
           "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
           "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
-          "POLY8 opens the FLEX sample pool directly. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+          "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
           "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
           "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
           "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
           "Use REC+PLAY in chromatic mode to record up to four held panel notes spanning at most eleven semitones. Recorded duration follows AMP HOLD."
         ],
         "screenshots": [
-          "media/poly8/left-machine-chooser.png",
-          "media/poly8/loop-encoder.png",
-          "media/poly8/right-flex-pool.png"
+          "media/selection-flow/assigned-src.png",
+          "media/selection-flow/left-machine-chooser.png",
+          "media/selection-flow/right-flex-pool.png",
+          "media/poly8/main-poly.png",
+          "media/poly8/loop-encoder.png"
         ]
       },
       "author": {
@@ -5739,21 +5741,22 @@
       "presentation": {
         "label": "8 shared sample voices",
         "family": "Sample machines",
-        "summary": "Polyphonic FLEX playback with eight shared voices and native panel chord recording.",
-        "overview": "One POLY8 machine per Part, up to eight independent sample voices, and fixed headroom. Panel recording supports four notes within one octave. Experimental release; physical timing and reboot qualification remain incomplete.",
+        "summary": "Eight-voice FLEX playback with native chord recording and a shared machine chooser.",
+        "overview": "One POLY8 per Part, eight sample voices and fixed headroom. Combine with Repitch, Mute Modes, Scale Quantizer, Analog BD, VECTOR and FM Synth, subject to native memory limits. Physical timing and reboot qualification remain incomplete.",
         "highlights": [
           "One POLY8 per Part; refusal modal closes with NO or automatically after 120 native UI ticks.",
           "Eight shared voices; release tails yield before held notes.",
           "Independent ATK/HOLD/REL, with no per-note DSP or heap allocation.",
           "Ten panel octave positions and dedicated-route MIDI notes 0–127.",
-          "PTCH tunes the chord; POLY8 opens FLEX samples directly.",
+          "PTCH tunes the chord; double-TRACK opens FLEX samples.",
           "LOOP OFF on new assignments; panel chords record into native bank locks.",
-          "Fixed -18.06 dB per voice keeps eight full-scale voices within the mix range."
+          "Fixed -18.06 dB per voice keeps eight full-scale voices within the mix range.",
+          "Shared chooser with Analog BD, VECTOR and FM Synth; Repitch, Mute Modes and Scale Quantizer can be included."
         ],
         "usage": [
           "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
           "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
-          "POLY8 opens the FLEX sample pool directly. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+          "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
           "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
           "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
           "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
@@ -5786,13 +5789,7 @@
         "effectId": null,
         "location": "Track machine",
         "conflicts": [
-          "vector",
-          "analog-bassdrum",
-          "synth",
-          "quantizer",
-          "octakit",
-          "repitch",
-          "mute-modes"
+          "octakit"
         ],
         "limitations": [
           "Experimental release: physical CPU deadlines, recording, reboot persistence and broader stock workflows remain unqualified.",
@@ -5804,13 +5801,12 @@
           "Linear interpolation can alias at high pitches; no anti-aliasing upgrade is claimed.",
           "Ratios saturate below 32× rather than fold by octaves; very low pitches are limited by Q16 playback phase.",
           "The octave selector is a global live control; it is not saved per Part.",
-          "No coexistence with other row-five custom machines is claimed.",
           "Recorded chord steps use PTCH lock storage for their root. Stock PTCH lock editing/display for those steps is not qualified; native SAMPLE locks remain available.",
-          "Repitch and Mute Modes own playback hooks also used by POLY8; build them separately."
+          "Shared-machine composition is covered by guarded dispatch seams; native memory and DSP limits can still refuse a selection."
         ]
       },
       "resources": {
-        "recorded": "2026-10-08",
+        "recorded": "2026-10-09",
         "storage": {
           "label": "Shared platform reserve",
           "display": "10 MiB arena + 96 KiB logger",
@@ -5834,13 +5830,13 @@
           "cpu": {
             "level": "high",
             "basis": "measured-comparison",
-            "rationale": "T06 native instruction counts cover eight voices, seven FLEX tracks and 24 LFOs. ColdFire owns independent fetching, interpolation and envelopes; these are emulator instruction counts, not physical utilization or deadlines.",
+            "rationale": "Current 0.2.6 native instruction counts cover eight POLY8 voices, seven FLEX tracks and 24 LFOs. ColdFire owns sample fetching, interpolation and envelopes; measured emulator instructions are not physical utilization or deadlines.",
             "source": "TESTING.md"
           },
           "dsp": {
             "level": "minimal",
             "basis": "source-estimate",
-            "rationale": "No new per-note DSP engine or dynamic loader. POLY voices share the existing per-track stock filter and FX path; both stock DSP uploads are unchanged.",
+            "rationale": "POLY8 adds no per-note DSP engine or dynamic loader; its voices share the existing per-track filter and FX path. POLY8 alone preserves both stock DSP uploads; selected DSP mods or Analog BD can modify those payloads.",
             "source": "TESTING.md"
           },
           "memory": {
@@ -5853,18 +5849,19 @@
       },
       "tests": {
         "report": "TESTING.md",
-        "summary": "T06 native UI lifecycle, twelve before/after CPU/audio comparisons, full-scale gain, fresh REC+PLAY/stress, modal, battery-RAM restart and completed log checkpoint pass. Physical CPU deadlines, recording and reboot qualification remain pending.",
-        "hardwareStatus": "untested",
-        "evidenceRevision": "6ae17f687965e8953c898c862e29e9bc581b7e21",
+        "summary": "T07/T08 MKII boot failure was traced to an unloaded initialization flag. Corrected T09 received the owner report \"works really well\"; the exact T10 selection-flow update then received \"works like a charm\" on MKII. Duration, separate persistence tests and maximum-load coverage were not reported. Chip deadlines and complete memory bounds remain unqualified under an exact-version owner exception.",
+        "hardwareStatus": "reported",
+        "evidenceRevision": "9e853271be169d242bdf00b79147707e86ee12cb",
         "gates": [
           "verify-source.py",
+          "verify-addressing.py",
+          "verify-initialization.py",
           "pool-test.c",
           "verify-midi.py",
           "recording-test.c",
           "native-panel-gate.py",
           "verify-recording.py",
           "native-assignment-fixture.py",
-          "native-limit-gate.py",
           "native-warm-gate.py",
           "verify-gain.py",
           "native-diagnostic-limit-gate.py",
@@ -5872,7 +5869,11 @@
           "native-diagnostic-checkpoint-gate.py",
           "native-ui-consistency-gate.py",
           "native-load-matrix.py",
-          "native-gain-bound.py"
+          "native-gain-bound.py",
+          "native-shared-machine-gate.py",
+          "native-warm-audio-gate.py",
+          "shared-validation-test.c (256 mixed AB/FM/VECTOR signature masks with sanitizers)",
+          "native-selection-flow-gate.py"
         ],
         "documentation": {
           "tutorial": {
@@ -5880,7 +5881,7 @@
             "steps": [
               "Select an audio track, open SRC SETUP, choose POLY8 and press YES.",
               "Only one POLY8 can be assigned in each Part. A second assignment is refused without changing the track; press NO to dismiss the modal. Inactive Parts can each hold one POLY8.",
-              "POLY8 opens the FLEX sample pool directly. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
+              "After assignment, POLY8 stays on the current page like FLEX/STATIC. Double-press the track key to open its FLEX sample pool. Load a sample with the stock file browser, then confirm its slot with YES. NO leaves the browser.",
               "Return to SRC, open the trig-mode menu with FUNC+DOWN, select CHROMATIC and confirm with YES. Hold several trig keys; FUNC+LEFT/RIGHT changes octave from -6 to +3.",
               "Turn PTCH to transpose the sounding chord. A dedicated POLY8 MIDI channel accepts notes 0–127; note 84 plays the tuned sample root.",
               "New assignments default to LOOP OFF. POLY8 has a maximum of eight voices, subject to the pitch-work limit, with fixed -18.06 dB gain per voice.",
@@ -5888,9 +5889,11 @@
             ]
           },
           "screenshots": [
-            "media/poly8/left-machine-chooser.png",
-            "media/poly8/loop-encoder.png",
-            "media/poly8/right-flex-pool.png"
+            "media/selection-flow/assigned-src.png",
+            "media/selection-flow/left-machine-chooser.png",
+            "media/selection-flow/right-flex-pool.png",
+            "media/poly8/main-poly.png",
+            "media/poly8/loop-encoder.png"
           ],
           "screenshotStyle": "black-and-white"
         }
@@ -5902,54 +5905,139 @@
       },
       "media": [
         {
-          "path": "media/poly8/left-machine-chooser.png",
+          "path": "media/poly8/setup-poly.png",
           "captureType": "emulator",
-          "caption": "Press LEFT from the FLEX slots to return to the machine list; POLY8 stays selected. Press YES to keep it.",
-          "alt": "POLY8 machine chooser",
+          "caption": "Open SRC SETUP with FUNC+SRC, select POLY8 and press YES. New assignments start with LOOP OFF, so try a short sample first.",
+          "alt": "SRC SETUP with POLY8 selected and LOOP OFF",
           "credit": "Modwerk contributors",
           "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "POLY8 machine chooser",
-            "shows": "location",
+            "page": "SRC SETUP with POLY8 selected and LOOP OFF",
+            "shows": "location-and-controls",
             "firmware": "1.40C",
-            "moduleVersion": "0.2.5-experimental",
-            "imageSha256": "e0920b6d9f74822d000c335218bdf74d96a36984459c710553fe676293845546",
-            "setup": "Actual native ColdFire/DSP MKII LCD, renamed POLY8 source, fresh unsigned FLEX fixture and real panel UART events. LOOP AUTO is retained; LEFT selects POLY8; RIGHT opens native FLEX slots. No hardware claim."
-          }
-        },
-        {
-          "path": "media/poly8/loop-encoder.png",
-          "captureType": "emulator",
-          "caption": "Open SRC SETUP with FUNC+SRC and turn encoder A to change LOOP. Reselecting POLY8 preserves this choice; a new assignment starts at OFF.",
-          "alt": "POLY8 SRC SETUP with LOOP retained",
-          "credit": "Modwerk contributors",
-          "license": "MIT",
-          "source": "original",
-          "otUi": {
-            "page": "POLY8 SRC SETUP with LOOP retained",
-            "shows": "controls",
-            "firmware": "1.40C",
-            "moduleVersion": "0.2.5-experimental",
-            "imageSha256": "e0920b6d9f74822d000c335218bdf74d96a36984459c710553fe676293845546",
-            "setup": "Actual native ColdFire/DSP MKII LCD, renamed POLY8 source, fresh unsigned FLEX fixture and real panel UART events. LOOP AUTO is retained; LEFT selects POLY8; RIGHT opens native FLEX slots. No hardware claim."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
           }
         },
         {
           "path": "media/poly8/right-flex-pool.png",
           "captureType": "emulator",
-          "caption": "Press RIGHT to reopen the native FLEX slots and YES to select a loaded sample. NO returns to SRC; use finite AMP REL for notes that end after key-up.",
-          "alt": "Native FLEX sample slots for POLY8",
+          "caption": "Double-press the track key to open the native FLEX slots; RIGHT opens them from the machine chooser. Select a loaded sample with YES, then press NO to return to SRC.",
+          "alt": "FLEX slots with REPITCH_440 selected",
           "credit": "Modwerk contributors",
           "license": "MIT",
           "source": "original",
           "otUi": {
-            "page": "Native FLEX sample slots for POLY8",
+            "page": "FLEX slots with REPITCH_440 selected",
             "shows": "location",
             "firmware": "1.40C",
-            "moduleVersion": "0.2.5-experimental",
-            "imageSha256": "e0920b6d9f74822d000c335218bdf74d96a36984459c710553fe676293845546",
-            "setup": "Actual native ColdFire/DSP MKII LCD, renamed POLY8 source, fresh unsigned FLEX fixture and real panel UART events. LOOP AUTO is retained; LEFT selects POLY8; RIGHT opens native FLEX slots. No hardware claim."
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/poly8/main-poly.png",
+          "captureType": "emulator",
+          "caption": "Return to SRC and choose CHROMATIC with FUNC+DOWN. Hold several trig keys and turn PTCH to tune the chord; release the keys with finite AMP HOLD and REL to end the notes.",
+          "alt": "SRC POLY8 page with PTCH, STRT, LEN, RATE, RTRG and RTIM",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "SRC POLY8 page with PTCH, STRT, LEN, RATE, RTRG and RTIM",
+            "shows": "controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/poly8/loop-encoder.png",
+          "captureType": "emulator",
+          "caption": "Open SRC SETUP with FUNC+SRC and turn encoder A to change LOOP. AUTO is shown here; reselecting POLY8 keeps AUTO or PIPO, while a new assignment starts at OFF.",
+          "alt": "SRC SETUP with POLY8 selected and LOOP AUTO",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "SRC SETUP with POLY8 selected and LOOP AUTO",
+            "shows": "controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/poly8/left-machine-chooser.png",
+          "captureType": "emulator",
+          "caption": "Press LEFT from the FLEX slots to return to the machine list; POLY8 stays selected. Choose FLEX and press YES to replace POLY8, or press NO to keep the current assignment.",
+          "alt": "Machine chooser with POLY8 selected below the stock machines",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "Machine chooser with POLY8 selected below the stock machines",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "872ef1dacbead0b7f2977fe8945a46fe8d6bcce31787279d33b480f948b373d5",
+            "setup": "Actual native ColdFire/DSP MKII LCD on POLY8 0.2.6; battery-RAM fixture, real panel UART events and stock DSP. New assignments start with LOOP OFF. AUTO/PIPO reselect, LEFT chooser, RIGHT FLEX pool, YES/cancel and replacement checks pass in this native emulator. Physical hardware remains untested."
+          }
+        },
+        {
+          "path": "media/selection-flow/assigned-src.png",
+          "captureType": "emulator",
+          "caption": "Open SRC SETUP with FUNC+SRC, choose POLY8 and press YES. The page stays open and sample slots do not appear automatically.",
+          "alt": "SRC SETUP remains visible after POLY8 assignment; LOOP OFF",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "SRC SETUP remains visible after POLY8 assignment; LOOP OFF",
+            "shows": "location-and-controls",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
+          }
+        },
+        {
+          "path": "media/selection-flow/left-machine-chooser.png",
+          "captureType": "emulator",
+          "caption": "Double-press the track key, then press LEFT from FLEX slots to reach the machine list. POLY8 stays selected.",
+          "alt": "Machine chooser with POLY8 selected",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "Machine chooser with POLY8 selected",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
+          }
+        },
+        {
+          "path": "media/selection-flow/right-flex-pool.png",
+          "captureType": "emulator",
+          "caption": "Double-press the track key to browse FLEX slots. LEFT returns to the machine list; RIGHT reopens the slots.",
+          "alt": "FLEX sample slots opened explicitly",
+          "credit": "Modwerk contributors",
+          "license": "MIT",
+          "source": "original",
+          "otUi": {
+            "page": "FLEX sample slots opened explicitly",
+            "shows": "location",
+            "firmware": "1.40C",
+            "moduleVersion": "0.2.6-experimental",
+            "imageSha256": "0271c801ad8b77cd5890d112f72e4a14438520138dc3b587624e703f1950248e",
+            "setup": "Actual native ColdFire/DSP MKII LCD from private POLY8T10, with the runtime arena filled with 0xff before loading. SRC SETUP assignment stays on SRC SETUP. Double-TRACK opens FLEX slots; LEFT restores the POLY8 machine list and RIGHT reopens slots. Stock FLEX/STATIC controls were run separately. Physical testing of this selection-flow update is not yet reported."
           }
         }
       ]

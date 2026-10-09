@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "moduleId": "poly8",
   "moduleVersion": "0.2.6-experimental",
-  "moduleSourceSha256": "81f26ce6433155af99550c70c721dce7622103929d9ce0a711878b3761e5a9bd",
+  "moduleSourceSha256": "a32ed194a288c8847ad0ba110e8bca3bf266ada2227772ef813623b32a21421d",
   "revision": "b8deefc88b2c3e5f3c6158e364eb741df1924e1d",
   "originalOsSha256": "164f31224bf61181e3f50e7dec40df9afcae5b16dbf6e4c0d0cc5e986af0a84e",
   "pool": [
@@ -69,9 +69,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "7f82de603145516e1686fa3f5a1701e1b88f08ecf95e96576b727ac755fcb39a",
-        "maskedOsSha256": "dc821defc8cfc18857a5fe48626caeb27c2b982b314f0c8104a73bb30780a0a8"
+        "bytes": 1125712,
+        "osSha256": "f8176f0664b9b18be25ab0097d721064f030dc508df0d07e99f8d4015d26eaa8",
+        "maskedOsSha256": "1161a6892acfc526ff9d4723110ec83bdc75466877261ae66abb950ea4dbf999"
       },
       "result": "masked"
     },
@@ -96,9 +96,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "d5b3286d4468240fec47a4df345710140fa501900e9f76ad0359594aaba2df32",
-        "maskedOsSha256": "729ea3be6401079ed302245d0fc412ddcf906fcd6cab538076b213a932669088"
+        "bytes": 1125712,
+        "osSha256": "f60358a03be734dbe83db8936c5a5306c6195e08f4398c68f46348bebd0f5166",
+        "maskedOsSha256": "d3af63204b594cd38bf35e75cccf817fe74970698657981bb64e72cda15a76bc"
       },
       "result": "masked"
     },
@@ -139,9 +139,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "1ab90dd1a0993330bafb235b5f1688a6ca9463a6a8129b60254f28c6554b42f5",
-        "maskedOsSha256": "cc1ad975163a596fa16ce537ab7ba0dea2ede4bbcf9982b79d5c66795d498331"
+        "bytes": 1125712,
+        "osSha256": "ffa58cea69ba5892d9d961e22254c9565c54901dddcf4b49f83dba436ffa70a3",
+        "maskedOsSha256": "f93e7ffe700ca77d56a918d27c4c24aa8901ae55324218c5f77667c4ce1bcf0b"
       },
       "result": "masked"
     },
@@ -169,9 +169,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "f89f27c168ec891e1488bfeb04d9084306cd688a486a922be0ce6d3c80ac6c10",
-        "maskedOsSha256": "5b65aa7016e9a8acfc72024d2f3428fa6bc3949f092f9140dd81a477e1f03992"
+        "bytes": 1125712,
+        "osSha256": "002977e969c3e4018f6682d4ec4abf59babf6bb446efe274e6a1cb851e59c2e5",
+        "maskedOsSha256": "7a30d949819f72806a5c41e5eac0f614fe1eee55b47e36ced8a99d54f4186b60"
       },
       "result": "masked"
     },
@@ -212,9 +212,9 @@
         ]
       },
       "native": {
-        "bytes": 1228067,
-        "osSha256": "618b58f2d40a21e25fab36ef6b8482b79a8be43e29282ba0537b8649d8b74e0b",
-        "maskedOsSha256": "2dc8803317c3c77157f89af13d96155a81747536a054ee87685b71214fabbf4c"
+        "bytes": 1228004,
+        "osSha256": "aac17b00cc5abfa91c2becf6d577bc4a3af325313c903c9a02ad5cd812287840",
+        "maskedOsSha256": "75b4afe73ba61274489e51d95bdf999ee96047e5815c37f1eb900a0dfc070058"
       },
       "result": "masked"
     },
@@ -242,9 +242,9 @@
         ]
       },
       "native": {
-        "bytes": 1228067,
-        "osSha256": "57411033604e996f567e397643ab5c93b700f05cd8b99387bf2f23ef8416114f",
-        "maskedOsSha256": "1ec6ea37d7288710c12d67725adc338757831d2723955da8a40e34797a396d9b"
+        "bytes": 1228004,
+        "osSha256": "0153160f7834bd90fdfa771d0efd9ba2c9c3eac2afe7394d2c985d4241a34b98",
+        "maskedOsSha256": "474f0326250d9d8dd0b48eb2945528c3381d530627513affd272dc79c97ad84d"
       },
       "result": "masked"
     },
@@ -286,9 +286,9 @@
         ]
       },
       "native": {
-        "bytes": 1127944,
-        "osSha256": "6bdddf95e1de38299f49c765a03d5fe176f5063c0a400e9c910b7b90bc596b1f",
-        "maskedOsSha256": "543032b5b78df9ea6965dc774653640d224b324e5bc4a55272e74e91741f48be"
+        "bytes": 1127879,
+        "osSha256": "a07a3ce615dc53631e49c1f4d32d0b5602631b0e8c55156f2ec40edd14f184a0",
+        "maskedOsSha256": "177939d41bebfc9ca3c29f50d5bc6994e7c5deb471938c1ca7cf85debeebd4d3"
       },
       "result": "masked"
     },
@@ -317,9 +317,9 @@
         ]
       },
       "native": {
-        "bytes": 1127944,
-        "osSha256": "9999ad3949e1446e88dd2036260c7bb3985cdaf100dc54beadc9d715645a6f9f",
-        "maskedOsSha256": "81d3aaafcfeda308e5f3a898c5b9474e103c0744ad173b38ef97abc0cd6f1ec4"
+        "bytes": 1127879,
+        "osSha256": "f6435ca3a31cf229beb6f4e7bb7907ccea66f3f05161dfd7336fcc32260964b0",
+        "maskedOsSha256": "cdcdc4dc486d9638b6ba77de7479c04fc5b0d12f49bf23518ffab699c304511d"
       },
       "result": "masked"
     },
@@ -360,9 +360,9 @@
         ]
       },
       "native": {
-        "bytes": 1126219,
-        "osSha256": "f34afcb813e7564620031373c2f2513d8aad896915d38560e114d73474b01b15",
-        "maskedOsSha256": "aec6e78c0e9f3e52685f0218be7de4c42a70a7d4e077c938668c231944d4b903"
+        "bytes": 1126165,
+        "osSha256": "610a0cd59fd174957f7d75ce3b82e12db1fb35fec722369dcfec290c618c93c1",
+        "maskedOsSha256": "419659c241baeebb0877310f8d279080db4c5b119fb799d5d1e4421f043b0169"
       },
       "result": "masked"
     },
@@ -388,9 +388,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1126219,
-        "osSha256": "95c2fcbd1450f4f4ee07c6eb12e4d2fbaec640a156798f5c978b380f129c1b44",
-        "maskedOsSha256": "61d83b3269c1d45be852641993a36da1d1582ab3a140f7dd172e5ea34ea81b27"
+        "bytes": 1126165,
+        "osSha256": "7455c602105526057d535f1c13f7e822ca24ccfb2bd89a4d75861171cd862f7e",
+        "maskedOsSha256": "ee4b92d916de0f8587d895a786fc1de8baef0980a1c8282b7a8238a686a9aaad"
       },
       "result": "masked"
     },
@@ -432,9 +432,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "6f28a889b93d2aeabe60e318cf0dc0f42349b4f074f716580fd10552200f5dfc",
-        "maskedOsSha256": "d71b0a9721f8a8591f7b5460f37a7b07483f3ce056791bf87ec23f3a93790c40"
+        "bytes": 1125712,
+        "osSha256": "d32419c1a63fbd93f62e9749699a9337d3e9108c1ecd1e5437dc03a136085a53",
+        "maskedOsSha256": "e68cc13c94963404274d2dffce5471bee8ce6d0a7d0b8259a46c8dbc1d75b86f"
       },
       "result": "masked"
     },
@@ -463,9 +463,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "630313844fc453744cebc74ef93148a72c15b2776f164810e84338c26c3b8341",
-        "maskedOsSha256": "d704abafa1a77d559f2af8bcc9a498328803145fa02a71343358e55d95b43dbf"
+        "bytes": 1125712,
+        "osSha256": "8b19c2acaf213db549f550003e44cb753ffceba1074d6c3c692b2b9a79fc47ef",
+        "maskedOsSha256": "be11e3f4c19d8b8c4d782105041f7a7c70b23716cd3c8861a621e2cc4438c884"
       },
       "result": "masked"
     },
@@ -505,9 +505,9 @@
         ]
       },
       "native": {
-        "bytes": 1278535,
-        "osSha256": "6b0400637f26dc95bff9389387b89addb7c0eeb7a1d90cf543dacb9f344ed483",
-        "maskedOsSha256": "d2a40dedfe1eef20499791fd98e22da3153badcb0873f392038ef32dce096f2a"
+        "bytes": 1278759,
+        "osSha256": "860bbe0db4d3373e2ee20e7726faf83a098a5a03295c7656af396e866d11ac8b",
+        "maskedOsSha256": "7bb0972fffe20cbc026186b485d3895a7f23ebfd5c8fe2e6e501fbf345a7c649"
       },
       "result": "masked"
     },
@@ -533,9 +533,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1278535,
-        "osSha256": "a976c41a0192873cb73d2ef75757c4f6cbef9353db636fd59d93a0a99c8a8f21",
-        "maskedOsSha256": "5c05979a90a06e3005e1863465508e95bebb790625769cc9fa14020df315a58e"
+        "bytes": 1278759,
+        "osSha256": "11399a798c64af94fcc678c21367947873436bc0e74b9eb4c63b5327da9c681a",
+        "maskedOsSha256": "31a10cb068e955decef7b6013565dca7cf40dc1dac9994be20de511e9b20d463"
       },
       "result": "masked"
     },
@@ -576,9 +576,9 @@
         ]
       },
       "native": {
-        "bytes": 1128475,
-        "osSha256": "63a5da879354b8d99d1531f226e53c9f677d1654d4e98f84dc860299fa69b327",
-        "maskedOsSha256": "913caee3a9ef7bf38fd639d751c6adcb1165f1cd0e9fd9072125451582cb0d58"
+        "bytes": 1128412,
+        "osSha256": "b3349aa3ce437c0d8c0218a8427171060ee8c7ae98d5dfba1a3e3a4deaed315c",
+        "maskedOsSha256": "5a86d50875e87b7bbdf9d10d0ad73cd5e227b264bd831dc5dbe59c76ca85cd39"
       },
       "result": "masked"
     },
@@ -604,9 +604,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1128475,
-        "osSha256": "3eb241c90c166ad1bc0872d61746ed73d26a0b83388f900cce3795499c9829fe",
-        "maskedOsSha256": "6a8d53b6532c0aa6b12b600bceac6c5b3d3e1a2ec9e51029a24a8835b08ed632"
+        "bytes": 1128412,
+        "osSha256": "524ecef9acbdcaae75c5e273c78c071fdcde16df81dddc5bdf5fe0e1a5fc99b2",
+        "maskedOsSha256": "f93217c4b326ac85736ce823ca27f665dc7123c4601d7d022710b6ef1cd1f3cd"
       },
       "result": "masked"
     },
@@ -647,9 +647,9 @@
         ]
       },
       "native": {
-        "bytes": 1127902,
-        "osSha256": "703c6e880b3007b3e3ef480ba5dcb64140d80bbf99122e080c44ec269ecdeaa4",
-        "maskedOsSha256": "bbc3d9c65e85a19b2a9de773cd4f1eb6c129b7d849f08829a87e2c1baca452a6"
+        "bytes": 1127849,
+        "osSha256": "1d6ede179488b47cf6a88f623bf77690585d3adfde087dd8d2e936453c979693",
+        "maskedOsSha256": "8b6992e6c5b79b6b7584691c57e30959fba9f6891410544678fa89328e7a4502"
       },
       "result": "masked"
     },
@@ -675,9 +675,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1127902,
-        "osSha256": "a9999416fab92deb683132e4b7b1bd92299494447f3aba9753521e22e808cfdf",
-        "maskedOsSha256": "e9223a7b3a02f845c21a53a55c62d05da20c261e9feca70be6128ce9aa7fdd4a"
+        "bytes": 1127849,
+        "osSha256": "903a8f97311b99a4ecb80116305a5de7fc837b8bb01eb3adbe5fa45a541cc696",
+        "maskedOsSha256": "d7534d9f599709c6ade1c4964b36e1d6f6981d9b342e9487c79deab3c41b48b3"
       },
       "result": "masked"
     },
@@ -718,9 +718,9 @@
         ]
       },
       "native": {
-        "bytes": 1137953,
-        "osSha256": "330b259846376bf66886385da35b7130ed6d4018c0923e8817dca2e6b289326d",
-        "maskedOsSha256": "03b2a5777d968d27381b19ee39806dfb20dde88e28c374ea42d62e4215fd34cb"
+        "bytes": 1137904,
+        "osSha256": "48d7cdad0fe0edd970863d9a6eb6ea0301febbc01f8c50d72eecde682042d3c2",
+        "maskedOsSha256": "777210ba1b7a916551833b5ae721df2c5651410ba2ed915641ff16fffe7295d9"
       },
       "result": "masked"
     },
@@ -746,9 +746,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1137953,
-        "osSha256": "6c9bbae75cfb736898cda37d474d3a23f14e723561317bdf8bc3303626fb619b",
-        "maskedOsSha256": "5949d751521895e70bca24af7eec22ba8706acba0e1ef96c5e3c1e15abe65a70"
+        "bytes": 1137904,
+        "osSha256": "c80916bd2acb7134fb111b6c9d80a057f16ca1c1fca3bbddc4dd755464758b54",
+        "maskedOsSha256": "2716178a2fd1219a567a4ed36ad8a74f3902837926b5c5c330e10891aa3d34f7"
       },
       "result": "masked"
     },
@@ -789,9 +789,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "4d3fa356d682e6f86b31eac24dd3836582453a0f837da6c84c34f8983af08473",
-        "maskedOsSha256": "e758e4da65b8598cd0f866c5617b1717784e705e07b782ccccab63c683af35b0"
+        "bytes": 1125712,
+        "osSha256": "83582d2017cfd4ab9e83044861ea5446e16465da7d58550fb56a79124b92d1f7",
+        "maskedOsSha256": "df4cb79a4a511413d868a10365a6a1e00b8377245cbd413a2f9975ed4155c27e"
       },
       "result": "masked"
     },
@@ -817,9 +817,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "a76ad3ea50b7650d25329e48fffd487f757a32ade9d808ab610274b2a7f2ae10",
-        "maskedOsSha256": "6f57a871f8cee2deed964d8f89f34d3942b9cc2c9e98a5615670416e2f29f8aa"
+        "bytes": 1125712,
+        "osSha256": "9b24b19270479fe4094275b8721716e5a29e08e7979bf8e39190a2fb161a3fae",
+        "maskedOsSha256": "2e7e93a8fd18a400cbe08dc0370cdaecf6917d22e4bd2f507f3f056e209ef421"
       },
       "result": "masked"
     },
@@ -860,9 +860,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "124a22591183dd63402f597eacab68a6c2d4806c02e40cda41641f664e1a1184",
-        "maskedOsSha256": "88bd3aeb77f4cacde214fbf2f5f34785be251333e1daa146c3c9afa47c904c2c"
+        "bytes": 1125712,
+        "osSha256": "aab26d3d72e2ae53bbeaa16aa5f7a9274cc63f191e3d6fb1a7992d13a611775f",
+        "maskedOsSha256": "758dec512f275212df39dabbd642c2b27f9be7a2ba68de4bbb791ee1c2ff809c"
       },
       "result": "masked"
     },
@@ -888,9 +888,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "02a40d8a6b5c2eae7bc9442e3fd074ca2d3f97998f738d8fca51d3aeb7a692f6",
-        "maskedOsSha256": "04593e6a9be09338719976c7ddf68060825e600a052bca16d9cb1de7eccfd4b9"
+        "bytes": 1125712,
+        "osSha256": "9cb4885e57bb8e3e730940be74db47ff9e198b1c9da1b4f350ef113ae31f3b7d",
+        "maskedOsSha256": "79dba490955621034be1059c39e82cd13feebe27fa6c4d427bed8dea9d2ede4c"
       },
       "result": "masked"
     },
@@ -930,9 +930,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "1a208c5da0060c50a5a2c5d5d46fe2e593b0a8a78866bb47af2164abdbe613dc",
-        "maskedOsSha256": "a4718fcb6ef34607edcc3ead9312f1da6303dedd32423c250554878e7196fd1a"
+        "bytes": 1125712,
+        "osSha256": "eddcf9fd367818eafe90ff056deb435cfe7398856f4a8f5a0c143beeca2cc77d",
+        "maskedOsSha256": "26cd1c30da533cba344bd2eae70a2144ef7000d69cc4fbb66b76b88ed08dbe4f"
       },
       "result": "masked"
     },
@@ -960,9 +960,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "a56dc2b4159a262e9ed991d0a8f91c5aa3dbf3d53eb0af155e7128deb4166d54",
-        "maskedOsSha256": "414e4465dc30f046310cc6037496434021dd38c9ade4b4354481f7eee591dea1"
+        "bytes": 1125712,
+        "osSha256": "b072d939b5351c3ca104a6e2527ec73882599ccde45f11c54dfe06b7e602de5f",
+        "maskedOsSha256": "64c2451e8d497f730a2a02a6f80c98ac077c69d691fd6b3be55203b85a865b38"
       },
       "result": "masked"
     },
@@ -1003,9 +1003,9 @@
         ]
       },
       "native": {
-        "bytes": 1133012,
-        "osSha256": "ef1defd2f6432da2faa5494b8bb0e8f54e905d2cb5557c4a1c2c655fa9bb95a9",
-        "maskedOsSha256": "86a2148df8d4cb61d127d247a732586d4e5e58478faea79354b8935fced4b921"
+        "bytes": 1133238,
+        "osSha256": "c5ef14fb1acf1e91876027d8bcd5128850826a494cef1abf92109facf7990276",
+        "maskedOsSha256": "05b2b33faadd8110591cc26520015575b23c3bfb52fa84dae23aa9c99a71b242"
       },
       "result": "masked"
     },
@@ -1031,9 +1031,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1133012,
-        "osSha256": "3e0b25bdb8c53d0a0f916c63cd6cba303893d228853a69b013635f9c09822d38",
-        "maskedOsSha256": "9edc10211a02af5fe6dfbbd9e781a7d7236518e1625a86e671bee110f23935cb"
+        "bytes": 1133238,
+        "osSha256": "82685117da4de37a53dc8047213abb22ea50707727561414f9e0df452cc87914",
+        "maskedOsSha256": "800bc2d15134e6713fca395f20caaea787aa7f3794ef7a9620636c2ec31e88de"
       },
       "result": "masked"
     },
@@ -1074,9 +1074,9 @@
         ]
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "b54bd0d72c8373013ccb3d47a7c5cf86af3f04a884f1c5987c3c4274cfbe4530",
-        "maskedOsSha256": "b3700e4bccfdea06f8600460285168c672f6406a7655e953b9e83f6711f506ae"
+        "bytes": 1130895,
+        "osSha256": "c60f8e9f3087e96f067d9caee004a2f7ae8cafbc2ee2fee1c235adf2af588a6a",
+        "maskedOsSha256": "2e581eff8ae0c8b0d537fe9078a497cdec8cf4f21a460627af4a18fea6dee5a0"
       },
       "result": "masked"
     },
@@ -1102,9 +1102,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "e357526c57c7b281b59ae559586b3d91cee572a41892d2d0029b75dd315036f2",
-        "maskedOsSha256": "9497080ca9cbaa5d440e4f4d32d93426fca4b82fedfdfefc5de0ae8d3dd7a487"
+        "bytes": 1130895,
+        "osSha256": "48798bc85e545273a5a481dce2d62cbccc01a630c56792398ca1d49a83ff5e82",
+        "maskedOsSha256": "e40d591d7928d9a431c682d92b1f71604e6b626428de106b6a4dbe8b11c27eb2"
       },
       "result": "masked"
     },
@@ -1145,9 +1145,9 @@
         ]
       },
       "native": {
-        "bytes": 1126306,
-        "osSha256": "c10611ea60e2483ca49f1cb2c0bf667b130289b305889aa336c569c1199ed130",
-        "maskedOsSha256": "7d5f8776d81cc4dd6c0444cd9d81051db69b2d89cd8dc93187d3e99fe4edac95"
+        "bytes": 1126246,
+        "osSha256": "f6f7563ac431e8aeeb025b5b17bf074595203bedecc8f36cda685a4ba534e6b3",
+        "maskedOsSha256": "3a7dd88bea68a2153d5a010c685b6afa019309c61e9dc23975dd04a805041655"
       },
       "result": "masked"
     },
@@ -1173,9 +1173,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1126306,
-        "osSha256": "3181fbb17a324c5b16d6934d3a0c660e8fa823a94f8dde5023ebb8feb9eec034",
-        "maskedOsSha256": "80d56f267c408a9c70bd1ecea928962e0f940de7d9a4266c19012f4093874163"
+        "bytes": 1126246,
+        "osSha256": "177491ed7273ae87f7c690b6284f7b4d9692193b352cc8a0179a2a4104ed4c08",
+        "maskedOsSha256": "0513b8e99daf7d1961c551df64c506cf62e54c99f94c9863d0a19a47986a798a"
       },
       "result": "masked"
     },
@@ -1216,9 +1216,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "0776df0ebef526d8ac43f08ba80fcc0e7816e8a2851e98bdef173cb406ce788a",
-        "maskedOsSha256": "7e6b06e9a86a3388d042a649797aa7dc3b33dfaaa77dda1863a672382fdfa565",
+        "bytes": 1125712,
+        "osSha256": "82708dd4c702f1b8fc169a378e49a05f2b42d0c5fb4f97b58dd1a35537e7d551",
+        "maskedOsSha256": "1a30f56aa97565a9048be0130709588588fb1a630d89df50aab674d88d1f0fe7",
         "platformArena": true
       },
       "result": "masked"
@@ -1245,9 +1245,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "c20814335555416f8e92b8cd5198d494b457106cc4eddc414804ab61aa190841",
-        "maskedOsSha256": "036b5c6b72377ffda13e8fc3424cc01afc4e2d931569c83b9a67ea6e70e6e838",
+        "bytes": 1125712,
+        "osSha256": "1db3e2a2247dd8f6036cdc62ae1cdc0b29adee24c4b7725135335c4c8f21e43e",
+        "maskedOsSha256": "9206c17d503d59624aa118ede56f30d6a785d579bd04bdaf6294b8301ac27d79",
         "platformArena": true
       },
       "result": "masked"
@@ -2957,9 +2957,9 @@
         ]
       },
       "native": {
-        "bytes": 1278654,
-        "osSha256": "8c39c45ae8f9a3e9495faefcea1d4ea16270943dedfe52a8451ae1dc85288fa2",
-        "maskedOsSha256": "aca8881d637215b7300b85b26c14be61f377901e481793f1648d7d2b70f0b617"
+        "bytes": 1278883,
+        "osSha256": "bd880cf987534804819dea9ffe2177ba7e9a979cff18468b83a59718793d8add",
+        "maskedOsSha256": "7c1c08f448b02278d2fde5ee44ac90c4b177c0268aa4b93d496839904adb0766"
       },
       "result": "masked"
     },
@@ -2988,9 +2988,9 @@
         ]
       },
       "native": {
-        "bytes": 1278654,
-        "osSha256": "ca74e0b8cd12f3898faa2e35a51fff50c7e3b1b9b4637b8bc81a60c3fa492099",
-        "maskedOsSha256": "6d3ed8c2d1e60c688b38e226fc890241d5c503592436d63c4ad3ea72632bd4fc"
+        "bytes": 1278883,
+        "osSha256": "22da6e0fbc2f4244933a305c61b764970c6e8eb29b617669d3edf6a807ecc898",
+        "maskedOsSha256": "afc67f1e2bc64553b2f4e6322efea8681857783d1c02cba69503d5f15feaad1c"
       },
       "result": "masked"
     },
@@ -3031,9 +3031,9 @@
         ]
       },
       "native": {
-        "bytes": 1133012,
-        "osSha256": "58153865bc376b1cf96fd10aa21f6979ac5d1beb83b4de4aed9be46e93a04c5f",
-        "maskedOsSha256": "a7738bdaa8f0881179ac5480b387829ad8e41e5923df1b5f1eb1587395eb8797"
+        "bytes": 1133238,
+        "osSha256": "f30449fda72fa900fd1612f59e5485c9fc8a0526227ef33c358ede1dfd256be5",
+        "maskedOsSha256": "1b0c02611278615d7f4c3055399e453943d5eded34c905748e306b26ab39d70a"
       },
       "result": "masked"
     },
@@ -3062,9 +3062,9 @@
         ]
       },
       "native": {
-        "bytes": 1133012,
-        "osSha256": "422f0cd139f923234ca41719a180c43306fc5b416282f7c06f118d36ba186400",
-        "maskedOsSha256": "ae9006126c05c79aa039052df8773e8a46836d4139fadf6573f4b7e0569cfd10"
+        "bytes": 1133238,
+        "osSha256": "3f75724250d14bce85b4326ea6be5eebd597070f98f1a631e886f6db032155fd",
+        "maskedOsSha256": "c7be563375b09e306c9b90ee716c2872504095d8245c453a528ee74c7a500240"
       },
       "result": "masked"
     },
@@ -3105,9 +3105,9 @@
         ]
       },
       "native": {
-        "bytes": 1285578,
-        "osSha256": "c4ccfd9cf80341eeb9a1f542102e486df91950cc2503387b2794c321b40d246b",
-        "maskedOsSha256": "834403d258a93834d218684a975b65f2378a84af6f23aab83f9018dd3efbcb7a"
+        "bytes": 1286023,
+        "osSha256": "a8627f7cd966e28292f7ebd58f4662e770666f2087154695c42c9700dd2d5acf",
+        "maskedOsSha256": "5dbcec36c27a26c9e2312fc788905a445713ad1ea3170db547edfd72ddef7147"
       },
       "result": "masked"
     },
@@ -3137,619 +3137,14 @@
         ]
       },
       "native": {
-        "bytes": 1285578,
-        "osSha256": "41126ce12f9798f2fc54a9d255c14162b4645eeeced49b484da49c5d0211cf03",
-        "maskedOsSha256": "110ab7e198ab0076f4bf2c059c628513d5a70bb2712cec8bccdb923a68902b79"
+        "bytes": 1286023,
+        "osSha256": "597b3335db365105061ac447a1108f53293782b60dc0fd0981919beb772e2440",
+        "maskedOsSha256": "d81f6922b93b455c4cc6c9bb58e79b9fbf8fd38a4732acdfad92fe5fc354b38e"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1137953,
-        "osSha256": "401449024be4e356ff540d5e43406463143c695bc67821d5b37305f97dfdc155",
-        "maskedOsSha256": "b5b69ca1c2087d35f527dc0ec6b606fb53af5a1b89a2a59e0e9361a6dcdb4b44"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1137953,
-        "osSha256": "0e0408803bbcca7cf7e24a2bcc0f36e9e13e2510b26e6aa561e175e1153f2d4a",
-        "maskedOsSha256": "5f438c0af90d9b82d785028867f6810a9ff9b2eb1549c03e1264e92af34b6575"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1290302,
-        "osSha256": "272e575a2f1ee5ee6ccf64c5964cd254e5413d841341e82a147745544967302a",
-        "maskedOsSha256": "107a04780471919ec98874104051f350978dffcce8a5a8111c43ce19846730c7"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1290302,
-        "osSha256": "3beae20db2402c4570e3b3fbff015934443280bb3676f305326c8c30b4754bef",
-        "maskedOsSha256": "0a11f38d10dea797fd190501b335c2148b6086872d2c20d898a6ff343a7ff3c2"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1145204,
-        "osSha256": "74e1447cacff24640a76a6ab5e2c6dad4b499e5e79f4b291bbaa54926f407ddb",
-        "maskedOsSha256": "be9012f511875637cc5a9df3f7e054db9bbf4812f71862fbd24ee27b72e5701b"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1145204,
-        "osSha256": "19f72cb95b9a840c62d50820310f12f50dc6291ba2d088ee466451df28ce71ff",
-        "maskedOsSha256": "ab63f22df6995de7e5b49509ee758b0e85529d17969a93c796ca7b8408832334"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1297278,
-        "osSha256": "a38daae03e1e643190f4fded4d7985c289b76fb9c258f091583a01bfefaa2d17",
-        "maskedOsSha256": "7bf4856d989053751c112a9963037e7f8f44d1fc5c9a82cead6815242907c7c7"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1297278,
-        "osSha256": "a44daaf1783728d1a62ff34caf8c5896159a2386f4a4eec2838a24da72aa7b12",
-        "maskedOsSha256": "b12473677d7154cf85603a2104a4a11c87465c768ac0f3a04241da2eb0ac7a68"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1127902,
-        "osSha256": "536989234c449ec521635dee170f1e02b77cd9ff8ddf50bc07b853ab3cd0385b",
-        "maskedOsSha256": "51cc88e9e5a18fda31c300181f8105d43a806ed12f54b4d09bd4f7747cebe1ac"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1127902,
-        "osSha256": "165d5af15be03abd982d3f252673afeed23ffadfa79ccf07c12e4983c76f14a1",
-        "maskedOsSha256": "2200397cf0245ba1b92fcd58c686431969b31f7972217dc5ae147309ddc6ca91"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1280810,
-        "osSha256": "de5a0396852b518a388c6f2b7a1d5056d99eb4eb032af4f63088005922c8b90b",
-        "maskedOsSha256": "7d0a2b92178b294ea61667fc171639f4e5fd531b5c1ecbfa4ac83db2d946ca47"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1280810,
-        "osSha256": "500a91eec711b35293e2af25c6d6ef485d2b56a48878095db3e991e482eab2ab",
-        "maskedOsSha256": "d2280b8a3823c74c18cd3eb0247e738eacd6379aa3d0397edda816068d6bdc76"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1135201,
-        "osSha256": "eac60497a9921ed8ea63b7528ba3df4cf3051af83a45c6a9cee7a2bbb932e05e",
-        "maskedOsSha256": "af386d9d2b76a15b4ff0259f86d8d400105eaa8ccc07b1c5f837770342584ad3"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1135201,
-        "osSha256": "6c0b1f133232ae5fcc95479eafbe61b7a2a5a3f7955b296e9d2e0319596d32bc",
-        "maskedOsSha256": "aa1d11f8d003d357ea9aa2b6f72ae897f82ee398274d29f6fc9ea4bad3457da3"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1287786,
-        "osSha256": "287b1393d834771f2df39a0f0b9a2c2ce2aab2b6a5920b5a64d3a596ad84c126",
-        "maskedOsSha256": "3cbdc470d0203bc642ad5cc2a48f064121107ab397e7b49dd2ab780bd43152c9"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1287786,
-        "osSha256": "98057bd58be8010b52ccf33d8f8c411a65962efe0facc9a3659ff4357d779abb",
-        "maskedOsSha256": "a698a5bb23bc068d925a6dea591e5eef85936f8a1083839e0fa3caa8a6be32d2"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "poly8"
@@ -3785,15 +3180,14 @@
         ]
       },
       "native": {
-        "bytes": 1137953,
-        "osSha256": "401449024be4e356ff540d5e43406463143c695bc67821d5b37305f97dfdc155",
-        "maskedOsSha256": "b5b69ca1c2087d35f527dc0ec6b606fb53af5a1b89a2a59e0e9361a6dcdb4b44"
+        "bytes": 1137904,
+        "osSha256": "47dbfbf22b422afe1449b0e921c4aac442d3da0d6acf53fbab7d76bd6bf76ce4",
+        "maskedOsSha256": "04e9b71f7dbf97489fc0e3943da4d56bd8e83a092923b119d1299baabfe381f3"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "poly8"
@@ -3817,16 +3211,15 @@
         ]
       },
       "native": {
-        "bytes": 1137953,
-        "osSha256": "0e0408803bbcca7cf7e24a2bcc0f36e9e13e2510b26e6aa561e175e1153f2d4a",
-        "maskedOsSha256": "5f438c0af90d9b82d785028867f6810a9ff9b2eb1549c03e1264e92af34b6575"
+        "bytes": 1137904,
+        "osSha256": "c2d84bc4d5bd13757a427013d1df1dea9491603a0515dd3bbb79d0a3a9255ae5",
+        "maskedOsSha256": "4c6f33a81a06dbb581fdfa9ad6a513762818dadc15c7b529158813c86c48f63b"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
         "analog-bassdrum",
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "poly8"
@@ -3861,16 +3254,15 @@
         ]
       },
       "native": {
-        "bytes": 1290302,
-        "osSha256": "272e575a2f1ee5ee6ccf64c5964cd254e5413d841341e82a147745544967302a",
-        "maskedOsSha256": "107a04780471919ec98874104051f350978dffcce8a5a8111c43ce19846730c7"
+        "bytes": 1290539,
+        "osSha256": "de769b3f5005e5ff58c2f5540cfa6ba79ae2a3a06af151a5a8adf1414f560974",
+        "maskedOsSha256": "c707d2d77bcd3ba58028d5aefd48c25bc365a3350653b4f67ae36271e7995998"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
         "analog-bassdrum",
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "poly8"
@@ -3894,15 +3286,14 @@
         ]
       },
       "native": {
-        "bytes": 1290302,
-        "osSha256": "3beae20db2402c4570e3b3fbff015934443280bb3676f305326c8c30b4754bef",
-        "maskedOsSha256": "0a11f38d10dea797fd190501b335c2148b6086872d2c20d898a6ff343a7ff3c2"
+        "bytes": 1290539,
+        "osSha256": "7b17a4f1d38eb0f54d3a84bacf483095b25a3eef9b8c6657495c2afb18d23505",
+        "maskedOsSha256": "9645a5817d9b486968c4138820f5422922dd3f8a9aa6cd73c9abbd1a66ddd47d"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "vector",
@@ -3939,15 +3330,14 @@
         ]
       },
       "native": {
-        "bytes": 1145204,
-        "osSha256": "74e1447cacff24640a76a6ab5e2c6dad4b499e5e79f4b291bbaa54926f407ddb",
-        "maskedOsSha256": "be9012f511875637cc5a9df3f7e054db9bbf4812f71862fbd24ee27b72e5701b"
+        "bytes": 1145366,
+        "osSha256": "c9e81eb11785bcd1472bfc2fff8a95a11f24536420fbf86211bbb0b210f86122",
+        "maskedOsSha256": "64d63d23b6dddaab2968d8fcccb75d3c09dc881a62d8d681e0aee1349927d066"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "vector",
@@ -3972,627 +3362,14 @@
         ]
       },
       "native": {
-        "bytes": 1145204,
-        "osSha256": "19f72cb95b9a840c62d50820310f12f50dc6291ba2d088ee466451df28ce71ff",
-        "maskedOsSha256": "ab63f22df6995de7e5b49509ee758b0e85529d17969a93c796ca7b8408832334"
+        "bytes": 1145366,
+        "osSha256": "0f4466f10dbfb22e6eb0aa3ea0780fff9444bd903667125b3d3fc2ecdf6a239d",
+        "maskedOsSha256": "2d78a09c07baf67f8daa8ade6d6c89c7374e6d1eba44ea0e327c80e60d84c07b"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1297278,
-        "osSha256": "a38daae03e1e643190f4fded4d7985c289b76fb9c258f091583a01bfefaa2d17",
-        "maskedOsSha256": "7bf4856d989053751c112a9963037e7f8f44d1fc5c9a82cead6815242907c7c7"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1297278,
-        "osSha256": "a44daaf1783728d1a62ff34caf8c5896159a2386f4a4eec2838a24da72aa7b12",
-        "maskedOsSha256": "b12473677d7154cf85603a2104a4a11c87465c768ac0f3a04241da2eb0ac7a68"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1126219,
-        "osSha256": "b659a1241250fa155827fc87d872e6b7813fd6047affd65a8746e596b5472621",
-        "maskedOsSha256": "b43454e9015ace0769d1e1d50a580bdb832a0d21b791c9fd803074496802c950"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1126219,
-        "osSha256": "a1dd1e68b44fa2706cb874541fdf4528e8cef1eef88d9f2d2bc89e3d670887e4",
-        "maskedOsSha256": "536ba4514f40a5f17b86bca63fc28e1322b50b5c9103d96fbb82ad4545454d6a"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1279086,
-        "osSha256": "01aa6a68e5d4b94033f9beac728d2a3b2db4c2f9c90d728b3484c488d35474aa",
-        "maskedOsSha256": "7a22feb09b04d8303b93c281a65efdb19016afcb2617e579a0631942267cc6cb"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1279086,
-        "osSha256": "97bda5d2cc7f570182f2edf9099a591c27fbf33897d132e58e4ef9e19ac5e8bc",
-        "maskedOsSha256": "477d7bcf7ba136436e6cc7e4db1d97169edf9d40c8c052051ae6edfd6043319f"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1133464,
-        "osSha256": "0290e3e30768191e25d4a269f5144c93d9423390865c377dbad64120503ab880",
-        "maskedOsSha256": "441bc2caffaa9433ce107a5df09a993e1abcfba7c3e5091a93009a75f4c6be2f"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1133464,
-        "osSha256": "126207066163b50729b3907dae706b56829eb117cef191bdb643bcd23d9ca5bb",
-        "maskedOsSha256": "06a72c2372999c5c85e6ceac6f6c7aaac63c68ac55b6da363211798b33ba2042"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1286026,
-        "osSha256": "a50bd113147be502eb2e71dc85fe042fc6ee3e12f2fc6fec703a75e9898a9ff2",
-        "maskedOsSha256": "75aae62bd8e38a232a586a08562b97576be97f97e14c8938bf76d7f3dd70ae09"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1286026,
-        "osSha256": "fa72c622a2f3c7636f319d11d17603b00cda0830c5511d0ca5a352d69a0dbb8c",
-        "maskedOsSha256": "cc3f3cf836bba3811008b78fb4d484ca288b97dd0e8b953e725996bc192cf5e6"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1138380,
-        "osSha256": "8f4143a0500fced896f904531dbcb1b680f6145b42fc2fa58221838c0676c7d8",
-        "maskedOsSha256": "5286f2845646363411100df7aa13c335a5510a6c21df436c9f36ec77b4cfb52d"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1138380,
-        "osSha256": "9cd0252f8e11f9ae9eedf5b7f61be7fac5d953182b2e81812745c9000385e0b7",
-        "maskedOsSha256": "7353c97364eaabc6a599c3237a7974f91ab51bf0fa4df7f965289f6badc38d2c"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1290722,
-        "osSha256": "d1f19d07d3866bd48ca78c025b8ce5131c9628e70c41a3cb269f3bfcb85ca096",
-        "maskedOsSha256": "7fc42c14fc1a7c8aec7ebc546b9c78ab91449de5966564b4e5a59ec292793097"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1290722,
-        "osSha256": "09fe8c7751ac934d24fa7101d3ec0bc17929abfe85d658f0070a014d420dc74d",
-        "maskedOsSha256": "2ae546c4ae37de0a1c23ff4569f8168d148bc949bc3ae0216bf2a86e764f19cd"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1145636,
-        "osSha256": "4d316b304e95db0c0c0873062929fcfe237a164717445817fb265bdacbf4b705",
-        "maskedOsSha256": "c6a8f822ee8fda2f895bb0fbfa4afb2424e1e05ed6271c915bc7e1e819a6527d"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1145636,
-        "osSha256": "83aa228edad54f11ec2475d4cecd6d1639de8eb41822ff9886a20a84cac42385",
-        "maskedOsSha256": "7ea9092878dda022363f06e0c352ae2a335a728ddae3523fd0997918c370d2a3"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "synth",
         "sidechain-compressor",
@@ -4629,15 +3406,14 @@
         ]
       },
       "native": {
-        "bytes": 1297714,
-        "osSha256": "d5f8a359f5fc01f03e4735db2a37d639f3cdefb6def96f446648b29077db186b",
-        "maskedOsSha256": "353a1b7a5d8bf91ba142f4d9800dc3a96d93736cf910e96ce640488c7e144eca"
+        "bytes": 1297703,
+        "osSha256": "dab71a833fa3f5c928c0a059787dcbbc7fd129e12fc0b9a92bf30823043ea58e",
+        "maskedOsSha256": "5f8d9eaac6fcba637ce983b8ae0caea9033c60539b6a17aa825f5aacf18472ef"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "synth",
         "sidechain-compressor",
@@ -4663,15 +3439,14 @@
         ]
       },
       "native": {
-        "bytes": 1297714,
-        "osSha256": "ac10556b01bd1471226189c234086339724ce01d74372b32fc32661e84e84c8e",
-        "maskedOsSha256": "1ca63982316566a57f1d4dc55996eb665a366b1756bc80f1d90c5646ef99e62d"
+        "bytes": 1297703,
+        "osSha256": "a0b720e5db425a1a321e1c14b678320fad971c5d49a225bdc6fbb4ee38154a42",
+        "maskedOsSha256": "d5df11d3e5a2674b1e2b2e656030ce2d1b3f056afb4f9fd44c94335514508a40"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "poly8"
@@ -4707,15 +3482,14 @@
         ]
       },
       "native": {
-        "bytes": 1128337,
-        "osSha256": "6c344d992581ad46f2a23c97b3c9b07b62d6b25afc4747048e47fa575c603b41",
-        "maskedOsSha256": "5b5f044681e7ddc0b064f6de223dceac7fffc25af78a51fd362d267a44caa01a"
+        "bytes": 1127849,
+        "osSha256": "0eb3379d140b3aa7e5054b0b99b514836a8f539bd1b3ac36204b1a97b78b872b",
+        "maskedOsSha256": "a51107f1dcb1b25299387f583112b6d4aee70d67705caeb4019d45f9517f3e0e"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "poly8"
@@ -4739,15 +3513,14 @@
         ]
       },
       "native": {
-        "bytes": 1128337,
-        "osSha256": "ed16fdabc4cc759b64030d9328349805730a781408969f2514d39f854a534600",
-        "maskedOsSha256": "45248f8eb5e46da4ee490fae26aa20875d4db7deb4289626a9e7241a303ee8cf"
+        "bytes": 1127849,
+        "osSha256": "a8394bf5735af2150b3957d9365c321dfaf44e53db660d9ea59f43ff0c85d8e5",
+        "maskedOsSha256": "586de33b6634394941b9a6a58cd79e5328dd3163cb0c0168d11f6deb330547e9"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -4783,15 +3556,14 @@
         ]
       },
       "native": {
-        "bytes": 1281226,
-        "osSha256": "0585ea725de24aaa809dd637e2f45fdb31e656241936aaa5423625e5dacd2581",
-        "maskedOsSha256": "4e9c77b0c6c2663ff7ac3cb18380d8a3e92d43c8dcc037791720eb601ce045a0"
+        "bytes": 1281027,
+        "osSha256": "e70574470e3f77f123c968f760b2fede3b034d9434cfcbe2645a29c15c00b0f8",
+        "maskedOsSha256": "c2648a9ae8f004ff62a9f3064d921df8b33e9300f69c244b5a2067cb56e414fc"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -4816,15 +3588,14 @@
         ]
       },
       "native": {
-        "bytes": 1281226,
-        "osSha256": "81b666df47493bc3e2e0171685e23d664afb9b5abc9d4a17b3b681d13c30e5bc",
-        "maskedOsSha256": "30e6117ec80e66d1459db6802128f7c734e506944e46e0ebb96ea7692e71c35d"
+        "bytes": 1281027,
+        "osSha256": "3ddde6d233a0f4f1b826460640454f3f4cbca770bc2eb98c152b4301bbfafc88",
+        "maskedOsSha256": "3d0354d2c6101b68613f7b7a95827500cc057cb3b601156635849fb3035b69f9"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "vector",
@@ -4861,15 +3632,14 @@
         ]
       },
       "native": {
-        "bytes": 1135610,
-        "osSha256": "96972b87281c47799525b4844838a64d29ad387775ddee189ea1a2ed3f94f0a8",
-        "maskedOsSha256": "111d738b23358652396429d4943ce52741ae2ccb07316c5c7c1008543db0f6c3"
+        "bytes": 1135407,
+        "osSha256": "731b159a391e37701db7e9422f785d181ecd559660ee16bad24eb7b44862d3b1",
+        "maskedOsSha256": "bfefcc61f4d488bd5831030a82c491430461d7fde383fb1f211ea39ffdf85d79"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "vector",
@@ -4894,15 +3664,14 @@
         ]
       },
       "native": {
-        "bytes": 1135610,
-        "osSha256": "67bb65d81e93e869b6422700e02d15740aae4ff0e0b314fa33a0fe46431d73d9",
-        "maskedOsSha256": "b202826e84cb15516e6f39837e178882ec70b36c8934a60fefba07a725a50467"
+        "bytes": 1135407,
+        "osSha256": "c1df4084fd2eda968c14ec6c73e53baec8778552c11d0b0751cc4e210a69faea",
+        "maskedOsSha256": "4fbae44260f900cec4695854cba38c9de031b749f940c9bb69cc1ae76d68535d"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -4939,15 +3708,14 @@
         ]
       },
       "native": {
-        "bytes": 1288190,
-        "osSha256": "3208f505fa6dc5ca3e9f5bfff90188599f4c50126f548ab42206e94a6ce1b7e1",
-        "maskedOsSha256": "dbd880b802fa9cc2c07eb8d0ae8af7bbef2bac8ac9ea4d92b862be94783b1c45"
+        "bytes": 1288191,
+        "osSha256": "3065d85388c4011c9f292c9a3ba69c17c4a638c83b4d3fcadc94e7f738334e6c",
+        "maskedOsSha256": "5eeec294fd3e80fe109b2ffc25426f23793e34c0b5e4c2b20b3117d7a1532322"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -4973,15 +3741,14 @@
         ]
       },
       "native": {
-        "bytes": 1288190,
-        "osSha256": "b95e74cab795f8613f7ff27cdf7374c235a1594a5658156cab925fc32d635cd3",
-        "maskedOsSha256": "0c54676391a76bd31a8992a4a28c3149d7f2f635a2196145a9af43d8cb5cb17f"
+        "bytes": 1288191,
+        "osSha256": "950b9d8ce93690957a1b5d4708e38f2a98ebd4247b059f3a276a239744b80c3e",
+        "maskedOsSha256": "844bc4644383cfc1fb383d43325a5d0233e1ac0cac19cf45d1f21ca37d93f4a8"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -5018,15 +3785,14 @@
         ]
       },
       "native": {
-        "bytes": 1138380,
-        "osSha256": "8f4143a0500fced896f904531dbcb1b680f6145b42fc2fa58221838c0676c7d8",
-        "maskedOsSha256": "5286f2845646363411100df7aa13c335a5510a6c21df436c9f36ec77b4cfb52d"
+        "bytes": 1137904,
+        "osSha256": "47dbfbf22b422afe1449b0e921c4aac442d3da0d6acf53fbab7d76bd6bf76ce4",
+        "maskedOsSha256": "04e9b71f7dbf97489fc0e3943da4d56bd8e83a092923b119d1299baabfe381f3"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -5051,15 +3817,14 @@
         ]
       },
       "native": {
-        "bytes": 1138380,
-        "osSha256": "9cd0252f8e11f9ae9eedf5b7f61be7fac5d953182b2e81812745c9000385e0b7",
-        "maskedOsSha256": "7353c97364eaabc6a599c3237a7974f91ab51bf0fa4df7f965289f6badc38d2c"
+        "bytes": 1137904,
+        "osSha256": "c2d84bc4d5bd13757a427013d1df1dea9491603a0515dd3bbb79d0a3a9255ae5",
+        "maskedOsSha256": "4c6f33a81a06dbb581fdfa9ad6a513762818dadc15c7b529158813c86c48f63b"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "synth",
@@ -5096,15 +3861,14 @@
         ]
       },
       "native": {
-        "bytes": 1290722,
-        "osSha256": "d1f19d07d3866bd48ca78c025b8ce5131c9628e70c41a3cb269f3bfcb85ca096",
-        "maskedOsSha256": "7fc42c14fc1a7c8aec7ebc546b9c78ab91449de5966564b4e5a59ec292793097"
+        "bytes": 1290539,
+        "osSha256": "de769b3f5005e5ff58c2f5540cfa6ba79ae2a3a06af151a5a8adf1414f560974",
+        "maskedOsSha256": "c707d2d77bcd3ba58028d5aefd48c25bc365a3350653b4f67ae36271e7995998"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "synth",
@@ -5130,15 +3894,14 @@
         ]
       },
       "native": {
-        "bytes": 1290722,
-        "osSha256": "09fe8c7751ac934d24fa7101d3ec0bc17929abfe85d658f0070a014d420dc74d",
-        "maskedOsSha256": "2ae546c4ae37de0a1c23ff4569f8168d148bc949bc3ae0216bf2a86e764f19cd"
+        "bytes": 1290539,
+        "osSha256": "7b17a4f1d38eb0f54d3a84bacf483095b25a3eef9b8c6657495c2afb18d23505",
+        "maskedOsSha256": "9645a5817d9b486968c4138820f5422922dd3f8a9aa6cd73c9abbd1a66ddd47d"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -5176,9 +3939,1246 @@
         ]
       },
       "native": {
-        "bytes": 1145636,
-        "osSha256": "4d316b304e95db0c0c0873062929fcfe237a164717445817fb265bdacbf4b705",
-        "maskedOsSha256": "c6a8f822ee8fda2f895bb0fbfa4afb2424e1e05ed6271c915bc7e1e819a6527d"
+        "bytes": 1145366,
+        "osSha256": "c9e81eb11785bcd1472bfc2fff8a95a11f24536420fbf86211bbb0b210f86122",
+        "maskedOsSha256": "64d63d23b6dddaab2968d8fcccb75d3c09dc881a62d8d681e0aee1349927d066"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1145366,
+        "osSha256": "0f4466f10dbfb22e6eb0aa3ea0780fff9444bd903667125b3d3fc2ecdf6a239d",
+        "maskedOsSha256": "2d78a09c07baf67f8daa8ade6d6c89c7374e6d1eba44ea0e327c80e60d84c07b"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1297703,
+        "osSha256": "dab71a833fa3f5c928c0a059787dcbbc7fd129e12fc0b9a92bf30823043ea58e",
+        "maskedOsSha256": "5f8d9eaac6fcba637ce983b8ae0caea9033c60539b6a17aa825f5aacf18472ef"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1297703,
+        "osSha256": "a0b720e5db425a1a321e1c14b678320fad971c5d49a225bdc6fbb4ee38154a42",
+        "maskedOsSha256": "d5df11d3e5a2674b1e2b2e656030ce2d1b3f056afb4f9fd44c94335514508a40"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1126165,
+        "osSha256": "1a5492b0180a1d9eae127c69f4e8d828180aa569939af4840a29b55a3e438e13",
+        "maskedOsSha256": "8c3359125b04dd5f9f8e06d7df4380705acdffbfb89cce28a4a891ebe1a3813d"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1126165,
+        "osSha256": "a3901afebb863f62857b3dbccfb9fa81fdbbd410df86e260baf94f50ff3479b7",
+        "maskedOsSha256": "cab39bb59ea99a623ccaaf00324a1e52bf70f1089387b0310d330c28401c77b6"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1279315,
+        "osSha256": "d0a91051008afc00448d861a744f1258ff54c09e6884ba0147f7d0ff06acab96",
+        "maskedOsSha256": "0274dbe9a57c052e03912ff360d30b8a62af91a364208de021e17b51ac3ffdd7"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1279315,
+        "osSha256": "3c7164530873b7e17011074398e1a81eff74321be8e4e15ab1a790a347cfce4b",
+        "maskedOsSha256": "63310168cfcb74e533847dbd2a7f0152b9a250ae4bbc75e9ac1252b1f6f392d3"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1133667,
+        "osSha256": "bf9d9107129c47944e6341bc826c6970df8dcade9858166c9ed3e66916add7e0",
+        "maskedOsSha256": "23d42edaabc0ead6aec469344748dbcbfac80a0aa1eeff45cc8e5eb2230c90dc"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1133667,
+        "osSha256": "83fe7587e7664dbc110945cc55e2e602329fb011f6aeb24b984d56fcaac682d1",
+        "maskedOsSha256": "7cc6c6743dd143d738de4801e5c6d150e42dcdd6a9448b5b43b098591c1eb7be"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1286471,
+        "osSha256": "9f663312a51a27000dc4855ff33940d96f6b8123a5f4e2f33533c9544ad4d966",
+        "maskedOsSha256": "cddabe4a51e17475396c28cb464158511e7544187943685af70eabcc7b2a250f"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1286471,
+        "osSha256": "9fd9a02e13dcf18b8497eef589b6ad5fbe809d070b53f3f4f0a79e86d292c8cb",
+        "maskedOsSha256": "f821e525cbcaafdca87065c15e2e32b46cd06acd6588cf7e171227ae39c41c0a"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1138333,
+        "osSha256": "0012155a0f30c75023c735cfd142a0b83226e6ce76c6632b46703edb9f7341b1",
+        "maskedOsSha256": "9ecadad7db5ed24517c7b0e093805d3a87bfc719de4d89e488138d025f051749"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1138333,
+        "osSha256": "4fa03c9a889155d4beae1814143c745bcf88eac0eb4a315115ff6a99093ebb9c",
+        "maskedOsSha256": "0f28ee3673dcc32fb5d84c5e961358e2c69d269acb17d67331b745335dec6709"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1290975,
+        "osSha256": "b14ac585b723c9255be61969e8453b3d1430bde205ee7305c686615e5de3d854",
+        "maskedOsSha256": "7f2e9745682c624d3a195dac4443b2d9afeec8ce5ead8a078fd489d6491eabb5"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1290975,
+        "osSha256": "aa485779c477e7d050c211d58a0d96259938c450f4b7d12a6a44d34fd9054a0a",
+        "maskedOsSha256": "627f8d4f8bc591c3ff845bb6fa49df722ee437a0d205ec7d2887cf0d0c2d6e22"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1145783,
+        "osSha256": "4b15fb026d8652c81dc629b2859baa45003985e8583f30c49ebf9d6eda9af726",
+        "maskedOsSha256": "a86f6b8800c56bbbeed223b5090c62b99b3a926ed220132710f97440152f8295"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1145783,
+        "osSha256": "749c9dadde017697faafad36b2f522f4131eaa92666c8af2140c33ecd809d7c9",
+        "maskedOsSha256": "448b50c8ab97eb44d086cda303649aa987e89a4c0bc46988d59264fa8fff263d"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1298151,
+        "osSha256": "c88bfa2137ca5b1583657db1b983d93a2225407d32a08799e2d62383c7d1afd7",
+        "maskedOsSha256": "f53968ea831a97175976b10d70536b12ec31d4180ab2cbfaf67ab32d62c70411"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1298151,
+        "osSha256": "68ccc0423d362f2950b0b254273b7c25974e152d9e99df49a9f09822016fd4e8",
+        "maskedOsSha256": "8cfe8dbfd43d5ae384105b3496e048a31cab1caa4ae7152f8e0eacf80367242e"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1128265,
+        "osSha256": "11037469ea78d3eb509ca301015755bb7cd23fc80b7ee73822dd9b104cbb0506",
+        "maskedOsSha256": "06f10410b82d1a1c84385c66542683aac51471b3c9a810ea8c540a39f3507039"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1128265,
+        "osSha256": "ec9cef530577ed49520a14adffce09aa4ab038c654b50aff04a49483a078b837",
+        "maskedOsSha256": "d523c47f97314aeffe328d635df80b254af3fdebf70fe28e5b9b12c8ec79c03b"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1281439,
+        "osSha256": "06ec507d31d850c3a01a53c0e99d51874465013342268b599829a97d0f8283e1",
+        "maskedOsSha256": "6ecec71f58c1c95afb772cfc5db90ecabf9e5e3d15ff08a982e5020b19b44d10"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1281439,
+        "osSha256": "dde3caa0264be4d5b9cc29d840733978b3aa4a37aebf9d18b7fa89e63f82e161",
+        "maskedOsSha256": "15408dd85b4207d160d68fd938764a90062a8ec5287a80283af8a4902f9d82bd"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1135830,
+        "osSha256": "b70c8feb649b702f07cbe00d92eedf84a8ba68721610a0d449a6ea509ce0da56",
+        "maskedOsSha256": "a174b4edf3823fd668ba0b3d6e928592158c399e412dfddf2bf7eef6803e1b54"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1135830,
+        "osSha256": "8995635ca3b080b5ca4b98872dac507c4a4227a62908ffe4729d5b2ec6e25634",
+        "maskedOsSha256": "774412299291a00ba05fe3bb0b6f39c4a13f852d6bdfbaef91cbe308f57c5374"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1288635,
+        "osSha256": "1fa9e8eccacdee30780ab668738782be48b3e49250945b374d3fa11363687282",
+        "maskedOsSha256": "69f8a4cbce806f3f7a1cfdaa3fff402421b9e276a0c6bb67175da42247c6bd1b"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1288635,
+        "osSha256": "582a6e827ae31e0b286dc1a664c499d55259ad8311bca32cb18ad0becce6d3ce",
+        "maskedOsSha256": "48b798d9a1bd31735620e87beb868e40c0470105ea373e57f0381947a245a854"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1138333,
+        "osSha256": "0012155a0f30c75023c735cfd142a0b83226e6ce76c6632b46703edb9f7341b1",
+        "maskedOsSha256": "9ecadad7db5ed24517c7b0e093805d3a87bfc719de4d89e488138d025f051749"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1138333,
+        "osSha256": "4fa03c9a889155d4beae1814143c745bcf88eac0eb4a315115ff6a99093ebb9c",
+        "maskedOsSha256": "0f28ee3673dcc32fb5d84c5e961358e2c69d269acb17d67331b745335dec6709"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1290975,
+        "osSha256": "b14ac585b723c9255be61969e8453b3d1430bde205ee7305c686615e5de3d854",
+        "maskedOsSha256": "7f2e9745682c624d3a195dac4443b2d9afeec8ce5ead8a078fd489d6491eabb5"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1290975,
+        "osSha256": "aa485779c477e7d050c211d58a0d96259938c450f4b7d12a6a44d34fd9054a0a",
+        "maskedOsSha256": "627f8d4f8bc591c3ff845bb6fa49df722ee437a0d205ec7d2887cf0d0c2d6e22"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1145783,
+        "osSha256": "4b15fb026d8652c81dc629b2859baa45003985e8583f30c49ebf9d6eda9af726",
+        "maskedOsSha256": "a86f6b8800c56bbbeed223b5090c62b99b3a926ed220132710f97440152f8295"
       },
       "result": "masked"
     },
@@ -5210,9 +5210,9 @@
         ]
       },
       "native": {
-        "bytes": 1145636,
-        "osSha256": "83aa228edad54f11ec2475d4cecd6d1639de8eb41822ff9886a20a84cac42385",
-        "maskedOsSha256": "7ea9092878dda022363f06e0c352ae2a335a728ddae3523fd0997918c370d2a3"
+        "bytes": 1145783,
+        "osSha256": "749c9dadde017697faafad36b2f522f4131eaa92666c8af2140c33ecd809d7c9",
+        "maskedOsSha256": "448b50c8ab97eb44d086cda303649aa987e89a4c0bc46988d59264fa8fff263d"
       },
       "result": "masked"
     },
@@ -5256,9 +5256,9 @@
         ]
       },
       "native": {
-        "bytes": 1297714,
-        "osSha256": "d5f8a359f5fc01f03e4735db2a37d639f3cdefb6def96f446648b29077db186b",
-        "maskedOsSha256": "353a1b7a5d8bf91ba142f4d9800dc3a96d93736cf910e96ce640488c7e144eca"
+        "bytes": 1298151,
+        "osSha256": "c88bfa2137ca5b1583657db1b983d93a2225407d32a08799e2d62383c7d1afd7",
+        "maskedOsSha256": "f53968ea831a97175976b10d70536b12ec31d4180ab2cbfaf67ab32d62c70411"
       },
       "result": "masked"
     },
@@ -5291,9 +5291,9 @@
         ]
       },
       "native": {
-        "bytes": 1297714,
-        "osSha256": "ac10556b01bd1471226189c234086339724ce01d74372b32fc32661e84e84c8e",
-        "maskedOsSha256": "1ca63982316566a57f1d4dc55996eb665a366b1756bc80f1d90c5646ef99e62d"
+        "bytes": 1298151,
+        "osSha256": "68ccc0423d362f2950b0b254273b7c25974e152d9e99df49a9f09822016fd4e8",
+        "maskedOsSha256": "8cfe8dbfd43d5ae384105b3496e048a31cab1caa4ae7152f8e0eacf80367242e"
       },
       "result": "masked"
     },
@@ -5334,9 +5334,9 @@
         ]
       },
       "native": {
-        "bytes": 1126411,
-        "osSha256": "ad1cdec0151e8df1b58bc0bcb20537c1f6e577cc577a6d482c09d250ff2dd5d2",
-        "maskedOsSha256": "395341e68a0dce855953f0193e68e75c8f42345b7160f88aa25c0ad080153776"
+        "bytes": 1126355,
+        "osSha256": "b404cac4054f4a8790859df11c925954eae95474c305bb24eb9d32abe7fa2713",
+        "maskedOsSha256": "dd1ca0b195938e98863cd65c3981eb9ac2d5dc73ed5e586a1ff74841db3cc69b"
       },
       "result": "masked"
     },
@@ -5365,9 +5365,9 @@
         ]
       },
       "native": {
-        "bytes": 1126411,
-        "osSha256": "fe9951e3cee724559605165d3c6eb7e084bcb19fcc3a02b006ddc8a2a871d772",
-        "maskedOsSha256": "dcafee5cf0c9717a41056ac97580b69c0b93667b115dc70de0d4bae10c0d13a1"
+        "bytes": 1126355,
+        "osSha256": "b253587b32712ccd12c92bd1b11a5e978872d9840806ff4fbe89ab051b32b998",
+        "maskedOsSha256": "00d1ab563c622b4ac047f2c965aa657b3fe0516eb686f0ede89d70662bf28971"
       },
       "result": "masked"
     },
@@ -5408,9 +5408,9 @@
         ]
       },
       "native": {
-        "bytes": 1279314,
-        "osSha256": "42e571ef3b29a94f1ae938e3f95e63a7999dc9cebf528b43735f6709ef3c6f7e",
-        "maskedOsSha256": "c32267c2b9544c9eba8b1414ddac92cebe095efea61cb0e017eb31882dccdbb1"
+        "bytes": 1279535,
+        "osSha256": "7f6c26ae735362738c9974a19c2d182c416606c4f2dd9930a7ad1b42919972e7",
+        "maskedOsSha256": "27f5ebd0c3faa74084a2fc4994867e9051bd8746ef8663a7ea8e30aefcfbcdf6"
       },
       "result": "masked"
     },
@@ -5440,9 +5440,9 @@
         ]
       },
       "native": {
-        "bytes": 1279314,
-        "osSha256": "3a1f0a7253c864ef486b7ab6c4d85519943b84bed7e2da0105a65c6d526266d8",
-        "maskedOsSha256": "c2a95bd4588d71bed740d742c1941bffcb9859ba81b2f5734a623dc025e04662"
+        "bytes": 1279535,
+        "osSha256": "16351179c877ac511fc13eca6d80245d4956b976ad770fdc6c79487551266206",
+        "maskedOsSha256": "a79cb5b9a55cfa5e65badeb8bca3da40703808aac7bd04d813deed7f0d0a5a31"
       },
       "result": "masked"
     },
@@ -5484,9 +5484,9 @@
         ]
       },
       "native": {
-        "bytes": 1133670,
-        "osSha256": "e80e52d81710ae1c930352a8fbac330638fe698f580e6eff356be0731f6cd1af",
-        "maskedOsSha256": "835d2ad47f9e8d7dbf3f1f74f50f0ea8014e810aaded95b892a4d631cf0f8147"
+        "bytes": 1133874,
+        "osSha256": "d34325fc2bb2d9388b433505ffa065fa84de9b7ab9d8a1ee273ee0116e3c067b",
+        "maskedOsSha256": "2cb45b199499d1a8af039332483342c8c0f7ae8a12a0fc5f591544ed71ad2f56"
       },
       "result": "masked"
     },
@@ -5516,9 +5516,9 @@
         ]
       },
       "native": {
-        "bytes": 1133670,
-        "osSha256": "5147040d7f1f5a05c0243943b387c66d61a7ab47c779de7bbe6feedb5987b7f0",
-        "maskedOsSha256": "1144e6f4c80f2603782d98c3808327cf55d3fd235443712c506d12227c444733"
+        "bytes": 1133874,
+        "osSha256": "ca7f226b8d4566ee03ca8c52e1514ececaea857f0dcac14671cc985cbc72fe3e",
+        "maskedOsSha256": "8deea2951f590cad729f16d5b54cce5dc81d001d4cca5ede44ad8e9313eff732"
       },
       "result": "masked"
     },
@@ -5560,9 +5560,9 @@
         ]
       },
       "native": {
-        "bytes": 1286230,
-        "osSha256": "b9401a175392e44abb8753620eb69bc2b0eff51125226c51fd4bc7ddbfe5606a",
-        "maskedOsSha256": "63f52503e03b7c141b2cadf9f9bd92fc6b26cd8fa9be7d45afb69df528dce2d1"
+        "bytes": 1286679,
+        "osSha256": "76829a42090e4f329b581d3719c9eef2b813be84c2ef38a9abf499bf674db83e",
+        "maskedOsSha256": "e828b7aeb7f2ee73bb27051c82b413f283db5ab02ae36715c20e0f1ce7723ff9"
       },
       "result": "masked"
     },
@@ -5593,635 +5593,14 @@
         ]
       },
       "native": {
-        "bytes": 1286230,
-        "osSha256": "33141e15c5e90c20d0390519a623a84f7a4e163933cc9b172821cad015a6a4c3",
-        "maskedOsSha256": "6699c103ed1e366460cb18c9ac291df0b0cb981617fe963bb62c68bcf9b1f599"
+        "bytes": 1286679,
+        "osSha256": "69c11c627194601733134775ce9d5f6cd717f14795a89ead7ee7cda1a94cb910",
+        "maskedOsSha256": "031a0746440dd00a715ec80452188541811c51c78753e6bec3ad0121ad11d980"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1138582,
-        "osSha256": "aa910fbc86e57724596e0d6a44457cebee51f3106c2fbd6f7882c333a14f45e3",
-        "maskedOsSha256": "2625e95d0796a2bc952589d34118e0f969783024996ef3f64045f0fddcb23176"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1138582,
-        "osSha256": "7b4d76dd9d3b12a28c9f4cb53f790616d7076b0f73d51238547c24c9e96e7ed2",
-        "maskedOsSha256": "ce7b40876f313bc579be6cf387e320a45a2fb172077c975471a0c3e386d5215e"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1290926,
-        "osSha256": "35024ea6340aac8705fd585283370a712e139ebfa53f09713c9c5b493e913274",
-        "maskedOsSha256": "917072cbaeabc34fa6c1b4d42d8ac7135b608f11a72a1259e8544ec3b826a630"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1290926,
-        "osSha256": "adb0f7923b7137086a5bdd0ece6d7d17087736234d093d36b51ac789e26a84c5",
-        "maskedOsSha256": "9274bfa8f372909c94979b94fbcbfe6aaae5a280054cea0c707a64fc97617127"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1145830,
-        "osSha256": "ea325456c4494734b63f37091b9a64a61b710190dcf4377fe1fc94ea5b9c818d",
-        "maskedOsSha256": "3e5830fe3321ad6efef245e6e28639f49f8135f9609a2bdadbd7f037cde353ec"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1145830,
-        "osSha256": "9fcca760ad9398b21478b453f5df727a7b8df2632fef617a64944defdbfa0de0",
-        "maskedOsSha256": "d3ff05614eaa8a311d8f8e852abff9d66212d7d81c74bbc87373f9262fd82ce5"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1297906,
-        "osSha256": "4b7ed58f0acad021f0de52ffbc7cc9338e7a51f8113138fb317a0d8d48e86e5e",
-        "maskedOsSha256": "3fb0fab743df0e07cd3ef88eefb4f62e7d6ce798c2a8274b08c035b62deca8d6"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1297906,
-        "osSha256": "f381de1198ad6fa357101e641c63c60ec36a850c121035df93b4fcd13d46b84b",
-        "maskedOsSha256": "2e0bca422a5e17972d5c4ef35b4338774579b0bbb0f821019547804ae5a24814"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1128549,
-        "osSha256": "a4c155e90e245e10cd5dcdf4744f4cbaac37422026677e8ff65cadc801c131f8",
-        "maskedOsSha256": "d5866b2cb86592ebc7eed6c2dba5c4c46ab75376d8c7a391e3b5610a9ef330d1"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1128549,
-        "osSha256": "3fd65d4d6a613480b8b89104c99eee758af716ee8b570810a99e0a980ca3cc0f",
-        "maskedOsSha256": "0421e9f538f2885bc26f849a1f3f600d46d046002315b3a1d9586b8ce102e57c"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1281454,
-        "osSha256": "12c1fbb4f1c44a04012d57799f57b051aac3bf477706abbcff91a116d51887b8",
-        "maskedOsSha256": "81003441a310239add9f31ddf582dc156ba4288c178e80f26731d87a0e866628"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1281454,
-        "osSha256": "ed1fbea4fc2206dd584bda1c77b9e8e21f4d2f7891103407a82d50914be5c0e3",
-        "maskedOsSha256": "c671a15c7ec5c30935c85f3f72dfa88e7949201eccf2cdbd261be17408747a70"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1135820,
-        "osSha256": "35e57c69248c7a0e97d6080d87df4ce8667c2e85a590d409a00f33ae7b4357e8",
-        "maskedOsSha256": "e2e0a511ffc2a0f4ae0ff093af4ee1be514566173437f1cb354b07e936b84f67"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1135820,
-        "osSha256": "d9b90ebca1eae4bf1466346c579bf5c6e592ece83b8968bc99284b5edc8cb06f",
-        "maskedOsSha256": "73553e2c71c0aed4dca520a0038bd6b28201b11301f2702431965b288e72f261"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1288398,
-        "osSha256": "410ce83f3d563b16893d7e131f9a50901e0602a65622d57612280344f260f61a",
-        "maskedOsSha256": "4edb068f039cccc3321c7f52323513094e7b7f94a7a4b0cd09f4c67492c82a73"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1288398,
-        "osSha256": "24a0bed7f2f9ed268e8eb08d06cd1bee63954ae5dc0388f50493d59889786e26",
-        "maskedOsSha256": "a8aa44ac8ef801eef9dbe44eda48a1eac348726c799c08a59a46c60939722270"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "mute-modes",
@@ -6258,15 +5637,14 @@
         ]
       },
       "native": {
-        "bytes": 1138582,
-        "osSha256": "aa910fbc86e57724596e0d6a44457cebee51f3106c2fbd6f7882c333a14f45e3",
-        "maskedOsSha256": "2625e95d0796a2bc952589d34118e0f969783024996ef3f64045f0fddcb23176"
+        "bytes": 1138531,
+        "osSha256": "daf70ce734c771dd69ba5056b385dd4441e7d5ad2295cca82ba35f6827f0f4e1",
+        "maskedOsSha256": "95e90d8da28261f5d47d1e1451690a7442aca0b1be12466db4d439cc76c3f1b1"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "mute-modes",
@@ -6291,16 +5669,15 @@
         ]
       },
       "native": {
-        "bytes": 1138582,
-        "osSha256": "7b4d76dd9d3b12a28c9f4cb53f790616d7076b0f73d51238547c24c9e96e7ed2",
-        "maskedOsSha256": "ce7b40876f313bc579be6cf387e320a45a2fb172077c975471a0c3e386d5215e"
+        "bytes": 1138531,
+        "osSha256": "afb3068cd759a8eabad09c3f07d0849a674220ca5deeb5d14aae609bc48c8416",
+        "maskedOsSha256": "acc5e826583947e4c10f950d8bade2dde66dfe908912fbe2b92682f3413789aa"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
         "analog-bassdrum",
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "mute-modes",
@@ -6336,16 +5713,15 @@
         ]
       },
       "native": {
-        "bytes": 1290926,
-        "osSha256": "35024ea6340aac8705fd585283370a712e139ebfa53f09713c9c5b493e913274",
-        "maskedOsSha256": "917072cbaeabc34fa6c1b4d42d8ac7135b608f11a72a1259e8544ec3b826a630"
+        "bytes": 1291171,
+        "osSha256": "249a92ce71998ce4515fa8ff86975ebdd11d1b211d82b1b13f919c0b98d9d907",
+        "maskedOsSha256": "27932472d8121a2d36fa55ab390f3e29deb0009a7e80563e3b6ee4b45c7b7cd4"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
         "analog-bassdrum",
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "mute-modes",
@@ -6370,15 +5746,14 @@
         ]
       },
       "native": {
-        "bytes": 1290926,
-        "osSha256": "adb0f7923b7137086a5bdd0ece6d7d17087736234d093d36b51ac789e26a84c5",
-        "maskedOsSha256": "9274bfa8f372909c94979b94fbcbfe6aaae5a280054cea0c707a64fc97617127"
+        "bytes": 1291171,
+        "osSha256": "5a26f563fdd35fb8a1792a4edbd5e797d7c4bf006f71be8c497562f0908f4268",
+        "maskedOsSha256": "0e2fc28a2977c98ca27b43ead62d6328e412eb0f6e376e610cf4e4fdb902d03e"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "vector",
@@ -6416,15 +5791,14 @@
         ]
       },
       "native": {
-        "bytes": 1145830,
-        "osSha256": "ea325456c4494734b63f37091b9a64a61b710190dcf4377fe1fc94ea5b9c818d",
-        "maskedOsSha256": "3e5830fe3321ad6efef245e6e28639f49f8135f9609a2bdadbd7f037cde353ec"
+        "bytes": 1145971,
+        "osSha256": "0ddddc2b5e2f5675ac1d4302c3b41a30651e5ba8a7069a7da968acf2574796df",
+        "maskedOsSha256": "a374b47a6438f1da066aa2fc49870326b72d61acbbb0f1eb946030906bc76862"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "quantizer",
         "synth",
         "sidechain-compressor",
         "vector",
@@ -6450,643 +5824,14 @@
         ]
       },
       "native": {
-        "bytes": 1145830,
-        "osSha256": "9fcca760ad9398b21478b453f5df727a7b8df2632fef617a64944defdbfa0de0",
-        "maskedOsSha256": "d3ff05614eaa8a311d8f8e852abff9d66212d7d81c74bbc87373f9262fd82ce5"
+        "bytes": 1145971,
+        "osSha256": "ea7df8078864ee022b5a13e417b1aba5b39b88e466008c2325c3701bfcaec2a0",
+        "maskedOsSha256": "c6f171d72090a47b3f53d77e05bb069164809101e2b3d6cb7d9b0fffab7e7500"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1297906,
-        "osSha256": "4b7ed58f0acad021f0de52ffbc7cc9338e7a51f8113138fb317a0d8d48e86e5e",
-        "maskedOsSha256": "3fb0fab743df0e07cd3ef88eefb4f62e7d6ce798c2a8274b08c035b62deca8d6"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "analog-bassdrum",
-        "quantizer",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1297906,
-        "osSha256": "f381de1198ad6fa357101e641c63c60ec36a850c121035df93b4fcd13d46b84b",
-        "maskedOsSha256": "2e0bca422a5e17972d5c4ef35b4338774579b0bbb0f821019547804ae5a24814"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1126858,
-        "osSha256": "8be4c356c7ff64e1f9b92ab847610e1829851088275cff4eb7885815b997b7d0",
-        "maskedOsSha256": "3ef2dd7170cac8aef85724c2bcb1032ded30c3b74e93a25ace49dd7566f20cff"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1126858,
-        "osSha256": "84887b2ad732eac95a42ec02de5cdcb9c4abeb0115da97fdcc96a5fd00588e0e",
-        "maskedOsSha256": "f612e829566cb6bfe13a1a8451463e208cd917c613072aef60ca81eb57f9d6b4"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1279730,
-        "osSha256": "0812145b68eec8b772ea9d0f2f129185f3bfb3cc46387791c37e1fbc82d51b85",
-        "maskedOsSha256": "84d7788f12f7a4aa6bfa2e9cb55d9fdda6a556e846bd27f53dbfac669c631aa3"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1279730,
-        "osSha256": "6508f075d0bcf90a757daa34d7176ca3a696e2a19995d6759abb2fcfa753ff9a",
-        "maskedOsSha256": "271d190815eeb5294b0e01612292f5ecc088f044b03a6f6339f38d54db77adf4"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1134106,
-        "osSha256": "bc2328e81ba9740b103845f016b39044de6bddf0aa9be33e4551b9c6fb4f8951",
-        "maskedOsSha256": "1b4bafc5f406c384a5015e16867c547d4eeb0f69776d2e97978a15d7a03d0564"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1134106,
-        "osSha256": "3cb3b06b3ad2a5b289e2d3ad12d630a252af6a42845a18ae4d39eb76ef6f5f62",
-        "maskedOsSha256": "cd9ed3aea4f9f7e9328efc4d0f4219d03b9a5703142abee0cf6a87a5d5b83e9f"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1286702,
-        "osSha256": "76ad9a7faf66629866f129829ac0593845511526c805423beb70f64b493ee290",
-        "maskedOsSha256": "71e70863ab9acce67b43ba99c81486d7e88297efdd3e44d4f4a5998e2c6f31f1"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1286702,
-        "osSha256": "823e4df33d5819061c2fda800e635eb3282741057eedc26c811fdddbe088302f",
-        "maskedOsSha256": "47844e2d3f2c6bf179544dab67f33d797f7718d601c9307807591e18ee0df9cc"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1139017,
-        "osSha256": "1cd950a2b106d2ea836defc33c4969215672ce9f845ae09a57c4e988dd602541",
-        "maskedOsSha256": "2de7986a2c9281a472a1d8b99407651693082abb59aa55575174426783efe7ed"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1139017,
-        "osSha256": "71e901d0b86d22cefe49b2413f0e497ba8a27793017fca854db107dd8238b91b",
-        "maskedOsSha256": "7cee05388a3bb5c117057a4aeffe338e4c0f332b0347a74b5d5239a936e3d0f4"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1291354,
-        "osSha256": "9b7d8119b38abe822269964943eec5b80c00d76bdca8cd2fb06ad8913b2c2720",
-        "maskedOsSha256": "b3b169884c08c2f22b5e77125320ef23e98a6dd5d9370ad7f0ce495edae643e0"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "analog-bassdrum",
-        "synth",
-        "sidechain-compressor",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1291354,
-        "osSha256": "4aaf2850d9d0c6b2f1d57a64b0a2d098b403d9c12f3b21060c38d4f6047b443c",
-        "maskedOsSha256": "4325b1c1305cfef92d8d57d6b41e754be006ed4e06431168671742a3787bfcb7"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": true,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI",
-          "DELAY",
-          "PLATE REV",
-          "DARK REV"
-        ]
-      },
-      "native": {
-        "bytes": 1146255,
-        "osSha256": "b7e8779c4b79e03e4fa9b07031436527c5285f946db51e539fed0e8319bab287",
-        "maskedOsSha256": "290f47e6db492fbc99c796f58966f0edcaf7d327a23e16935b9c3f2e007ea610"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
-        "synth",
-        "sidechain-compressor",
-        "vector",
-        "mute-modes",
-        "poly8"
-      ],
-      "keepStockFx2": false,
-      "menu": {
-        "fx1": [
-          "FILTER",
-          "EQUALIZER",
-          "DJ EQ",
-          "PHASER",
-          "FLANGER",
-          "CHORUS",
-          "SPATIALIZER",
-          "COMB FILTER",
-          "SIDECHAIN_COMPRESSOR",
-          "LO-FI"
-        ],
-        "fx2": [
-          "SIDECHAIN_COMPRESSOR"
-        ]
-      },
-      "native": {
-        "bytes": 1146255,
-        "osSha256": "590230e31121cce6492b00dde5fb7af6c9de4604bf2d734b5513d8075f3027aa",
-        "maskedOsSha256": "124c5c853e42bca04bc67dc07928bd9c7fd66fdb0ed5ae78f1643d76eeb9e265"
-      },
-      "result": "masked"
-    },
-    {
-      "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "synth",
         "sidechain-compressor",
@@ -7124,15 +5869,14 @@
         ]
       },
       "native": {
-        "bytes": 1298354,
-        "osSha256": "baefc5f3230f64459391a7383351fc52d6458361ece7c5359cf54a8d68354b7f",
-        "maskedOsSha256": "8d133ce0967420d78a6fbd543ffd5e321e065d9a9a048f73f051aadc3a1cf832"
+        "bytes": 1298343,
+        "osSha256": "f2b9530ada7ae890edb9abd0edc9e581ca15997b0425d24f84749b96af11387f",
+        "maskedOsSha256": "febb424e3fb6060633c710ece64be21fab861c1beb0ea717a9efba13ec1b830f"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "synth",
         "sidechain-compressor",
@@ -7159,15 +5903,14 @@
         ]
       },
       "native": {
-        "bytes": 1298354,
-        "osSha256": "9ff80e7adb3383394f4737e9a06ca4d7ae0bb3148727607088f2e8b5e3af47b3",
-        "maskedOsSha256": "7cf09fdcb13bc3c4d6448575f1adce37b40170498b396293327fe4b86d67407f"
+        "bytes": 1298343,
+        "osSha256": "5a53fe24cb81e9e21a27d16dd2181326d88fbf4f771023222698c397f1332cb1",
+        "maskedOsSha256": "8168ab4ed4108ea52cd4e8f32265b89831112af6af0cf092d3143d5a9702e6e8"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "mute-modes",
@@ -7204,15 +5947,14 @@
         ]
       },
       "native": {
-        "bytes": 1128978,
-        "osSha256": "61cc22c428bfcc6b73036f94eea651a1e847a1d7ae5d34c1fd42c761436ddf85",
-        "maskedOsSha256": "030c13a6b58b2a90e1055758c44cac8a047a458701155a79f25f43cfd70785b5"
+        "bytes": 1128480,
+        "osSha256": "88c49c3816c88c7f3f04ab852cdb8a995073154ae23017aa54287699c809db9f",
+        "maskedOsSha256": "d582a94a24086270825bd53a6ab9d7b4b86016ab758fc031b193b16e4c1243ef"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "mute-modes",
@@ -7237,15 +5979,14 @@
         ]
       },
       "native": {
-        "bytes": 1128978,
-        "osSha256": "307e00a2dd556be146d4059def93d38ecfd2a8d058b50e67c1bcc06b054f6a8e",
-        "maskedOsSha256": "1dbeb0cee44de78cd6da80569a6d2a12c9c1321191d620ed5d4722eefd9d64f3"
+        "bytes": 1128480,
+        "osSha256": "14e8ac0e3a671a8c4d595908c5bb854c96e24303ed4195ab294bc9c10d57f87c",
+        "maskedOsSha256": "d7b52ceaf71d75292923fefe91dc7b4f77e09de7b1b58804646987287272c288"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -7282,15 +6023,14 @@
         ]
       },
       "native": {
-        "bytes": 1281866,
-        "osSha256": "49a7104faa3dee1c32839028590228818ef4b0419f4dcbb4222210f56f859fab",
-        "maskedOsSha256": "ab71c3e2b1b24c669a3f6e7771f33eddbc49623b61b95e0e33f53ced721ff3ff"
+        "bytes": 1281663,
+        "osSha256": "1f046f1434859259ed6510e2c60603be64ef44c259a082ab8b77f9a22040680a",
+        "maskedOsSha256": "5354e89bf443d1ab35c7293df0f820d0233be2737520baa2e895b36a495564a9"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -7316,15 +6056,14 @@
         ]
       },
       "native": {
-        "bytes": 1281866,
-        "osSha256": "5aed7916b72d30d839cd5308aa0eabb464ba12646f02245d16c83b7e3ea4d2a1",
-        "maskedOsSha256": "7278afb0a5c224f43e15a6ed4e9686b5ee85c230383521efee34982eb8c38914"
+        "bytes": 1281663,
+        "osSha256": "fcb81ce1e0187a446d47ec4ed9843f5b5ddd94db7e2a249884965b2b0dffed5b",
+        "maskedOsSha256": "00e5d3d7b0e68cda5346937280d1100eb348b011d067eff8e52978e143bf7db1"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "vector",
@@ -7362,15 +6101,14 @@
         ]
       },
       "native": {
-        "bytes": 1136235,
-        "osSha256": "7f1eaa7593b0730cc25a44db023670b7e6897b92e222f94fba873dd1bae35d0d",
-        "maskedOsSha256": "34e29a6aac78dfdd940d7f1e11ecb1f2e8fdcc73c9a5239b0cd9ea9543a76387"
+        "bytes": 1136035,
+        "osSha256": "06ddeeb790ea7f1c84cd386a2cbab8d10d76574404d13e5d8f0c09cbebf19b3d",
+        "maskedOsSha256": "533b76ee472a7cd5996702618c2ea43d6f00cfea7b1edc65e673c6639babc476"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "sidechain-compressor",
         "vector",
@@ -7396,15 +6134,14 @@
         ]
       },
       "native": {
-        "bytes": 1136235,
-        "osSha256": "3cf6d413aa46d4f61733702b1458cb978c7d757b546b3e484d69359830076bfe",
-        "maskedOsSha256": "8803e2c4a511adeae24601d670776451c27092b4fd6e428a5d2c7275322ac700"
+        "bytes": 1136035,
+        "osSha256": "3ca339e66b9629a3484f8e3dde71200de32cf6ab1f48a61bb9d4057eab4529a4",
+        "maskedOsSha256": "fe491a2e0cb8e2d2b9d5851eb03582bccc4e2f2c1b752ecf0c8f7436115d648c"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -7442,15 +6179,14 @@
         ]
       },
       "native": {
-        "bytes": 1288834,
-        "osSha256": "bb5223c8d9c7b45fa3656009ab7a0bfe21352aace8a494e15f54916565ec8383",
-        "maskedOsSha256": "2874e7f6eef2479c32ad352c8ef966c92dd8e398b326c7b5e5734e3e8491781b"
+        "bytes": 1288835,
+        "osSha256": "03039ec471482e60babcf7205b0ef7c90f7de6ef9a696923daaf585845206b61",
+        "maskedOsSha256": "90b1a1707616d7c31cbe9df62dc7d6268f1c7305f1a7fe8c54a986891a9d6ac6"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "sidechain-compressor",
@@ -7477,15 +6213,14 @@
         ]
       },
       "native": {
-        "bytes": 1288834,
-        "osSha256": "9c782bff70bdec6fb7b67a2f878922d9a28c20d9b2a6cc774a47e7527e12ccb0",
-        "maskedOsSha256": "c0b33c25c1d60edb2dcbe8854022b50b7dd35cc322e1203e311ea9ed1ce204ae"
+        "bytes": 1288835,
+        "osSha256": "619f27393d170edebfbabeefbafc6af07d6bff5e7dee42da3be64368cecec579",
+        "maskedOsSha256": "850254cea875c78af844d4c413df925b07ab5c9fc3af7a799fe1f0a02c246710"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -7523,15 +6258,14 @@
         ]
       },
       "native": {
-        "bytes": 1139017,
-        "osSha256": "1cd950a2b106d2ea836defc33c4969215672ce9f845ae09a57c4e988dd602541",
-        "maskedOsSha256": "2de7986a2c9281a472a1d8b99407651693082abb59aa55575174426783efe7ed"
+        "bytes": 1138531,
+        "osSha256": "daf70ce734c771dd69ba5056b385dd4441e7d5ad2295cca82ba35f6827f0f4e1",
+        "maskedOsSha256": "95e90d8da28261f5d47d1e1451690a7442aca0b1be12466db4d439cc76c3f1b1"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -7557,15 +6291,14 @@
         ]
       },
       "native": {
-        "bytes": 1139017,
-        "osSha256": "71e901d0b86d22cefe49b2413f0e497ba8a27793017fca854db107dd8238b91b",
-        "maskedOsSha256": "7cee05388a3bb5c117057a4aeffe338e4c0f332b0347a74b5d5239a936e3d0f4"
+        "bytes": 1138531,
+        "osSha256": "afb3068cd759a8eabad09c3f07d0849a674220ca5deeb5d14aae609bc48c8416",
+        "maskedOsSha256": "acc5e826583947e4c10f950d8bade2dde66dfe908912fbe2b92682f3413789aa"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "synth",
@@ -7603,15 +6336,14 @@
         ]
       },
       "native": {
-        "bytes": 1291354,
-        "osSha256": "9b7d8119b38abe822269964943eec5b80c00d76bdca8cd2fb06ad8913b2c2720",
-        "maskedOsSha256": "b3b169884c08c2f22b5e77125320ef23e98a6dd5d9370ad7f0ce495edae643e0"
+        "bytes": 1291171,
+        "osSha256": "249a92ce71998ce4515fa8ff86975ebdd11d1b211d82b1b13f919c0b98d9d907",
+        "maskedOsSha256": "27932472d8121a2d36fa55ab390f3e29deb0009a7e80563e3b6ee4b45c7b7cd4"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "analog-bassdrum",
         "quantizer",
         "synth",
@@ -7638,15 +6370,14 @@
         ]
       },
       "native": {
-        "bytes": 1291354,
-        "osSha256": "4aaf2850d9d0c6b2f1d57a64b0a2d098b403d9c12f3b21060c38d4f6047b443c",
-        "maskedOsSha256": "4325b1c1305cfef92d8d57d6b41e754be006ed4e06431168671742a3787bfcb7"
+        "bytes": 1291171,
+        "osSha256": "5a26f563fdd35fb8a1792a4edbd5e797d7c4bf006f71be8c497562f0908f4268",
+        "maskedOsSha256": "0e2fc28a2977c98ca27b43ead62d6328e412eb0f6e376e610cf4e4fdb902d03e"
       },
       "result": "masked"
     },
     {
       "moduleIds": [
-        "repitch",
         "quantizer",
         "synth",
         "sidechain-compressor",
@@ -7685,9 +6416,1278 @@
         ]
       },
       "native": {
-        "bytes": 1146255,
-        "osSha256": "b7e8779c4b79e03e4fa9b07031436527c5285f946db51e539fed0e8319bab287",
-        "maskedOsSha256": "290f47e6db492fbc99c796f58966f0edcaf7d327a23e16935b9c3f2e007ea610"
+        "bytes": 1145971,
+        "osSha256": "0ddddc2b5e2f5675ac1d4302c3b41a30651e5ba8a7069a7da968acf2574796df",
+        "maskedOsSha256": "a374b47a6438f1da066aa2fc49870326b72d61acbbb0f1eb946030906bc76862"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1145971,
+        "osSha256": "ea7df8078864ee022b5a13e417b1aba5b39b88e466008c2325c3701bfcaec2a0",
+        "maskedOsSha256": "c6f171d72090a47b3f53d77e05bb069164809101e2b3d6cb7d9b0fffab7e7500"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1298343,
+        "osSha256": "f2b9530ada7ae890edb9abd0edc9e581ca15997b0425d24f84749b96af11387f",
+        "maskedOsSha256": "febb424e3fb6060633c710ece64be21fab861c1beb0ea717a9efba13ec1b830f"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1298343,
+        "osSha256": "5a53fe24cb81e9e21a27d16dd2181326d88fbf4f771023222698c397f1332cb1",
+        "maskedOsSha256": "8168ab4ed4108ea52cd4e8f32265b89831112af6af0cf092d3143d5a9702e6e8"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1126802,
+        "osSha256": "8d367cd9940143c999ffcc3e38fc6d085ecb66d744580688afeb2373258adf70",
+        "maskedOsSha256": "0275b220784543e5b86a90fce6e360eabf17546b759542109daa7e69c24d952b"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1126802,
+        "osSha256": "6746b04d5522f48942031bb54dd4d96cd0f244351be84209cb1d395bc53a053c",
+        "maskedOsSha256": "6d29ce2c10b2214be7835d0c7384862a204b731d2c16413df3052b7db0182c84"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1279959,
+        "osSha256": "014144fdeb8ff5f864c48fb551e56b3d5eda99bcee0f37184759869689320250",
+        "maskedOsSha256": "5bf64f12786366fa51bc51ddea0c97cf96360f0c76eec2f58d3e0b75e700f5ed"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1279959,
+        "osSha256": "b3a46358ca12d010d617bd5ffa6d1c5ae557b804abea1e1179196d84d35062ef",
+        "maskedOsSha256": "04e9eb11de527a878d9d1b819eef9884df113814d4f288b416770a439a366240"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1134314,
+        "osSha256": "2b24bc7c79e700c69b5c57ad5c59377b32c65293b605b9180679ed4f7a715808",
+        "maskedOsSha256": "f965fca5f11cb36f5d285062471bd3018a9b7bb9602be694ccf0ff851b16b3ef"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1134314,
+        "osSha256": "fb557c0d1387d253eef02884cdf9ced29435d46bb2f196d75103322c93b332ed",
+        "maskedOsSha256": "5bfa34b5a254517f9b08b6fdf69ba1277084e2733cd3b4f4d040eab9129e2114"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1287095,
+        "osSha256": "738241494740757df69f00a04d08b63dac461114315d5ac3c4b46364a0ba0079",
+        "maskedOsSha256": "e4d4d42201fac06f0f6e5cb9ccae804b4be93119e1f79206badaab22f772c04e"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1287095,
+        "osSha256": "1124b9ef0f10ce7b40503bf70d4f566b8c7e1ed659abd164e24b1c934c53befd",
+        "maskedOsSha256": "6e13d0871c3f6cdd010638ea24066ecec67a6d093e2669789f5bf4651939946d"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1138961,
+        "osSha256": "675c1ccf14c2ae6a922a9f0546bbabe7dd39c87a76bf581aec6315dab6092b77",
+        "maskedOsSha256": "caab6e5fd9fc2eab14e16ce31d7e3c623ec4dc2b6539349956ec37d9c36936f4"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1138961,
+        "osSha256": "1d9459a0d673ddb1205f7486eb059a00231aaf562d22243d9bd0365a27ea9068",
+        "maskedOsSha256": "1daac840e0d1eda593d1a13a2956b553171be11e78a48a4947b22669f454ccbf"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1291595,
+        "osSha256": "6ca847729d518ce44e553d4fcf2f57f9d20f28f4591b3acc39b0db29850e14f8",
+        "maskedOsSha256": "858df393fd4b9b09099196634bb0286924caf815477db8618b4410ce5dc378cd"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1291595,
+        "osSha256": "c987438e87f97fa79b0dbe7b0e26af80747ad2745bca017f4852aaf36995be61",
+        "maskedOsSha256": "0eec1c382f8be34a6d56c6a7bf2aa7c789921aac4ac37037c818f18992210dfc"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1146426,
+        "osSha256": "13c846fbdee87e46eecd008775c5076de3cf1c7b2c32bf78ed3bd7c4ca26683f",
+        "maskedOsSha256": "cf6702a5616cd61ed2103bcf5eb48340214ba213052c233d1d817bf55e64b4e5"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1146426,
+        "osSha256": "91695800f9db2606f2156724f0c762afb955b0a9e7146799dd1ffccd6a85d466",
+        "maskedOsSha256": "213167006224b10fc03ff728e7e31f11d8c2ba2067e82c1485e63af563ded04d"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1298783,
+        "osSha256": "c53d53926e5457875aeb1874d2625f0366ac35998bca94fe4cab021ab87bd475",
+        "maskedOsSha256": "1e5b82b0bfd2da03a7e1b08a8d59f0f56b469062c90b336828f853416e19bcc6"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1298783,
+        "osSha256": "5256e59b055a388d1df11b1c8af38cacff25bbb1cba8aec9edab117dd0286cda",
+        "maskedOsSha256": "a11a7f7bcb464c1fe4cf492b7324caab0fb88d5f5ae1f57fe2d62f6faaedb202"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1128914,
+        "osSha256": "8d6943ea11bae3e4e28ee090a8272b8211c0264ec8ac3d76ed0e74d9e491d84c",
+        "maskedOsSha256": "6e517e1057d371a16339917f87a042433bbb944096c3dd73e35d4d196ebb9d4f"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1128914,
+        "osSha256": "d0dcd16ad7ee3ef0baed9092b7c6b1bdba0f8b793a85262f01b273b7f2ea63db",
+        "maskedOsSha256": "dd36825f06c60ff9245ea57295b2d99e5f4ccb40133c786aa3b21a5087dcf60a"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1282087,
+        "osSha256": "b0c25e77d5d91a490d729665b76a04d580c64b0740c803e835e10ee34bb0ab39",
+        "maskedOsSha256": "a3a9fe7441c8c88a5c85d4e4c303c84a93699f51a427947d7e9ab28d1d392e84"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1282087,
+        "osSha256": "580e347d294a481c716cbb00b7b0f3b1e1698a7ed76e9046e3abc15e934e11bd",
+        "maskedOsSha256": "9c29d194c8c5ab3da8a2e2719e82593901eef56601d48bb21b2f309e49d4ced2"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1136460,
+        "osSha256": "c660aa1eeddd38bce40b0762604537c1d5da759ddbb4d8bd9373c5042c3ab8a5",
+        "maskedOsSha256": "78efaad6cd7ce5969641b950a9ed9557950b672f971efa4341d6762a158716c3"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1136460,
+        "osSha256": "4f0927fd5d146297e887240ec98b8fd4e9dbfb9b71a57bb73b0966dc9799dc2c",
+        "maskedOsSha256": "62de84e842786fa84dd6abd52f6973dda271a1015faf10ee79e15cfb4dc10127"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1289251,
+        "osSha256": "ce92e9ccc6f3ce03d71f8f7396836c1c0923551aa800e3fc171337b82b604fbe",
+        "maskedOsSha256": "ddec9c8c81170063170cb91e2493c392cdf0100ecc177f1f476b1babb8440d91"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1289251,
+        "osSha256": "856aa3ca31d678a7bdffe0d9c7c54314e5db79041ebbf1153caa84a0d6121111",
+        "maskedOsSha256": "13fbec0b44d425dece72c0e62764a8fe1dc59d85d4398de9e52b46ab1b171761"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1138961,
+        "osSha256": "675c1ccf14c2ae6a922a9f0546bbabe7dd39c87a76bf581aec6315dab6092b77",
+        "maskedOsSha256": "caab6e5fd9fc2eab14e16ce31d7e3c623ec4dc2b6539349956ec37d9c36936f4"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1138961,
+        "osSha256": "1d9459a0d673ddb1205f7486eb059a00231aaf562d22243d9bd0365a27ea9068",
+        "maskedOsSha256": "1daac840e0d1eda593d1a13a2956b553171be11e78a48a4947b22669f454ccbf"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1291595,
+        "osSha256": "6ca847729d518ce44e553d4fcf2f57f9d20f28f4591b3acc39b0db29850e14f8",
+        "maskedOsSha256": "858df393fd4b9b09099196634bb0286924caf815477db8618b4410ce5dc378cd"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "analog-bassdrum",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": false,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "SIDECHAIN_COMPRESSOR"
+        ]
+      },
+      "native": {
+        "bytes": 1291595,
+        "osSha256": "c987438e87f97fa79b0dbe7b0e26af80747ad2745bca017f4852aaf36995be61",
+        "maskedOsSha256": "0eec1c382f8be34a6d56c6a7bf2aa7c789921aac4ac37037c818f18992210dfc"
+      },
+      "result": "masked"
+    },
+    {
+      "moduleIds": [
+        "repitch",
+        "quantizer",
+        "synth",
+        "sidechain-compressor",
+        "vector",
+        "mute-modes",
+        "poly8"
+      ],
+      "keepStockFx2": true,
+      "menu": {
+        "fx1": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI"
+        ],
+        "fx2": [
+          "FILTER",
+          "EQUALIZER",
+          "DJ EQ",
+          "PHASER",
+          "FLANGER",
+          "CHORUS",
+          "SPATIALIZER",
+          "COMB FILTER",
+          "SIDECHAIN_COMPRESSOR",
+          "LO-FI",
+          "DELAY",
+          "PLATE REV",
+          "DARK REV"
+        ]
+      },
+      "native": {
+        "bytes": 1146426,
+        "osSha256": "13c846fbdee87e46eecd008775c5076de3cf1c7b2c32bf78ed3bd7c4ca26683f",
+        "maskedOsSha256": "cf6702a5616cd61ed2103bcf5eb48340214ba213052c233d1d817bf55e64b4e5"
       },
       "result": "masked"
     },
@@ -7720,9 +7720,9 @@
         ]
       },
       "native": {
-        "bytes": 1146255,
-        "osSha256": "590230e31121cce6492b00dde5fb7af6c9de4604bf2d734b5513d8075f3027aa",
-        "maskedOsSha256": "124c5c853e42bca04bc67dc07928bd9c7fd66fdb0ed5ae78f1643d76eeb9e265"
+        "bytes": 1146426,
+        "osSha256": "91695800f9db2606f2156724f0c762afb955b0a9e7146799dd1ffccd6a85d466",
+        "maskedOsSha256": "213167006224b10fc03ff728e7e31f11d8c2ba2067e82c1485e63af563ded04d"
       },
       "result": "masked"
     },
@@ -7767,9 +7767,9 @@
         ]
       },
       "native": {
-        "bytes": 1298354,
-        "osSha256": "baefc5f3230f64459391a7383351fc52d6458361ece7c5359cf54a8d68354b7f",
-        "maskedOsSha256": "8d133ce0967420d78a6fbd543ffd5e321e065d9a9a048f73f051aadc3a1cf832"
+        "bytes": 1298783,
+        "osSha256": "c53d53926e5457875aeb1874d2625f0366ac35998bca94fe4cab021ab87bd475",
+        "maskedOsSha256": "1e5b82b0bfd2da03a7e1b08a8d59f0f56b469062c90b336828f853416e19bcc6"
       },
       "result": "masked"
     },
@@ -7803,9 +7803,9 @@
         ]
       },
       "native": {
-        "bytes": 1298354,
-        "osSha256": "9ff80e7adb3383394f4737e9a06ca4d7ae0bb3148727607088f2e8b5e3af47b3",
-        "maskedOsSha256": "7cf09fdcb13bc3c4d6448575f1adce37b40170498b396293327fe4b86d67407f"
+        "bytes": 1298783,
+        "osSha256": "5256e59b055a388d1df11b1c8af38cacff25bbb1cba8aec9edab117dd0286cda",
+        "maskedOsSha256": "a11a7f7bcb464c1fe4cf492b7324caab0fb88d5f5ae1f57fe2d62f6faaedb202"
       },
       "result": "masked"
     },
@@ -7948,9 +7948,9 @@
         ]
       },
       "native": {
-        "bytes": 1152499,
-        "osSha256": "e20452b8889cc4ad92269c83f319e6e4eab7c03cee0930d5e2ea5bb761a30b96",
-        "maskedOsSha256": "b457ee6d1a66a07348f9d0e67a498fc8e4f50f0e8671fedd716771d9b55926dd"
+        "bytes": 1152683,
+        "osSha256": "79b7115cc416c22f279c34bb469d88815e201bfbd521dd388c328d624850adb2",
+        "maskedOsSha256": "06681a23836f4e11a950156f6a06a46053d972e653740bc4aee473c9ac6317e2"
       },
       "result": "masked"
     },
@@ -7985,9 +7985,9 @@
         ]
       },
       "native": {
-        "bytes": 1152499,
-        "osSha256": "adaad38b3ead5b2194f16b29bafcbc35d8ecc8359cfb3dde7b983cf46328f9e6",
-        "maskedOsSha256": "0b69ef2484fd92154ecf845490598ea9d94d978cd7fc529c49fa68d7b01cebd2"
+        "bytes": 1152683,
+        "osSha256": "975c3d76aa641ef378c702a279046dbae6e7d9f67d73646be71919c2b1f7c4da",
+        "maskedOsSha256": "938f669de3aaaeb268d24533c12e4274bf3f7870ff548fc352ab72d626f9b2ba"
       },
       "result": "masked"
     },
@@ -8030,9 +8030,9 @@
         ]
       },
       "native": {
-        "bytes": 1140271,
-        "osSha256": "16d069a5b9c39b3a31c8d6396f1726365429e7dc1499a87b96845dd37d8bd449",
-        "maskedOsSha256": "e6a2282471487b73ce77c7ecaf36731ee9f7724c4a850ccc033cc4e4c8201073"
+        "bytes": 1140506,
+        "osSha256": "47e569bb980b3e7fa3dfc0afd91af194b08efd5ecccffefca65a4319f5465e7d",
+        "maskedOsSha256": "920d340bc7cc26b5ebb28b35098277899b34dce4971734be7346f05ab9dd5854"
       },
       "result": "masked"
     },
@@ -8063,9 +8063,9 @@
         ]
       },
       "native": {
-        "bytes": 1140271,
-        "osSha256": "5dd4243a26c22bb0fe8bc3d6b7798bca6ca4a15a0dda7ba46389395723a25967",
-        "maskedOsSha256": "25f77cbe1a933a454c330f7af63cd94b96ee1b4b524d5cd8b64b8d377d1890f9"
+        "bytes": 1140506,
+        "osSha256": "bd1c98e1e4daed1a0f0e5a46874194fb64ef5c35178c73db5f2df4b1334a7aa7",
+        "maskedOsSha256": "98f2ab404df99687f3339f8e7c0b23f6fda0fdf3c75d5b0824cee0a51e779da2"
       },
       "result": "masked"
     },
@@ -8109,9 +8109,9 @@
         ]
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "04bab5308a0f9bcc01fea49657745b3d9b2a0a4c7d669a5b0548021e92ce105e",
-        "maskedOsSha256": "084b40f23bbd1450f1c1ea149825bacf82b35f7eea61162fe709e9d04a1e3f0e"
+        "bytes": 1130895,
+        "osSha256": "cda78f8a8c34d280e32dc40e69f93fea694b475aa1f8df6ee443bbf575c83331",
+        "maskedOsSha256": "ffa2677e9d393c76a994d3c6e6153549fc3de72df37e16ad743671bffcd3858d"
       },
       "result": "masked"
     },
@@ -8142,9 +8142,9 @@
         ]
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "0b0091dfd3b147a4686eb7d373c55edd5fbbeb586f8c278e9d73d966407a9d27",
-        "maskedOsSha256": "2466d5d160ffab312c6916797548990016d393782d6cfdb5ea214cd23f5a5d81"
+        "bytes": 1130895,
+        "osSha256": "cb2fcfdf906793707147cfcfa5260ba86951192684a80538ef3b3d04b23361cc",
+        "maskedOsSha256": "f5c8e4a9d913dd872f3cc68ce3ee8f85fc903dea133ad22597d93ff44137c363"
       },
       "result": "masked"
     },
@@ -8187,9 +8187,9 @@
         ]
       },
       "native": {
-        "bytes": 1133068,
-        "osSha256": "3fba97980ba8abe57393622dbc0134428ffd801f1e9929db3284100c540b858e",
-        "maskedOsSha256": "6f76fc88b9191dbf50ca583971375cdbe746b5b81b8c9cc54b0e80e4177962e8"
+        "bytes": 1133013,
+        "osSha256": "a99fc172a4995f374b2c1d0f765433e6ed13dc1d66e23999aa285951be6440b7",
+        "maskedOsSha256": "d3417b9602df2303922a278e586d4194e7031fae03b45ae48296b84ab4c16c89"
       },
       "result": "masked"
     },
@@ -8219,9 +8219,9 @@
         ]
       },
       "native": {
-        "bytes": 1133068,
-        "osSha256": "25179b8f9eceb749a481624f75ac4377c65793ce3afba3170c99b95f679acfe2",
-        "maskedOsSha256": "72471dd8349f4d30335104b774020056b115935b424ec66efb8b98b725c49cd2"
+        "bytes": 1133013,
+        "osSha256": "3c94dd49923267e5853cd9dfcf3c7d0c2c624ee8347f0b0776e9eb73f6143003",
+        "maskedOsSha256": "0fe40b97017f9fea2656c662aa20979bade06e3feece7271296e94e64e2f16c9"
       },
       "result": "masked"
     },
@@ -8466,9 +8466,9 @@
         ]
       },
       "native": {
-        "bytes": 1128882,
-        "osSha256": "98e5d2eba7f92229adeaa808b94bbd79d37740d5852e5e2f30166a5ba1ed4ee2",
-        "maskedOsSha256": "961f07f518ead26479ebe551cd43ed42494e4964076058b903969443475889cf"
+        "bytes": 1128815,
+        "osSha256": "54ab9027df2f394cc14ba0a1e36f8ccb1205393abd6e4851a3ff7f4b98ebf2d4",
+        "maskedOsSha256": "649379af99f71c2e1ef70d735fa5ded9f5f959160c0ae4de117417d7388a682c"
       },
       "result": "masked"
     },
@@ -8496,9 +8496,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1128882,
-        "osSha256": "50a985ddb35408f4c29238cc08e5d2f9af472d8ab1860bf22726ddd86bd6d724",
-        "maskedOsSha256": "00d93b048c64cb2a55a87d72458004598a43166ff31956bcee5ef438a1633c24"
+        "bytes": 1128815,
+        "osSha256": "6b97f4ce45f811957319d24d474a39ce041ae61ad0bf3e6626804b9d51580a57",
+        "maskedOsSha256": "71ac8cc1a617d32a1d7ce7121cbc425299e0a5fcca18b959954649eadef067a6"
       },
       "result": "masked"
     },
@@ -8540,9 +8540,9 @@
         ]
       },
       "native": {
-        "bytes": 1131482,
-        "osSha256": "5ae97172b10a5e4fe469d7f51275243fe5f3a936378d1a3b68b7a4b9f57795c6",
-        "maskedOsSha256": "302439ac283e050d3390457119589cb4d3d6b2facd15ebc489fc3176ca029e1d"
+        "bytes": 1131431,
+        "osSha256": "000e25cc0d56af9bfd237ef3720ccf2b9422108f2168a1efa5837a0bdce6f6e5",
+        "maskedOsSha256": "015f673b8312b91cdffdce78e7d9beb5301fcb2c07df8b0663dfd7129364d872"
       },
       "result": "masked"
     },
@@ -8569,9 +8569,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1131482,
-        "osSha256": "48b36ea3bc21d2fbba349fa922764c6807d552f97b5edf84788c759e659d2bf7",
-        "maskedOsSha256": "dd284880f217a2c1680bd790372bf0e4760127c934ebadb796c4eb411be7d52f"
+        "bytes": 1131431,
+        "osSha256": "04617c0ffe89eb2713953795f58be4bf752820fa96626d5cc7e358200f820ffb",
+        "maskedOsSha256": "08a9fc569abf9cb920e094bfdeb4fd42cde309b0ea8e663c4daad0c35d7429f8"
       },
       "result": "masked"
     },
@@ -8613,9 +8613,9 @@
         ]
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "db44819c215a6f461d66d76f1c85283431858322f4ef94c2bc0ca76227b92383",
-        "maskedOsSha256": "2e9849034dd01adfe7a473f2dff5ebab2f0d85ade929d21d327949c3a34474c0"
+        "bytes": 1125712,
+        "osSha256": "f24013394c5965ede28b7c76fb37b5b3e709247a2a861bdd714a566b724d1b76",
+        "maskedOsSha256": "35590545ab7dde2fdfe1cd5e8f30fe3d94ee4312a3cb1db4c95d719b1509ad9b"
       },
       "result": "masked"
     },
@@ -8642,9 +8642,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1125775,
-        "osSha256": "1412e28ef2418fbc0a0b0cc180a7b0be5f52b0474d28bbce924a452e56167ecc",
-        "maskedOsSha256": "3448aa47ac0396e2e55694cf99b7ec463b4818d2b39f722c5c837a197be60d58"
+        "bytes": 1125712,
+        "osSha256": "a20980cb0ace50fa959a2558eeb910361baf1b21fc4d2c994b07c28851c08505",
+        "maskedOsSha256": "be9cde07c25aabedff9653ad7169cd903ab65c2d7339505d36e8a6a03f97ec90"
       },
       "result": "masked"
     },
@@ -8788,9 +8788,9 @@
         ]
       },
       "native": {
-        "bytes": 1146255,
-        "osSha256": "650297905e184871de5a7405223091f3ebe07e385167710246fd2c669ff41f7c",
-        "maskedOsSha256": "03c3099c187d050a5a1fa2903fb6d2de8814618abf2d1b3c2ec73d1b1d605826"
+        "bytes": 1146426,
+        "osSha256": "7a74005b866c5039cbfb627589b06d8f50d4499a82eda3c77a972c8c902e5a60",
+        "maskedOsSha256": "68f542c1ba4133e4dbba5a3a2d4f10cf5d329f738bec127829d35bc7a0668dcf"
       },
       "result": "masked"
     },
@@ -8825,9 +8825,9 @@
         ]
       },
       "native": {
-        "bytes": 1146255,
-        "osSha256": "69454b18f694f1875697c93dd6672164714c00c1127144a96aae5b6f20d98c93",
-        "maskedOsSha256": "c1d996a90cae42b793b9073b80f4eea077aa9498f97f885a14615ef5c8528f25"
+        "bytes": 1146426,
+        "osSha256": "13d52913516bef94994d342a74b71abe16e22c03896326fb5159fa66df0ca4d3",
+        "maskedOsSha256": "4c310281731641f2a166d77bae45261be59eb0bd8f676f2b857bd03cc3ce0445"
       },
       "result": "masked"
     },
@@ -8974,9 +8974,9 @@
         ]
       },
       "native": {
-        "bytes": 1228609,
-        "osSha256": "a175ac5bcf1d060141b9930f30b096a971a768da1d6599f11fdd971c1e687211",
-        "maskedOsSha256": "15b4a8efa7aa0a2dd805670f7804f0ff21d38f57ecf52484740bfc4f8649770f"
+        "bytes": 1228536,
+        "osSha256": "959e8ec3e396d9cabbe39024433991f3012e737fe59e2880a3070fd151fba73d",
+        "maskedOsSha256": "523d5289f935779fdfad5f6576caee270e0bcb5616951031f2531b86747f2aae"
       },
       "result": "masked"
     },
@@ -9010,9 +9010,9 @@
         ]
       },
       "native": {
-        "bytes": 1228609,
-        "osSha256": "bca5884076fa31336c446584f3842de096ffc87646665159f40b7fd3cd5a57cd",
-        "maskedOsSha256": "183b2e53df2010ce3f16d62da8dcac8b0f310aa48e484c07a9a68f25e0c18fb7"
+        "bytes": 1228536,
+        "osSha256": "09afd5d364ae0b8290dfb40450e895abba796e2c445215c7823d2e94a4e56d5b",
+        "maskedOsSha256": "fdb3d5c7b67a6196890719525f87b746e23ea2c0fc2853c0422ff47934f37c29"
       },
       "result": "masked"
     },
@@ -9245,9 +9245,9 @@
         ]
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "52aca2a3037b502bcaeb8acbbf863f78fed64a1b2e883bab03c4680272ae184d",
-        "maskedOsSha256": "feb6fecf08c85a033a85140f0918540284d9cddd7c18c46c2bcd1c61ca4d2c1e",
+        "bytes": 1130895,
+        "osSha256": "780c2099f5864729b251f132f1f45c6205432a326963fcc03998adf5e0ea9a27",
+        "maskedOsSha256": "2aa8c164916b185d5cd1cb93a0f28b40deab70e58e530027744e977751d20cf2",
         "platformArena": true
       },
       "result": "masked"
@@ -9276,9 +9276,9 @@
         "fx2": []
       },
       "native": {
-        "bytes": 1130950,
-        "osSha256": "2323955d1049ede77a60c2e1eb5bb243afff7166a1cf89188732a2d610ee806f",
-        "maskedOsSha256": "f60bf65ecb84520483e09a3c6bf20db6615dfe4a59321e161b929bd99ee10a55",
+        "bytes": 1130895,
+        "osSha256": "0f2e1e783b42cd64f595c38421ddfdc22d68a660620a5463e45ff676e77ef72d",
+        "maskedOsSha256": "369a6ab27bf7fa9d3e29b94f19082c6835ae7a4a0c34480a58dcde9ab654b1c5",
         "platformArena": true
       },
       "result": "masked"
@@ -9422,9 +9422,9 @@
         ]
       },
       "native": {
-        "bytes": 1128365,
-        "osSha256": "3f4ec0a84738a3cbaaf112cd52c9e50a7811928ababe64c009b97efa8de5578d",
-        "maskedOsSha256": "ca6d3626f11c9fb52a38a3bb1e05e43d37914bcdaf1e012a5c906bf48c43faeb"
+        "bytes": 1128308,
+        "osSha256": "34e6e01882b55a3fd9b65b3d5dc5caa3e6bca32a5eeed2d798a2e8a22f88783a",
+        "maskedOsSha256": "6928270e0430dd665b02ac8e483d03838d365ede222ccb7ea0f2d0883175ea2d"
       },
       "result": "masked"
     },
@@ -9457,9 +9457,9 @@
         ]
       },
       "native": {
-        "bytes": 1128365,
-        "osSha256": "5e82b4579703af30f71bd8293a82e5e0f017251c9c26d5f8d7f0a2058e44c8ca",
-        "maskedOsSha256": "072c2c49593c0dc3dbeeedb984084a14c6e351837654ab02ea2a846c31ee2608"
+        "bytes": 1128308,
+        "osSha256": "92af24a1bd311f63cc649b557ba2a91b30c877b29146a5fae698ac11b5018842",
+        "maskedOsSha256": "0e28740bd2634db07c0b494e8f5b1efb7360b5ffcf6b82f0ebbdcc88a445b733"
       },
       "result": "masked"
     },
@@ -9507,9 +9507,9 @@
         ]
       },
       "native": {
-        "bytes": 1243445,
-        "osSha256": "f1b3b681640bfff16f07690307ba478f9cbe4b9a21a45b68cc29965d73d18ac2",
-        "maskedOsSha256": "351fc00e94d8d62302f534b630939a668eab278c9c0d1fd5450ac69fce6d8247"
+        "bytes": 1243370,
+        "osSha256": "439485c9c7191cf87033461ef5e254b09000dbda66a2f2be2908bfe436198c15",
+        "maskedOsSha256": "0c1f1d407e24c2fc98830cf3ce1ab4eae23d70ecaed78fe7b67421612bdcc8d0"
       },
       "result": "masked"
     },
@@ -9544,9 +9544,9 @@
         ]
       },
       "native": {
-        "bytes": 1243445,
-        "osSha256": "4f1a65dca90defe0381f37f27ce81e64e98dfe8b5c5fc1c4422aa889652ebabb",
-        "maskedOsSha256": "297232ae7a1fe6c20f5318b2a5a01671d0c0722c5ee336acee261f92a1a7d044"
+        "bytes": 1243370,
+        "osSha256": "4ab824365387deb8cdbf56951417f2f1ecc3b1e92b11defa27ffb21c0fb441af",
+        "maskedOsSha256": "8704c719450f9e838d4e094683f46cdf035baf129b2de5864fcd70e5f40f2052"
       },
       "result": "masked"
     },
@@ -9861,9 +9861,9 @@
         ]
       },
       "native": {
-        "bytes": 1138477,
-        "osSha256": "c5c514bd1a00ec08291e9342325b4ae61c0459422225158b75ed6a06ef031895",
-        "maskedOsSha256": "8ef0f105434ed013ca28a56f7225fad7b1db24e9ac0842ba7fcd20c418866a4b"
+        "bytes": 1138427,
+        "osSha256": "9c381d346a9722d23ea7ac5e3360ca0ce68247525afc60a670968236d1099c2c",
+        "maskedOsSha256": "3ae625a85f7d5e184a4cb678a0babf8eaa293d7c1328d19d31e05d7d5c81ebd4"
       },
       "result": "masked"
     },
@@ -9894,9 +9894,9 @@
         ]
       },
       "native": {
-        "bytes": 1138477,
-        "osSha256": "bac2b76bc97ee86be8024d2db012b75a84957307497974b21ba2ae6a5a863474",
-        "maskedOsSha256": "50f3595b4b127b4ac75f0046d6c90b52378f366e15c970d770e5c692be1c821d"
+        "bytes": 1138427,
+        "osSha256": "418630133d2c6b92a423c39921ae6b1f773cff44645d7b9c70fa25372c3e0b33",
+        "maskedOsSha256": "00a379ea8679b82452a82e2604e4f6ac6d10bfcf80c8150bf679f3196b3d4aec"
       },
       "result": "masked"
     }

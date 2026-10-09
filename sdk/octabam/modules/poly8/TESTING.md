@@ -460,3 +460,7 @@ The runtime is unchanged from T06. Public packages contain authored code and fou
 The owner requested the POLY8 name on 8 October 2026. Machine name and refusal text changed; PL/1 storage, eight-voice admission and audio math are unchanged. The freshly built native POLY8 UI gate passes all T06 flows again; `evidence/poly8-ui.json` and `media/poly8/capture.json` identify that image. Source-only pair checks additionally prove collisions with Repitch and Mute Modes; they are declared incompatible.
 
 The owner explicitly approved the scoped experimental release with current-build hardware, chip worst-case cycles and complete memory-bound qualification waived. The approval is bound to the exact final native source in `sdk/poly8-build-approval.json`; no missing test is marked passed.
+
+## T10 physical report and release approval — 9 October 2026
+
+The owner reported “works like a charm. let's release” on the exact POLY8T10 MKII build. This is a functional report; duration, maximum-load coverage and separate Part/project/reboot checks were not reported. See [the exact owner report and release exception](evidence/owner-release-t10.md). Chip timing and complete memory bounds remain unmeasured; the owner explicitly approved this scoped 0.2.6-experimental release.

@@ -1,6 +1,6 @@
 # POLY8T10 selection-flow regression — 9 October 2026
 
-Private 0.2.6-experimental candidate. T09 received a functional MKII report; T10 hardware results are not yet reported. Current main was rebased after construction; its intervening changes affect no SDK, firmware engine or compiler input. The source fingerprint remains identical. No firmware, stock tables, raw LCD/RAM data or card image is included here.
+Exact 0.2.6-experimental candidate. T09 and T10 received functional MKII reports; the T10 owner statement and scoped release exception are retained in [owner-release-t10.md](owner-release-t10.md). Current main was rebased after construction; its intervening changes affect no native SDK, firmware engine or compiler input. The source fingerprint remains identical. No firmware, stock tables, raw LCD/RAM data or card image is included here.
 
 ## Image identities
 
@@ -284,7 +284,7 @@ All four signed machines play audio, the second-POLY refusal leaves Part bytes u
 }
 ```
 
-## Compiled and application checks
+## Compiled and application checks during candidate preparation
 
 - 121 local PC-relative targets resolve correctly.
 - Every POLY8 runtime section is initialized in loaded PROGBITS; no allocated NOBITS remains.
@@ -297,4 +297,22 @@ All four signed machines play audio, the second-POLY refusal leaves Part bytes u
 
 ## Limits
 
-These two native/browser profiles do not replace complete publication coverage. Current T10 hardware recording/load/persistence, chip worst-case timing and complete memory bounds remain unqualified. Sample audition is not qualified by this run. The public release and generated catalog stay pending.
+These two native/browser profiles alone do not replace complete publication coverage. The owner subsequently reported exact T10 “works like a charm” on MKII and approved the exact 0.2.6 source exception in [owner-release-t10.md](owner-release-t10.md). Separately reported hardware recording/load/persistence cases, chip worst-case timing and complete memory bounds remain unverified. Sample audition is not qualified by the software run.
+
+## Release replay on current main — 9 October 2026
+
+The reviewed source was rebased onto main `9ad562bdd9dadea9a72f72042e094592f8a490b6`. Production catalog compositions reproduce the solo T10 MAIN/update and the full eight-module MAIN identities above exactly. The native source remains `a32ed194a288c8847ad0ba110e8bca3bf266ada2227772ef813623b32a21421d`; the compiled SDK source remains `cde470186c57b5f614415bb1d6f7a4161cc07df2d8dd6dc892a7f15df0938394`.
+
+Seven fresh emulator replays pass: solo/full selection flow, solo LOOP/cancellation consistency, solo/full poisoned-arena retained-SRAM boot without CF, solo chord recording/playback/STOP/128 rapid keys, and full four-machine audio/modal/128 rapid keys. All use the same 0xff runtime-arena poison and emulator identity above. Three initial UI fixture attempts failed to import `toolpath`; repairing the fixture's `/work/sdk` link and rerunning those three checks produced passes. The first attempts are fixture failures, not passing results.
+
+The fresh non-POLY builder regression preserves all 38 current-main complete images/refusals. The refreshed Analog BD matrix preserves all 130 build identities and six refusals and matches the browser composer. Another 143 unique retained companion profiles were rebuilt and match the browser composer before their stale native rows were refreshed. Historical comparison records retain their original identities.
+
+The exhaustive native ledger scan passes all 65,536 POLY declaration selections. The fresh 240-profile native/browser comparison has 186 matching builds, 54 matching refusals and zero mismatches; changed stock firmware is refused. The full application check is recorded separately once complete. These software checks do not establish chip deadlines or physical reboot/persistence.
+
+The later rebase onto main `65452618de82a23ea56a7f0cd864044740e0b810` incorporates documentation, contributor metadata and website UI changes. Both native and compiled-SDK source fingerprints remain exactly those above; no firmware build input changes.
+
+The required `npm run check -- --base origin/main` on that rebased release tree passes: 1,513 application tests in 214 files, 87 SDK checks, generated catalogs/licences/machine registry, module contracts, lint, TypeScript and the production bundle. Lint retains six existing warnings. Earlier candidate-preparation failures above are historical and are superseded by this release check.
+
+The locally bundled production firmware worker passes its inspect/build protocol with network APIs unavailable. Its saved 464,596-byte `ELEKLOADER` update is `ad010e3e1ce22e6b1c405a164a5792acd09e744cbfe80f7e930d059ed935da6b`; rereading the saved file confirms that hash. MAIN is byte-identical to T10, both stock DSP uploads and the stock tail are preserved, and repacking the same MAIN with the `POLY8T10` name reproduces the delivered T10 BIN exactly. This is worker-protocol verification, not a browser-button or hardware observation; deployed output is checked after merge.
+
+The final `module:verify -- --all --check` passes every retained module record with zero mismatches and rejects changed stock firmware. The two refreshed Analog BD/Euclid and Analog BD/Sidechain rows retain menus taken from their actual fresh native inputs; no menu was relabeled without a matching native/browser proof.

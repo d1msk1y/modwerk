@@ -150,7 +150,7 @@
   },
   "tests": {
     "report": "TESTING.md",
-    "summary": "T07/T08 MKII boot failure was traced to an unloaded initialization flag. Corrected T09 received the owner report \"works really well\" on MKII; duration and specific test coverage were not reported. The subsequent selection-flow change has its own native checks; physical timing and complete memory bounds remain unqualified.",
+    "summary": "T07/T08 MKII boot failure was traced to an unloaded initialization flag. Corrected T09 received the owner report \"works really well\"; the exact T10 selection-flow update then received \"works like a charm\" on MKII. Duration, separate persistence tests and maximum-load coverage were not reported. Chip deadlines and complete memory bounds remain unqualified under an exact-version owner exception.",
     "hardwareStatus": "reported",
     "gates": [
       "verify-source.py",
@@ -175,7 +175,7 @@
       "shared-validation-test.c (256 mixed AB/FM/VECTOR signature masks with sanitizers)",
       "native-selection-flow-gate.py"
     ],
-    "evidenceRevision": "6ae17f687965e8953c898c862e29e9bc581b7e21",
+    "evidenceRevision": "9e853271be169d242bdf00b79147707e86ee12cb",
     "documentation": {
       "tutorial": {
         "title": "Quick start",

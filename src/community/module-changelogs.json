@@ -749,8 +749,8 @@
           "Restore NO dismissal of the one-POLY8 refusal using stock’s modal input layer while retaining its automatic native timeout.",
           "Retain eight POLY8 voices, one POLY8 assignment per Part, LOOP OFF on new assignments and fixed 1/8 gain. Existing DSP memory and menu-space limits still apply; Octakit remains incompatible.",
           "Load the shared chooser initialization flag explicitly instead of relying on uncleared BSS. Nonzero RAM reproduces an odd widget target at the T07/T08 boot-failure call; add a compiled-section startup-state gate. T07/T08 are withdrawn; the owner reports corrected T09 works on MKII, without a separate test checklist.",
-          "Current physical recording, responsiveness, reboot, chip worst-case timing and complete memory bounds remain unqualified. Native combined-machine results are emulator evidence only.",
-          "Preserve current VECTOR 0.2.4 packed-setting validation through the shared machine bridge; a sanitizer regression covers all 256 mixed AB/FM/VECTOR signature masks. The later selection-flow change requires its own validation.",
+          "The owner reports exact T10 “works like a charm” on MKII and approves this scoped experimental release. Separately reported recording/load/persistence cases, chip worst-case timing and complete memory bounds remain unverified; combined-machine results are emulator evidence.",
+          "Preserve current VECTOR 0.2.4 packed-setting validation through the shared machine bridge; a sanitizer regression covers all 256 mixed AB/FM/VECTOR signature masks. The exact T10 selection flow is checked against stock FLEX/STATIC controls and the earlier T09 regression.",
           "Match FLEX/STATIC selection: POLY8 assignment and reselection stay on the current page. Double-TRACK opens FLEX samples; LEFT/RIGHT and sample confirmation remain available."
         ]
       },
