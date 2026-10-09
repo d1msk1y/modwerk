@@ -10,7 +10,7 @@ export function pageMetadataHtml(html: string, title: string, url: string, value
     .replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escapeHtml(title)}</title>\n    <link rel="canonical" href="${escapeHtml(url)}" />`)
 }
 
-/** Visible before React mounts, including when scripts are unavailable. createRoot replaces it. */
+/** Readable without the app; the blocking startup script hides it until createRoot replaces it. */
 export function pageContentHtml(html: string, content: string) {
   return html.replace(/<div id="root">[\s\S]*?<\/div>/, () => `<div id="root"><main class="seo-content">${content}</main></div>`)
 }
