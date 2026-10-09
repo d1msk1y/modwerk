@@ -1,5 +1,5 @@
 {
-  "_about": "909 reference candidate for Analog BD 0.1.4-experimental. Independently fitted to Skee Mask\u2019s supplied 70 BPM Tune/Attack sweeps on 9 October 2026. Recordings remain private. No assumption of uniformly spaced physical knob positions; steady harmonics and transient endpoints are the calibration targets.",
+  "_about": "Private Analog BD 909 reference candidate, revision AB014REF03. Fit to Skee Mask’s supplied 70 BPM recordings, including complex body harmonics and full-hit envelope/DC. The supplied audio report identifies a decay-modified 909, decay a little above halfway, knob changes after hits and occasional final endpoint repeats. Physical intermediate knob positions remain unknown.",
   "nodes": [
     0,
     0.125,
@@ -11,13 +11,13 @@
   ],
   "pitch": {
     "fb_hz": [
-      29.999927,
-      34.238169,
-      39.325205,
-      45.431077,
-      52.759919,
-      72.115144,
-      99.99992
+      29.860079211792513,
+      34.07856420473086,
+      39.14188645592301,
+      45.21929529685339,
+      52.51397313559319,
+      71.77897173582535,
+      99.53375994457969
     ],
     "A_hz": [
       114.241607,
@@ -31,24 +31,26 @@
   },
   "tune": {
     "tau_s": [
-      0.0078,
+      0.007552352991371484,
       0.0083,
       0.0102,
       0.014,
       0.018873,
       0.027761,
-      0.032356
+      0.03199245049670235
     ],
     "A_hz": [
-      182.5,
-      182.5,
-      182.5,
-      182.5,
-      182.5,
-      182.5,
-      182.5
+      184.54642856436243,
+      185.15374555392546,
+      186.69712400238132,
+      189.78388089929302,
+      193.74224046735904,
+      200.9620023883462,
+      204.3992284421979
     ],
-    "_tune0": "Short-sweep endpoint retuned against aligned recorded trigger edges; excursion no longer doubles at minimum TUNE. Intermediate response is a design interpolation, not a measured knob-position fit."
+    "_tune0": "Both endpoint excursions and exponential time constants are fitted to complete measured hits. Intermediate nodes remain a monotone design interpolation; the recording is not treated as uniformly spaced physical knob positions.",
+    "base_delta_hz": 0.4542,
+    "base_delta_note": "Difference between steady-tail fits of the first four and final four Tune recording hits; intermediate settled-pitch shift follows the excursion interpolation. Separate capture drift is not synthesized as random pitch."
   },
   "depth": {
     "A_hz": [
@@ -76,30 +78,37 @@
   "body": {
     "t_r": 0.0007256235827664399,
     "x_r": 0.0064734,
-    "G": 0.3520131,
+    "G": 0.33712768907965324,
     "tau_a": 0.0007297,
-    "t_h": 0.0599209,
-    "tau_droop": 1.4004067,
-    "k0": 0.2899999999999999,
-    "k_dc": 0.1245546,
-    "tau_dc": 0.4053796,
-    "c0": 0.04175095888782736,
+    "t_h": 0.06542947363437386,
+    "tau_droop": 3.2180836826396075,
+    "k0": 3.90177172659982,
+    "k_dc": 0.06426235687426331,
+    "tau_dc": 0.010509280031516405,
+    "c0": 0.19954536666509812,
     "c": [
-      1.8467582101102584,
-      -0.07665025654087017,
-      -1.2663898926015302,
-      -1.274821218790721,
-      1.6392862147319849,
-      3.449434848886963,
-      -2.633739745369468,
-      -3.624803577154702,
-      2.9569478627291472,
-      1.3766187192215582,
-      -1.3505771904166328
+      1.8899394697464773,
+      0.0868474977135255,
+      -1.63050634855466,
+      -1.1925236423070364,
+      3.134222429296198,
+      2.9942983415101105,
+      -5.4506014976175665,
+      -3.205377684497882,
+      5.254814830105572,
+      1.2493514757892847,
+      -2.019887975315478
     ],
-    "c_note": "Degree-11 body harmonic-magnitude fit to the supplied 70 BPM Attack sweep. Fundamental gain and steady DC retained; minimum-attack hits 2..13 (one-based) fit the shape independently of transient noise. Original pitch/decay/accent/desk curves retained.",
+    "c_note": "Complex H1-H16 fit from Attack hits 2..13. A degree-11 even-phase polynomial plus u*(1+x) times a degree-4 quadrature polynomial matches temporal asymmetry; DC, gain, hold/droop and coupling fit complete low-Attack hits after 11 ms. Envelope opening and crest hold are retained model choices.",
     "phase_reset": 0.9999998807907104,
-    "release_fraction": 0
+    "release_fraction": 0,
+    "quadrature": [
+      0.031225117476528882,
+      -0.4473179831370914,
+      -0.3948971476634043,
+      0.30304747427228945,
+      0.5135658161916657
+    ]
   },
   "theta": 0.505,
   "thump_vs_A": {
@@ -109,19 +118,21 @@
     "A_ref_hz": 236.12
   },
   "pulse": {
-    "f_hp": 355.90124459364614,
-    "f0": 5086.755820537247,
-    "q": 2.625601290703804,
-    "k_w": 25.194437696396285,
-    "k_u": 0.14156874515117912,
-    "f_u": 318.5061172359394,
-    "tau_decay": 0.005,
-    "f_output": 3936.0511266304297,
+    "f_hp": 156.29334133698268,
+    "f0": 5246.2403289106405,
+    "q": 3.110601797079247,
+    "k_w": 35.73674612260486,
+    "k_u": 11.715499311771675,
+    "f_u": 7999.999999999995,
+    "tau_decay": 0.0047587373346560735,
+    "f_output": 21999.99999999644,
     "jitter_base": 0.94,
     "jitter_depth": 0.06,
-    "_note": "Two discharges share the unchanged HP/resonant LP/output pole. Fast onset decays in 30 us; longer Attack discharge is 5 ms. Fit endpoints hit stated bounds and are model choices. Quarter-scale mixed excitation preserves native filter headroom. jitter_* vary strength, never timing.",
-    "fast_tau": 3.0000000000000004e-05,
-    "fast_gain": 0.6264905072063514
+    "_note": "Long and fast discharges both follow ATK. Joint low/high fit includes the native LPF and complete body model. Input gains divided by 16 and filter gains multiplied by 16 preserve headroom; the mixer also retains its quarter scale. Coupling and output poles reached upper bounds; values describe a fitted model, not measured component constants. jitter_* vary strength, never timing.",
+    "fast_tau": 0.0003862917247062526,
+    "fast_gain": -14.203942870021331,
+    "gain_scale": 16,
+    "fast_depth": 3.868955600097328
   },
   "noise": {
     "f_hp": 230.4262419,

@@ -55,21 +55,31 @@ def profile(x, start=5733, stop=22050):
 
 
 def body_fit(profiles, base):
-    sign=np.sign(np.median([p['symmetric'] for p in profiles],axis=0))
-    magnitude=np.median([np.hypot(p['symmetric'],p['asymmetric']) for p in profiles],axis=0)
-    phi=np.linspace(-np.pi,np.pi,4096,endpoint=False)
-    x=1-2*np.abs(phi)/np.pi
+    """Fit complex body harmonics, retaining phase rather than only level.
+
+    The even polynomial and u*(1+x) quadrature polynomial share a triangle
+    phase. The endpoint factor joins continuously at each crest. This step
+    retains the baseline mean; the separate full-hit fit adjusts DC/envelope.
+    """
+    phi=np.linspace(-np.pi,np.pi,8192,endpoint=False)
+    u=phi/np.pi;x=1-2*np.abs(u)
     old=np.polynomial.polynomial.polyval(x,[base['body']['c0']]+base['body']['c'])
     dc=float(np.mean(old));fundamental=float(2*np.mean(old*np.cos(phi)))
-    target=dc+fundamental*sum(a*np.cos((h+1)*phi) for h,a in enumerate(sign*magnitude))
-    coeff=np.polynomial.polynomial.polyfit(x,target,11)
+    cosine=np.median([p['symmetric'] for p in profiles],axis=0)
+    sine=np.median([p['asymmetric'] for p in profiles],axis=0)
+    target=dc+fundamental*sum(a*np.cos((h+1)*phi)+b*np.sin((h+1)*phi)
+                            for h,(a,b) in enumerate(zip(cosine,sine)))
+    design=np.column_stack([x**k for k in range(12)]+[u*(1+x)*x**k for k in range(5)])
+    coeff=np.linalg.lstsq(design,target,rcond=None)[0]
     def harmonics(y):
-        a=np.array([abs(2*np.mean(y*np.cos(h*phi))) for h in range(1,17)])
-        return (20*np.log10(a/a[0])).tolist()
-    return {'coefficients':coeff.tolist(),'referenceHarmonicsDb':np.median([p['harmonicsDb'] for p in profiles],axis=0).tolist(),
-            'baselineHarmonicsDb':harmonics(old),
-            'candidateHarmonicsDb':harmonics(np.polynomial.polynomial.polyval(x,coeff)),
-            'method':'Match harmonic magnitudes; retain fundamental gain and steady DC. Temporal asymmetry is not fitted.'}
+        amp=np.array([np.hypot(2*np.mean(y*np.cos(h*phi)),2*np.mean(y*np.sin(h*phi)))
+                      for h in range(1,17)])
+        return (20*np.log10(amp/amp[0])).tolist()
+    return {'coefficients':coeff[:12].tolist(),'quadratureCoefficients':coeff[12:].tolist(),
+            'referenceCosine':cosine.tolist(),'referenceSine':sine.tolist(),
+            'referenceHarmonicsDb':np.median([p['harmonicsDb'] for p in profiles],axis=0).tolist(),
+            'baselineHarmonicsDb':harmonics(old),'candidateHarmonicsDb':harmonics(design@coeff),
+            'method':'Complex harmonic fit. Full-hit gain/DC/envelope and joint pulse refinement are separate bounded model fits.'}
 
 
 def pulse_fit(low,high):
@@ -142,8 +152,8 @@ def main():
              [('attack',signals['attack'],[24,32,40,47]),('tune',signals['tune'],[0,16,32,48,63]),('joint',signals['joint'],[0,16,32,47])]}
     report={'schema':1,'date':'2026-10-09','referenceFiles':files,'trainingHits':list(range(2,14)),
             'body':body,'pulse':pulse,'neighborVariation':variation,'alignedAttackEdgeSamples':edges,'holdoutProfiles':holdout,
-            'limits':['Reference instrument, fixed knob values and processing chain are unspecified.',
-                      'Body fitting matches harmonic magnitudes; temporal harmonic phase is not matched.',
+            'limits':['The audio report identifies a decay-modified TR-909 and decay a little above halfway. Other fixed physical values and processing chain remain unspecified.',
+                      'Complex harmonics are fitted; full waveform agreement is checked separately on complete native hits.',
                       'Tune intermediate values are a design interpolation; physical knob trajectories were not recorded.',
                       'Software model fitting is not physical-device or full-firmware qualification.']}
     args.output.write_text(json.dumps(report,indent=2)+'\n')

@@ -191,7 +191,7 @@ def tables():
         T_THS=[OUT * B['k_dc'] * thump((i + .5) / 128 * a_max) * VBS for i in range(128)],
         T_VB=[(max(i, 1) / 100) ** 2 / VBS for i in range(128)],
         T_VA=[VA(max(i, 1)) / VAS for i in range(128)],
-        T_ATP=[OUT * (B['k0'] + u_of(i)) * VAS for i in range(128)],
+        T_ATP=[OUT * (B['k0'] + u_of(i)) * VAS / PU['gain_scale'] for i in range(128)],
         # the noise chain runs at half scale: its HP swings (w - prev), up to 2
         T_ATN=[2 * OUT * (NZ['attack_floor'] + (1-NZ['attack_floor'])*u_of(i)) * NZ['g'] / NOISE_RMS * VAS / SHIFT for i in range(128)],
         T_LPF=[1 - 2 ** -23] + [1 - k_pole(f) for f in LPF_HZ[1:]],
@@ -204,16 +204,18 @@ def tables():
         T_GB=[min(u_of(i) ** 2, 1 - 2 ** -23) for i in range(128)],
         T_OB=[math.sqrt(2 * u_of(i)) * MK['stage'] / 16 for i in range(128)],
     )
+    tfb=2*FIT['tune']['base_delta_hz']/RATE/(t['T_GT'][-1]-t['T_GT'][0])
     b0, b1, b2, a1, a2 = biquad_lp(PU['f0'], PU['q'])
     ahp, anh = k_pole(PU['f_hp']), k_pole(NZ['f_hp'])
     c = dict(
+        KTFB=tfb,KTFB0=-tfb*t['T_GT'][0],
         KA_INC=k_inc, K_BODY=4 * OUT * B['G'] * VBS,
         NREL=math.ceil(B['t_r'] * RATE), FRAC=B.get('release_fraction', 1 - (math.ceil(B['t_r'] * RATE) - B['t_r'] * RATE)),
         U0=B.get('phase_reset', -0.5 + B['x_r'] / 2), THETA=FIT['theta'], NHOLD=round(B['t_h'] * RATE),
         KA=1 - k_exp(B['tau_a']), DKDROOP=1 - k_exp(B['tau_droop']), KTH=1 - k_exp(B['tau_dc']),
         KPR=k_exp(PU['tau_decay']), KPLP=1-k_pole(PU['f_output']),
         KPBASE=PU['jitter_base'], KPJIT=PU['jitter_depth'],
-        KFAST=k_exp(PU['fast_tau']), KGS=PU['fast_gain']*OUT*VAS,
+        KFAST=k_exp(PU['fast_tau']), KGS=PU['fast_gain']*OUT*VAS/PU['gain_scale'], KFDR=PU['fast_depth']/4,
         AHP=ahp, BHP=(1 + ahp) / 2, KU=1 - k_pole(PU['f_u']),
         KW16=PU['k_w'] / 128, KU16=PU['k_u'] / 128,
         ANH=anh, BNH=(1 + anh) / 4, KL1=1 - k_pole(NZ['f_lp1']), KL2=1 - k_pole(NZ['f_lp2']),
@@ -224,11 +226,12 @@ def tables():
     # S/16 in Horner order; the two asl bring the result back to S/4.
     # Check every partial sum after refitting, not only the final output.
     cpoly = [x / 16 for x in list(B['c'])[::-1]] + [B['c0'] / 16]
-    assert horner_ok(cpoly) < 1, 'Horner partial sum overflows'
+    cquad=[x/16 for x in B['quadrature'][::-1]]
+    assert horner_ok(cpoly) < 1 and horner_ok(cquad)<1, 'Horner partial sum overflows'
     cbiq = [b0, b1, b2, -a1 / 2, -a2]
-    for name, v in list(t.items()) + [('CPOLY', cpoly), ('CBIQ', cbiq)]:
+    for name, v in list(t.items()) + [('CPOLY', cpoly), ('CQUAD',cquad), ('CBIQ', cbiq)]:
         assert all(-1 <= x < 1 for x in v), name
-    return t, c, dict(CPOLY=cpoly, CBIQ=cbiq), dict(a_max=a_max, k_inc=k_inc)
+    return t, c, dict(CPOLY=cpoly, CQUAD=cquad, CBIQ=cbiq), dict(a_max=a_max, k_inc=k_inc)
 
 
 def q24(x):
@@ -432,7 +435,7 @@ class Voice:
 
     def block(self, k, trig=None, frames=16):
         t, c = self.t, self.c
-        inc_b = t['T_INCB'][k[0]]
+        inc_b = fl24(t['T_INCB'][k[0]]+c['KTFB0']+c['KTFB']*t['T_GT'][k[2]])
         q = rnd24(rnd24(t['T_AP'][k[0]] * t['T_GT'][k[2]]) * t['T_GD'][k[4]])
         inc_a = rnd24(q * c['KA_INC'])
         dkp, dkd = t['T_DKP'][k[2]], t['T_DKD'][k[1]]
@@ -441,7 +444,7 @@ class Voice:
         gbody = vb * c['K_BODY']
         va = t['T_VA'][k[7]]
         gp = va * t['T_ATP'][k[3]]
-        gs = va * c['KGS']
+        gs = va * c['KGS'] + 4*gp*c['KFDR']
         gn = va * t['T_ATN'][k[3]]
         klpf = t['T_LPF'][k[8]]
         targets = (inc_a, rnd24(gdc))
@@ -449,7 +452,7 @@ class Voice:
             self.depth_values = targets
         self.desk_knobs(k)
         b0, b1, b2, na1h, na2 = self.lists['CBIQ']
-        cp = self.lists['CPOLY']
+        cp = self.lists['CPOLY']; cq=self.lists['CQUAD']
         out = []
         for i in range(frames):
             if trig is not None and i == trig:
@@ -474,7 +477,9 @@ class Voice:
             h = cp[0]
             for cf in cp[1:]:
                 h = cf + h * x
-            s4 = 4 * h
+            qh=cq[0]
+            for cf in cq[1:]: qh=cf+qh*x
+            s4=4*(h+self.u*(1+x)*qh)
             self.o += c['KA'] * (1 - self.o)
             self.m -= self.m * (c['DKDROOP'] if self.cnt < c['NHOLD'] else dkd)
             g = self.o * self.m

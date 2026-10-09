@@ -1,30 +1,32 @@
 # Analog BD — 909 reference candidate
 
-A private `0.1.4-experimental` candidate based on the three 70 BPM TR-909 sweeps supplied by the owner. Thanks to **Skee Mask**, who kindly recorded his TR-909 so we could match Analog BD more closely.
+A private `0.1.4-experimental` candidate based on the three 70 BPM TR-909 recordings supplied by the owner. Thanks to **Skee Mask**, who kindly recorded his TR-909 so we could match Analog BD more closely. His recording-context report identifies a decay-modified instrument, with decay a little above halfway.
 
-This overlay changes only the 909 body, attack and short Tune response. It is outside module discovery and the catalogue. The approved, downloadable version remains `0.1.3-experimental`. The owner accepted the sharper Attack-only native preview on 9 October 2026 ([exact audition record](evidence/audition.json)). Version-matched hardware qualification is pending; the earlier version's approval does not cover this source.
+This overlay changes the 909 body, Attack and Tune response. It stays outside module discovery, the catalogue and downloadable packages; the approved public version remains `0.1.3-experimental`. The owner withdrew the earlier Attack-only acceptance after reviewing the complete sound. The current whole-hit/endpoints revision, privately packaged as `AB014REF04`, awaits listening feedback and physical qualification. [Audition history](evidence/audition.json) preserves both the earlier acceptance and its withdrawal.
 
 ## Sound changes
 
-- Replace the delayed positive attack with a short negative pulse, followed by a fast onset and a longer resonant, filtered discharge. The body starts at its negative crest, retains its short VCA rise and releases after 32 samples.
-- Fit the degree-11 body shaper to the supplied recording's harmonic magnitudes, retaining fundamental gain and steady DC.
-- Reduce the excess pitch excursion and lengthen the shortest Tune sweep. Intermediate Tune positions are a design interpolation because physical knob positions were not recorded.
-- Give each trigger a slightly different pulse strength by sampling the existing free-running noise state. Lower the noise burst while retaining a small contribution at minimum Attack. Trigger timing and pitch receive no random variation.
+- Fit both harmonic magnitude and phase/asymmetry, correcting the body waveform rather than its spectrum alone. Refit the complete hit's gain, envelope droop and DC/coupling response.
+- Fit low and high Attack together, including the native LPF. Both the fast onset and longer resonant discharge now follow Attack, retaining a small minimum pulse.
+- Correct both Tune endpoints, including the small measured settled-pitch shift. The final recorded hits identify the high endpoint; the recordings are not treated as evenly spaced knob positions. Intermediate control response remains a monotone design interpolation.
+- Vary pulse strength subtly using the existing free-running noise state. Trigger timing and pitch receive no random variation.
 
-The 808 engine, controls, saved parameter layout, ColdFire code and the shared desk remain unchanged. The 0.1.3 TDEP/SAT smoothing remains in place. The old pulse ramp word holds output-filter history; two unused words hold the fast onset and its gain. The voice allocation is unchanged.
+The 808 engine, saved controls, ColdFire integration, shared desk and 0.1.3 TDEP/SAT smoothing remain unchanged. The voice allocation is still 64 words. Combined DSP code uses 997 P words/core; the matched 909 instruction increase is 6.22% on average and at most 6.27% in the tested blocks. The 808 instruction counts and tested audio are unchanged. These are executed instructions, not hardware timing.
 
-## Files
+## Files and evidence
 
-`draft.json` pins the approved inputs and candidate sources. `apply.py` verifies them or stages a disposable SDK copy; it never edits the approved SDK. `run.py` assembles, checks native rendering and writes local audition audio. `calibrate.py` and `compare.py` reproduce the numerical reference measurements using private input audio. [TESTING.md](TESTING.md) records results, reproduction and missing qualification. [CHANGELOG.md](CHANGELOG.md) contains the pending release notes, including Skee Mask's credit.
+`draft.json` pins the approved inputs and current candidate sources. `apply.py` verifies them or stages a disposable SDK copy. `run.py` assembles and checks native rendering. `calibrate.py` reproduces complex harmonic measurements and the initial differential pulse fit; `compare.py` checks complete native hits. The qualification tools check all 128 control values, matched cost, interleaved voices and actual complete-firmware source/stock AMP output on both DSP cores.
 
-Do not place the recordings, rendered audio, compiled DSP, raw traces or firmware in this folder. Only sanitized numerical evidence belongs in `evidence/`.
+[TESTING.md](TESTING.md) records results, reproduction and missing qualification. [CHANGELOG.md](CHANGELOG.md) contains pending version-matched notes, including Skee Mask's credit. Only sanitized numerical evidence belongs in `evidence/`; recordings, rendered audio, compiled DSP, raw traces and firmware remain private.
 
-## Audition
+## Audition and promotion
 
-The native 70 BPM previews use PITCH 49, DECAY 98, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. They play five rising Attack values (0/32/64/96/127), eight more hits at Attack 127, then five rising Tune values at Attack 64. Both versions receive exactly the same controls and triggers, with no separate peak normalization. The current version reaches its output limit on the high-Attack hits; the candidate preview does not.
+The native 70 BPM preview uses PITCH 49, DECAY 100, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. Its first 13 hits change Attack with Tune fixed at 0; its last five change Tune with Attack fixed at 64. Do not present the bundled clip as a single sweep.
 
-Before promotion, check parameter locks/LFOs/scenes and several distinct instances on the exact private firmware, and record Part/project/reboot results. Then follow [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md) to update manifest, catalogue, version-matched public changelog, qualification, generated metadata and packages. Do not reuse the 0.1.3 qualification or publish this overlay by copying its version label alone.
+Separate listening clips use actual firmware-emulator track output: two original reference hits, a short pause, then two emulator hits. Conditions are TUNE/ATK 0/0, 0/127 and 127/0. One common tail-RMS gain follows fixed stock AMP compensation; no independent peak normalization is used. The Tune maximum clip uses the final two recorded Tune hits.
+
+Before promotion, obtain results for the exact private image: physical audio, parameter locks/LFOs/scenes, distinct instances across cores, demanding FX loads and Part/project/reboot persistence. Follow [ADD_A_MODULE.md](../../../docs/ADD_A_MODULE.md) for the manifest, catalogue, public release notes, qualification, generated metadata and packages. The earlier version's approval does not qualify this source.
 
 ## Authorship and licence
 
-Retains Sam Banks's original module and Maxolydian's tooling credits and their MIT terms in [LICENSE](LICENSE). Shared desk design retains the approved airwindows MackEQ reference and licensing. Skee Mask is credited for the reference recordings; the recordings are private inputs, are not distributed here, and are not covered by the source-code licence.
+Retains Sam Banks's original module and Maxolydian's tooling credits and their MIT terms in [LICENSE](LICENSE). Shared desk design retains the approved airwindows MackEQ reference and licensing. Skee Mask is credited for the private reference recordings; those recordings are not distributed here or covered by the source-code licence.

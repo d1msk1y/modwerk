@@ -24,5 +24,6 @@
       1.5
     ]
   },
-  "limit": "Fast duration, minimum long-pulse gain and long-pulse scale reach bounds; these are model choices. Fits informed by the same medians are not independent validation."
+  "limit": "Fast duration, minimum long-pulse gain and long-pulse scale reach bounds; these are model choices. Fits informed by the same medians are not independent validation.",
+  "historicalScope": "Earlier AB014REF02 sharpened-onset fit. Initial acceptance was subsequently withdrawn; this does not describe the current whole-hit/endpoints revision."
 }

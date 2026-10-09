@@ -7,7 +7,7 @@
 ;   ENV5  pitch envelope ep, set at the trig, decays with TUNE
 ;   VCO   linear triangle, f = fb(PITCH) + A(PITCH,TUNE,TDEP) * ep, held while
 ;         the trigger holds the negative crest for 32 samples before release
-;   SHAPE degree-11 body fit to the supplied 909 harmonic magnitudes
+;   SHAPE complex-harmonic even/odd phase body fit to the supplied 909
 ;   VCA   ~60 ms hold with a slow droop, then the DECAY release (48-bit)
 ;   THUMP the VCA's control feedthrough: a slow negative DC (48-bit)
 ;   PULSE negative exponential discharge, HP + resonant LP + output pole;
@@ -55,6 +55,14 @@ zq01:
         move    a1,n1
         move    #>@T_GT@,r1
         move    x:(r1+n1),y0            ; gt(TUNE)
+ ; The recorded Tune endpoints also shift the settled VCO frequency.
+ ; Derive its small offset from the existing monotone Tune table.
+        move    x:(r5+@INCB@),b
+        move    #>@KTFB0@,x1
+        add     x1,b
+        move    #>@KTFB@,x1
+        mac     x1,y0,b
+        move    b,x:(r5+@INCB@)
         mpyr    y0,x0,a
         move    #>@T_DKP@,r1
         move    x:(r1+n1),y1
@@ -89,15 +97,22 @@ zq01:
         move    a,x:(r5+@GBODY@)
         move    #>@T_VA@,r1
         move    x:(r1+n1),y1            ; attack level, velocity law
-        move    #>@KGS@,x0
-        mpyr    x0,y1,a                 ; fast onset level, independent of ATK
-        move    a,x:(r5+@GS@)
         move    x:(r6+$3),a             ; ATK
         move    a1,n1
         move    #>@T_ATP@,r1
         move    x:(r1+n1),x0
         mpyr    x0,y1,a
         move    a,x:(r5+@GP@)
+ ; Fast discharge follows Attack too; affine gain uses the same normalized
+ ; table. KFDR carries 1/4 so every decoded constant is a signed fraction.
+        move    a,x0
+        move    #>@KFDR@,y0
+        mpy     y0,x0,a
+        asl     a
+        asl     a
+        move    #>@KGS@,x0
+        mac     x0,y1,a
+        move    a,x:(r5+@GS@)
         move    #>@T_ATN@,r1
         move    x:(r1+n1),x0
         mpyr    x0,y1,a
@@ -241,6 +256,26 @@ zq04:
         mac     y0,x0,b         x:(r1)+,a
         move    b,y0
         mac     y0,x0,a
+ ; Quadrature Q(x)/16, then u*(1+x)*Q(x)/16. The endpoint factor gives
+ ; continuous joins at the triangle's crests; no oscillator/history is added.
+        move    a,y1
+        move    #>@CQUAD@,r1
+        move    x:(r1)+,y0
+        move    x:(r1)+,a
+        mac     y0,x0,a         x:(r1)+,b
+        move    a,y0
+        mac     y0,x0,b         x:(r1)+,a
+        move    b,y0
+        mac     y0,x0,a         x:(r1)+,b
+        move    a,y0
+        mac     y0,x0,b
+        move    b,y0
+        move    x:(r5+@U@),x1
+        mpy     x1,y0,b
+        move    b,y0
+        move    b,a
+        mac     y0,x0,a
+        add     y1,a
         asl     a
         asl     a
         move    a,y1                    ; y1 = S/4
@@ -285,7 +320,7 @@ zq04:
         move    x:(r5+@SGDC@),y0
         mac     -y0,x0,a
         move    a,x:(r5+@ACC@)          ; the body
- ; (9) A fast onset plus the Attack-controlled negative discharge.
+ ; (9) Two Attack-controlled negative discharges.
 ; The sample-domain envelope follows the native trigger offset; no extra clock.
         move    x:(r5+@PULSE@),x0
         move    #>@KPR@,y1

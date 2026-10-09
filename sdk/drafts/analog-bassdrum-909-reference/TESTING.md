@@ -1,57 +1,67 @@
 # Analog BD 909 reference candidate — testing
 
-Candidate `0.1.4-experimental`, approved base `0.1.3-experimental`; 9 October 2026. Exact input identities are in `draft.json`; numerical evidence is in `evidence/`. No reference audio, DSP binaries, stock-derived data or firmware is committed.
+Candidate `0.1.4-experimental`, approved base `0.1.3-experimental`; 9 October 2026. Current private image: **AB014REF04**. `draft.json` pins inputs; `evidence/` contains numerical results and fingerprints. No reference audio, DSP binaries, stock-derived data or firmware is committed.
 
-## Reference and calibration
+## Reference and fitting
 
-Skee Mask kindly recorded his TR-909 for matching. Filenames identify **Attack Rise**, **Tune Rise**, and **Tune + Attack Rise**. Each is 44.1 kHz stereo 24-bit PCM at a 70 BPM quarter-note grid (48, 64 and 48 segments). The channels are effectively identical and the supplied captures have no full-scale samples. Fixed physical knob positions and processing-chain details are unspecified; no uniformly spaced knob trajectory is assumed.
+Skee Mask supplied **Attack Rise**, **Tune Rise**, and **Tune + Attack Rise**, each 44.1 kHz stereo 24-bit PCM on a 70 BPM quarter-note grid (48/64/48 segments). Channels are effectively identical; no reference samples reach full scale. His voice report says the knobs moved after hits, the loop/clock/grid stayed the same, and the final two to four hits sometimes repeated an endpoint. The Tune high endpoint is taken from its final hits, not an assumed evenly spaced sweep. The instrument is decay-modified and was recorded with decay a little above halfway. Other fixed knob values, processing and exact intermediate positions remain unspecified. The report is recording context, not task instructions; it was transcribed locally.
 
-`calibrate.py` estimates body harmonics using a variable-projection fit with common exponential decay and nuisance DC terms. One-based Attack hits 2–13 train the shaper. A degree-11 fit retains fundamental gain and steady DC and targets harmonic magnitudes; temporal harmonic phase/asymmetry is not reproduced. Trigger edges are aligned for low/high transient medians. Their difference fits a negative discharge through HP, resonant LP, coupling and output poles. The 5 ms discharge hits the fitting upper bound, so it is a chosen model endpoint, not a measured circuit constant.
+`calibrate.py` fits common decay with nuisance DC and complex harmonics. One-based Attack hits 2–13 train a degree-11 even-phase polynomial plus `u*(1+x)` times a degree-4 quadrature polynomial. This corrects the earlier magnitude-only model's temporal asymmetry. Separate bounded whole-hit fits refine gain, hold/droop, DC response and both Tune endpoint time constants/excursions. The small settled-pitch endpoint difference is derived from the Tune recording rather than added as random pitch.
 
-The shortest Tune time constant is 7.8 ms and its excursion no longer doubles. Other Tune nodes interpolate toward the retained longer endpoint. Attack gains compensate the quarter-scale mixed excitation needed to keep the native resonant filter states below saturation. After the first audition, the owner liked the body/resonance and found the attack too smooth. A second fit adds an independent 30 us onset through the same poles and restores the retained 0.73 ms VCA rise. Resonance frequency/Q, body polynomial, pitch/decay, thump and longer Tune behaviour are unchanged from that audition. The fast duration, minimum pulse gain and pulse-scale fit reach their explicit bounds; these are model choices rather than inferred circuit values. Reference peak spread after a linear trend is removed is 2.23% over the last eight Attack hits; ongoing knob movement remains a confounder. The candidate's variation is a design choice inspired by that spread, not proof of a particular physical cause. Capture grid-to-edge offsets are not synthesized as timing jitter.
+Low/high Attack are fitted jointly for the first 30 ms, including the native LPF and complete body. Fast and long discharges both follow ATK. Input gains are divided by 16 and filter gains multiplied by 16 to preserve fixed-point headroom; the quarter-scale excitation mixer is retained. Coupling/output pole values reached optimization bounds: they are model choices, not measured component constants. `calibrate.py` reproduces the complex harmonic and initial differential-pulse stage; [full-hit-fit.json](evidence/full-hit-fit.json) records the subsequent whole-hit fit outputs and implemented parameters. It does not claim every private optimization is reproduced by that script.
 
-## Native-to-recording comparison
+The existing DECAY mapping outside the recorded setting is retained; this does not model the extreme range of the modified 909. Intermediate Tune positions are a monotone design interpolation. Recorded peak variation after detrending is 2.23% over the final eight Attack hits, with possible knob movement as a confounder. Synthesized pulse strength varies from 0.88 to 1.0, inspired by the recordings; no circuit cause, capture timing jitter or random pitch is claimed.
 
-`compare.py` reads the native 24-bit audition WAVs and original private reference. It applies one fixed tail-RMS gain per engine (baseline 0.99734, candidate 1.03069), determined from the first native hit and one low-Attack reference hit. It never separately normalizes attack peaks or searches for a convenient waveform phase. Low and high Attack medians also informed fitting, so these transient numbers describe fit quality, not independent validation.
+## Complete-hit comparison
 
-| Measurement | Current 0.1.3 | Candidate |
+`compare.py` uses native 24-bit PCM and original reference medians. One fixed tail-RMS factor per engine comes from the first native hit and one low-Attack reference hit (0.1.3: 0.96496; candidate: 1.03897). There is no separate attack-peak normalization or phase search. Low medians use hits 2–9 and high medians the final four Attack hits; both informed fitting, so these are fit-quality measurements.
+
+| Measurement | Approved 0.1.3 | Current candidate |
 | --- | ---: | ---: |
-| First 10 ms RMS error, low Attack median | 0.13439 | 0.03582 |
-| First 10 ms RMS error, high Attack median | 0.18876 | 0.03534 |
-| Mean absolute H2–H5 magnitude error, four held-out Attack hits | 6.99 dB | 0.38 dB |
-| High-Attack repeated-hit peak coefficient of variation | Output limited | 3.32% |
-| Audition peak | 1.0, 47 limited samples | 0.80197, no limited samples |
+| Low Attack RMS error, 0–10 ms | 0.13437 | 0.01739 |
+| High Attack RMS error, 0–10 ms | 0.18510 | 0.01658 |
+| Low Attack RMS error, 20–700 ms | 0.15254 | 0.00481 |
+| High Attack RMS error, 20–700 ms | 0.15281 | 0.00720 |
+| Mean absolute H2–H5 magnitude error, four held-out Attack hits | 6.98 dB | 0.59 dB |
+| Mean absolute H2–H5 quadrature coefficient error | 0.02112 | 0.00212 |
+| Native preview peak / limited samples | 1.0 / 47 | 0.69202 / 0 |
 
-The held-out body checks use one-based Attack hits 25/33/41/48. This does not establish agreement across every pitch/decay/accent, every Tune position, temporal harmonic phase or another hardware 909. The three recordings' held-out body profiles are retained, but only the Attack profile comparison above is quantified against the native preview.
+The held-out harmonic profiles use Attack hits 25/33/41/48. This does not establish agreement for every pitch/decay/accent or a different hardware 909. [comparison.json](evidence/comparison.json) retains full profiles and methods.
 
-## Native DSP gates
+## Native range and integration gates
 
-`run.py` compiles the exact source in the isolated Linux DSP emulator and refuses suspect multiply/max/rnd encodings through the existing assembler/disassembler gate.
+- Exact assembly/disassembly guards, SAT 0/64/127, all-controls-minimum/maximum, rapid retriggers and moving TDEP/SAT pass. Normal native/model error is −77.56 to −106.40 dB. The very quiet all-minimum 909 has −1.80 dB relative error and uses explicit absolute quantization limits instead: RMS 1.22e−6 and peak 1.34e−5 (bounds 5e−6/2e−5). This is not a relative-error pass.
+- Both engines are silent before the first trigger. All 16 trigger offsets have no early output and begin at the requested sample. Native replay is deterministic.
+- All tested 808 constant/moving-control streams remain bit-identical to the approved base. Combined code at both P origins (A 0x1252 / B 0x1012) matches standalone audio. Four interleaved distinct voices per core, with controls changed and one voice reset, match each voice alone.
+- All **128 values of ten audible controls** pass a native/model stress walk (64 blocks/value, retrigger at each step). Errors are −71.16 dB or better. Tables are monotone where required and signed-fraction bounded; fast gain is positive and bounded for all 128 Attack values. This is a rapid control walk, not 1,280 isolated full decays.
+- TUNE/ATK and the other tested walks except ACCNT/LOW do not reach the final output limit. In this fixed patch, ACCNT 107–127 and LOW 96–127 can hit the existing limiter. These retain the old gain/desk laws; no universal clipping-free claim is made.
+- Eight equal-control 70 BPM high-Attack native hits have 3.42% peak coefficient of variation. Variation remains voice-local and changes strength/noise, not pitch or trigger delay.
 
-- Both engines: SAT 0/64/127, all controls minimum/maximum, all 16 trigger offsets and rapid retriggers. Normal-level native/reference errors are −83.32 to −106.40 dB. At all-minimum controls the very quiet 909 reference has a +3.14 dB relative error, so that case uses explicit absolute quantization bounds: RMS <5e−6 and peak <2e−5 (actual RMS 2.03e−6, peak 1.38e−5). It is not counted as a relative-error pass.
-- TDEP and SAT automation through retriggers: 909 −94.36 dB, 808 −106.40 dB against the sample-wise model. Existing smoothing source is retained.
-- All tested 808 constant and moving-control native streams are bit-identical to the approved base.
-- Fresh untriggered voices are silent. On both engines, all 16 trigger offsets have no early output and their first nonzero output is at the requested sample.
-- Combined source code at both actual P origins (A 0x1252, B 0x1012) is bit-identical in audio to standalone engines. Four interleaved voices per core, two 808/two 909 with distinct patches, moving controls and an isolated reset, are bit-identical to each voice alone.
-- Eight equal-control 70 BPM 909 hits have 3.32% peak spread. Native replay from the same initialized state is bit-identical. Pulse strength is seeded between 0.88 and 1.0; no random pitch or trigger delay is added. Noise and pulse filter history remain voice-local.
+See [native.json](evidence/native.json) and [ranges.json](evidence/ranges.json). The native evidence's candidateFiles is its immutable input snapshot; unused analysis scripts changed afterward. Current helper hashes are pinned in `draft.json`; the tested DSP/fit source hashes match the current candidate.
 
-## Resources and full image
+The exact complete firmware MAIN OS was then exercised at TUNE/ATK 0/0 and 0/127 on core A, and 127/0 on core B, with the other core running 808. Control transport, both post-AMP tracks, stored model selection and main stereo output pass. Actual DSP source/model error is −73.83 to −73.86 dB. Stock AMP is a stable gain of approximately 0.253931 with 48 samples' delay; source/AMP residual is −118.56 to −118.63 dB. Controls are sampled at engine entry before DSP scratch writes, and audio at the source continuation. These checks found no complete-image audio integration fault.
 
-Combined engine code uses **964 P words** per core (0.1.3: 946), within the 1,028-word engine reservation, with the separate 35-word stock reverb helper preserved. X upload remains `[0x2840,0x3700)`, **3,776 words / 11,328 packed bytes** per core including tables, voices and gaps. Both engine banks retain four 64-word blocks per core; no X/Y/ColdFire allocation is added. The old pulse ramp word holds the new pulse output pole history and is not reset on each trigger. Previously unused +62/+63 hold FAST/GS; init explicitly clears them and block decoding updates GS. These lie after the 13-word control block (+48..+60) and the existing SAT history (+61), within the 64-word voice allocation.
+[port.json](evidence/port.json) binds the three runs to the exact image/source. FX slots are off for this focused check. Emulator project load and stored Part selection do not prove physical save/reload/reboot persistence.
 
-Peak executed instructions in the focused combined moving-control fixture are **6,264 per 16-frame 909 block** and **4,294 per 808 block** (0.1.3: 6,176/4,294). The 909 fixed-patch standalone fixture grows by 88 instructions per block. These are executed instructions, **not worst-case chip cycles or hardware timing**. Full-chain/max-FX-load cost is unmeasured; the old standalone harness's historical guards do not qualify this candidate.
+Separate listening clips play two original reference hits, then two actual emulator hits. One common tail-RMS gain follows stock AMP compensation. Attack maximum uses recorded hits 47/48; Tune maximum uses 63/64. These are separate fixed-control comparisons. [endpoint-comparison.json](evidence/endpoint-comparison.json) records hashes and endpoint metrics: complete-image low/high Attack 20–700 ms RMS error is 0.00481/0.00720; Tune maximum is 0.00846. The reference and candidate Tune-high tail-profile frequencies are 46.2888/46.2995 Hz under the same 130–500 ms profile window, which still includes the residual pitch envelope.
 
-A private native full image was built from the owner's stock 1.40C file with Analog BD and stock effects except harvested SPRING REV. Both assembled DSP code blobs are byte-identical to the tested candidate. The saved upgrade has label `AB014REF02` and its decoded MAIN OS is checked against the native build. `evidence/private-build.json` records exact source, code, image and upgrade identities. This proves compilation and packaging only; full-image runtime, real-device audio and persistence are untested.
+## Efficiency and private build
+
+Matched old/new runs on **both DSP cores** use identical 2,048-block streams per engine, moving controls, all-controls-minimum/maximum patches and all 16 trigger splits. 909 grows from 6,141.77 to 6,524.07 mean executed instructions per 16-sample block (**+6.22%**); maximum matched-block increase is **6.27%**. Peak is 6,563 versus 6,176. 808 remains 4,268.47 mean / 4,294 peak with identical instruction streams. See [costs.json](evidence/costs.json). The 10% investigation threshold is a regression check for this revision, not a hardware headroom guarantee. These numbers are executed instructions, **not modeled chip cycles or physical timing**; maximum FX-load cost remains unmeasured.
+
+Combined code uses **997 P words/core** (approved: 946), within the 1,028-word engine reservation; the separate 35-word stock helper is preserved. X upload remains `[0x2840,0x3700)`, 3,776 words / 11,328 packed bytes/core, including gaps. Four 64-word voice blocks/core and Y/ColdFire allocation are unchanged. Existing unused +62/+63 hold FAST/GS, after the controls and SAT history; init clears them. The old pulse ramp word holds output-filter history. Quadrature shaping uses a five-word table within the existing upload allocation and adds no oscillator history.
+
+The owner's local stock 1.40C image produces a private native full image with Analog BD and retained stock FX except harvested SPRING REV. Both DSP code blobs are byte-identical to the native gates. The saved **AB014REF04** upgrade decodes exactly to this MAIN OS; [private-build.json](evidence/private-build.json) records its fingerprints. The focused exact-image runtime checks above passed. Physical audio, persistence, full-chain loads and hardware timing remain pending.
 
 ## Reproduce
 
-From the repository, first verify the exact inputs:
+First verify the overlay:
 
 ```sh
 python3 sdk/drafts/analog-bassdrum-909-reference/apply.py
 ```
 
-Native tests require the reviewed local image `octamod-tapehead-qualification-tools:local` (local ID `3a5861370c0f`; assembler/disassembler hashes in `evidence/native.json`). Create a private output directory, mount the repository read-only and run:
+Use the reviewed local `octamod-tapehead-qualification-tools:local` image (local ID `3a5861370c0f`; assembler/disassembler hashes in native evidence). Mount the repository read-only and a fresh private output parent writable. Execute pending DSP only inside the isolated container:
 
 ```sh
 docker run --rm --network none --read-only --cap-drop ALL \
@@ -65,7 +75,9 @@ docker run --rm --network none --read-only --cap-drop ALL \
   --sdk /source/sdk/octabam --output /work/new-native-run
 ```
 
-Use a separate analysis environment with numpy/scipy (local run: Python 3.14, numpy 2.4.6, scipy 1.18.1). `compare.py --plot` additionally needs matplotlib. Keep all input audio and output paths private:
+Using that private SDK, run `qualification/ranges.py --sdk <staged-sdk> --output <new-private-directory>` and `qualification/costs.py --sdk <staged-sdk> --baseline <approved-module-copy> --output <new-private-directory>` in the same isolation. Full-image checks additionally require the native ColdFire toolchain on PATH, a locally prepared complete image/runtime symbols, an owned project fixture and `/opt/toolchain/emu-build`. Mount the fixture read-only, then run `qualification/port.py --sdk <staged-sdk> --project <fixture> --output <new-private-directory> --attack <0-or-127> --tune <0-or-127> [--reverse]`. Use a new output for each condition. No sample playback supplies the generated audio.
+
+PCM analysis uses numpy/scipy (local run: Python 3.14, numpy 2.4.6, scipy 1.18.1; optional plots need matplotlib). Keep inputs/outputs private:
 
 ```sh
 python calibrate.py --reference-dir '<private-909-folder>' --output <new-calibration.json>
@@ -74,21 +86,17 @@ python compare.py --reference-dir '<private-909-folder>' \
   --output <new-comparison.json> --plot <private-comparison.png>
 ```
 
-For listening, split the audition at hit 13: the first 13 hits are Attack only with Tune fixed at 0; the final five are Tune only with Attack fixed at 64. Do not describe the whole bundled clip as a single sweep.
+## Exact private hardware checks before promotion
 
-Only numerical JSON may be retained as evidence. Full firmware uses the normal native `build_bus` with a staged overlay, local stock OS and stock chooser profile, then the existing `encodeFirmware`/`decodeFirmware` packaging round trip. The private build's temporary driver scripts and their hashes are retained locally; full qualification/promotion must use the documented module build/composition flow.
+The earlier “Yes, keep this attack” applied to AB014REF02 and was subsequently withdrawn. Current AB014REF04 listening approval and physical results have **not** been supplied. Use the exact saved upgrade matching private-build evidence, not the public 0.1.3 download.
 
-## Exact private hardware audition
+1. At 70 BPM use PITCH 49, DECAY 100, TUNE 0, TDEP 64, SAT 0, ACCNT 72, LPF 48, LOW/HIGH 64. Sweep ATK alone, then TUNE alone, including both endpoints and neighboring repeated hits. Also test normal musical settings.
+2. Use distinct 808/909 tracks on both cores. Exercise locks/LFOs/scenes, TDEP/SAT changes and retriggers; edit/reset/replace one instance while checking the others. Test stock AMP, retained FX including PLATE/DARK and demanding track/FX loads.
+3. Save different engines/parameters, make unsaved edits, and verify Part/project reload independently. Power-cycle the physical unit and verify restoration separately; emulator project load is not reboot evidence.
+4. Record unit model, exact build hash, duration, audible results, isolation/load and each persistence result. Keep missing results explicit. Promote through the module guide only after version-matched qualification or an explicit owner exception naming this exact source and its limits.
 
-Use only the saved `AB014REF02` image matching `evidence/private-build.json`, not the public 0.1.3 download or an earlier private render. The owner accepted the Attack-only native render: “Yes, keep this attack.” [evidence/audition.json](evidence/audition.json) binds this later approval to the cropped audio, native source and corresponding private firmware. It supersedes the initial pending-audition snapshot in `draft.json`. Physical results are **not yet supplied**.
-
-1. Select ANALOG BD in SRC SETUP, then the 909 engine by double-tapping the track. At 70 BPM start with PITCH 49, DECAY 98, TUNE 0, TDEP 64, SAT 0, ACCNT 72, LPF 48 and LOW/HIGH 64. Sweep ATK, then leave it fixed and compare neighboring attacks with the supplied recordings. Test the low/high Tune ends and normal musical settings.
-2. Use several distinct 808/909 tracks across both DSP cores. Edit, reset and replace one voice while listening for changes in others. Exercise parameter locks, LFOs and scenes, including TDEP/SAT modulation and rapid retriggers. Test stock AMP and retained FX, particularly PLATE/DARK after the harvested-helper relocation, and demanding track/FX loads.
-3. Save a baseline Part and project with different engines and parameters. Make unsaved edits, reload the Part and project, and verify every assignment, control and audio result restores. Power-cycle the physical unit and confirm survival separately; manually loading a project in an emulator is not reboot evidence.
-4. Record the unit model, exact build hash, duration, audible results, instance/FX isolation and each persistence result. Keep failures and missing checks explicit. Approve/publish only after the required evidence is supplied or an owner exception names this exact source and its limits.
-
-No existing owner waiver or 0.1.3 hardware report is extended to this candidate. Do not mark it qualified based on software fitting, successful compilation or the base module's green doctor alone.
+No prior hardware report or waiver is extended to this candidate. The public module's green doctor does not qualify the draft.
 
 ## Repository validation
 
-Node 24.21.0 and `npm ci`; `npm run check -- --base origin/main` passed (197 test files, 1,377 app tests and 86 SDK checks), with existing lint/build warnings. `npm run module:doctor -- analog-bassdrum` is green for the retained approved 0.1.3 module. The draft stays outside discovery, catalogue and package inputs; those green integration checks do not qualify 0.1.4.
+Node 24.21.0 with `npm ci`; the final `npm run check -- --base origin/main` passed in 56.53 seconds: 197 test files / 1,377 app tests, SDK checks, licences, catalogues, lint, types and production bundle. Existing lint/build warnings remain. `npm run module:doctor -- analog-bassdrum` is green for the retained approved 0.1.3 module. The draft remains outside catalogue/package discovery; these checks do not qualify the private candidate for release.

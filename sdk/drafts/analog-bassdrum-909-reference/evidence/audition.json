@@ -46,5 +46,46 @@
     "Distinct track/core/FX isolation on a physical unit",
     "Full-chain/maximum-FX load and worst-case chip timing"
   ],
-  "note": "This later owner result supersedes the initial pending-audition snapshot in draft.json; no hardware approval is inferred."
+  "note": "The earlier reply remains as history for its exact audio/source. Later feedback withdrew that assessment. No current sound approval or physical hardware approval is inferred.",
+  "subsequentOwnerFeedback": [
+    "hm I feel like it doesn't really sound like a 909 anymore now weirdly. check the emulator output",
+    "the attack is quite good, but everything else...",
+    "actually not even the attack sounds that good lol"
+  ],
+  "currentStatus": "Earlier acceptance withdrawn. AB014REF04 whole-hit/endpoints revision is pending a new audition.",
+  "currentCandidate": {
+    "privateFirmwareLabel": "AB014REF04",
+    "sourceFiles": {
+      "dsp909.py": "d31d2fd1340e9c5055389a37f20959ebccd78d45636daec824ae3e1e84f4d67d",
+      "fit909.json": "a56751b8d1de88d6a4f7c729b51e5fbab60c73fe7b03df547a896a6a56ba2c6b",
+      "bd909.asm": "9c86c3bd06e95a998fbe4e0db5a05b9ff65e988686c81f98f6d6c9f4c3b8ee2f"
+    },
+    "status": "Pending owner listening feedback and physical qualification",
+    "endpointClips": [
+      {
+        "name": "minimum",
+        "listeningReferenceHitsOneBased": [
+          6,
+          7
+        ],
+        "auditionWavSha256": "9ba02c7d7046386c269340b4ccb29941fe0bf30971fe2fbbf8b8c31438c18272"
+      },
+      {
+        "name": "attack-maximum",
+        "listeningReferenceHitsOneBased": [
+          47,
+          48
+        ],
+        "auditionWavSha256": "ecc1b31d1870b4b9853c66161d0d33f29256d5cbd09d295d01eadfc3f5c6660c"
+      },
+      {
+        "name": "tune-maximum",
+        "listeningReferenceHitsOneBased": [
+          63,
+          64
+        ],
+        "auditionWavSha256": "a3ca9591db7e1b85d4fb71e8f2494e60515a4015151ef218521498206f7a9bd6"
+      }
+    ]
+  }
 }

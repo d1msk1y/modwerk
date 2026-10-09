@@ -37,18 +37,61 @@
   ],
   "body": {
     "coefficients": [
-      0.04175095888782736,
-      1.8467582101102584,
-      -0.07665025654087017,
-      -1.2663898926015302,
-      -1.274821218790721,
-      1.6392862147319849,
-      3.449434848886963,
-      -2.633739745369468,
-      -3.624803577154702,
-      2.9569478627291472,
-      1.3766187192215582,
-      -1.3505771904166328
+      0.0007785825514505389,
+      1.8899393256639998,
+      0.0868474910925714,
+      -1.6305062242504726,
+      -1.1925235513931385,
+      3.134222190353873,
+      2.9942981132350903,
+      -5.450601082082464,
+      -3.2053774401308743,
+      5.2548144294965615,
+      1.2493513805430037,
+      -2.019887821326162
+    ],
+    "quadratureCoefficients": [
+      0.03122511509603359,
+      -0.44731794903510813,
+      -0.3948971175578056,
+      0.3030474511689922,
+      0.5135657770391767
+    ],
+    "referenceCosine": [
+      1.0,
+      -0.029872476059876953,
+      0.004168712376233771,
+      -0.007528262222765706,
+      0.013620093580067168,
+      0.00021220209823288107,
+      0.003604628260305754,
+      -0.002540675898041073,
+      0.00472387149927642,
+      8.013504128141492e-06,
+      -0.0009859159646183123,
+      -3.087483111692606e-05,
+      -0.000522376633899972,
+      -1.0439711496158315e-05,
+      0.0006988125945325658,
+      -0.0003102564710759458
+    ],
+    "referenceSine": [
+      6.643960675996604e-17,
+      -0.05940134247973345,
+      -0.010395484978427925,
+      0.0023244264979638335,
+      0.008303580395530485,
+      0.0011446445396383542,
+      -0.005173390942280557,
+      0.00040166522419037096,
+      0.0036132649620260904,
+      -0.0003028080786720696,
+      0.0011888130853842057,
+      6.000144250333822e-05,
+      -0.0005168509369605772,
+      0.0003600393496932096,
+      -0.0007420732450499303,
+      -3.535766701181733e-05
     ],
     "referenceHarmonicsDb": [
       0.0,
@@ -70,75 +113,41 @@
     ],
     "baselineHarmonicsDb": [
       0.0,
-      -26.366370422364078,
-      -30.424040240340965,
-      -52.382893804264725,
-      -40.175691126118764,
-      -46.284331229850224,
-      -43.2960674847709,
-      -67.86957955538516,
-      -51.650324604862405,
-      -64.14974863388201,
-      -58.01743471014146,
-      -68.7219080519656,
-      -61.89600476093897,
-      -75.02487165399317,
-      -64.33313273828641,
-      -83.33078075209599
+      -26.366368184296952,
+      -30.424030967594156,
+      -52.382854212182835,
+      -40.17566319163752,
+      -46.28435044369467,
+      -43.2961068348554,
+      -67.86934542377139,
+      -51.650428001570305,
+      -64.14959596814529,
+      -58.0176502158494,
+      -68.72164980574044,
+      -61.89634173005964,
+      -75.02433838871919,
+      -64.33357894724824,
+      -83.32939372386323
     ],
     "candidateHarmonicsDb": [
       0.0,
-      -23.540244364453567,
-      -39.01387787967699,
-      -42.085700204326876,
-      -35.943376205855046,
-      -59.613529815612544,
-      -43.39252448333369,
-      -55.453923080825106,
-      -49.33236802065656,
-      -59.985564875999486,
-      -56.76244335036272,
-      -67.40907033391517,
-      -66.21660256664231,
-      -78.42149056922702,
-      -88.68195400873438,
-      -90.61419152934684
+      -23.545198262822456,
+      -39.13160352643271,
+      -42.10401707063621,
+      -36.769627676329975,
+      -58.45720002158644,
+      -46.42461385920119,
+      -54.44573913168312,
+      -50.348324612772515,
+      -59.75563286628528,
+      -56.25689611450477,
+      -67.32621752933059,
+      -62.97533805136608,
+      -76.60742973779453,
+      -69.22265712260477,
+      -79.99182555956878
     ],
-    "method": "Match harmonic magnitudes; retain fundamental gain and steady DC. Temporal asymmetry is not fitted."
-  },
-  "pulse": {
-    "parameters": {
-      "decaySeconds": 0.004999999999999999,
-      "hpHz": 355.90124459364614,
-      "resonanceHz": 5086.755820537247,
-      "q": 2.625601290703804,
-      "couplingHz": 318.5061172359394,
-      "outputHz": 3936.0511266304297
-    },
-    "gains": [
-      0.29750532390429185,
-      0.001659897173477567
-    ],
-    "rmsError": 0.0032912326245083,
-    "bounds": {
-      "lower": [
-        3e-05,
-        30,
-        1500,
-        0.5,
-        20,
-        3000
-      ],
-      "upper": [
-        0.005,
-        6000,
-        18000,
-        4,
-        8000,
-        20000
-      ]
-    },
-    "method": "High minus low aligned Attack medians; no uniform knob-position assumption."
+    "method": "Complex harmonic fit. Full-hit gain/DC/envelope and joint pulse refinement are separate bounded model fits."
   },
   "neighborVariation": {
     "endSegmentHits": [
@@ -990,9 +999,59 @@
     ]
   },
   "limits": [
-    "Reference instrument, fixed knob values and processing chain are unspecified.",
-    "Body fitting matches harmonic magnitudes; temporal harmonic phase is not matched.",
+    "The audio report identifies a decay-modified TR-909 and decay a little above halfway. Other fixed physical values and processing chain remain unspecified.",
+    "Complex harmonics are fitted; full waveform agreement is checked separately on complete native hits.",
     "Tune intermediate values are a design interpolation; physical knob trajectories were not recorded.",
     "Software model fitting is not physical-device or full-firmware qualification."
-  ]
+  ],
+  "initialDifferentialPulseFit": {
+    "parameters": {
+      "decaySeconds": 0.004999999999999999,
+      "hpHz": 355.90124459364614,
+      "resonanceHz": 5086.755820537247,
+      "q": 2.625601290703804,
+      "couplingHz": 318.5061172359394,
+      "outputHz": 3936.0511266304297
+    },
+    "gains": [
+      0.29750532390429185,
+      0.001659897173477567
+    ],
+    "rmsError": 0.0032912326245083,
+    "bounds": {
+      "lower": [
+        3e-05,
+        30,
+        1500,
+        0.5,
+        20,
+        3000
+      ],
+      "upper": [
+        0.005,
+        6000,
+        18000,
+        4,
+        8000,
+        20000
+      ]
+    },
+    "method": "High minus low aligned Attack medians; no uniform knob-position assumption.",
+    "scope": "Exploratory high-minus-low fit; not the final joint whole-hit pulse parameters. See full-hit-fit.json and fit909.json."
+  },
+  "recordingContext": {
+    "reportFilename": "2026-10-09 09.15.29.ogg",
+    "reportSha256": "727cd4bc7ca4e68a37843c6bac282c433a5e65ce15d651ad88ac268be470145d",
+    "transcription": "Local cached speech model; no recording uploaded. These are a paraphrase of recording context, not instructions from the attachment.",
+    "facts": [
+      "Knobs moved after hits, producing audible steps; the same loop, tempo, clock and grid were used.",
+      "The longer recording took longer to reach the endpoint; final two to four hits sometimes stayed at the endpoint.",
+      "The recorded TR-909 has a decay modification. Decay was a little above halfway, not at the extreme long setting."
+    ],
+    "unspecified": [
+      "Other fixed knob values",
+      "Recording effects/processing chain",
+      "Exact physical intermediate knob positions"
+    ]
+  }
 }
