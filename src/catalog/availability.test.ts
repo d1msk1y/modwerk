@@ -20,16 +20,17 @@ describe('temporary module availability', () => {
       expect(module.author).toBe('repeat98')
       expect(module.authorUrl).toBe('https://github.com/repeat98')
     }
-    for (const id of ['spectrum', 'modulation', 'character', 'unknown']) expect(isModuleAvailable(id)).toBe(false)
+    for (const id of ['spectrum', 'modulation', 'character', 'airwindows-chorus', 'unknown']) expect(isModuleAvailable(id)).toBe(false)
   })
   it('keeps older configurations readable and flags their paused modules before a build', () => {
-    const saved = newConfiguration('Older configuration', ['spectrum', 'euclid', 'character'])
+    const saved = newConfiguration('Older configuration', ['spectrum', 'euclid', 'character', 'airwindows-chorus'])
     const restored = validateConfiguration(saved)
     expect(restored.moduleIds).toEqual(saved.moduleIds)
     expect(restored.moduleVersions).toEqual(saved.moduleVersions)
     expect(moduleAvailabilityError(restored.moduleIds)).toContain('Spectrum, Character')
+    expect(moduleAvailabilityError(restored.moduleIds)).toContain('Air Chorus')
     expect(moduleAvailabilityError(restored.moduleIds)).toContain('Remove these modules')
-    expect(resolveSelection(['spectrum', 'modulation', 'character'])).toHaveLength(3)
+    expect(resolveSelection(['spectrum', 'modulation', 'character', 'airwindows-chorus'])).toHaveLength(4)
   })
   it('allows available selections and still rejects unknown catalog identities', () => {
     expect(moduleAvailabilityError(AVAILABLE_MODULES.map(module => module.id))).toBe('')
