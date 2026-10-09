@@ -69,20 +69,24 @@ describe('MIDISC2.0 stock-free candidate', () => {
       const at = row.address - OS_LOAD_ADDRESS
       expect(Buffer.from(fixed.subarray(at, at + row.bytes.length / 2)).toString('hex')).toBe(row.bytes)
     }
-    // Every site calls or branches into the reclaimed padding run; the helpers fit it.
-    const cave = MIDI_SCENES_SCENE_MUTE[5]
-    expect(cave.bytes.length / 2).toBeLessThanOrEqual(cave.author.length / 2)
-    for (const row of MIDI_SCENES_SCENE_MUTE.slice(0, 5)) {
+    // Every site calls or branches into a reclaimed padding run; the helpers fit them.
+    const caves = MIDI_SCENES_SCENE_MUTE.filter(row => /^(ff)+$/.test(row.author))
+    expect(caves).toHaveLength(2)
+    for (const cave of caves) expect(cave.bytes.length / 2).toBeLessThanOrEqual(cave.author.length / 2)
+    const sites = MIDI_SCENES_SCENE_MUTE.filter(row => !caves.includes(row))
+    expect(sites).toHaveLength(6)
+    for (const row of sites) {
       const opcode = row.bytes.slice(0, 4)
       expect(['4eb9', '6700']).toContain(opcode)
       // jsr abs.l, or beq.w with a displacement from the extension word.
       const target = opcode === '4eb9' ? parseInt(row.bytes.slice(4), 16) : row.address + 2 + parseInt(row.bytes.slice(4), 16)
-      expect(target).toBeGreaterThanOrEqual(cave.address)
-      expect(target).toBeLessThan(cave.address + cave.bytes.length / 2)
+      expect(caves.some(cave => target >= cave.address && target < cave.address + cave.bytes.length / 2)).toBe(true)
     }
     // Helpers read only the stock Scene A/B mute bytes.
-    expect(cave.bytes.match(/4a3980000006/g)).toHaveLength(3)
-    expect(cave.bytes.match(/4a3980000007/g)).toHaveLength(3)
+    const helpers = caves.map(cave => cave.bytes).join('')
+    expect(helpers.match(/4a3980000006/g)).toHaveLength(3)
+    expect(helpers.match(/4a3980000007/g)).toHaveLength(3)
+    expect(helpers.match(/4a7980000006/g)).toHaveLength(1)
     expect(author.some(Boolean)).toBe(true)
     const drifted = author.slice(); drifted[0x400d2928 - OS_LOAD_ADDRESS] ^= 1
     await expect(applyGuardedOsWrites(drifted, await midiScenesSceneMuteWrites())).rejects.toThrow('scene mute')
