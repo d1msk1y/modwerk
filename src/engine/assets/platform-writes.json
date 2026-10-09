@@ -514,7 +514,7 @@
       "sha256": "5d44ce960d87d22af41166c529bfa5e84c0427b8e4afb3d6d2ca8d880f5dcfd7"
     }
   ],
-  "sourceCommit": "0bca73e5891843e4b30b169ad5074921fec4c338",
+  "sourceCommit": "ecb6a7ca09a076c6bd7ddf82abdd20ef046ea24d",
   "moduleVersions": {
     "spectrum": "0.1.1-experimental",
     "modulation": "0.1.1-experimental",
@@ -537,6 +537,7 @@
     "playmodes": "0.1.1-experimental",
     "mute-modes": "0.1.0-experimental",
     "recorder-loop-fix": "0.1.0-experimental",
-    "poly8": "0.2.6-experimental"
+    "poly8": "0.2.6-experimental",
+    "output-matrix": "0.1.0-experimental"
   }
 }
