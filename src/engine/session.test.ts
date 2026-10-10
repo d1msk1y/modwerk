@@ -44,7 +44,7 @@ describe('Octatrack firmware boot name', () => {
         expect(FIRMWARE_VERSION).toBe('ELEKLOADER')
         expect(built.report.version).toBe('ELEKLOADER')
         expect(built.report.moduleIds).toEqual(moduleIds)
-        if (moduleIds.includes('midi-scenes')) expect(built.report.moduleVersions['midi-scenes']).toBe('0.2.4-experimental')
+        if (moduleIds.includes('midi-scenes')) expect(built.report.moduleVersions['midi-scenes']).toBe('0.2.5-experimental')
         const decoded = decodeFirmware(new Uint8Array(built.buffer))
         expect(new TextDecoder().decode(decoded.header.subarray(8))).toBe('ELEKLOADER')
         expect(decoded.header.subarray(0, 8)).toEqual(original.header.subarray(0, 8))
