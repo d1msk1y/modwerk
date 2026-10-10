@@ -3,6 +3,7 @@ import { act, createElement } from 'react'
 import { createRoot, type Root } from 'react-dom/client'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 import { addBlock } from '../catalog/add-blocks'
+import { DETAILS } from '../catalog/details'
 import { MODULES } from '../catalog/modules'
 import { ModuleCard } from './ModuleCard'
 
@@ -36,6 +37,29 @@ describe('a conflicting add in the library', () => {
     expect(addButton().getAttribute('aria-expanded')).toBe('false')
     expect(addButton().getAttribute('aria-label')).toContain('Conflicts with Analog BD')
     expect(prompt()).toBeNull()
+  })
+  it('adds no row to the card: the note replaces the type line and the prompt floats over the card', async () => {
+    const { render } = card({ block: addBlock(['analog-bassdrum'], 'spectrum') })
+    await render()
+    const bottom = container.querySelector('.card-bottom')!
+    expect(bottom.firstElementChild?.classList.contains('add-block-chip')).toBe(true)
+    expect(bottom.textContent).not.toContain(DETAILS.spectrum.family)
+    await click(addButton())
+    const article = container.querySelector('article')!
+    expect(prompt()?.parentElement).toBe(article)
+    expect(container.querySelector('.module-card-body')?.contains(prompt())).toBe(false)
+  })
+  it('puts focus in the prompt and makes the covered card inert while it is open', async () => {
+    const { render } = card({ block: addBlock(['analog-bassdrum'], 'spectrum') })
+    await render()
+    expect(container.querySelector('.module-card-body')?.hasAttribute('inert')).toBe(false)
+    await click(addButton())
+    expect(prompt()?.contains(document.activeElement)).toBe(true)
+    expect(container.querySelector('.module-card-body')?.hasAttribute('inert')).toBe(true)
+    expect(container.querySelector('.module-cover')?.hasAttribute('inert')).toBe(true)
+    await click(buttonNamed('Cancel'))
+    expect(container.querySelector('.module-card-body')?.hasAttribute('inert')).toBe(false)
+    expect(document.activeElement).toBe(addButton())
   })
   it('does not add when the button is pressed; it opens a prompt with the swap', async () => {
     const { calls, render } = card({ block: addBlock(['analog-bassdrum'], 'spectrum') })
@@ -90,6 +114,7 @@ describe('a conflicting add in the library', () => {
     expect(container.querySelector('.add-block-chip')?.textContent).toBe('Needs stock FX2 off')
     await render({ block: undefined })
     expect(container.querySelector('.add-block-chip')).toBeNull()
+    expect(container.querySelector('.card-bottom')?.textContent).toContain(DETAILS.spectrum.family)
     await render({ block: addBlock(['analog-bassdrum'], 'spectrum'), selected: true })
     expect(container.querySelector('.add-block-chip')).toBeNull()
     expect(addButton().getAttribute('aria-label')).toBe('Remove Spectrum from configuration')
