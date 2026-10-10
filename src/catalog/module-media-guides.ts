@@ -128,7 +128,7 @@ export const MODULE_MEDIA_GUIDES: Readonly<Record<string, ScreenshotGuide>> = {
     ],
   },
   'midi-scenes': {
-    version: '0.2.4-experimental',
+    version: '0.2.5-experimental',
     screenshots: [
       {
         path: 'media/ot-channel.png',
