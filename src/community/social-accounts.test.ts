@@ -11,6 +11,8 @@ import { digest } from '../../server/security'
 import type { SocialProvider } from '../../server/social-config'
 
 const databases: DatabaseSync[] = []
+// RSA key generation is slow; one synthetic provider key serves every test.
+const keys = generateKeyPairSync('rsa',{modulusLength:2048}), jwk = {...keys.publicKey.export({format:'jwk'}),kid:'synthetic',alg:'RS256',use:'sig'}
 afterEach(() => { vi.unstubAllGlobals(); for(const db of databases.splice(0)) db.close() })
 async function fixture() {
   const server = await testServer(); databases.push(server.db)
@@ -20,7 +22,6 @@ async function fixture() {
   env.SSO_GITHUB_CLIENT_ID = 'synthetic-github'; env.SSO_GITHUB_CLIENT_SECRET = 'synthetic-secret'
   env.SSO_DISCORD_CLIENT_ID = 'synthetic-discord'; env.SSO_DISCORD_CLIENT_SECRET = 'synthetic-secret'
   let email = 'member@example.test', verified = true, identity = '42', nonce = '', googleClaims:Record<string,unknown> = {}, corruptSignature = false
-  const keys = generateKeyPairSync('rsa',{modulusLength:2048}), jwk = {...keys.publicKey.export({format:'jwk'}),kid:'synthetic',alg:'RS256',use:'sig'}
   vi.stubGlobal('fetch',vi.fn(async (input: string | URL | Request) => {
     const url = String(input instanceof Request ? input.url : input)
     if(url.includes('oauth2/v3/certs')) return Response.json({keys:[jwk]})
