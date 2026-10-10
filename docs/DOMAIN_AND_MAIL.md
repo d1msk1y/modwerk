@@ -70,7 +70,7 @@ Receiving uses Resend, which already sends for this domain. On 10 October 2026 t
 
 The owner released the switch of `SUPPORT_EMAIL` on 10 October 2026 while Resend still showed the receiving MX as pending, probably because its resolver held the old record's two-hour TTL. Resend drops mail for a receiving domain until that record is verified, so messages sent to `support@` before then may have been lost. Once the dashboard shows the record verified, send a test message from another account and confirm it appears under **Emails → Receiving**. `npm run domain:check -- mail` reports the inbound line green once the registrar MX is gone; that shows the record exists, not that mail arrives.
 
-The Worker reads `SUPPORT_EMAIL` at build time, so `src/support.ts` is on the Worker workflow's path list: merging a change to it redeploys the Worker and the new Reply-To takes effect.
+The Worker reads `SUPPORT_EMAIL` at build time. `scripts/change-scope.mjs` counts every file the Worker compiles, `src/support.ts` included, so merging a change to it redeploys the Worker and the new Reply-To takes effect.
 
 ### 4. GitHub: verify the domain for Pages
 
