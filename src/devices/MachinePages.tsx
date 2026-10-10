@@ -14,6 +14,7 @@ import { DETAILS } from '../catalog/details'
 import type { CatalogBrowse } from '../catalog/catalog-browse'
 import { AVAILABLE_MODULES } from '../catalog/availability'
 import type { SelectionConflict } from '../catalog/selection-conflicts'
+import type { AddBlock } from '../catalog/add-blocks'
 import { moduleStability, STABILITY_NOTE } from '../catalog/module-stability'
 import { AddButton, CardProof, CardStats, ModuleCard } from '../components/ModuleCard'
 import { SelectionWarning } from '../components/SelectionWarning'
@@ -71,6 +72,9 @@ type AllMachinesLibraryProps = {
   onSortChange: (value: string) => void
   statistics: readonly ModuleStatistics[] | null
   octatrackConflicts: readonly SelectionConflict[]
+  // What adding each Octatrack module would do to the current configuration, by module id.
+  octatrackBlocks?: Record<string, AddBlock>
+  onSwapOctatrack?: (id: string, removeIds: readonly string[]) => void
   comparison: readonly string[]
   onCompare: (id: string) => void
   onOpenComparison: () => void
@@ -82,7 +86,7 @@ type AllMachinesLibraryProps = {
 // On phones the machine picker sits in the category row and the results bar renders into resultsSlot, beneath it.
 type MachineLibraryProps = AllMachinesLibraryProps & { device?: DeviceProfile; children?: ReactNode; onClearSearch?: () => void; phone?: boolean; resultsSlot?: HTMLElement | null }
 
-export function MachineLibrary({ device, query, category, octatrackModules: octatrack, octatrackSelected, onToggleOctatrack, digiSelected, onToggleDigi, family, onFamilyChange, sort, onSortChange, statistics, octatrackConflicts, comparison, onCompare, onOpenComparison, viewedModuleVersions, moduleBaseline, machinePicker, children, onClearSearch, onBrowse, phone = false, resultsSlot }: MachineLibraryProps) {
+export function MachineLibrary({ device, query, category, octatrackModules: octatrack, octatrackSelected, onToggleOctatrack, digiSelected, onToggleDigi, family, onFamilyChange, sort, onSortChange, statistics, octatrackConflicts, octatrackBlocks, onSwapOctatrack, comparison, onCompare, onOpenComparison, viewedModuleVersions, moduleBaseline, machinePicker, children, onClearSearch, onBrowse, phone = false, resultsSlot }: MachineLibraryProps) {
   const term = query.toLowerCase().trim()
   const hasMods = !device || device.status === 'available' || device.status === 'preview'
   const families = Array.from(new Set([
@@ -116,7 +120,7 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
     })
   }
   const groups: { device: DeviceProfile; count: number; cards: ReactNode[] }[] = [
-    ...(!device || device.id === 'octatrack' ? [{device: DEVICES_BY_ID.octatrack, count: octatrack.length, cards: octatrack.map(module => <ModuleCard key={module.id} module={module} selected={octatrackSelected.includes(module.id)} statistics={statistics?.find(item => item.module_id === module.id)} viewedVersion={viewedModuleVersions[module.id]} baseline={moduleBaseline} compared={comparison.includes(module.id)} canCompare={comparison.length < 3 || comparison.includes(module.id)} onToggle={() => onToggleOctatrack(module.id)} onCompare={() => onCompare(module.id)} onBrowse={browseResults} />)}] : []),
+    ...(!device || device.id === 'octatrack' ? [{device: DEVICES_BY_ID.octatrack, count: octatrack.length, cards: octatrack.map(module => <ModuleCard key={module.id} module={module} selected={octatrackSelected.includes(module.id)} statistics={statistics?.find(item => item.module_id === module.id)} viewedVersion={viewedModuleVersions[module.id]} baseline={moduleBaseline} compared={comparison.includes(module.id)} canCompare={comparison.length < 3 || comparison.includes(module.id)} onToggle={() => onToggleOctatrack(module.id)} onCompare={() => onCompare(module.id)} onBrowse={browseResults} block={octatrackBlocks?.[module.id]} onSwap={removeIds => onSwapOctatrack?.(module.id, removeIds)} />)}] : []),
     ...digiGroups.map(({ id, mods }) => ({device: DEVICES_BY_ID[id], count: mods.length, cards: mods.map(mod => <DigiModCard key={mod.id} mod={mod} selected={digiSelected[id].includes(mod.id)} statistics={statistics?.find(item => item.module_id === id + '-' + mod.id)} onToggle={() => onToggleDigi(id, mod.id)} compared={comparison.includes(id + '-' + mod.id)} canCompare={comparison.length < 3 || comparison.includes(id + '-' + mod.id)} onCompare={() => onCompare(id + '-' + mod.id)} onBrowse={browseResults} />)})),
   ]
   const total = groups.reduce((sum, group) => sum + group.count, 0)
