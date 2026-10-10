@@ -273,7 +273,7 @@ def main():
     except ValueError as error:
         parser.error(str(error))
     standalone = 'midi-scenes' in [module['id'] for module in buildable]
-    if standalone and catalog_documents['midi-scenes']['version'] != '0.2.4-experimental': parser.error('Unknown standalone MIDI Scenes release')
+    if standalone and catalog_documents['midi-scenes']['version'] != '0.2.5-experimental': parser.error('Unknown standalone MIDI Scenes release')
     requested_ids = [id for id in REQUESTED if id != 'midi-scenes'] if args.include_requested else approved_requested
     if "poly8" in requested_ids:
         # Local PC16 operands can wrap before ELF relocations exist. Run the

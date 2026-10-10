@@ -213,12 +213,23 @@ complete memory bounds for the measured MIDISC2.0 release. The exception is
 restricted to `midi-scenes` `0.2.4-experimental`, author MAIN SHA-256
 `debb24090cada4be00bc70880136f14e813b0d3a9018b516f922d33671bd9b87`,
 and the complete source/folder fingerprints in
-`../sdk/midi-scenes-build-approval.json`. It requires matching shared-worker
-MAIN/full-update parity, changed-base rejection and rejection of all thirteen
-companions. No mixed compositions or future versions inherit it. Unknown
-hardware timing and memory bounds remain explicitly unknown. UI, provenance,
-licence, documentation, stock isolation and owner-merged PR review still apply.
-The frozen eleven-module baseline and two utility waivers are unchanged.
+the exact-folder record that was in `../sdk/midi-scenes-build-approval.json` (now
+in git history). It requires matching shared-worker MAIN/full-update parity,
+changed-base rejection and rejection of all thirteen companions. No mixed
+compositions or future versions inherit it. Unknown hardware timing and memory
+bounds remain explicitly unknown. UI, provenance, licence, documentation, stock
+isolation and owner-merged PR review still apply. The frozen eleven-module
+baseline and two utility waivers are unchanged.
+
+## MIDI Scenes 0.2.5 owner-approved update, 10 October 2026
+
+The owner approved `midi-scenes` `0.2.5-experimental` (Scene A/B mute) "without
+concrete hardware evidence". `../sdk/midi-scenes-build-approval.json` is an
+`owner-approved-update` that waives only current-build hardware evidence, bound to
+this version and its native source. The contributor's MKII report ran on the
+pre-#392 shared runtime, so hardware stays `reported`, not verified, and timing
+and complete memory bounds stay unknown. It is the ordinary approval path: a later
+version needs its own record.
 
 ## Sidechain Compressor hardware-only exception
 
