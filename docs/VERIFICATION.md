@@ -42,6 +42,58 @@ production bundle. Firmware and reference audio remain private.
 See [the exact-source approval](../sdk/analog-bassdrum-build-approval.json) and
 [the testing record](../sdk/octabam/modules/analog-bassdrum/TESTING.md).
 
+## Digitakt II integration preparation - 9 October 2026
+
+This is upstream package/build verification, not approval to enable Digitakt II
+downloads in Modwerk. The machine remains `research`, without a Modwerk SDK or
+module listing. No unit was flashed and no new emulator run was made.
+
+Inputs: elekloader `3acac10` (0.5.0), digitakt2-perform source
+`09688a6ca194dd8a9f07130a30545c6ec3816d11`, and the owner's stock OS 1.17,
+SHA-256 `26c22f6652625ac2cfd47f7ee970d388ed8b6427dae3563c0a6a2f2d334350d5`.
+The source build used `m68k-elf-*` and Python 3.9.6 on macOS.
+
+The packages downloaded from [toonst's v1.0 release](https://github.com/toonst/digitakt2-perform/releases/tag/v1.0)
+passed elekloader's shop loader checks for hashes, device identity, format and
+redistributable licence:
+
+| Package | SHA-256 |
+| --- | --- |
+| core-1.0.elemod | `95303655a9358f581b485acb68b884b394a577f5d0b373f0a3e5957c8d0ca72c` |
+| perform-direct-1.0.elemod | `601b187f5af3025234c83e8c077b1e8f4ac755a8f1a8c929ab03aff331f30732` |
+| perform-levels-1.0.elemod | `bb100389f2800401495ca3fa3a52d5974bb00434a8a70fd6f89978ec6b25d9e6` |
+
+Both mod packages reproduced byte-for-byte from source. The locally built core
+had SHA-256 `4bfb84c9f553edede11846d08eabcca815977b7fe6c4305eeacd895b9cc9854d`;
+its parsed package differed from the released core only in the `build` metadata.
+The three locally built packages linted together at 764/262144 bytes RAM and
+0/3840 bytes fast SRAM. The output checks below used the released core and mods,
+not a substituted local core.
+
+| Selection, always including core | Version | Verified SysEx SHA-256 |
+| --- | --- | --- |
+| perform-direct | PD10 | `d9a7d90d2f9750c04942d99238aeba9134d1739ab9cbc834102c169365690db1` |
+| perform-levels | PL10 | `72748884eab12062031ae1a830db067e1702d4f2216b122cfb3d293702cb92eb` |
+| Both mods | PB10 | `9b86f3f5208d96e359cb226eed6e2e9d3df4ebb14be7e0e21213456f4cec6566` |
+
+Each in-memory build passed elekloader's output verification and preserved
+stored sections 5, 2, 4, 7 and 8 exactly; only MAIN changed. The required
+`tests/test_units.py` passed 17 tests. With `ELEKLOADER_CROSS=m68k-elf-` and
+`ELEKLOADER_DT2_SYX` set to the owner's stock file, `tests/test_digitakt2.py`
+passed all 18 tests without skips, including the byte-exact stock writer check.
+
+Reproduce package creation with digitakt2-perform's `build.sh`, then use
+`python -m elekloader.patch` with the released core, each selection above,
+the corresponding `--version`, and the owner's `--stock` file. Keep all
+packages and output firmware outside tracked source.
+
+The author reports individual hardware results, with perform-direct's report
+covering an earlier version with a PERSONALIZE row. The pair is not reported
+tested on a unit. No historical hardware waiver elsewhere in this document
+applies to DTII. Browser integration, reviewed module records, screenshots,
+exact-version hardware qualification or an explicit owner waiver, and owner
+review remain outstanding before Modwerk can offer these builds.
+
 ## USB Audio 0.2 / Outbox 8 — 8 October 2026
 
 Version `0.2.0-experimental` adds six selectable USB output layouts and an
