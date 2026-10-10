@@ -71,10 +71,11 @@ import { usePhoneToolbar } from './hooks/usePhoneToolbar'
 import { ConfigurationBrowser } from './components/ConfigurationBrowser'
 import { ConfigurationDialog } from './components/ConfigurationDialog'
 import { ConfigurationReportDialog } from './community/ConfigurationReport'
-import { ConfigurationEffects } from './components/ConfigurationEffects'
 import { ConfigurationHeader, RiskAcceptance } from './components/ConfigurationLayout'
 // The panel reads every recorded declaration check, megabytes of data, so it loads with the configuration page only.
 const CompatibilityPanel = lazy(() => import('./components/CompatibilityPanel').then(module => ({ default: module.CompatibilityPanel })))
+// The stock FX summary needs the engine's package data (about 1 MB), which no other page uses.
+const ConfigurationEffects = lazy(() => import('./components/ConfigurationEffects').then(module => ({ default: module.ConfigurationEffects })))
 const FirmwareFeedbackPreview = import.meta.env.DEV ? lazy(() => import('./components/FirmwareFeedbackPreview')) : () => null
 const firmwareFeedbackPreview = import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('preview') === 'firmware-feedback'
 function subscribeRoute(callback: () => void) {
@@ -376,7 +377,7 @@ export default function App() {
                     {availabilityError && <p className="file-error" role="alert">{availabilityError}</p>}
                     {selection.length ? <ul className="selected-list">{selection.map((module) => <li key={module.id}><a className="selected-module-link" href={moduleHref(module.id)}><ModulePreview id={module.id} compact /><span><strong>{module.name}</strong><small>{module.id === USB_AUDIO_MODULE && active?.usbAudio ? usbAudioLayout(active.usbAudio.layout).name + ' · 0.2 experimental' : (!isModuleAvailable(module.id, betaAccess) ? 'Temporarily unavailable' : module.detail) + ' · ' + module.authorName}</small></span></a><button className="icon-button" aria-label={'Remove ' + module.name} onClick={() => toggleModule(module.id)}><Icon name="close" size={17} /></button></li>)}</ul> : <div className="selection-empty"><Icon name="grid" size={26} /><strong>No modules selected</strong><p>Find something in the library and add it to your configuration.</p><a className="button button-quiet" href="#library">Browse modules</a></div>}
                   </section>
-                  <ConfigurationEffects ids={selectedIds} keepStockFx2={active?.keepStockFx2 ?? true} build={firmwareBuild} />
+                  <Suspense fallback={null}><ConfigurationEffects ids={selectedIds} keepStockFx2={active?.keepStockFx2 ?? true} build={firmwareBuild} /></Suspense>
                   <section className="configuration-section" aria-labelledby="firmware-title"><div className="section-title"><h2 id="firmware-title">Base firmware</h2><span className="subtle">Read locally</span></div>
                     <div className={'firmware-drop ' + (dragging ? 'is-dragging ' : '') + (fileState === 'ready' ? 'is-verified' : '')} onDragOver={(event) => event.preventDefault()} onDragEnter={() => setDragging(true)} onDragLeave={() => setDragging(false)} onDrop={dropFile} aria-busy={fileState === 'reading'}>
                       <span className="file-symbol"><Icon name={firmware ? 'check' : 'file'} size={26} /></span>

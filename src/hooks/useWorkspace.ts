@@ -62,13 +62,17 @@ export function useWorkspace() {
         const stored = await store.readFirmware()
         if (cancelled) return
         if (stored) {
+          const request = requestGeneration.current
           setFileState('reading')
+          // Pages need only the configurations; the configuration page shows "Checking your firmware…" meanwhile.
+          setReady(true)
           try {
             const verified = await client.inspect(new File([stored.blob], stored.name))
-            if (cancelled) return
+            if (cancelled || request !== requestGeneration.current) return
             setFirmware(verified); setFirmwareSaved(true); setFileState('ready')
           } catch {
-            if (!cancelled) { setFileState('error'); setFileError('The saved firmware could not be verified. Choose the original 1.40C file again.'); await store.forgetFirmware() }
+            // A file chosen or cleared during the check supersedes it and must not be forgotten.
+            if (!cancelled && request === requestGeneration.current) { setFileState('error'); setFileError('The saved firmware could not be verified. Choose the original 1.40C file again.'); await store.forgetFirmware() }
           }
         }
       } catch (error) {
