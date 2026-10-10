@@ -7,11 +7,12 @@ import { compactChecks, passingPairs, recordedCheck, selectionKey, type CompactC
 // JSON.parse takes under a second; a Vite JSON import of this 70 MB file takes about 25 s.
 const native = JSON.parse(readFileSync(new URL('./native-metadata.json', import.meta.url), 'utf8')) as NativeChecks
 describe('compact compatibility checks', () => {
+  // Built once outside any test: rebuilding it inside the first test pushed that test past the 5 s default on CI.
+  const compact = compactChecks(native), checked = new Set(compact.checked)
   it('matches the committed file, so the site ships the current native record', () => {
     expect(JSON.stringify(committed) + '\n').toBe(readFileSync(new URL('./compatibility-checks.json', import.meta.url), 'utf8'))
-    expect(committed).toEqual(compactChecks(native))
+    expect(committed).toEqual(compact)
   })
-  const compact = compactChecks(native), checked = new Set(compact.checked)
   it('lists exactly the module pairs the full checks record as passing', () => {
     const expected = compact.modules.flatMap((left, index) => compact.modules.slice(index + 1)
       .filter(right => recordedCheck(compact, [left, right], checked)?.length === 0).map(right => selectionKey([left, right]))).sort()
