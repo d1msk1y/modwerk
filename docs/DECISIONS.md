@@ -125,7 +125,7 @@ The owner bought modwerk.app on 4 October 2026. It stays registered, with its DN
 
 The community API keeps trusting exactly one origin, set by `APP_URL`; the launch moves it from octamod.app to modwerk.app with the Worker, the sender and the Pages custom domain in one ordered cutover. octamod.app is not retired: it becomes a plain redirect to the same path on modwerk.app, so shared links and mail links already sent keep working. Browser storage is per site, so saved configurations are not carried over; the move is announced first so people can export them.
 
-Whether the public support contact becomes a `support@modwerk.app` forwarder is left to the owner; the Gmail contact chosen on 3 October stays until a forwarder is proven. Nothing in the repository edits DNS or a provider account. The order, records and checks are in [DOMAIN_AND_MAIL.md](DOMAIN_AND_MAIL.md); `npm run domain:check` reads public DNS and pages to report progress.
+On 10 October 2026 the owner decided the public support contact is `support@modwerk.app`, a forwarder, instead of the personal address chosen on 3 October, so no personal address is published. The switch is merged only after a message sent to the alias is proven to arrive. Nothing in the repository edits DNS or a provider account. The order, records and checks are in [DOMAIN_AND_MAIL.md](DOMAIN_AND_MAIL.md); `npm run domain:check` reads public DNS and pages to report progress.
 
 
 ## 4 October 2026 — Bug Reports forum and automatic developer delivery
