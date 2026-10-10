@@ -19,6 +19,8 @@ on:
       - 'src/community/profile-links.ts'
       - 'src/community/usage-pages.ts'
       - 'src/config/support.ts'
+      # The public support address is the Reply-To of every account, news, activity and welcome message.
+      - 'src/support.ts'
       - 'src/catalog/**'
       - '!src/catalog/**/*.test.ts'
       - 'src/devices/**'
