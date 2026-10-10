@@ -35,6 +35,8 @@ Public reports and GitHub replies share a thread, with replies/status synchroniz
 /modwerk reopen <public explanation>
 ```
 
+A report titled `[configuration] …` covers a whole saved configuration and lists its modules; every module's registered maintainer can use `close` and `reopen` on it. Name the module in `resolve`, `/modwerk resolve <module-id> <version> verified-download`, because the fix ships in one module; it closes the whole report.
+
 Use `resolve` only after the exact published download and hardware fix have actually been verified. Push and merge alone leave the report open. Other closure reasons are `duplicate`, `not_reproducible` and `withdrawn`; these claim no firmware fix. GitHub-only issues use authorized native GitHub closure. Private details remain access-controlled and consent-based.
 
 Verify GitHub status, Modwerk synchronization and reporter notification. Release completion uses the existing idempotent follower/downloader fanout, preserving opt-outs and push/email preferences. Report actual queue counts separately from provider acceptance or delivery/digest delays; do not create another scheduler or send a separate blast.

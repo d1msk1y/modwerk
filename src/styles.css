@@ -1352,6 +1352,63 @@ h1 { font-size: 28px; }
 .module-issue-dialog > .issue-report > summary { display: none; }
 .module-issue-dialog .community-form { gap: 12px; }
 .module-issue-dialog .community-form .risk-accept { flex-direction: row; align-items: center; gap: 8px; margin-top: 0; }
+/* Configuration report: a fixed header and footer around a scrolling body, so the Post button never leaves the screen. */
+.app-dialog.configuration-report-dialog { padding: 0; overflow: hidden; }
+.app-dialog.configuration-report-dialog[open] { display: flex; flex-direction: column; }
+.configuration-report-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 14px 16px 14px 24px; border-bottom: 1px solid var(--line); flex: 0 0 auto; }
+.app-dialog .configuration-report-head h2 { margin: 0; font-size: 18px; line-height: 1.35; }
+.configuration-report-head .icon-button { flex-shrink: 0; }
+.app-dialog .configuration-report-intro { margin: 0; font-size: 13px; line-height: 1.6; }
+.configuration-report-form { display: flex; flex-direction: column; flex: 1 1 auto; min-height: 0; gap: 0; }
+.configuration-report-body { display: flex; flex-direction: column; gap: 18px; padding: 20px 24px; overflow-y: auto; min-height: 0; flex: 1 1 auto; }
+.configuration-report-body .community-form label, .configuration-report-form label { gap: 8px; font-size: 13px; font-weight: 500; color: var(--text-secondary); }
+.configuration-report-form select { width: 100%; color: var(--text); border: 1px solid var(--control-border); border-radius: 6px; background-color: var(--field); padding: 10px 42px 10px 12px; font-size: 14px; }
+.configuration-report-form .issue-report-row { gap: 16px; }
+.configuration-report-config { display: flex; flex-direction: column; gap: 12px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 8px; background: var(--surface); min-width: 0; }
+.configuration-report-config-head { display: flex; flex-wrap: wrap; align-items: baseline; gap: 4px 10px; font-size: 13px; }
+.configuration-report-config-head span { color: var(--faint); font-size: 11px; font-weight: 600; letter-spacing: .08em; text-transform: uppercase; }
+.configuration-report-config-head strong { color: var(--text); font-weight: 600; }
+.configuration-report-config-head small { margin-left: auto; color: var(--muted); font-size: 12px; }
+.configuration-report-config .issue-report-chips li { padding: 4px 10px; }
+.configuration-report-config .service-note, .configuration-report-config .file-error { margin: 0; }
+.configuration-report-optional { display: flex; flex-direction: column; gap: 8px; }
+.configuration-report-optional .issue-report-more { padding: 0; border-radius: 8px; background: var(--surface); }
+.configuration-report-optional .issue-report-more > summary { display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 10px; padding: 12px 16px; font-size: 13px; font-weight: 600; color: var(--text-secondary); cursor: pointer; }
+.configuration-report-optional .issue-report-more > summary span { margin: 0; color: var(--faint); font-size: 12px; font-weight: 400; }
+.configuration-report-optional .issue-report-more > :not(summary) { margin: 0 16px; }
+.configuration-report-optional .issue-report-more > :last-child { margin-bottom: 16px; }
+.configuration-report-optional .issue-report-more > summary + * { margin-top: 2px; }
+.configuration-report-optional .issue-report-more > * + :not(summary) { margin-top: 14px; }
+.configuration-report-optional .issue-report-more > input[type="file"] { width: calc(100% - 32px); }
+.configuration-report-optional .issue-report-log-preview .button { align-self: flex-start; }
+.configuration-report-form .issue-report-row-3 { grid-template-columns: 1fr 1fr; }
+.configuration-report-form .issue-report-row-3 > label:last-child { grid-column: 1 / -1; }
+.configuration-report-optional kbd { font: inherit; font-size: 11px; border: 1px solid var(--control-border); border-radius: 4px; padding: 1px 5px; color: #dddde9; }
+.configuration-report-footer { display: flex; flex-direction: column; gap: 12px; padding: 14px 24px 18px; border-top: 1px solid var(--line); background: var(--surface); flex: 0 0 auto; }
+.app-dialog .configuration-report-notice { margin: 0; color: var(--muted); font-size: 12px; line-height: 1.6; }
+.configuration-report-footer .file-error { margin: 0; }
+.configuration-report-submit { display: flex; align-items: center; justify-content: space-between; gap: 12px 20px; }
+.configuration-report-submit .risk-accept { margin: 0; min-height: 0; font-size: 13px; font-weight: 400; align-items: center; gap: 9px; }
+.configuration-report-submit .risk-accept input { width: 18px; height: 18px; margin: 0; }
+.configuration-report-actions { display: flex; gap: 10px; flex-shrink: 0; }
+.configuration-report-actions .button { min-height: 40px; }
+.configuration-report-footer .dialog-actions { margin: 0; }
+.configuration-report-success { display: flex; gap: 14px; align-items: flex-start; }
+.configuration-report-success > div { min-width: 0; }
+.configuration-report-success strong { display: block; margin-bottom: 6px; font-size: 15px; }
+.configuration-report-success p { margin: 0; }
+.configuration-report-check { display: grid; place-items: center; flex-shrink: 0; width: 32px; height: 32px; border-radius: 50%; background: #243a31; color: #9cc6b1; }
+@media (max-width: 600px) {
+  .app-dialog.configuration-report-dialog { width: calc(100vw - 20px); max-height: calc(100dvh - 20px); }
+  .configuration-report-head { padding: 10px 8px 10px 16px; }
+  .app-dialog .configuration-report-head h2 { font-size: 16px; }
+  .configuration-report-config-head small { margin-left: 0; }
+  .configuration-report-body { padding: 16px; gap: 16px; }
+  .configuration-report-footer { padding: 12px 16px 16px; }
+  .configuration-report-submit { flex-direction: column; align-items: stretch; }
+  .configuration-report-actions .button { flex: 1; justify-content: center; }
+  .configuration-report-form input:not([type="checkbox"]):not([type="file"]), .configuration-report-form textarea, .configuration-report-form select { font-size: 16px; }
+}
 .popularity-note { color: #aaaab7; font-size: 12px; line-height: 1.6; margin: 16px 0; }
 .published-card .module-popularity { margin-bottom: 14px; }
 .project-notice { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 18px; margin-bottom: 24px; padding-bottom: 16px; border-bottom: 1px solid #494650; font-size: 12px; line-height: 1.7; color: #b7b5c3; }
