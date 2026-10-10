@@ -211,14 +211,23 @@ baseline and two existing utility waivers remain untouched.
 
 On 3 October 2026 the owner explicitly approved enabling firmware building
 without hardware timing and complete memory bounds. This is recorded in
-[evidence/build-approval.json](evidence/build-approval.json) and independently
-pinned by `sdk/midi-scenes-build-approval.json`. It covers only
-`0.2.4-experimental`, this complete module folder and the unchanged author MAIN.
-The historical `0.2.3-experimental` measurements remain labelled as measured;
+[evidence/build-approval.json](evidence/build-approval.json). It covered only
+`0.2.4-experimental`, that complete module folder and the unchanged author MAIN;
+its pinning record was replaced by the 0.2.5 record below and stays in git
+history. The historical `0.2.3-experimental` measurements remain labelled as measured;
 metadata-only promotion changes no author instructions or image identity.
 Unknown timing and full memory bounds remain unknown. The original monochrome
 captures identify the same image. Native 8.2 sources are archived outside
 module discovery; browser/native proofs for that port are not reused here.
+
+On 10 October 2026 the owner approved publishing `0.2.5-experimental` with
+"approved without concrete hardware evidence." `sdk/midi-scenes-build-approval.json`
+is an owner-approved update bound to this version and its native source. It waives
+only current-build hardware evidence. The contributor's MKII checks above ran on the
+pre-#392 shared runtime, so they are reported evidence for the MIDI Scenes code, not a
+verified result for the shipped image. Hardware timing and complete memory bounds stay
+unknown, as stated above. Software verification, packaging and worker parity, the
+actual LCD captures and the documentation remain mandatory.
 
 The supported configuration contains only MIDI Scenes. The shared worker
 reconstructs the guarded author recipe before existing ELEK/ELUP packaging,

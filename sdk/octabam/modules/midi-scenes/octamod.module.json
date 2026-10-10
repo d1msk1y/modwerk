@@ -248,35 +248,26 @@
       "scripts/midi-scenes-emulator/run.py",
       "scripts/verify-midi-scenes-worker.html"
     ],
-    "releaseWaiver": {
-      "moduleVersion": "0.2.4-experimental",
-      "sourceSha256": "5116aa89e8ff9086126313c260fb0b10ca5e1b0bb521238955dc0888b27c4d11",
-      "imageSha256": "debb24090cada4be00bc70880136f14e813b0d3a9018b516f922d33671bd9b87",
-      "approvedBy": "repeat98",
-      "approvedOn": "2026-10-03",
-      "reason": "Explicit owner approval: I explicitely approve enabling firmware building without hardware timing and complete memory bounds. Applies only to this exact standalone MIDISC2.0 release; unknown bounds remain unknown.",
-      "report": "evidence/build-approval.json",
-      "documentation": {
-        "tutorial": {
-          "title": "Quick tutorial: morph a MIDI filter CC",
-          "steps": [
-            "Press MIDI and select a MIDI track. Set and confirm its output channel in FUNC + SRC. In FUNC + FX1, assign CC1 to controller 74 with encoder C and confirm with YES; the receiver must use that controller for its filter.",
-            "Return to FX1. Hold FUNC and press encoder C to enable CC1, then set its base to 0. Hold SCENE A, assign a scene with a TRIG key, and turn C to 64; the scene-held value should read 64.",
-            "Release SCENE A: the base value should read 0. Sweep the crossfader between your assigned scenes to hear the receiver change; clear the scene lock or disable CC1 to stop this example. The retained captures verify the values and release behavior without a connected receiver."
-          ]
-        },
-        "screenshots": [
-          "media/ot-channel.png",
-          "media/ot-setup.png",
-          "media/ot-location.png",
-          "media/ot-scene-lock.png",
-          "media/ot-released.png",
-          "media/ot-arp.png",
-          "media/ot-lfo.png",
-          "media/ot-control2.png"
-        ],
-        "screenshotStyle": "black-and-white"
-      }
+    "documentation": {
+      "tutorial": {
+        "title": "Quick tutorial: morph a MIDI filter CC",
+        "steps": [
+          "Press MIDI and select a MIDI track. Set and confirm its output channel in FUNC + SRC. In FUNC + FX1, assign CC1 to controller 74 with encoder C and confirm with YES; the receiver must use that controller for its filter.",
+          "Return to FX1. Hold FUNC and press encoder C to enable CC1, then set its base to 0. Hold SCENE A, assign a scene with a TRIG key, and turn C to 64; the scene-held value should read 64.",
+          "Release SCENE A: the base value should read 0. Sweep the crossfader between your assigned scenes to hear the receiver change; clear the scene lock or disable CC1 to stop this example. The retained captures verify the values and release behavior without a connected receiver."
+        ]
+      },
+      "screenshots": [
+        "media/ot-channel.png",
+        "media/ot-setup.png",
+        "media/ot-location.png",
+        "media/ot-scene-lock.png",
+        "media/ot-released.png",
+        "media/ot-arp.png",
+        "media/ot-lfo.png",
+        "media/ot-control2.png"
+      ],
+      "screenshotStyle": "black-and-white"
     }
   },
   "source": {

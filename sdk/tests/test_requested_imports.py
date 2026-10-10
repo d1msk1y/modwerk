@@ -63,7 +63,7 @@ class RequestedImports(unittest.TestCase):
             self.assertEqual(doc['source']['revision'], '4f9a89453fdcdd39a3cd57f010ffa489cac721cd' if id == 'midi-scenes' else '6f9e5bc9db0ae9fa99fa2f2a0f4de1fdb8e9a136' if id == 'usb-audio-out-tracks-main-cue' else REPORT['revision'])
             self.assertTrue((SDK / 'modules' / id / 'LICENSE').is_file())
             if id == 'midi-scenes':
-                self.assertEqual(doc['version'], '0.2.4-experimental')
+                self.assertEqual(doc['version'], '0.2.5-experimental')
                 self.assertNotIn('build', doc)
             else:
                 self.assertNotIn('build', doc)
