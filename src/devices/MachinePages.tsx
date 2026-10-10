@@ -29,6 +29,7 @@ import { MemberGate } from '../community/MemberGate'
 import { useDigiFirmware } from '../hooks/useDigiFirmware'
 import { DigiFirmwarePanel } from '../components/DigiFirmwarePanel'
 import { DigiBuildPanel } from '../components/DigiBuildPanel'
+import { ConfigurationHeader } from '../components/ConfigurationLayout'
 import { ModuleAuthors } from '../components/ModuleAuthors'
 import { contributorSearchText } from '../catalog/module-authors'
 
@@ -154,7 +155,7 @@ export function DigiLibrary({ device, machinePicker, category, query, selectedId
 }
 
 export function DigiConfiguration({ device, configuration, configurations, onSelect, onDialog, onToggle, onImport, onReport }: { device: DigiDevice; onReport: () => void; configuration?: Configuration; configurations: Configuration[]; onSelect: (id: string) => void; onDialog: (mode: 'create' | 'rename' | 'duplicate' | 'delete') => void; onToggle: (id: string) => void; onImport: (configuration: ReturnType<typeof parseDigiSelection>) => void }) {
-  const importRef = useRef<HTMLInputElement>(null), [importError, setImportError] = useState(''), [importNotes, setImportNotes] = useState<string[]>([]), [exported, setExported] = useState('')
+  const importRef = useRef<HTMLInputElement>(null), [buildResults, setBuildResults] = useState<HTMLDivElement | null>(null), [importError, setImportError] = useState(''), [importNotes, setImportNotes] = useState<string[]>([]), [exported, setExported] = useState('')
   const firmware = useDigiFirmware(device.id)
   const ids = configuration?.moduleIds ?? []
   const selection = DIGI_MODS.filter(mod => mod.device === device.id && ids.includes(mod.id))
@@ -169,32 +170,34 @@ export function DigiConfiguration({ device, configuration, configurations, onSel
   }
   return (
     <div className="configuration-page">
-      <div className="page-heading"><div><p className="page-kicker">YOUR WORKSPACE · {device.name.toUpperCase()}</p><h1>{configuration?.name ?? 'No ' + device.name + ' configuration yet'}</h1><p>Changes save automatically on this device.</p></div><span className="pill">OS {device.firmware?.releases.join(' / ')}</span></div>
-      <div className="configuration-actions">
-        {configurations.length > 0 && <select aria-label="Choose configuration" value={configuration?.id ?? ''} onChange={event => onSelect(event.target.value)}>{configurations.map(item => <option key={item.id} value={item.id}>{item.name}</option>)}</select>}
-        <button className="button button-primary" onClick={() => onDialog('create')}><Icon name="plus" size={16} />New</button>
-        {configuration && <><button className="button button-quiet" onClick={() => onDialog('rename')}>Rename</button><button className="button button-quiet" onClick={() => onDialog('duplicate')}>Duplicate</button><button className="button button-quiet" onClick={() => onDialog('delete')}>Delete</button><button className="button button-quiet" onClick={() => importRef.current?.click()}>Import JSON</button><a className="button button-quiet" href={'#forum/new?category=configs&machine='+device.id}>Share in forum</a><button className="button button-quiet module-issue-action" disabled={!ids.length} aria-haspopup="dialog" onClick={onReport}><Icon name="message" size={16} />Report a problem</button></>}
-      </div>
+      <ConfigurationHeader kicker={'YOUR WORKSPACE · ' + device.name.toUpperCase()} meta={device.name + ' · OS ' + (device.firmware?.releases.join(' / ') ?? '') + ' · Changes save automatically on this device.'} emptyTitle={'No ' + device.name + ' configuration yet'} configuration={configuration} configurations={configurations} onSelect={onSelect} onDialog={onDialog} onImport={() => importRef.current?.click()} shareHref={'#forum/new?category=configs&machine=' + device.id} canReport={!!ids.length} onReport={onReport}/>
       <input ref={importRef} type="file" accept="application/json,.json" hidden aria-label="Import configuration backup" onChange={event => { void importBackup(event.target.files?.[0]); event.target.value = '' }}/>
       {importError && <p className="file-error" role="alert">{importError}</p>}
       {importNotes.length > 0 && <div className="import-notes" role="status"><strong>Imported from an older catalog</strong>{importNotes.map(note => <p key={note}>{note}</p>)}</div>}
-      <section className={'compatibility-panel compatibility-' + (estimate.fits && !estimate.clashes.length ? 'clear' : 'conflict')} aria-live="polite" aria-labelledby="digi-compatibility-title"><div className="compatibility-heading"><span className="compatibility-icon"><Icon name={estimate.fits && !estimate.clashes.length ? 'shield' : 'sliders'} size={20}/></span><div><h2 id="digi-compatibility-title">{!estimate.fits || estimate.clashes.length ? 'Your selection needs a change' : selection.length ? 'No declared conflicts' : 'Choose your modules'}</h2><p>{!estimate.fits || estimate.clashes.length ? 'Review the resources below and choose a compatible set.' : selection.length ? 'Choose your base firmware for placement checks.' : 'Add a module from the library, or build the core alone. Compatibility updates as you make changes.'}</p></div></div></section>
-      <section className="configuration-section" aria-labelledby="digi-firmware-title"><div className="section-title"><h2 id="digi-firmware-title">Base firmware</h2><span className="subtle">Read locally</span></div>
-        <DigiFirmwarePanel name={device.name} releases={device.firmware?.releases ?? []} firmware={firmware} />
-      </section>
-      <section className="configuration-section" aria-labelledby="digi-selection-title"><div className="section-title"><h2 id="digi-selection-title">Selected modules <span className="subtle">{selection.length}</span></h2><a className="text-button" href={deviceHref(device.id)}>Browse modules <Icon name="plus" size={14} /></a></div>
-        {selection.length ? <ul className="selected-list">{selection.map(mod => <li key={mod.id}><a className="selected-module-link" href={deviceHref(device.id, 'module/' + mod.id)}><DigiModPreview mod={mod} compact /><span><strong>{mod.title}</strong><small>{mod.category} · {mod.author} · {kib(mod.ramBytes)}</small></span></a><button className="icon-button" aria-label={'Remove ' + mod.title} onClick={() => onToggle(mod.id)}><Icon name="close" size={17} /></button></li>)}</ul>
-          : <div className="selection-empty"><Icon name="grid" size={26} /><strong>No modules selected</strong><p>Find something in the library and add it to your configuration.</p><a className="button button-quiet" href={deviceHref(device.id)}>Browse modules</a></div>}
-      </section>
-      <section className="configuration-section" aria-labelledby="digi-resources-title"><div className="section-title"><h2 id="digi-resources-title">Resources</h2><span className="subtle">core {DIGI_CORES[device.id].version} · {DIGI_CORES[device.id].slots}</span></div>
-        <div className={'resource-meter' + (estimate.fits ? '' : ' is-over')} role="meter" aria-valuemin={0} aria-valuemax={estimate.areaBytes} aria-valuenow={estimate.usedBytes} aria-label="Shared mod memory">
-          <div className="resource-meter-head"><strong>Shared mod memory</strong><span>{kib(estimate.usedBytes)} of {kib(estimate.areaBytes)}</span></div>
-          <div className="resource-meter-track"><span style={{ width: percent + '%' }} /></div>
-          <small>{estimate.fits ? 'Estimated from each mod’s code and data sizes; the build’s own check decides.' : 'Over the shared area: this set will not link. Remove a mod.'}</small>
+      <div className="configuration-layout">
+        <div className="configuration-main">
+          <section className="configuration-section" aria-labelledby="digi-selection-title"><div className="section-title"><h2 id="digi-selection-title">Selected modules <span className="subtle">{selection.length}</span></h2><a className="text-button" href={deviceHref(device.id)}>Browse modules <Icon name="plus" size={14} /></a></div>
+            {selection.length ? <ul className="selected-list">{selection.map(mod => <li key={mod.id}><a className="selected-module-link" href={deviceHref(device.id, 'module/' + mod.id)}><DigiModPreview mod={mod} compact /><span><strong>{mod.title}</strong><small>{mod.category} · {mod.author} · {kib(mod.ramBytes)}</small></span></a><button className="icon-button" aria-label={'Remove ' + mod.title} onClick={() => onToggle(mod.id)}><Icon name="close" size={17} /></button></li>)}</ul>
+              : <div className="selection-empty"><Icon name="grid" size={26} /><strong>No modules selected</strong><p>Find something in the library and add it to your configuration.</p><a className="button button-quiet" href={deviceHref(device.id)}>Browse modules</a></div>}
+          </section>
+          <section className="configuration-section" aria-labelledby="digi-resources-title"><div className="section-title"><h2 id="digi-resources-title">Resources</h2><span className="subtle">core {DIGI_CORES[device.id].version} · {DIGI_CORES[device.id].slots}</span></div>
+            <div className={'resource-meter' + (estimate.fits ? '' : ' is-over')} role="meter" aria-valuemin={0} aria-valuemax={estimate.areaBytes} aria-valuenow={estimate.usedBytes} aria-label="Shared mod memory">
+              <div className="resource-meter-head"><strong>Shared mod memory</strong><span>{kib(estimate.usedBytes)} of {kib(estimate.areaBytes)}</span></div>
+              <div className="resource-meter-track"><span style={{ width: percent + '%' }} /></div>
+              <small>{estimate.fits ? 'Estimated from each mod’s code and data sizes; the build’s own check decides.' : 'Over the shared area: this set will not link. Remove a mod.'}</small>
+            </div>
+            {estimate.clashes.map((clash, index) => <p key={clash.claim + index} className="file-error" role="alert">{clash.mods.join(' and ')} cannot be used together: {clash.claim}.</p>)}
+          </section>
+          <section className="configuration-section" aria-labelledby="digi-firmware-title"><div className="section-title"><h2 id="digi-firmware-title">Base firmware</h2><span className="subtle">Read locally</span></div>
+            <DigiFirmwarePanel name={device.name} releases={device.firmware?.releases ?? []} firmware={firmware} />
+          </section>
+          <div ref={setBuildResults} className="build-results" />
         </div>
-        {estimate.clashes.map((clash, index) => <p key={clash.claim + index} className="file-error" role="alert">{clash.mods.join(' and ')} cannot be used together: {clash.claim}.</p>)}
-      </section>
-      <MemberGate action="build firmware" next={device.id+'/configuration'}><DigiBuildPanel device={device} firmware={firmware} moduleIds={ids} onExport={() => { if (configuration) { downloadDigiSelection(configuration, device.id); setExported(exportKey) } }} exported={exported===exportKey} canExport={!!configuration}/></MemberGate>
+        <div className="configuration-checkout">
+          <section className={'compatibility-panel compatibility-' + (estimate.fits && !estimate.clashes.length ? 'clear' : 'conflict')} aria-live="polite" aria-labelledby="digi-compatibility-title"><div className="compatibility-heading"><span className="compatibility-icon"><Icon name={estimate.fits && !estimate.clashes.length ? 'shield' : 'sliders'} size={20}/></span><div><h2 id="digi-compatibility-title">{!estimate.fits || estimate.clashes.length ? 'Your selection needs a change' : selection.length ? 'No declared conflicts' : 'Choose your modules'}</h2><p>{!estimate.fits || estimate.clashes.length ? 'Review the resources below and choose a compatible set.' : selection.length ? 'Choose your base firmware for placement checks.' : 'Add a module from the library, or build the core alone. Compatibility updates as you make changes.'}</p></div></div></section>
+          <div className="checkout-card"><MemberGate action="build firmware" next={device.id+'/configuration'}><DigiBuildPanel device={device} firmware={firmware} moduleIds={ids} onExport={() => { if (configuration) { downloadDigiSelection(configuration, device.id); setExported(exportKey) } }} exported={exported===exportKey} canExport={!!configuration} results={buildResults}/></MemberGate></div>
+        </div>
+      </div>
     </div>
   )
 }

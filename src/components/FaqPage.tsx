@@ -264,7 +264,7 @@ const SECTIONS: FaqSection[] = [
         title: 'Can I share my configuration or a finished firmware file?',
         keywords: 'export import json backup send copyright redistribute bin syx modules',
         answer: <>
-          <p>For Octatrack, share the JSON file from <strong>Export configuration</strong>. Another Octatrack owner can use <strong>Import JSON</strong> in Configuration and supply their own original OS {BASE_FIRMWARE.version} file. Your browser’s saved configurations do not sync between devices automatically.</p>
+          <p>For Octatrack, share the JSON file from <strong>Export configuration</strong>. Another Octatrack owner can use <strong>Import JSON</strong> from the actions menu (<strong>⋯</strong>) in Configuration and supply their own original OS {BASE_FIRMWARE.version} file. Your browser’s saved configurations do not sync between devices automatically.</p>
           <p>Do not redistribute original or built firmware .bin or .syx files: they contain Elektron’s copyrighted OS. Share your module choices instead.</p>
         </>,
       },
