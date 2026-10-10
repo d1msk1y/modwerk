@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'vitest'
 import { readFileSync } from 'node:fs'
-import metadata from './native-metadata.json'
+import { isDeepStrictEqual } from 'node:util'
 import committed from './compatibility-checks.json'
 import pairs from './compatibility-pairs.json'
 import { compactChecks, passingPairs, recordedCheck, selectionKey, type CompactChecks, type NativeChecks } from './compatibility-checks'
-const native = metadata as NativeChecks
+// JSON.parse takes under a second; a Vite JSON import of this 70 MB file takes about 25 s.
+const native = JSON.parse(readFileSync(new URL('./native-metadata.json', import.meta.url), 'utf8')) as NativeChecks
 describe('compact compatibility checks', () => {
   it('matches the committed file, so the site ships the current native record', () => {
     expect(JSON.stringify(committed) + '\n').toBe(readFileSync(new URL('./compatibility-checks.json', import.meta.url), 'utf8'))
@@ -23,12 +24,14 @@ describe('compact compatibility checks', () => {
   for (let shard = 0; shard < 16; shard++) {
     it(`answers recorded selections and their notes in either id order (group ${shard + 1}/16)`, () => {
       expect(compact.checked.length).toBe(records.length)
+      // Collect mismatches: an expect() per record doubles this loop's cost.
+      const wrong: string[] = []
       for (let index = shard; index < records.length; index += 16) {
         const [key, notes] = records[index]
         const ids = key.split('+')
-        expect(recordedCheck(compact, ids, checked)).toEqual(notes)
-        expect(recordedCheck(compact, [...ids].reverse(), checked)).toEqual(notes)
+        for (const order of [ids, [...ids].reverse()]) if (!isDeepStrictEqual(recordedCheck(compact, order, checked), notes)) wrong.push(order.join('+'))
       }
+      expect(wrong).toEqual([])
     })
   }
   it('leaves unknown and unrecorded selections unchecked', () => {
