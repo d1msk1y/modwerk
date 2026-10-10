@@ -3,7 +3,7 @@ import { requireRegisteredReleaseAuthor, completeModuleRelease } from './release
 import { closeGithubReport, githubConfig, setGithubIssueState } from './github'
 import { isReportClosureReason } from '../src/community/report-closure'
 import { ADMIN_ACTOR, needMember, throttle } from './auth'
-import { issueStatusStatements } from './issue-notifications'
+import { issueReplyStatements, issueStatusStatements } from './issue-notifications'
 import { ITEM_SQL, toItem, VISIBLE } from './notifications'
 import { HttpError, jsonBody, required, response } from './security'
 import { COMMUNITY_MODULES, communityModule, developerModules, moduleThreadId } from '../src/community/modules'
@@ -113,8 +113,11 @@ export async function developerApi(request:Request,db:Database,user:User|null,ad
     await throttle(db,'private-report:'+member.id,30)
     const body = await jsonBody(request)
     if (match[2] === 'replies' && request.method === 'POST') {
-      const content = required(body.body,'Reply',4000)
-      await db.prepare('INSERT INTO issue_replies(id,issue_id,user_id,body) VALUES(?,?,?,?)').bind(crypto.randomUUID(),issue.id,member.id,content).run()
+      const content = required(body.body,'Reply',4000), replyId = crypto.randomUUID()
+      await db.batch([
+        db.prepare('INSERT INTO issue_replies(id,issue_id,user_id,body) VALUES(?,?,?,?)').bind(replyId,issue.id,member.id,content),
+        ...issueReplyStatements(db,issue,reported,replyId,member.id,content),
+      ])
       return response({ok:true},201)
     }
     if (!match[2] && request.method === 'PATCH') {
