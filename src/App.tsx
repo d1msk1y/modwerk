@@ -27,7 +27,6 @@ import { compareModules, DEFAULT_MODULE_SORT, MODULE_STATISTICS_CHANGED, type Mo
 import { ModulePopularity } from './community/ModulePopularity'
 import { selectionConflicts, type ConflictFix } from './catalog/selection-conflicts'
 import { addBlocks } from './catalog/add-blocks'
-import { CompatibilityPanel } from './components/CompatibilityPanel'
 import { useCommunity } from './community/context'
 import { hasBetaAccess } from './community/beta-access'
 import { SubmissionPage } from './community/SubmissionPage'
@@ -74,6 +73,8 @@ import { ConfigurationDialog } from './components/ConfigurationDialog'
 import { ConfigurationReportDialog } from './community/ConfigurationReport'
 import { ConfigurationEffects } from './components/ConfigurationEffects'
 import { ConfigurationHeader, RiskAcceptance } from './components/ConfigurationLayout'
+// The panel reads every recorded declaration check, megabytes of data, so it loads with the configuration page only.
+const CompatibilityPanel = lazy(() => import('./components/CompatibilityPanel').then(module => ({ default: module.CompatibilityPanel })))
 const FirmwareFeedbackPreview = import.meta.env.DEV ? lazy(() => import('./components/FirmwareFeedbackPreview')) : () => null
 const firmwareFeedbackPreview = import.meta.env.DEV && typeof window !== 'undefined' && new URLSearchParams(window.location.search).get('preview') === 'firmware-feedback'
 function subscribeRoute(callback: () => void) {
@@ -390,7 +391,7 @@ export default function App() {
                   <div ref={setBuildResultsSlot} className="build-results" />
                 </div>
                 <div className="configuration-checkout">
-                  <CompatibilityPanel ids={selectedIds} keepStockFx2={DSP_LOADER && (active?.keepStockFx2??true)} buildState={firmwareBuild.state} buildError={firmwareBuild.error} buildConflict={firmwareBuild.conflict} onFix={fixConflict}/>
+                  <Suspense fallback={null}><CompatibilityPanel ids={selectedIds} keepStockFx2={DSP_LOADER && (active?.keepStockFx2??true)} buildState={firmwareBuild.state} buildError={firmwareBuild.error} buildConflict={firmwareBuild.conflict} onFix={fixConflict}/></Suspense>
                   <div className="checkout-card">
                     <RiskAcceptance checked={riskAccepted.key===firmwareBuild.key&&riskAccepted.accepted} onChange={accepted => setRiskAccepted({key:firmwareBuild.key,accepted})}/>
                     <MemberGate action="build firmware" next={route}><FirmwareBuildPanel build={firmwareBuild} available={ENGINE_AVAILABLE} downloadsEnabled={DOWNLOADS_ENABLED} firmwareReady={!!firmware} moduleCount={selection.length} riskAccepted={riskAccepted.key===firmwareBuild.key&&riskAccepted.accepted} configurationName={active?.name??'Configuration'} onExport={saveSelection} exported={saved} results={buildResultsSlot}/></MemberGate>
