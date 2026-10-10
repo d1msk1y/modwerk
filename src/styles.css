@@ -168,6 +168,16 @@ h2 { font-size: 16px; letter-spacing: -.15px; font-weight: 600; }
 .add-button.is-added { color: var(--background); background: var(--accent); border-color: var(--accent); font-weight: 600; }
 .add-button.is-added:hover { background: var(--accent-hover); border-color: var(--accent-hover); }
 .add-button.is-added svg { stroke-width: 2.6; }
+/* A module that conflicts with the configuration. The button stays enabled and opens the swap prompt. */
+.add-button.is-conflict { color: #f0bb79; background: #3a3026; border-color: #715235; }
+.add-button.is-conflict:hover, .add-button.is-conflict[aria-expanded="true"] { background: #463829; border-color: #f0bb79; }
+.add-block-chip { margin-right: 6px; white-space: normal; border-radius: 12px; }
+.add-block-chip.is-conflict { border-color: #71523599; background: #f0bb790f; color: #f0bb79; }
+.add-block-prompt { margin-top: 10px; padding: 12px; border: 1px solid #715235; border-radius: 8px; background: #2d2721; }
+.add-block-prompt p { margin: 0; color: #d0bca4; font-size: 12px; line-height: 1.6; }
+.add-block-actions { display: flex; flex-direction: column; align-items: stretch; gap: 8px; margin-top: 12px; }
+.add-block-actions .button { justify-content: center; min-height: 38px; font-size: 12px; text-align: left; white-space: normal; }
+.add-block-actions .text-button { align-self: flex-start; min-height: 32px; }
 .card-credit { display: flex; justify-content: space-between; gap: 10px; margin-top: 4px; color: #b9b9c7; font-size: 12px; line-height: 1.5; }
 .card-credit a:hover, .author-link:hover { color: var(--accent); }
 /* The summary lives in the cover hover on pointer devices; phones and touch screens show it in the body. */
@@ -1756,7 +1766,12 @@ h1 { font-size: 28px; }
 .detail-works-summary strong { display: block; font-size: 12px; font-weight: 500; font-variant-numeric: tabular-nums; }
 .detail-works-summary small { display: block; margin-top: 3px; color: var(--muted); font-size: 11px; }
 .detail-hero-with-resources .detail-rating { grid-area: reviews; margin: 16px 0 0; }
-.detail-hero-with-resources .module-configure-action { grid-area: configure; margin-right: 10px; }
+.detail-hero-with-resources .module-add-region { grid-area: configure; display: grid; align-content: start; margin-right: 10px; }
+.module-add-region > .add-block-chip { justify-self: start; margin-top: 8px; }
+.module-add-region > .add-block-prompt { margin-top: 10px; }
+.detail-hero-with-resources .module-add-region:has(.add-block-prompt) ~ .module-update-compact > .button { align-self: start; }
+.module-configure-action.is-conflict { border-color: #715235; background: #3a3026; color: #f0bb79; }
+.module-configure-action.is-conflict:hover:not(:disabled) { background: #463829; }
 .detail-hero-with-resources .module-update-compact { display: contents; }
 .detail-hero-with-resources .detail-intro .module-update-compact > .button { grid-area: updates; justify-self: center; align-self: center; width: auto; max-width: 100%; border: 0; background: transparent; padding: 8px 0; box-shadow: none; color: var(--muted); font-size: 12px; }
 .detail-hero-with-resources .module-update-compact > .button:hover:not(:disabled) { color: var(--text); background: transparent; }
@@ -1788,7 +1803,7 @@ h1 { font-size: 28px; }
     grid-template-columns: minmax(0, 1.2fr) minmax(0, 1fr);
     grid-template-areas: "tags tags" "title title" "creator creator" "description description" "notice notice" "configure configure" "updates updates" "update-error update-error" "feedback feedback" "reviews reviews";
   }
-  .detail-hero-with-resources .module-configure-action { margin: 0 0 10px; }
+  .detail-hero-with-resources .module-add-region { margin: 0 0 10px; }
   .detail-hero-with-resources .detail-intro .module-update-compact > .button { justify-self: start; }
   .detail-hero-with-resources .detail-intro .button { border-radius: 8px; font-size: 14px; }
   .module-feedback { grid-template-columns: repeat(2, minmax(0, 1fr)); grid-template-areas: "feedback-prompt feedback-prompt" "works works" "works-action issue-action" "works-error works-error"; gap: 12px 10px; margin-top: 14px; }
