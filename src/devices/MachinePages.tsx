@@ -148,12 +148,6 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
   </div>
 }
 
-export function AllMachinesLibrary(props: AllMachinesLibraryProps) { return <MachineLibrary {...props} /> }
-
-export function DigiLibrary({ device, machinePicker, category, query, selectedIds, onToggle, family, onFamilyChange, sort, onSortChange, statistics, comparison, onCompare, onOpenComparison }: { device: DigiDevice; category?: string; query: string; selectedIds: string[]; onToggle: (id: string) => void; family: string; onFamilyChange: (value: string) => void; sort: string; onSortChange: (value: string) => void; statistics: readonly ModuleStatistics[] | null; comparison: readonly string[]; onCompare: (id: string) => void; onOpenComparison: () => void; machinePicker?: ReactNode }) {
-  return <MachineLibrary device={device} machinePicker={machinePicker} category={category as ModuleCategory | undefined} query={query} octatrackModules={[]} octatrackSelected={[]} onToggleOctatrack={() => {}} digiSelected={{digitakt: device.id === 'digitakt' ? selectedIds : [], digitone: device.id === 'digitone' ? selectedIds : []}} onToggleDigi={(_, id) => onToggle(id)} family={family} onFamilyChange={onFamilyChange} sort={sort} onSortChange={onSortChange} statistics={statistics} octatrackConflicts={[]} comparison={comparison} onCompare={onCompare} onOpenComparison={onOpenComparison} viewedModuleVersions={{}} moduleBaseline={null} />
-}
-
 export function DigiConfiguration({ device, configuration, configurations, onSelect, onDialog, onToggle, onImport, onReport }: { device: DigiDevice; onReport: () => void; configuration?: Configuration; configurations: Configuration[]; onSelect: (id: string) => void; onDialog: (mode: 'create' | 'rename' | 'duplicate' | 'delete') => void; onToggle: (id: string) => void; onImport: (configuration: ReturnType<typeof parseDigiSelection>) => void }) {
   const importRef = useRef<HTMLInputElement>(null), [buildResults, setBuildResults] = useState<HTMLDivElement | null>(null), [importError, setImportError] = useState(''), [importNotes, setImportNotes] = useState<string[]>([]), [exported, setExported] = useState('')
   const firmware = useDigiFirmware(device.id)
