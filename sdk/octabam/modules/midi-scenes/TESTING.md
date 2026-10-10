@@ -155,20 +155,40 @@ The local emulator libraries were not checked against `native-inputs.json`.
 Its 0.2.4 baseline matches the recorded 47,642-cycle and 156-byte figures.
 These are emulator observations, not hardware timing.
 
-### Contributor hardware test (reported, 9 October 2026)
+### Contributor hardware tests (reported)
 
-@JamCones ran a private build of the earlier 0.2.5 candidate (release MAIN
-`c7fb7d5b…`, without the `0x400d69d2` change) on an Octatrack MKII. MIDI out
-was looped to MIDI in, controlling CC 42 (FX2) on channel 1: base 64, Scene A
-0, Scene B 127.
+Both runs were by @JamCones on an Octatrack MKII, with MIDI out looped to
+MIDI in controlling CC 42 (FX2) on channel 1: static value 64, Scene A 0,
+Scene B 127. These are contributor-reported results, not measurements.
 
-- Passed: morph with no mutes; mute A and mute B each morph between the base
-  value and the unmuted scene; both muted send no MIDI; editing a muted
-  scene's locks; Part reload, project reload and reboot keep the locks; 20+
-  minutes of looping audio with continuous crossfader moves.
-- Failed: muting the last unmuted scene left the CC at its morphed value
-  instead of returning to 64 as stock does. `0x400d69d2` fixes this in the
-  emulator; the current image has not yet been re-tested on hardware.
+**10 October 2026, final 0.2.5 build** (release MAIN `ed7ccf4f…`; private
+update file SHA-256 `b8cff4d8ffe1c2c45b0b382ca6a1853d1ad4781d7b556c4ee30faa7119e27943`):
+all fourteen checks passed.
+
+- Morph with no mutes, A muted and B muted, at full A, ¼, middle and full B.
+- Muting the last unmuted scene, in both orders and at both ends, sends the
+  static value; with both muted the crossfader sends no MIDI.
+- Unmuting in both orders resumes the expected morph.
+- With the static value changed to 100, muting the last scene sends 100.
+- Trig locks under scene mute behave as stock.
+- A second CC with no scene locks is not sent when scenes are muted or
+  unmuted.
+- Two MIDI tracks each return to their own static value.
+- The same behaviour with the sequencer playing, including notes at full A
+  or full B with that side muted.
+- Editing a muted scene's lock while holding its key.
+- Part save/reload, project save/load and reboot.
+- 30 minutes of playback with looping audio, crossfader moves and mute
+  toggles.
+
+**9 October 2026, first candidate** (release MAIN `c7fb7d5b…`, without the
+`0x400d69d2` change): everything passed except muting the last unmuted
+scene, which left the CC at its morphed value. The final build fixes this.
+
+Observed separately: with no scene muted, editing a scene lock while holding
+its key at that crossfader end does not send the CC immediately, unlike
+stock audio scenes. With no mute active, every row above leaves the author's
+values unchanged, so this is existing MIDISC2.0 behaviour outside #329.
 
 ## Hardware report
 
