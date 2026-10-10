@@ -27,7 +27,7 @@ export function DeveloperReleaseGuide({ repository, task, machine }: { repositor
         <a href="#library"><strong>Modwerk</strong><span>Reviewed library & browser builder</span></a>
         <a href="https://github.com/irpina/elekloader" target="_blank" rel="noreferrer"><strong>Elekloader ↗</strong><span>Loader, shop & builder kit</span></a>
       </div>
-      <div className="developer-builder-path"><span><strong>Today</strong> Octatrack: Octabam · Digitakt/Digitone: Elekloader kit</span><Icon name="arrow" size={15} /><span><strong>Planned</strong> One shared builder</span></div>
+      <div className="developer-builder-path"><span><strong>Today</strong> Octatrack: Octabam · Digitakt/Digitone: Elekloader kit · Digitakt II: OS 1.17 preview (downloads off)</span><Icon name="arrow" size={15} /><span><strong>Planned</strong> One shared builder</span></div>
     </section>
 
     <nav className="developer-help" aria-label="Developer guides">

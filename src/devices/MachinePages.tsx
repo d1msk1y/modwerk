@@ -24,7 +24,7 @@ import { compareModules, downloadCoverage, type ModuleStatistics } from '../comm
 import { RATING_RANKING_NOTE } from '../community/rating-ranking'
 import { DeviceImage, PhotoCredit } from './DeviceImage'
 import { ALL_MACHINES, DEVICES, DEVICES_BY_ID, DEVICE_STEPS, STATUS_LABELS, deviceHref, deviceTitle, stepsDone, type DeviceProfile } from './registry'
-import { DIGI_CORES, DIGI_MODS, estimateCombination, type DigiMod } from './digi-mods'
+import { DIGI_CORES, DIGI_DEVICES, DIGI_MODS, estimateCombination, type DigiMod } from './digi-mods'
 import { MemberGate } from '../community/MemberGate'
 import { useDigiFirmware } from '../hooks/useDigiFirmware'
 import { DigiFirmwarePanel } from '../components/DigiFirmwarePanel'
@@ -103,12 +103,12 @@ export function MachineLibrary({ device, query, category, octatrackModules: octa
   const typeCounts = families.map(value => ({ value, count: scopeFamilies.filter(item => item === value).length })).filter(option => option.count || option.value === libraryFamily)
   const warnings = [
     ...((!device || device.id === 'octatrack') && octatrackConflicts.length ? [{device: DEVICES_BY_ID.octatrack, description: 'Some modules cannot run together. Choose a compatible set in your configuration.'}] : []),
-    ...(['digitakt', 'digitone'] as const).filter(id => !device || device.id === id).flatMap(id => {
+    ...DIGI_DEVICES.filter(id => !device || device.id === id).flatMap(id => {
       const estimate = estimateCombination(id, digiSelected[id])
       return !estimate.fits || estimate.clashes.length ? [{device: DEVICES_BY_ID[id], description: !estimate.fits ? 'The selected mods need more memory than this machine shares with mods.' : 'The selected mods cannot be used together.'}] : []
     }),
   ]
-  const digiGroups = (['digitakt', 'digitone'] as const).filter(id => !device || device.id === id).map(id => ({
+  const digiGroups = DIGI_DEVICES.filter(id => !device || device.id === id).map(id => ({
     id,
     mods: DIGI_MODS.filter(mod => mod.device === id && (!category || mod.libraryCategory === category) && (libraryFamily === 'all' || mod.category === libraryFamily) && (mod.title + ' ' + mod.summary + ' ' + mod.author + ' ' + contributorSearchText(mod.contributors)).toLowerCase().includes(term))
       .sort((a,b) => compareModules({id: id + '-' + a.id, name: a.title, authorName: a.author, updatedAt: a.updatedAt}, {id: id + '-' + b.id, name: b.title, authorName: b.author, updatedAt: b.updatedAt}, sort, statistics)),
@@ -218,7 +218,7 @@ export function EmptyMachine({ device, machinePicker, embedded = false }: { devi
   return (
     <div className="device-page">
       {machinePicker && <div className="discovery-tools">{machinePicker}</div>}
-      <Hero device={device} embedded={embedded}><div className="device-hero-actions"><a className="button button-primary" href={repository + '/blob/main/docs/ADD_A_MACHINE.md'} target="_blank" rel="noreferrer"><Icon name="plus" size={16} />Open a device PR</a><a className="button button-quiet" href="#forum"><Icon name="message" size={16} />Discuss in the forum</a></div></Hero>
+      <Hero device={device} embedded={embedded}><div className="device-hero-actions">{device.id === 'digitakt-ii' && device.sdk && <a className="button button-primary" href={deviceHref(device.id, 'configuration')}><Icon name="sliders" size={16} />Open local build preview</a>}<a className="button button-quiet" href={repository + '/blob/main/docs/ADD_A_MACHINE.md'} target="_blank" rel="noreferrer"><Icon name="plus" size={16} />Open a device PR</a><a className="button button-quiet" href="#forum"><Icon name="message" size={16} />Discuss in the forum</a></div></Hero>
       <section className="device-invite"><h2>Be the first to mod the {device.name}</h2><p>Nobody has published a working mod for this machine yet. Modwerk never hosts firmware: every build starts from the stock OS file each owner downloads from Elektron, so the work is in understanding that file and sharing only your own code.</p></section>
       <section className="configuration-section" aria-labelledby="ladder-title">
         <div className="section-title"><h2 id="ladder-title">Road to the first mod</h2><span className="subtle">{stepsDone(device)} of {DEVICE_STEPS.length} done</span></div>
