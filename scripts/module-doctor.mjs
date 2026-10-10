@@ -27,9 +27,27 @@ const json = path => JSON.parse(readFileSync(resolve(root, path), 'utf8'))
 const exists = path => existsSync(resolve(root, path))
 const catalog = json('sdk/catalog.json'), machineModules = ['digitakt', 'digitone'].flatMap(machine => exists('sdk/' + machine + '/modules') ? readdirSync(resolve(root, 'sdk', machine, 'modules'), { withFileTypes: true }).filter(entry => entry.isDirectory() && !entry.name.startsWith('_')).map(entry => ({ id: entry.name, machine })) : [])
 
+// An unknown id is answered before any check runs: the rules below take seconds on a large catalogue.
+if (!all && !exists('sdk/octabam/modules/' + ids[0]) && !machineModules.some(item => item.id === ids[0])) { console.error('No module named ' + ids[0] + ' under sdk/octabam/modules, sdk/digitakt/modules or sdk/digitone/modules.'); process.exit(2) }
+
 // The module and catalog rules every PR already enforces (versions, documentation, qualification, gauges, media): run once.
 const rules = spawnSync(process.execPath, ['scripts/modules.mjs'], { cwd: root, encoding: 'utf8' })
 const rulesProblem = rules.status === 0 ? '' : (rules.stderr.trim().split('\n').filter(line => line && !/^\s+at /.test(line)).slice(-1)[0] ?? 'failed')
+
+// native-metadata.json holds one ledger check per module combination (hundreds of thousands): parse it and count
+// each module's pairs once, not once per module.
+let nativeChecksCache
+function nativeChecks() {
+  if (!nativeChecksCache) {
+    const checks = json('src/catalog/native-metadata.json').checks, pairs = new Map()
+    for (const key of Object.keys(checks)) {
+      const ids = key.split('+')
+      if (ids.length === 2) for (const id of ids) pairs.set(id, (pairs.get(id) ?? 0) + 1)
+    }
+    nativeChecksCache = { checks, pairs }
+  }
+  return nativeChecksCache
+}
 
 // The qualification source hash is async; compute it once per module before the checks run.
 const nativeHashes = new Map()
@@ -68,6 +86,8 @@ function octatrack(id) {
   const performanceRequired = entry && (entry.addedAt ?? '').slice(0, 10) >= PERFORMANCE_REQUIRED_FROM
   if (exists(folder + '/evidence/performance.json')) {
     const record = json(folder + '/evidence/performance.json'), rows = judgeRecord(record)
+    // An ot_emu stress run stands in for dsp_host only where there is no dispatched instance: code reached through stock hooks.
+    if (record.stress?.harness === 'ot_emu' && document.compatibility?.effectId != null) fail('performance', 'stress: an ot_emu run is for code reached only through stock hooks; an effect with id ' + document.compatibility.effectId + ' renders under dsp_host -guard -dirty', 'python3 tools/harness/stress_project.py, then tools/harness/pressure.py render')
     if (record.module !== id || record.version !== document.version) fail('performance', 'evidence/performance.json is for ' + record.module + '@' + record.version + ', not ' + id + '@' + document.version, 'measure again for this version, then npm run perf:audit -- check ' + folder + '/evidence/performance.json')
     else for (const row of rows.filter(item => item.state === 'fail')) {
       if (ownerWaivedPerformanceRow(record, row, hardwareApproval, nativeHashes.get(id))) info('performance exception', row.name + ' evidence is missing and explicitly owner-waived at this exact version/source; limits are in TESTING.md')
@@ -101,7 +121,7 @@ function octatrack(id) {
     else fail('native comparison', 'no current comparison with native octabam', 'npm run module:verify -- ' + id + ' --os <your OCTATRACK_OS1.40C.bin>')
   }
 
-  const checks = json('src/catalog/native-metadata.json').checks, pairs = Object.keys(checks).filter(key => key.split('+').length === 2 && key.split('+').includes(id)).length
+  const { checks, pairs: pairCounts } = nativeChecks(), pairs = pairCounts.get(id) ?? 0
   if (!(id in checks)) fail('declaration checks', 'the module alone has no recorded ledger check, so a build of it is refused', 'npm run module:verify -- ' + id + ' --os <your OCTATRACK_OS1.40C.bin> (it records them)')
   else ok('declaration checks', 'recorded alone and beside ' + pairs + ' other modules')
 

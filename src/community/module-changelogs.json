@@ -857,6 +857,18 @@
           "Owner reports working MKII sound, two distinct simultaneous T1/T5 instances, Part/project save/reload and physical reboot on exact EVRB01T01. Full-load silicon timing and broader hardware modulation/recovery coverage remain unverified."
         ]
       }
+    ],
+    "output-matrix": [
+      {
+        "version": "0.1.0-experimental",
+        "date": "2026-10-09",
+        "changes": [
+          "First release: the CUE CFG box, titled OUT CFG with the module, gains MATRIX, which makes the headphone jack a third assignable output beside MAIN and CUE. CUE + LEVEL picks each track's outputs (any combination of MAIN, CUE and PHONES, or one of six mono jacks); the routing lives in the Part. MIX becomes the PHONES level, and the metronome also plays on PHONES.",
+          "Switching to or from MATRIX converts every Part's LEVEL and cue bytes by documented rules, and switching into NORMAL also sets the project's cue settings.",
+          "Builds with the stock DSP code built in: its core-0 code takes a given-up stock reverb's space (SPRING REV first), which leaves the FX2 menu. It cannot be combined with Analog BD yet.",
+          "Author's functional MKII report (7–9 Oct 2026) covers routing, levels, everyday flows, saving and power; no timed stress run or chip timing."
+        ]
+      }
     ]
   }
 }
