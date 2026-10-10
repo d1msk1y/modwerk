@@ -272,3 +272,14 @@ Since the log became optional, a report could leave with no configuration at all
 The owner requested all day-to-day developer work in GitHub and users in the frontend. Public replies go into one GitHub thread from either surface; signed GitHub status events update Modwerk. Registered authors can close/reopen their own shared public reports and complete verified published fixes through scoped GitHub comment commands, without a fork, website claim or repository-wide permissions. Existing numeric ownership, suspension/revocation, privacy consent and exact live-release gates remain enforced. A merged PR is not a resolved report.
 
 The former developer workspace becomes Creator settings for claims, support links and direct private diagnostic access. The duplicate public report/activity inbox and frontend public closure controls are removed. Existing member module notifications, private reports and compatibility APIs remain.
+
+## 10 October 2026 — Reports about a whole configuration
+
+Every report belonged to one module and went to that module's author. A freeze that only happens with two effects loaded, or a build that fails, has no single module to name, so it reached no one, or only whichever author the reporter guessed.
+
+- **A report can be about a whole saved configuration.** It starts from the configuration page, not a module page, and is for problems in the combination or of unknown cause.
+- **Every module's authors receive it** (the owner chose this over owner triage and over a reporter-named suspect). Each distinct author and declared maintainer is mentioned once, and each can see the private details and close or reopen it. The cost is that an author may be pinged for a problem in someone else's module; the report says it concerns the whole configuration, and the cap on mentions stops a very large configuration from pinging dozens of people.
+- **The fix is released by one module,** so `/modwerk resolve` names it. Closing it for another reason works from any of them.
+- **The modules and versions are public;** the build fingerprint, the FX2 setting and the log are not. Authors without a Modwerk account need the list to reproduce the problem, and the `module:<id>` labels reveal it anyway. This widens what a report publishes beyond a module report's single version, so the privacy notice needs the owner's review.
+- **It does not count against a module.** A report that may not be that module's fault stays out of the per-module statistics behind the stability grade; each module's Issues tab still lists and counts it.
+- **Not done:** the module-page report form still files against one module and is unchanged, and the log reader is a copy in the configuration report rather than shared with it.
