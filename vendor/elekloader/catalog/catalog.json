@@ -1,7 +1,7 @@
 {
  "schema": 1,
  "kind": "elekloader-catalog",
- "revision": "a1be3ce0c006ea0c46fa82c6f254c11a05d42beb",
+ "revision": "49b6059bec17c74170e1a09467b776ab3d556d0c8e9a6ee3f32905463f81e307",
  "about": "elekloader's curated catalog: the cores and mods a site may offer, each pinned by sha256 to its author's release or commit. docs/INTEGRATING.md.",
  "cores": [
   {
@@ -67,6 +67,19 @@
    "source": {
     "repo": "irpina/digitables",
     "tag": "v1.3"
+   }
+  },
+  {
+   "file": "core-1.0.elemod",
+   "sha256": "95303655a9358f581b485acb68b884b394a577f5d0b373f0a3e5957c8d0ca72c",
+   "id": "core",
+   "version": "1.0",
+   "device": "digitakt-mk2",
+   "os": "1.17",
+   "license": "GPL-2.0-or-later",
+   "source": {
+    "repo": "toonst/digitakt2-perform",
+    "tag": "v1.0"
    }
   }
  ],
@@ -584,6 +597,52 @@
    "author": "gdeo607",
    "needs_core": "2.1",
    "on_unit": "Its author reports the stand-alone 1.5d tested on a Digitakt mk1, and 1.9a not yet; it passes their emulator tests on OS 1.53 and 1.54."
+  },
+  {
+   "file": "perform-direct-1.0.elemod",
+   "sha256": "601b187f5af3025234c83e8c077b1e8f4ac755a8f1a8c929ab03aff331f30732",
+   "id": "perform-direct",
+   "version": "1.0",
+   "device": "digitakt-mk2",
+   "os": "1.17",
+   "license": "GPL-2.0-or-later",
+   "source": {
+    "repo": "toonst/digitakt2-perform",
+    "tag": "v1.0"
+   },
+   "title": "Direct perform",
+   "requires": [
+    "core"
+   ],
+   "conflicts": [],
+   "summary": "PRESET alone toggles PERFORM KIT; FUNC + PRESET opens the PRESET/KIT menu.",
+   "category": "Performance",
+   "author": "toonst",
+   "needs_core": "1.0",
+   "on_unit": "The author reports the key swap working on Digitakt II OS 1.17 in an earlier version that also had a PERSONALIZE on/off row. The current pair with perform-levels is not reported tested together on a unit."
+  },
+  {
+   "file": "perform-levels-1.0.elemod",
+   "sha256": "bb100389f2800401495ca3fa3a52d5974bb00434a8a70fd6f89978ec6b25d9e6",
+   "id": "perform-levels",
+   "version": "1.0",
+   "device": "digitakt-mk2",
+   "os": "1.17",
+   "license": "GPL-2.0-or-later",
+   "source": {
+    "repo": "toonst/digitakt2-perform",
+    "tag": "v1.0"
+   },
+   "title": "Perform keeps levels",
+   "requires": [
+    "core"
+   ],
+   "conflicts": [],
+   "summary": "Track levels set in PERFORM KIT mode stay when you leave it; every other parameter returns to the pattern's kit.",
+   "category": "Performance",
+   "author": "toonst",
+   "needs_core": "1.0",
+   "on_unit": "The author reports perform-levels working on Digitakt II OS 1.17. The pair with perform-direct is not reported tested together on a unit."
   }
  ]
 }

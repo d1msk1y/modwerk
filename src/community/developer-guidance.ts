@@ -8,7 +8,7 @@ export const ISSUE_COMMANDS = '/modwerk resolve <published-version> verified-dow
 
 export const DEVELOPER_CONTEXT = [
   { title: 'Separate catalogues', summary: 'Octabam, Modwerk and Elekloader maintain separate catalogues. A module enters Modwerk through an explicit submission or port; an Elekloader listing is optional.' },
-  { title: 'Builders today', summary: 'Octatrack uses the Octabam source and native remixer. Modwerk uses the Elekloader builder kit for Digitakt and Digitone. Elekloader retains its own frontend and loader.' },
+  { title: 'Builders today', summary: 'Octatrack uses the Octabam source and native remixer. Modwerk uses the Elekloader kit for Digitakt and Digitone; Digitakt II OS 1.17 is a local-build research preview with downloads disabled. Elekloader retains its own frontend and loader.' },
   { title: 'Planned', summary: 'A shared Elekloader builder will replace Modwerk’s two builder paths. Publishing entirely new modules without another owner review is also planned for verified developers; it is not available yet.' },
 ]
 

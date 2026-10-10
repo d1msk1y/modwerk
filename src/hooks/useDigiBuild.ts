@@ -17,7 +17,7 @@ export type DigiBuildState =
 
 const message = (error: unknown, fallback: string) => error instanceof Error ? error.message : fallback
 
-/** Local Digitakt/Digitone builds. The engine loads only when asked; changed inputs discard checks and results. */
+/** Local Digitakt/Digitone and DTII-preview builds. The engine loads only when asked; changed inputs discard checks and results. */
 export function useDigiBuild(machine: BuilderMachine, file: File | undefined, release: string | undefined, moduleIds: readonly string[]) {
   const [engaged, setEngaged] = useState(false), [attempt, setAttempt] = useState(0), [loaded, setLoaded] = useState(false)
   const inputs = JSON.stringify([machine, release ?? '', file ? [file.name, file.size, file.lastModified] : null, [...moduleIds].sort()])
@@ -62,12 +62,12 @@ export function useDigiBuild(machine: BuilderMachine, file: File | undefined, re
       })
       if (operation.current !== request) return
       setView(result.ok ? { phase: 'built', key, enabled, device, moduleIds: [...moduleIds], result } : { phase: 'failed', key, enabled, device, error: result.error, result })
-      trackUsage(result.ok ? 'build_succeeded' : 'build_failed', machine)
+      trackUsage(result.ok ? 'build_succeeded' : 'build_failed', machine === 'digitakt-ii' ? undefined : machine)
     } catch (error) {
       if (operation.current !== request) return
       setView({ phase: 'failed', key, enabled, device, error: message(error, 'The build failed.') })
       // A refused sign-in is not a failed build; a rejected OS version name returns above without counting.
-      if (started) trackUsage('build_failed', machine)
+      if (started) trackUsage('build_failed', machine === 'digitakt-ii' ? undefined : machine)
     }
   }
   function cancel() {

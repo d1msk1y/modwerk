@@ -7,7 +7,7 @@ import { MODULE_DOCUMENTS_BY_ID } from '../catalog/documents'
 import { moduleBuildPending } from '../catalog/build-support'
 import { DIGI_MODS, type DigiMod } from '../devices/digi-mods'
 import { DEVICES_BY_ID, deviceHref } from '../devices/registry'
-import { DIGI_DOWNLOADS_ENABLED } from '../engine/elekloader/protocol'
+import { digiDownloadsEnabled } from '../engine/elekloader/protocol'
 import { USB_AUDIO_MODULE } from '../config/usb-audio'
 
 const ROWS = ['Machine', 'Version', 'Purpose', 'Location', 'Storage', 'Processing', 'Hardware record', 'Build status'] as const
@@ -42,7 +42,7 @@ export function ModuleComparison({ ids, onClose, onToggle, selected, digiSelecte
         Location: module.category + ' · OS ' + module.releases.join(' / '),
         Storage: (module.ramBytes / 1024).toFixed(module.ramBytes < 10240 ? 1 : 0) + ' KiB (code and data)',
         Processing: 'Not measured', 'Hardware record': module.hardware ?? 'No hardware report yet',
-        'Build status': DIGI_DOWNLOADS_ENABLED ? 'Experimental' : 'Verification pending',
+        'Build status': digiDownloadsEnabled(module.device) ? 'Experimental' : 'Verification pending',
       },
     })),
   ].filter(module => ids.includes(module.key))

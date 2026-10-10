@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0-or-later
-// Digitakt/Digitone builds through elekloader's kit (vendor/elekloader/kit): its builder worker and client, and the
+// Digitakt mk1, Digitone mk1 and Digitakt II preview builds through elekloader's kit (vendor/elekloader/kit): its worker/client and the
 // catalog Modwerk serves under elekloader/ (vendor/elekloader/catalog, pinned with the kit by elekloader.lock.json).
 // Modwerk's machine ids map to the kit's device keys; Modwerk's module ids are the catalog's mod ids.
 import CATALOG_JSON from '../../../vendor/elekloader/catalog/catalog.json'
@@ -14,7 +14,7 @@ export { buildStep } from '../../../vendor/elekloader/kit/src/kit/index.ts'
 export type { Builder }
 
 export const BUILDER_CATALOG: Catalog = parseCatalog(CATALOG_JSON)
-export const DEVICE: Record<BuilderMachine, string> = { digitakt: 'digitakt-mk1', digitone: 'digitone-mk1' }
+export const DEVICE: Record<BuilderMachine, string> = { digitakt: 'digitakt-mk1', 'digitakt-ii': 'digitakt-mk2', digitone: 'digitone-mk1' }
 // The kit's version and commit, apart from the catalog's revision: configuration backups name the revision, so they
 // survive a kit update and change only with the catalog.
 export const BUILDER_SOURCE = {

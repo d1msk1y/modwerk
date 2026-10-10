@@ -42,6 +42,69 @@ production bundle. Firmware and reference audio remain private.
 See [the exact-source approval](../sdk/analog-bassdrum-build-approval.json) and
 [the testing record](../sdk/octabam/modules/analog-bassdrum/TESTING.md).
 
+## Digitakt II browser-builder preview — 10 October 2026
+
+This work adds a local, non-downloadable Modwerk preview for the Digitakt II;
+it does not mark the machine available or publish its mods. The profile stays
+`research`, the `mods` step stays `open`, and the device-specific download gate
+is false. The exact stock file remains local and no output firmware was saved
+by the browser test.
+
+The pinned source is elekloader kit 0.5.0 (`3acac10`) plus the stock-free
+site-owned overlay `sdk/imports/elekloader-digitakt2-perform-v1.0.json`, from
+toonst's v1.0 release. `npm run elekloader:update -- --overlay
+sdk/imports/elekloader-digitakt2-perform-v1.0.json` fetched the three release
+assets by their source pins, checked SHA-256, updated the generated catalog and
+lock transactionally, and passed the Elekloader vendor and licence checks.
+Catalog revision is `49b6059bec17c74170e1a09467b776ab3d556d0c8e9a6ee3f32905463f81e307`
+(six cores, 23 mods); all pre-existing package pins remain present.
+
+Modwerk's adapter maps `digitakt-ii` to `digitakt-mk2`; the catalogue importer
+retains that device, and the Elekloader planner selects only OS 1.17's DTII
+core/mod packages. Modwerk's local ELE3 reader recognizes the exact stock
+file/hash and uses a separate browser-storage key. Its legacy, unsealed ELE3
+writer and verifier explicitly refuse HMAC-sealed device profiles. The app
+offers a research-stage core preview, while the `DigiBuildPanel` test confirms
+there is no DTII download action. Existing mk1 download approvals are unchanged.
+
+The real stock OS 1.17 file was selected through the local page and identified
+as Digitakt II 1.17 by full-file hash. In the same browser, Modwerk's
+`createDigiBuilder`/`prepareBuild` worker path built `core-1.0`,
+`perform-direct-1.0` and `perform-levels-1.0` as `PB10`; SHA-256
+`9b86f3f5208d96e359cb226eed6e2e9d3df4ebb14be7e0e21213456f4cec6566`,
+2,184,480 bytes. This exactly matches the independent Elekloader build. Its
+log reports 261,380 bytes of DDR spare and 3,840 bytes of fast SRAM spare;
+sections 2, 4, 5, 7 and 8 are unchanged, with 2,303,048 bytes minimum
+in-place depack gap and 1,422,112 bytes flash headroom. The browser engine
+verified the output in memory. The app's visible build button still requires
+sign-in; this check invoked the same worker API directly in the browser.
+
+Focused checks passed: Elekloader DTII suite 18/18 without skips, required
+Elekloader unit suite 17/17, Modwerk builder/planner, profile, reader, writer
+refusal, storage isolation, catalog overlay, library-preview and download-gate
+tests (90 tests total). On current main `b51143f`, Modwerk typecheck and
+production bundle pass; lint has no errors and six warnings in existing
+community/bootstrap files. `machines:check` validates 17 profiles, including
+four SDKs, and `elekloader:check` verifies the 0.5.0 kit and 49b6059 catalog.
+
+The full app run reports 1,680 passed and 11 failed tests across seven files.
+The failures concern the current MIDI Scenes 0.2.5 qualification/source
+records, utility release fingerprints, module changelog checks and checks that
+cascade from those records; none names DTII. `npm run check -- --base
+origin/main` and `modules:generate` stop at `modules:check` because MIDI Scenes
+0.2.5 lacks the current required worst-case cycle, exact-memory and hardware
+qualification record. With Python 3.12, `sdk:check` reports 87 passed and one
+failure: `test_catalog_and_author_dependencies_remain_exact` still expects
+MIDI Scenes 0.2.4 while the current catalog pins 0.2.5. No MIDI Scenes or
+utility-release files were changed here.
+
+Remaining before public module availability: import reviewed Modwerk module
+folders with complete tutorials/screenshots and exact source provenance; add
+them to the SDK catalog only after qualification; test the exact combined
+source on a DTII unit (the author does not report the current pair tested
+together); receive owner review. No hardware was flashed, and no firmware
+download was enabled or produced.
+
 ## Digitakt II integration preparation - 9 October 2026
 
 This is upstream package/build verification, not approval to enable Digitakt II
@@ -90,9 +153,10 @@ packages and output firmware outside tracked source.
 The author reports individual hardware results, with perform-direct's report
 covering an earlier version with a PERSONALIZE row. The pair is not reported
 tested on a unit. No historical hardware waiver elsewhere in this document
-applies to DTII. Browser integration, reviewed module records, screenshots,
+applies to DTII. This initial record predates the catalog, reader and
+browser-builder preview documented above. Reviewed module records, screenshots,
 exact-version hardware qualification or an explicit owner waiver, and owner
-review remain outstanding before Modwerk can offer these builds.
+review remain outstanding before Modwerk can offer downloads.
 
 ## USB Audio 0.2 / Outbox 8 — 8 October 2026
 

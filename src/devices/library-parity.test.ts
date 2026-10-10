@@ -7,22 +7,22 @@ import { LibraryTools } from '../components/LibraryTools'
 import { ModuleComparison } from '../components/ModuleComparison'
 import { DEFAULT_MODULE_SORT } from '../community/module-statistics'
 import { DEVICES_BY_ID } from './registry'
-import { DIGI_MODS } from './digi-mods'
-import { MachineLibrary } from './MachinePages'
+import { DIGI_MODS, type DigiMod } from './digi-mods'
+import { EmptyMachine, MachineLibrary } from './MachinePages'
 
 const noop = () => {}
 // The all-machines library is the machine library without a device; a Digi library is the same view with that machine's selection.
 const AllMachinesLibrary = MachineLibrary
-type DigiDevice = NonNullable<Parameters<typeof MachineLibrary>[0]['device']> & { id: 'digitakt' | 'digitone' }
+type DigiDevice = NonNullable<Parameters<typeof MachineLibrary>[0]['device']> & { id: DigiMod['device'] }
 type DigiProps = { device: DigiDevice; selectedIds: string[]; onToggle: (id: string) => void } & Omit<Parameters<typeof MachineLibrary>[0], 'device' | 'octatrackModules' | 'octatrackSelected' | 'onToggleOctatrack' | 'digiSelected' | 'onToggleDigi' | 'octatrackConflicts' | 'viewedModuleVersions' | 'moduleBaseline'>
 function DigiLibrary({ device, selectedIds, onToggle, ...rest }: DigiProps) {
-  return createElement(MachineLibrary, { ...rest, device, octatrackModules: [], octatrackSelected: [], onToggleOctatrack: noop, digiSelected: { digitakt: device.id === 'digitakt' ? selectedIds : [], digitone: device.id === 'digitone' ? selectedIds : [] }, onToggleDigi: (_: string, id: string) => onToggle(id), octatrackConflicts: [], viewedModuleVersions: {}, moduleBaseline: null })
+  return createElement(MachineLibrary, { ...rest, device, octatrackModules: [], octatrackSelected: [], onToggleOctatrack: noop, digiSelected: { digitakt: device.id === 'digitakt' ? selectedIds : [], 'digitakt-ii': device.id === 'digitakt-ii' ? selectedIds : [], digitone: device.id === 'digitone' ? selectedIds : [] }, onToggleDigi: (_: string, id: string) => onToggle(id), octatrackConflicts: [], viewedModuleVersions: {}, moduleBaseline: null })
 }
 // Likes and downloads show the number beside an icon; the word is there for screen readers only.
 const count = (value: string, word: string) => value + '<span class="sr-only"> ' + word + '</span>'
 const props = {
   query: '', octatrackModules: AVAILABLE_MODULES, octatrackSelected: ['miniverb'],
-  onToggleOctatrack: noop, digiSelected: { digitakt: [], digitone: [] }, onToggleDigi: noop,
+  onToggleOctatrack: noop, digiSelected: { digitakt: [], 'digitakt-ii': [], digitone: [] }, onToggleDigi: noop,
   family: 'all', onFamilyChange: noop, sort: 'collection', onSortChange: noop,
   statistics: [{module_id: 'miniverb', average: 4.5, count: 2, likes: 7, downloads: 12, downloadsStarted: null}],
   octatrackConflicts: [], comparison: ['miniverb'], onCompare: noop, onOpenComparison: noop,
@@ -43,6 +43,16 @@ describe('machine switching layout', () => {
       expect(html).not.toContain('href="#syntakt/configuration"')
       expect(html).toContain('Be the first to mod the')
     } else expect(html).toContain('href="' + (id === 'octatrack' ? '#configuration' : '#' + id + '/configuration') + '"')
+  })
+})
+
+describe('Digitakt II research preview', () => {
+  it('offers a local core build preview without presenting it as an approved module catalog', () => {
+    const html = renderToStaticMarkup(createElement(EmptyMachine, { device: DEVICES_BY_ID['digitakt-ii'] }))
+    expect(html).toContain('href="#digitakt-ii/configuration"')
+    expect(html).toContain('Open local build preview')
+    expect(DEVICES_BY_ID['digitakt-ii'].status).toBe('research')
+    expect(DIGI_MODS.some(mod => mod.device === 'digitakt-ii')).toBe(false)
   })
 })
 
@@ -75,7 +85,7 @@ describe('All machines library parity', () => {
     const html = renderToStaticMarkup(createElement(AllMachinesLibrary, {...props,
       query: 'no matching modules', octatrackModules: [],
       octatrackConflicts: selectionConflicts(['midi-scenes', 'analog-bassdrum']),
-      digiSelected: {digitakt: ['digislicer', 'digisophie'], digitone: []},
+      digiSelected: {digitakt: ['digislicer', 'digisophie'], 'digitakt-ii': [], digitone: []},
     }))
     expect(html).toContain('Octatrack: your selection needs a change')
     expect(html).toContain('Digitakt: your selection needs a change')
@@ -211,7 +221,7 @@ describe('Digi library parity', () => {
     expect(html).toContain('type="checkbox" disabled=""')
     const other = renderToStaticMarkup(createElement(DigiLibrary, {...digiProps, comparison: ['digitone-digihealth']}))
     expect(other).not.toContain('type="checkbox" checked=""')
-    const dialog = renderToStaticMarkup(createElement(ModuleComparison, {ids:['digitakt-digihealth','digitone-digihealth'], selected: [], digiSelected:{digitakt:['digihealth'],digitone:[]}, onToggle:noop,onToggleDigi:noop,onClose:noop}))
+    const dialog = renderToStaticMarkup(createElement(ModuleComparison, {ids:['digitakt-digihealth','digitone-digihealth'], selected: [], digiSelected:{digitakt:['digihealth'],'digitakt-ii':[],digitone:[]}, onToggle:noop,onToggleDigi:noop,onClose:noop}))
     expect(dialog).toContain('href="/digitakt/module/digihealth/"')
     expect(dialog).toContain('href="/digitone/module/digihealth/"')
     expect(dialog).toContain('aria-pressed="true"')
