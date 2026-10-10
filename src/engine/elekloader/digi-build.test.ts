@@ -56,6 +56,7 @@ describe('the vendored elekloader catalog', () => {
     expect(DIGI_DOWNLOADS_ENABLED).toEqual({ digitakt: true, 'digitakt-ii': false, digitone: true })
     expect(digiDownloadsEnabled('digitakt-ii')).toBe(false)
     expect(digiDownloadsEnabled('unknown-device')).toBe(false)
+    expect(digiDownloadsEnabled('constructor')).toBe(false)
   })
 })
 

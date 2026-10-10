@@ -225,8 +225,10 @@ async function main(root: string, argv: string[]) {
         writeFileSync(source, JSON.stringify(mergeCatalogOverlay(base, overlay), null, 1) + '\n')
       }
       if (library) {
-        // only what Modwerk's library lists, and what that requires: the rest is not downloaded
-        const cut = libraryCatalog(JSON.parse(readFileSync(source!, 'utf8')), (machine, id) => existsSync(resolve(root, `sdk/${machine}/modules/${id}/modwerk.module.json`)))
+        // only what Modwerk's library lists, and what that requires: the rest is not downloaded. Site-owned overlay
+        // packages have no library record yet, so the cut must not drop them.
+        const owned = new Set(overlayPath ? (JSON.parse(readFileSync(resolve(overlayPath), 'utf8')) as CatalogFile).mods.map(m => `${DEVICES[m.device]}/${m.id}`) : [])
+        const cut = libraryCatalog(JSON.parse(readFileSync(source!, 'utf8')), (machine, id) => owned.has(`${machine}/${id}`) || existsSync(resolve(root, `sdk/${machine}/modules/${id}/modwerk.module.json`)))
         source = join(scratch, 'catalog-library.json')
         writeFileSync(source, JSON.stringify(cut.catalog, null, 1) + '\n')
         required = cut.required

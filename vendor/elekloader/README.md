@@ -36,6 +36,8 @@ Update by pull request, owner reviewed:
    Site-owned packages use a stock-free catalog pin under `sdk/imports/` and the overlay option:
    `npm run elekloader:update -- --overlay sdk/imports/elekloader-digitakt2-perform-v1.0.json`
 
+   Repeat `--overlay` on every `--library` update: the library cut keeps overlay packages only when the overlay is named, and drops (and deletes) them otherwise.
+
    The kit sync fetches each package from its pinned author release, verifies SHA-256, and preserves existing upstream packages. The updater regenerates the lock and validates the complete catalog transactionally.
 3. **Do what it lists.** It prints what changed and what is left by hand: Modwerk's own module files (`sdk/<machine>/modules/<id>/modwerk.module.json`) for each mod that changed, came or left, and licence entries naming a file that is gone. A new catalog `revision` needs nothing more: older configuration backups still import, with their modules checked again against the library.
 4. **Check and record:** run `npm run check`. Build every module subset locally against the previous builder or elekloader's command line, and record the result in `docs/VERIFICATION.md`.

@@ -16,5 +16,5 @@ export const DIGI_DOWNLOADS_ENABLED: Readonly<Record<BuilderMachine, boolean>> =
 }
 
 export function digiDownloadsEnabled(machine: string): boolean {
-  return machine in DIGI_DOWNLOADS_ENABLED && DIGI_DOWNLOADS_ENABLED[machine as BuilderMachine]
+  return Object.hasOwn(DIGI_DOWNLOADS_ENABLED, machine) && DIGI_DOWNLOADS_ENABLED[machine as BuilderMachine] === true
 }
