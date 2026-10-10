@@ -23,6 +23,7 @@ A module's category is the `category` field of its manifest (`octamod.module.jso
 4. Measure the [performance](#performance) and write `evidence/performance.json`: worst-case cycles, a benchmark against stock and a stress run. `npm run perf:audit -- check <that file>` must pass.
 5. Run `npm run module:doctor -- <id>` until every line is green. It reads the repository only: no firmware and no module code runs. For a module listed from 7 October 2026 it also refuses a missing or failing performance record.
 6. Run `npm run check`, and `npm run module:verify -- <id> --os <your 1.40C update>` for an Octatrack module.
+7. If you learned something the next developer needs and no guide says, write it into the guide that fits, as its own docs-only pull request ([Share what you learn](../DEVELOPER_WORKFLOW.md#share-what-you-learn)).
 
 ## Rules for every module
 
